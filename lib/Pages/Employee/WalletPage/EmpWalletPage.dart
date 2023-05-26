@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/TopBar.dart';
 import '../../Drawer.dart';
+import 'Emp_user_transaction_details.dart';
 
 class EmpWalletPage extends StatefulWidget {
   const EmpWalletPage({Key? key}) : super(key: key);
@@ -167,7 +168,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                       // height: MediaQuery.of(context).size.height * 0.16,
                       width: width,
                       color: Colors.transparent,
-                      height:  height * 0.34, //300,
+                      height:  height * 0.33, //300,
                       child: ListView.builder(
                           shrinkWrap: true,
                           // physics: NeverScrollableScrollPhysics(),
@@ -179,6 +180,8 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                               child: GestureDetector(
                                 onTap: () {
                                   // Get.to("jh");
+                                  Emp_user_transaction_details(ctx: context);
+                                  print("object");
                                 },
                                 child: Container(
                                   // height: MediaQuery.of(context).size.height * 0.4,

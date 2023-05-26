@@ -1,6 +1,9 @@
+import 'package:StandMan/widgets/ToastMessage.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,6 +45,7 @@ class _Customer_JobsDetails_Completed_with_QRState
 
   bool progress = false;
   bool isInAsyncCall = false;
+  var getResult = 'QR Code Result';
 
   chatStartUser() async {
 
@@ -347,8 +351,17 @@ class _Customer_JobsDetails_Completed_with_QRState
                           height: height * 0.02,
                         ),
                         GestureDetector(
-                            onTap: () {
-                              Get.to(CustomerQRCodeScanner());
+                            onTap: ()  {
+
+                               // scanQRCode();
+                               // Future.delayed(const Duration(seconds: 3), () {
+                               //   if(getResult == ""){
+                               //     toastFailedMessage("Failed to scan QR Code.", Colors.red);
+                                 // } else {
+                                   // Get.to(() => CustomerQRCodeScanner(qrresult: getResult,));
+                                   Payment(ctx: context);
+                                 // }
+                               // });
                             },
                             child: mainButton("Complete Job using QR",
                                 Color(0xff2B65EC), context)),
@@ -398,5 +411,21 @@ class _Customer_JobsDetails_Completed_with_QRState
         ),
       ),
     );
+  }
+  void scanQRCode() async {
+    try{
+      final qrCode = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.QR);
+
+      if (!mounted) return;
+
+      setState(() {
+        getResult = qrCode;
+      });
+      print("QRCode_Result:--");
+      print(qrCode);
+    } on PlatformException {
+      getResult = 'Failed to scan QR Code.';
+    }
+
   }
 }
