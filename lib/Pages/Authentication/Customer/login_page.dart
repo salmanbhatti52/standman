@@ -1,0 +1,425 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../widgets/MyButton.dart';
+import '../../../../widgets/social_button.dart';
+import '../../../Models/customer_signin_model.dart';
+import '../../../Utils/api_urls.dart';
+import '../../../widgets/ToastMessage.dart';
+import '../../Bottombar.dart';
+import '../../Customer/HomePage/HomePage.dart';
+import '../SignUp_tab_class.dart';
+import 'ForgotPassword.dart';
+import 'package:http/http.dart' as http;
+
+class CustomerLoginPage extends StatefulWidget {
+  CustomerLoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<CustomerLoginPage> createState() => _CustomerLoginPageState();
+}
+
+class _CustomerLoginPageState extends State<CustomerLoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final key = GlobalKey<FormState>();
+  bool isPasswordObscure = true;
+  bool isInAsyncCall = false;
+
+  CustomerSigninModel customerSigninModel = CustomerSigninModel();
+
+  bool loading = true;
+  // String? userFirstName, userLastName, userImage;
+  sharedPrefs() async {
+    loading = true;
+    setState(() {});
+    print('in LoginPage shared prefs');
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = (prefs!.getString('usersCustomersId'));
+    userEmail = (prefs!.getString('user_email'));
+    // userFirstName = (prefs!.getString('user_first_name'));
+    // userLastName = (prefs!.getString('user_last_name'));
+    print("userId in LoginPrefs is = $usersCustomersId");
+    print("userEmail in LoginPrefs is = $userEmail");
+    // print("userFirstName in LoginPrefs is = $userFirstName $userLastName");
+  }
+
+  // bool isLoggedIn = false;
+  // void checkLoginStatus() async {
+  //   // bool loggedIn = await SessionManager.isLoggedIn();
+  //   setState(() {
+  //     isLoggedIn = loggedIn;
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+     sharedPrefs();
+     // checkLoginStatus();
+  }
+
+  customersignin() async {
+    String apiUrl = customerSignInApiUrl;
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "email": emailController.text,
+        "password": passwordController.text,
+      },
+    );
+    final responseString = response.body;
+    print("responseSignInApi: $responseString");
+    print("status Code SignIn: ${response.statusCode}");
+    print("in 200 SignIn");
+    if (response.statusCode == 200) {
+      customerSigninModel = customerSigninModelFromJson(responseString);
+      setState(() {});
+      print('signUpModel status: ${customerSigninModel.status}');
+    }
+  }
+
+  DateTime currentBackPressTime = DateTime.now();
+
+  Future<bool> _onWillPop() async {
+    DateTime now = DateTime.now();
+    if (now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(
+          msg: 'Tap Again to Exit'); // you can use snackbar too here
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body:
+        // ModalProgressHUD(
+        //   inAsyncCall: isInAsyncCall,
+        //   opacity: 0.02,
+        //   blur: 0.5,
+        //   color: Colors.transparent,
+        //   progressIndicator: CircularProgressIndicator(
+        //     color: Colors.blue,
+        //   ),
+        //   child:
+          SingleChildScrollView(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Form(
+                  key: key,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Email Address",
+                          style: TextStyle(
+                            color: Color.fromRGBO(0, 0, 0, 1),
+                            fontFamily: "Outfit",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            // letterSpacing: -0.3,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          controller: emailController,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                            color: Color.fromRGBO(167, 169, 183, 1),
+                            fontFamily: "Outfit",
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (val) {
+                            return RegExp(
+                                r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                                .hasMatch(val!)
+                                ? null
+                                : "Please enter correct Email";
+                          },
+                          decoration: InputDecoration(
+                            // contentPadding: const EdgeInsets.only(top: 12.0),
+                            hintText: "Enter your email address",
+                            hintStyle: const TextStyle(
+                              color: Color.fromRGBO(167, 169, 183, 1),
+                              fontFamily: "Outfit",
+                              fontWeight: FontWeight.w300,
+                              fontSize: 14,
+                            ),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: SvgPicture.asset("assets/images/email.svg"),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color.fromRGBO(243, 243, 243, 1),
+                                width: 1.0,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color.fromRGBO(243, 243, 243, 1),
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color.fromRGBO(243, 243, 243, 1),
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color.fromRGBO(243, 243, 243, 1),
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        const Text(
+                          "Password",
+                          style: TextStyle(
+                            color: Color.fromRGBO(25, 29, 49, 1),
+                            fontFamily: "Outfit",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300,
+                            // letterSpacing: -0.3,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          controller: passwordController,
+                          style: const TextStyle(
+                            color: Color.fromRGBO(167, 169, 183, 1),
+                            fontFamily: "Outfit",
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
+                          ),
+                          obscureText: isPasswordObscure,
+                          obscuringCharacter: '*',
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: "Enter your password",
+                            // contentPadding: const EdgeInsets.only(top: 12.0),
+                            hintStyle: const TextStyle(
+                              color: Color.fromRGBO(167, 169, 183, 1),
+                              fontFamily: "Outfit",
+                              fontWeight: FontWeight.w300,
+                              fontSize: 14,
+                            ),
+                            prefixIcon: InkWell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SvgPicture.asset(
+                                  isPasswordObscure
+                                      ? "assets/images/lock.svg"
+                                      : "assets/images/lock.svg",
+                                ),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  isPasswordObscure = !isPasswordObscure;
+                                });
+                              },
+                            ),
+                            suffixIcon: InkWell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SvgPicture.asset(
+                                  isPasswordObscure
+                                      ? "assets/images/eye.svg"
+                                      : "assets/images/eye.svg",
+                                ),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  isPasswordObscure = !isPasswordObscure;
+                                });
+                              },
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color.fromRGBO(243, 243, 243, 1),
+                                width: 1.0,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color.fromRGBO(243, 243, 243, 1),
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20.0),
+                      child: TextButton(
+                        onPressed: () {
+                          Get.to(const CustomerForgotPassword());
+                        },
+                        child: const Text(
+                          "Forgot password?",
+                          style: TextStyle(
+                              fontFamily: "Outfit",
+                              fontSize: 14,
+                              color: Color.fromRGBO(167, 169, 183, 1),
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                GestureDetector(
+                    onTap: () async {
+                      if (key.currentState!.validate()) {
+                        if (emailController.text.isEmpty) {
+                          toastFailedMessage('email cannot be empty', Colors.red);
+                        } else if (passwordController.text.length < 8) {
+                          toastFailedMessage(
+                              'password must be 8 digit', Colors.red);
+                        } else {
+                          setState(() {
+                            isInAsyncCall = true;
+                          });
+                          await customersignin();
+
+                          if (customerSigninModel.status == "success") {
+
+                            SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                            await sharedPref.setString('user_email', "${customerSigninModel.data?.email.toString()}");
+                            await sharedPref.setString('phoneNumber', "${customerSigninModel.data?.phone.toString()}");
+                            await sharedPref.setString('fullName', "${customerSigninModel.data?.fullName.toString()}");
+                            await sharedPref.setString('profilePic', "${customerSigninModel.data?.profilePic.toString()}");
+                            await sharedPref.setString('usersCustomersId', "${customerSigninModel.data?.usersCustomersId.toString()}");
+                            await sharedPref.setString('password', "${customerSigninModel.data?.password.toString()}");
+
+                            Future.delayed(const Duration(seconds: 3), () {
+                              if(customerSigninModel.data!.usersCustomersType == "Customer"){
+                                // Get.to(bottom_bar());
+                                Get.to(bottom_bar(currentIndex: 0,));
+                                toastSuccessMessage("Login Successfully", Colors.green);
+                              } else {
+                                toastFailedMessage("Invalid email", Colors.red);
+                              }
+                                // customerSigninModel.data!.usersCustomersType == "Customer" ?
+                                // Get.to(bottom_bar()):
+                                // toastFailedMessage("you are not employee", Colors.red);
+                              // toastSuccessMessage("success", Colors.green);
+                              // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
+
+
+                              setState(() {
+                                isInAsyncCall = false;
+                              });
+                              print("false: $isInAsyncCall");
+                            });
+                          }
+                          if (customerSigninModel.status != "success") {
+                            toastFailedMessage(
+                                customerSigninModel.message, Colors.red);
+                            setState(() {
+                              isInAsyncCall = false;
+                            });
+                          }
+                        }
+                      }
+                      // Get.to(bottom_bar());
+                    },
+                    child: isInAsyncCall
+                 ?  loadingBar(context)
+                    : mainButton("Sign In",
+                        const Color.fromRGBO(43, 101, 236, 1), context),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text(
+                    "OR",
+                    style: TextStyle(
+                        fontFamily: "Outfit",
+                        fontSize: 14,
+                        color: Color.fromRGBO(167, 169, 183, 1),
+                        fontWeight: FontWeight.w300),
+                  ),
+                ),
+                socialButton(context),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'No account yet?',
+                        style: TextStyle(
+                          color: Color(0xffA7A9B7),
+                          fontFamily: "Outfit",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                          // letterSpacing: -0.3,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          //   Navigator.pushReplacementNamed(context, '/registerType');
+                          Get.to( SignUpTabClass(signup: 0,));
+                        },
+                        child: const Text(
+                          'Register Your Account',
+                          style: TextStyle(
+                            color: Color(0xff2B65EC),
+                            fontFamily: "Outfit",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            // letterSpacing: -0.3,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        // ),
+      ),
+    );
+  }
+}
