@@ -141,10 +141,11 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     Map body = {
       "requestType": "sendMessage",
       "sender_type": "Customer",
-      "messageType": "1",
+      "messageType": image == false ?  "text" : "attachment",
       "users_customers_id": usersCustomersId,
       "other_users_customers_id": widget.other_users_customers_id,
       "content": sendMessageController.text,
+      "image" : base64img,
     };
     http.Response response = await http.post(
         Uri.parse(sendMessageCustomerApiUrl),
@@ -425,20 +426,22 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                                                     alignment: (
                                                         // messageDetailsModelObject[reverseIndex].data?[index].senderType == "Customer"
                                                         // messages[reverseIndex].data?[index].senderType == "Customer"
-                                                        getMessageModel
-                                                                    .data?[
-                                                                        reverseIndex]
-                                                                    .senderType ==
-                                                                "Customer"
+                                                        getMessageModel.data?[reverseIndex].senderType == "Customer"
                                                             ? Alignment.topRight
-                                                            : Alignment
-                                                                .topLeft),
-                                                    child: Container(
+                                                            : Alignment.topLeft),
+                                                    child:  Container(
                                                       decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.only(
-                                                          topRight: Radius.circular(20),
-                                                              topLeft: Radius.circular(20),
-                                                              bottomLeft: Radius.circular(20),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  20),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  20),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  20),
                                                         ),
                                                         color: (getMessageModel
                                                                     .data?[
@@ -456,7 +459,25 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                                                                       reverseIndex]
                                                                   .senderType ==
                                                               "Customer"
-                                                          ? Column(
+                                                          ? getMessageModel.data![reverseIndex].msgType == "attachment" ? Container(
+                                                        child: Column(
+                                                          children: [
+                                                            ClipRRect(
+                                                              borderRadius: BorderRadius.circular(10.0),
+                                                              child:
+                                                              // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
+                                                              FadeInImage(
+                                                                placeholder:  AssetImage("assets/images/fade_in_image.jpeg",),
+                                                                fit: BoxFit.fill,
+                                                                width: 115,
+                                                                height: 96,
+                                                                image: NetworkImage("$baseUrlImage${getMessageModel.data?[reverseIndex].message}"),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ) :
+                                                          Column(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
                                                                       .end,
@@ -610,7 +631,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                     FloatingActionButton(
                       onPressed: () async {
                         if (sendMessageFormKey.currentState!.validate()) {
-                          if (sendMessageController.text.isEmpty) {
+                          if (sendMessageController.text.isEmpty)  {
                             toastFailedMessage(
                                 'please type a message', Colors.red);
                           } else {
@@ -645,7 +666,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
       ),
     );
   }
-
+ bool image = false;
   Widget sendMessageTextFields() {
     return Form(
       key: sendMessageFormKey,
@@ -695,7 +716,10 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 //                     ),
 //                     enableDrag: false,
 //                   );
-                  pickImageGallery();
+                  setState(() {
+                    image = true;
+                    pickImageGallery();
+                  });
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -759,963 +783,963 @@ class _MessagesDetailsState extends State<MessagesDetails> {
   }
 }
 
-class MessageDetailsScreen extends StatefulWidget {
-  final String? image, name, usersCustomersId, other_users_customers_id;
-
-  MessageDetailsScreen(
-      {Key? key,
-      this.usersCustomersId,
-      this.other_users_customers_id,
-      this.name,
-      this.image})
-      : super(key: key);
-
-  @override
-  State<MessageDetailsScreen> createState() => _MessageDetailsScreenState();
-}
-
-class _MessageDetailsScreenState extends State<MessageDetailsScreen> {
-  var sendMessageController = TextEditingController();
-  final GlobalKey<FormState> sendMessageFormKey = GlobalKey<FormState>();
-  List<GetMessgeModel> messageDetailsModelObject = [];
-  List<GetMessgeModel> newMessageObject = [];
-  List<UpdateMessgeModel> updateMessageModelObject = [];
-  SendMessgeCustomerModel sendMessgeCustomerModel = SendMessgeCustomerModel();
-  bool loading = true;
-
-  Map jsonData = {};
-
-  getMessageApi() async {
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('usersCustomersId');
-    // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
-    print("usersCustomersId = $usersCustomersId");
-    print("empUsersCustomersId = ${widget.other_users_customers_id}");
-    Map body = {
-      "requestType": "getMessages",
-      "users_customers_id": usersCustomersId,
-      "other_users_customers_id": widget.other_users_customers_id,
-    };
-    http.Response response = await http.post(Uri.parse(getUserChatApiUrl),
-        body: body, headers: {"Accept": "application/json"});
-    messageDetailsModelObject.clear();
-    jsonData = jsonDecode(response.body);
-    print("allChatApi: $getAllChatApiUrl");
-    print("statusCode: ${response.statusCode}");
-    print("responseData: $jsonData");
-
-    if (jsonData['status'] == 'error') {
-      // toastSuccessMessage("no chat history", kRed);
-      print('no chat history');
-      setState(() {
-        loading = false;
-      });
-    } else if (response.statusCode == 200) {
-      for (int i = 0; i < jsonData['data'].length; i++) {
-        Map<String, dynamic> obj = jsonData['data'][i];
-        var pos = GetMessgeModel();
-        pos = GetMessgeModel.fromJson(obj);
-        messageDetailsModelObject.add(pos);
-      }
-      print("allChatLength: ${messageDetailsModelObject.length}");
-      loading = false;
-      setState(() {
-        updateChatApiWidget();
-      });
-    }
-  }
-
-  updateChatApiWidget() async {
-    // setState(() {
-    //   loading = true;
-    // });
-    Map body = {
-      "requestType": "updateMessages",
-      "users_customers_id": usersCustomersId,
-      "other_users_customers_id": widget.other_users_customers_id,
-    };
-    http.Response response = await http.post(Uri.parse(updateMessageApiUrl),
-        body: body, headers: {"Accept": "application/json"});
-    Map jsonData = jsonDecode(response.body);
-    print("updateMessageApiUrl: $updateMessageApiUrl");
-    print('updateMessageApiResponse $jsonData');
-
-    if (jsonData['message'] == 'no chat found') {
-      // toastSuccessMessage("no chat found", kRed);
-      print('no chat found');
-      // setState(() {
-      //   loading = false;
-      // });
-    } else if (response.statusCode == 200) {
-      for (int i = 0; i < jsonData['data'].length; i++) {
-        Map<String, dynamic> obj = jsonData['data'][i];
-        print(obj['id']);
-        var pos = UpdateMessgeModel();
-        pos = UpdateMessgeModel.fromJson(obj);
-        updateMessageModelObject.add(pos);
-        print("updateMessagesLength: ${updateMessageModelObject.length}");
-        setState(() {
-          getMessageApi();
-        });
-      }
-    }
-  }
-
-  sendMessageApiWidget() async {
-    setState(() {
-      loading = true;
-    });
-    Map body = {
-      "requestType": "sendMessage",
-      "sender_type": "Customer",
-      "messageType": "1",
-      "users_customers_id": usersCustomersId,
-      "other_users_customers_id": widget.other_users_customers_id,
-      "content": sendMessageController.text,
-    };
-    http.Response response = await http.post(
-        Uri.parse(sendMessageCustomerApiUrl),
-        body: body,
-        headers: {"Accept": "application/json"});
-    Map jsonData = jsonDecode(response.body);
-    print("sendMessageApiUrl: $sendMessageCustomerApiUrl");
-    print("sendMessageText: ${sendMessageController.text}");
-    print('sendMessageApiResponse $jsonData');
-
-    if (jsonData['message'] == 'Message sent successfully.') {
-      // toastSuccessMessage("Message sent successfully1.", colorGreen);
-      print('Message sent successfully.');
-      setState(() {
-        loading = false;
-        getMessageApi();
-      });
-    }
-  }
-
-  sharedPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('in msgs details shared prefs');
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs.getString('userid');
-    print("userId in Prefs is = $usersCustomersId");
-
-    setState(() {
-      getMessageApi();
-    });
-  }
-
-  // String? carOwnerName1, carOwnerImage1, other_users_customers_id;
-  // int? carOwnerID1;
-
-  @override
-  void initState() {
-    super.initState();
-    sharedPrefs();
-  }
-
-  bool progress = false;
-
-  @override
-  Widget build(BuildContext context) {
-    var cron = Cron();
-    cron.schedule(Schedule.parse('*/03 * * * * *'), () async {
-      print('auto refresh after 03 seconds allChatMessageApi');
-      // await getMessageApi();
-    });
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            Get.to(bottom_bar(
-              currentIndex: 1,
-            ));
-          },
-          child: Center(
-              child: SvgPicture.asset(
-            "assets/images/left.svg",
-          )),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 05),
-          child: ListTile(
-            title: Text(
-              // fullName!,
-              // g.data![index].usersData!.fullName.toString(),
-              "${widget.name.toString()}",
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: "Outfit",
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-              ),
-            ),
-            subtitle: Text(
-              "Online",
-              // getUserChatModel.data
-              style: TextStyle(
-                color: Color(0xffA7AEC1),
-                fontFamily: "Outfit",
-                fontWeight: FontWeight.w300,
-                fontSize: 14,
-              ),
-            ),
-            leading: Stack(
-              children: [
-                // ClipRRect(
-                //   borderRadius: BorderRadius.circular(120),
-                //   child: FadeInImage(
-                //     placeholder: AssetImage("assets/images/fade_in_image.jpeg"),
-                //     image: NetworkImage("${widget.img}"),
-                //   ),
-                // ),
-                CircleAvatar(
-                  // radius: (screenWidth > 600) ? 90 : 70,
-                  radius: 30,
-
-                  backgroundImage: NetworkImage("${widget.image}"),
-                ),
-                // Image.network(widget.img.toString(),),
-                Positioned(
-                  top: 5,
-                  right: 3,
-                  child: Container(
-                    height: 10,
-                    width: 10,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          width: 1.5),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      backgroundColor: Colors.white,
-      body: loading
-          ? Center(child: CircularProgressIndicator(color: Colors.blue))
-          :
-          // messageDetailsModelObject.isEmpty?  Center(child: Text("no chat history")):
-          ModalProgressHUD(
-              inAsyncCall: progress,
-              opacity: 0.02,
-              blur: 0.5,
-              color: Colors.transparent,
-              progressIndicator: CircularProgressIndicator(color: Colors.blue),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.78,
-                      color: Colors.transparent,
-                      child: Stack(
-                        children: [
-                          ListView.builder(
-                            itemCount: messageDetailsModelObject.length,
-                            shrinkWrap: true,
-                            reverse: true,
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              int reverseIndex =
-                                  messageDetailsModelObject.length - 1 - index;
-                              return Container(
-                                padding: EdgeInsets.only(
-                                    left: 14, right: 14, top: 10, bottom: 10),
-                                child: Align(
-                                  alignment:
-                                      (messageDetailsModelObject[reverseIndex]
-                                                  .data?[index]
-                                                  .senderType ==
-                                              "Customer"
-                                          ? Alignment.topRight
-                                          : Alignment.topLeft),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: (messageDetailsModelObject[
-                                                      reverseIndex]
-                                                  .data?[index]
-                                                  .senderType ==
-                                              "Customer"
-                                          ? Colors.blue
-                                          : Colors.white),
-                                    ),
-                                    padding: EdgeInsets.all(10),
-                                    child: messageDetailsModelObject[
-                                                    reverseIndex]
-                                                .data?[index]
-                                                .senderType ==
-                                            "Customer"
-                                        ? Column(
-                                            children: [
-                                              Text(
-                                                  messageDetailsModelObject[
-                                                          reverseIndex]
-                                                      .data![index]
-                                                      .message
-                                                      .toString(),
-                                                  maxLines: 3,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontFamily: "Outfit",
-                                                      color: Colors.white)),
-                                              SizedBox(height: 03),
-                                              Text(
-                                                  "${messageDetailsModelObject[reverseIndex].data?[index].time.toString()} ${messageDetailsModelObject[reverseIndex].data?[index].date.toString()}",
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.right,
-                                                  style: TextStyle(
-                                                      fontSize: 10,
-                                                      color: Colors.white,
-                                                      fontFamily: "Outfit")),
-                                            ],
-                                          )
-                                        : Column(
-                                            children: [
-                                              Text(
-                                                  messageDetailsModelObject[
-                                                          reverseIndex]
-                                                      .data![index]
-                                                      .message
-                                                      .toString(),
-                                                  maxLines: 3,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.black,
-                                                      fontFamily: "Outfit")),
-                                              SizedBox(height: 03),
-                                              Text(
-                                                  "${messageDetailsModelObject[reverseIndex].data?[index].time.toString()} ${messageDetailsModelObject[reverseIndex]..data?[index].date.toString()}",
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                      fontSize: 10,
-                                                      color: Colors.black,
-                                                      fontFamily: "Outfit")),
-                                            ],
-                                          ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                        height: 65,
-                        child: Row(
-                          children: <Widget>[
-                            sendMessageTextFields(),
-                            SizedBox(width: 05),
-                            FloatingActionButton(
-                              onPressed: () async {
-                                if (sendMessageFormKey.currentState!
-                                    .validate()) {
-                                  if (sendMessageController.text.isEmpty) {
-                                    toastFailedMessage(
-                                        'please type a message', Colors.red);
-                                  } else {
-                                    setState(() {
-                                      progress = true;
-                                    });
-                                    await sendMessageApiWidget();
-                                    Future.delayed(Duration(seconds: 3), () {
-                                      print("sendMessage Success");
-                                      // toastSuccessMessage("Message sent successfully2.", colorGreen);
-                                      setState(() {
-                                        sendMessageController.clear();
-                                        progress = false;
-                                      });
-                                      print("false: $progress");
-                                    });
-                                  }
-                                }
-                              },
-                              backgroundColor: Colors.grey,
-                              elevation: 0,
-                              child: Image.asset(
-                                'assets/live_chat_images/send.png',
-                                height: 30,
-                                width: 30,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-    );
-  }
-
-  Widget sendMessageTextFields() {
-    return Form(
-      key: sendMessageFormKey,
-      child: Expanded(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 05, vertical: 0),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(20)),
-          child: TextField(
-            cursorColor: Colors.black,
-            textAlign: TextAlign.left,
-            controller: sendMessageController,
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 10, bottom: 3),
-                hintText: "Type your message here.....",
-                hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Outfit",
-                    color: Color(0xffD4DCE1)),
-                fillColor: Colors.white,
-                border: InputBorder.none),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ChatMessage {
-  String? messageContent;
-  String? messageType;
-
-  ChatMessage({@required this.messageContent, @required this.messageType});
-}
-
-class ChatScreen extends StatefulWidget {
-  final String? usersCustomersId;
-  final String? other_users_customers_id;
-  final String? name;
-  final String? img;
-
-  ChatScreen(
-      {Key? key,
-      this.usersCustomersId,
-      this.other_users_customers_id,
-      this.name,
-      this.img})
-      : super(key: key);
-
-  @override
-  _ChatScreenState createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
-  List<UpdateMessgeModel> updateMessageModelObject = [];
-  List<String> messages = [
-    // 'Hello',
-    // 'How are you?',
-    // 'I am doing well. Thanks for asking.',
-    // 'That\'s great!',
-    // 'Bye',
-    // 'Hello',
-    // 'How are you?',
-    // 'I am doing well. Thanks for asking.',
-    // 'That\'s great!',
-    // 'Bye',
-    // 'Hello',
-    // 'How are you?',
-    // 'I am doing well. Thanks for asking.',
-    // 'That\'s great!',
-    // 'Bye',
-    // 'Hello',
-    // 'How are you?',
-    // 'I am doing well. Thanks for asking.',
-    // 'That\'s great!',
-    // 'Bye',
-  ];
-
-  ScrollController _scrollController = ScrollController();
-  String? Image;
-
-  @override
-  void initState() {
-    super.initState();
-    usersCustomersId = widget.usersCustomersId;
-    Image = widget.img;
-    print("usersCustomersId $usersCustomersId");
-    sharedPrefs();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 1000),
-        curve: Curves.easeInOut,
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            Get.to(bottom_bar(
-              currentIndex: 1,
-            ));
-          },
-          child: Center(
-              child: SvgPicture.asset(
-            "assets/images/left.svg",
-          )),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 05),
-          child: ListTile(
-            title: Text(
-              // fullName!,
-              // g.data![index].usersData!.fullName.toString(),
-              "${widget.name.toString()}",
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: "Outfit",
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-              ),
-            ),
-            subtitle: Text(
-              "Online",
-              // getUserChatModel.data
-              style: TextStyle(
-                color: Color(0xffA7AEC1),
-                fontFamily: "Outfit",
-                fontWeight: FontWeight.w300,
-                fontSize: 14,
-              ),
-            ),
-            leading: Stack(
-              children: [
-                // ClipRRect(
-                //   borderRadius: BorderRadius.circular(120),
-                //   child: FadeInImage(
-                //     placeholder: AssetImage("assets/images/fade_in_image.jpeg"),
-                //     image: NetworkImage("${widget.img}"),
-                //   ),
-                // ),
-                CircleAvatar(
-                  // radius: (screenWidth > 600) ? 90 : 70,
-                  radius: 30,
-
-                  backgroundImage: NetworkImage("${widget.img}"),
-                ),
-                // Image.network(widget.img.toString(),),
-                Positioned(
-                  top: 5,
-                  right: 3,
-                  child: Container(
-                    height: 10,
-                    width: 10,
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          width: 1.5),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          getMessageModel.data != null
-              ? Container(
-                  height: Get.height * 0.78,
-                  child: ListView.builder(
-                    // reverse: true,
-                    controller: _scrollController,
-                    itemCount: getMessageModel.data?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      // getMessageModel.data?[index] = messages as Datum;
-                      final message = getMessageModel.data?[index];
-
-                      return getMessageModel.data!.isEmpty
-                          ? Center(child: Text("no chat history"))
-                          : Container(
-                              padding: EdgeInsets.only(
-                                left: 14,
-                                right: 14,
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              child: Align(
-                                alignment: (
-                                    // messageDetailsModelObject[reverseIndex].data?[index].senderType == "Customer"
-                                    // messages[reverseIndex].data?[index].senderType == "Customer"
-                                    message?.senderType == "Customer"
-                                        ? Alignment.topRight
-                                        : Alignment.topLeft),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: (message?.senderType == "Customer"
-                                        ? Color(0xff2B65EC)
-                                        : Color(0xffEBEBEB)),
-                                  ),
-                                  padding: EdgeInsets.all(10),
-                                  child: message?.senderType == "Customer"
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                                // "${messages[].}",
-                                                "${message?.message}",
-                                                // "${messageDetailsModelObject[reverseIndex].data?[index].message}",
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontFamily: "Outfit",
-                                                    color: Colors.white)),
-                                            SizedBox(height: 03),
-                                            Text(
-                                                // "time",
-                                                "${message?.time} ${message?.date}",
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.right,
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.white,
-                                                    fontFamily: "Outfit")),
-                                          ],
-                                        )
-                                      : Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text("${message?.message}",
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontFamily: "Outfit")),
-                                            SizedBox(height: 03),
-                                            Text(
-                                              // "time",
-                                              "${message?.time} ${message?.date}",
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.black,
-                                                  fontFamily: "Outfit"),
-                                            ),
-                                          ],
-                                        ),
-                                ),
-                              ),
-                            );
-                    },
-                  ),
-                )
-              : Container(
-                  height: Get.height * 0.78,
-                ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              padding: EdgeInsets.only(left: 10, top: 30),
-              child: Row(
-                children: <Widget>[
-                  sendMessageTextFields(),
-                  SizedBox(width: 05),
-                  FloatingActionButton(
-                    onPressed: () async {
-                      if (sendMessageFormKey.currentState!.validate()) {
-                        if (sendMessageController.text.isEmpty) {
-                          toastFailedMessage(
-                              'please type a message', Colors.red);
-                        } else {
-                          setState(() {
-                            progress = true;
-                          });
-                          await sendMessageApiWidget();
-                          Future.delayed(Duration(seconds: 3), () {
-                            print("sendMessage Success");
-                            setState(() {
-                              progress = false;
-                              sendMessageController.clear();
-                            });
-                            print("false: $progress");
-                          });
-                        }
-                      }
-                    },
-                    backgroundColor: Colors.white,
-                    elevation: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: SvgPicture.asset("assets/images/send.svg"),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  SendMessgeCustomerModel sendMessageCustomerModel = SendMessgeCustomerModel();
-  GetMessgeModel getMessageModel = GetMessgeModel();
-
-  sendMessageApiWidget() async {
-    setState(() {
-      progress = true;
-    });
-
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('usersCustomersId');
-    // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
-    print("usersCustomersId = $usersCustomersId");
-    print("empUsersCustomersId = ${widget.other_users_customers_id}");
-
-    Map body = {
-      "requestType": "sendMessage",
-      "sender_type": "Customer",
-      "messageType": "1",
-      "users_customers_id": usersCustomersId,
-      "other_users_customers_id": widget.other_users_customers_id,
-      "content": sendMessageController.text,
-    };
-    http.Response response = await http.post(
-        Uri.parse(sendMessageCustomerApiUrl),
-        body: body,
-        headers: {"Accept": "application/json"});
-    Map jsonData = jsonDecode(response.body);
-    print("sendMessageApiUrl: $sendMessageCustomerApiUrl");
-    print("sendMessageText: ${sendMessageController.text}");
-    print('sendMessageApiResponse $jsonData');
-    if (jsonData['message'] == 'Message sent successfully.') {
-      // toastSuccessMessage("Message sent.", Colors.green);
-      print('Message sent successfully.');
-      setState(() {
-        progress = false;
-        getMessageApi();
-      });
-    }
-  }
-
-  getMessageApi() async {
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('usersCustomersId');
-    // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
-    print("usersCustomersId = $usersCustomersId");
-    print("empUsersCustomersId = ${widget.other_users_customers_id}");
-
-    setState(() {
-      progress = true;
-    });
-    String apiUrl = getUserChatApiUrl;
-    print("working");
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {"Accept": "application/json"},
-      body: {
-        "requestType": "getMessages",
-        "users_customers_id": usersCustomersId,
-        "other_users_customers_id": widget.other_users_customers_id,
-      },
-    );
-    final responseString = response.body;
-    print("getMessgeModelApiUrl: ${response.body}");
-    print("status Code getMessgeModel: ${response.statusCode}");
-    print("in 200 getMessgeModel");
-    if (response.statusCode == 200) {
-      getMessageModel = getMessgeModelFromJson(responseString);
-      // setState(() {});
-      print('getMessgemodel status: ${getMessageModel.status}');
-      print('getMessgemodel message: ${getMessageModel.data?[0].message}');
-    }
-    setState(() {
-      progress = false;
-    });
-  }
-
-  updateChatApiWidget() async {
-    setState(() {
-      progress = true;
-    });
-
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('usersCustomersId');
-    // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
-    print("usersCustomersId = $usersCustomersId");
-    print("empUsersCustomersId = ${widget.other_users_customers_id}");
-
-    Map body = {
-      "requestType": "updateMessages",
-      "users_customers_id": usersCustomersId,
-      "other_users_customers_id": widget.other_users_customers_id,
-    };
-    http.Response response = await http.post(Uri.parse(updateMessageApiUrl),
-        body: body, headers: {"Accept": "application/json"});
-    Map jsonData = jsonDecode(response.body);
-    print("updateMessageApiUrl: $updateMessageApiUrl");
-    print('updateMessageApiResponse $jsonData');
-
-    if (jsonData['message'] == 'no chat found') {
-      print('no chat found');
-      // setState(() {
-      //   loading = false;
-      // });
-    } else if (response.statusCode == 200) {
-      for (int i = 0; i < jsonData['data'].length; i++) {
-        Map<String, dynamic> obj = jsonData['data'][i];
-        print(obj['id']);
-        var pos = UpdateMessgeModel();
-        pos = UpdateMessgeModel.fromJson(obj);
-        updateMessageModelObject.add(pos);
-        print("updateMessagesLength: ${updateMessageModelObject.length}");
-        setState(() {
-          getMessageApi();
-        });
-      }
-    }
-  }
-
-  sharedPrefs() async {
-    setState(() {
-      getMessageApi();
-    });
-  }
-
-  bool progress = false;
-  var sendMessageController = TextEditingController();
-  final GlobalKey<FormState> sendMessageFormKey = GlobalKey<FormState>();
-
-  Widget sendMessageTextFields() {
-    return Form(
-      key: sendMessageFormKey,
-      child: Expanded(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 05, vertical: 0),
-          decoration: BoxDecoration(
-              color: Color(0xffF9F9F9),
-              borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-//                   Get.bottomSheet(
+// class MessageDetailsScreen extends StatefulWidget {
+//   final String? image, name, usersCustomersId, other_users_customers_id;
+//
+//   MessageDetailsScreen(
+//       {Key? key,
+//       this.usersCustomersId,
+//       this.other_users_customers_id,
+//       this.name,
+//       this.image})
+//       : super(key: key);
+//
+//   @override
+//   State<MessageDetailsScreen> createState() => _MessageDetailsScreenState();
+// }
+//
+// class _MessageDetailsScreenState extends State<MessageDetailsScreen> {
+//   var sendMessageController = TextEditingController();
+//   final GlobalKey<FormState> sendMessageFormKey = GlobalKey<FormState>();
+//   List<GetMessgeModel> messageDetailsModelObject = [];
+//   List<GetMessgeModel> newMessageObject = [];
+//   List<UpdateMessgeModel> updateMessageModelObject = [];
+//   SendMessgeCustomerModel sendMessgeCustomerModel = SendMessgeCustomerModel();
+//   bool loading = true;
+//
+//   Map jsonData = {};
+//
+//   getMessageApi() async {
+//     prefs = await SharedPreferences.getInstance();
+//     usersCustomersId = prefs!.getString('usersCustomersId');
+//     // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+//     print("usersCustomersId = $usersCustomersId");
+//     print("empUsersCustomersId = ${widget.other_users_customers_id}");
+//     Map body = {
+//       "requestType": "getMessages",
+//       "users_customers_id": usersCustomersId,
+//       "other_users_customers_id": widget.other_users_customers_id,
+//     };
+//     http.Response response = await http.post(Uri.parse(getUserChatApiUrl),
+//         body: body, headers: {"Accept": "application/json"});
+//     messageDetailsModelObject.clear();
+//     jsonData = jsonDecode(response.body);
+//     print("allChatApi: $getAllChatApiUrl");
+//     print("statusCode: ${response.statusCode}");
+//     print("responseData: $jsonData");
+//
+//     if (jsonData['status'] == 'error') {
+//       // toastSuccessMessage("no chat history", kRed);
+//       print('no chat history');
+//       setState(() {
+//         loading = false;
+//       });
+//     } else if (response.statusCode == 200) {
+//       for (int i = 0; i < jsonData['data'].length; i++) {
+//         Map<String, dynamic> obj = jsonData['data'][i];
+//         var pos = GetMessgeModel();
+//         pos = GetMessgeModel.fromJson(obj);
+//         messageDetailsModelObject.add(pos);
+//       }
+//       print("allChatLength: ${messageDetailsModelObject.length}");
+//       loading = false;
+//       setState(() {
+//         updateChatApiWidget();
+//       });
+//     }
+//   }
+//
+//   updateChatApiWidget() async {
+//     // setState(() {
+//     //   loading = true;
+//     // });
+//     Map body = {
+//       "requestType": "updateMessages",
+//       "users_customers_id": usersCustomersId,
+//       "other_users_customers_id": widget.other_users_customers_id,
+//     };
+//     http.Response response = await http.post(Uri.parse(updateMessageApiUrl),
+//         body: body, headers: {"Accept": "application/json"});
+//     Map jsonData = jsonDecode(response.body);
+//     print("updateMessageApiUrl: $updateMessageApiUrl");
+//     print('updateMessageApiResponse $jsonData');
+//
+//     if (jsonData['message'] == 'no chat found') {
+//       // toastSuccessMessage("no chat found", kRed);
+//       print('no chat found');
+//       // setState(() {
+//       //   loading = false;
+//       // });
+//     } else if (response.statusCode == 200) {
+//       for (int i = 0; i < jsonData['data'].length; i++) {
+//         Map<String, dynamic> obj = jsonData['data'][i];
+//         print(obj['id']);
+//         var pos = UpdateMessgeModel();
+//         pos = UpdateMessgeModel.fromJson(obj);
+//         updateMessageModelObject.add(pos);
+//         print("updateMessagesLength: ${updateMessageModelObject.length}");
+//         setState(() {
+//           getMessageApi();
+//         });
+//       }
+//     }
+//   }
+//
+//   sendMessageApiWidget() async {
+//     setState(() {
+//       loading = true;
+//     });
+//     Map body = {
+//       "requestType": "sendMessage",
+//       "sender_type": "Customer",
+//       "messageType": "1",
+//       "users_customers_id": usersCustomersId,
+//       "other_users_customers_id": widget.other_users_customers_id,
+//       "content": sendMessageController.text,
+//     };
+//     http.Response response = await http.post(
+//         Uri.parse(sendMessageCustomerApiUrl),
+//         body: body,
+//         headers: {"Accept": "application/json"});
+//     Map jsonData = jsonDecode(response.body);
+//     print("sendMessageApiUrl: $sendMessageCustomerApiUrl");
+//     print("sendMessageText: ${sendMessageController.text}");
+//     print('sendMessageApiResponse $jsonData');
+//
+//     if (jsonData['message'] == 'Message sent successfully.') {
+//       // toastSuccessMessage("Message sent successfully1.", colorGreen);
+//       print('Message sent successfully.');
+//       setState(() {
+//         loading = false;
+//         getMessageApi();
+//       });
+//     }
+//   }
+//
+//   sharedPrefs() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     print('in msgs details shared prefs');
+//     prefs = await SharedPreferences.getInstance();
+//     usersCustomersId = prefs.getString('userid');
+//     print("userId in Prefs is = $usersCustomersId");
+//
+//     setState(() {
+//       getMessageApi();
+//     });
+//   }
+//
+//   // String? carOwnerName1, carOwnerImage1, other_users_customers_id;
+//   // int? carOwnerID1;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     sharedPrefs();
+//   }
+//
+//   bool progress = false;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     var cron = Cron();
+//     cron.schedule(Schedule.parse('*/03 * * * * *'), () async {
+//       print('auto refresh after 03 seconds allChatMessageApi');
+//       // await getMessageApi();
+//     });
+//
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Colors.white,
+//         elevation: 0,
+//         leading: GestureDetector(
+//           onTap: () {
+//             Get.to(bottom_bar(
+//               currentIndex: 1,
+//             ));
+//           },
+//           child: Center(
+//               child: SvgPicture.asset(
+//             "assets/images/left.svg",
+//           )),
+//         ),
+//         title: Padding(
+//           padding: const EdgeInsets.symmetric(vertical: 05),
+//           child: ListTile(
+//             title: Text(
+//               // fullName!,
+//               // g.data![index].usersData!.fullName.toString(),
+//               "${widget.name.toString()}",
+//               style: TextStyle(
+//                 color: Colors.black,
+//                 fontFamily: "Outfit",
+//                 fontWeight: FontWeight.w500,
+//                 fontSize: 14,
+//               ),
+//             ),
+//             subtitle: Text(
+//               "Online",
+//               // getUserChatModel.data
+//               style: TextStyle(
+//                 color: Color(0xffA7AEC1),
+//                 fontFamily: "Outfit",
+//                 fontWeight: FontWeight.w300,
+//                 fontSize: 14,
+//               ),
+//             ),
+//             leading: Stack(
+//               children: [
+//                 // ClipRRect(
+//                 //   borderRadius: BorderRadius.circular(120),
+//                 //   child: FadeInImage(
+//                 //     placeholder: AssetImage("assets/images/fade_in_image.jpeg"),
+//                 //     image: NetworkImage("${widget.img}"),
+//                 //   ),
+//                 // ),
+//                 CircleAvatar(
+//                   // radius: (screenWidth > 600) ? 90 : 70,
+//                   radius: 30,
+//
+//                   backgroundImage: NetworkImage("${widget.image}"),
+//                 ),
+//                 // Image.network(widget.img.toString(),),
+//                 Positioned(
+//                   top: 5,
+//                   right: 3,
+//                   child: Container(
+//                     height: 10,
+//                     width: 10,
+//                     decoration: BoxDecoration(
+//                       color: Colors.green,
+//                       shape: BoxShape.circle,
+//                       border: Border.all(
+//                           color: Theme.of(context).scaffoldBackgroundColor,
+//                           width: 1.5),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//       backgroundColor: Colors.white,
+//       body: loading
+//           ? Center(child: CircularProgressIndicator(color: Colors.blue))
+//           :
+//           // messageDetailsModelObject.isEmpty?  Center(child: Text("no chat history")):
+//           ModalProgressHUD(
+//               inAsyncCall: progress,
+//               opacity: 0.02,
+//               blur: 0.5,
+//               color: Colors.transparent,
+//               progressIndicator: CircularProgressIndicator(color: Colors.blue),
+//               child: SingleChildScrollView(
+//                 child: Column(
+//                   children: [
 //                     Container(
-//                       height: 100,
-//                       child: Wrap(
+//                       height: MediaQuery.of(context).size.height * 0.78,
+//                       color: Colors.transparent,
+//                       child: Stack(
 //                         children: [
-//                           ListTile(
-//                             title: Text("Pick from Gallery"),
-//                             leading: Icon(Icons.photo),
-//                             onTap: () {
-//                              pickImageGallery();
-//                              Get.back();
+//                           ListView.builder(
+//                             itemCount: messageDetailsModelObject.length,
+//                             shrinkWrap: true,
+//                             reverse: true,
+//                             padding: EdgeInsets.only(top: 10, bottom: 10),
+//                             physics: BouncingScrollPhysics(),
+//                             itemBuilder: (context, index) {
+//                               int reverseIndex =
+//                                   messageDetailsModelObject.length - 1 - index;
+//                               return Container(
+//                                 padding: EdgeInsets.only(
+//                                     left: 14, right: 14, top: 10, bottom: 10),
+//                                 child: Align(
+//                                   alignment:
+//                                       (messageDetailsModelObject[reverseIndex]
+//                                                   .data?[index]
+//                                                   .senderType ==
+//                                               "Customer"
+//                                           ? Alignment.topRight
+//                                           : Alignment.topLeft),
+//                                   child: Container(
+//                                     decoration: BoxDecoration(
+//                                       borderRadius: BorderRadius.circular(20),
+//                                       color: (messageDetailsModelObject[
+//                                                       reverseIndex]
+//                                                   .data?[index]
+//                                                   .senderType ==
+//                                               "Customer"
+//                                           ? Colors.blue
+//                                           : Colors.white),
+//                                     ),
+//                                     padding: EdgeInsets.all(10),
+//                                     child: messageDetailsModelObject[
+//                                                     reverseIndex]
+//                                                 .data?[index]
+//                                                 .senderType ==
+//                                             "Customer"
+//                                         ? Column(
+//                                             children: [
+//                                               Text(
+//                                                   messageDetailsModelObject[
+//                                                           reverseIndex]
+//                                                       .data![index]
+//                                                       .message
+//                                                       .toString(),
+//                                                   maxLines: 3,
+//                                                   overflow:
+//                                                       TextOverflow.ellipsis,
+//                                                   textAlign: TextAlign.left,
+//                                                   style: TextStyle(
+//                                                       fontSize: 14,
+//                                                       fontFamily: "Outfit",
+//                                                       color: Colors.white)),
+//                                               SizedBox(height: 03),
+//                                               Text(
+//                                                   "${messageDetailsModelObject[reverseIndex].data?[index].time.toString()} ${messageDetailsModelObject[reverseIndex].data?[index].date.toString()}",
+//                                                   maxLines: 1,
+//                                                   overflow:
+//                                                       TextOverflow.ellipsis,
+//                                                   textAlign: TextAlign.right,
+//                                                   style: TextStyle(
+//                                                       fontSize: 10,
+//                                                       color: Colors.white,
+//                                                       fontFamily: "Outfit")),
+//                                             ],
+//                                           )
+//                                         : Column(
+//                                             children: [
+//                                               Text(
+//                                                   messageDetailsModelObject[
+//                                                           reverseIndex]
+//                                                       .data![index]
+//                                                       .message
+//                                                       .toString(),
+//                                                   maxLines: 3,
+//                                                   overflow:
+//                                                       TextOverflow.ellipsis,
+//                                                   textAlign: TextAlign.left,
+//                                                   style: TextStyle(
+//                                                       fontSize: 14,
+//                                                       color: Colors.black,
+//                                                       fontFamily: "Outfit")),
+//                                               SizedBox(height: 03),
+//                                               Text(
+//                                                   "${messageDetailsModelObject[reverseIndex].data?[index].time.toString()} ${messageDetailsModelObject[reverseIndex]..data?[index].date.toString()}",
+//                                                   maxLines: 1,
+//                                                   overflow:
+//                                                       TextOverflow.ellipsis,
+//                                                   textAlign: TextAlign.left,
+//                                                   style: TextStyle(
+//                                                       fontSize: 10,
+//                                                       color: Colors.black,
+//                                                       fontFamily: "Outfit")),
+//                                             ],
+//                                           ),
+//                                   ),
+//                                 ),
+//                               );
 //                             },
 //                           ),
-//                           // ListTile(
-//                           //   title: Text("Pick from "),
-//                           //   leading: Icon(Icons.dark_mode_rounded),
-//                           //   onTap: () {
-//                           //     Get.changeTheme(ThemeData.dark());
-//                           //   },
-//                           // ),
 //                         ],
 //                       ),
 //                     ),
-//                     // barrierColor: Colors.greenAccent,
-//                     backgroundColor: Colors.grey.shade200,
-// // isDismissible: false,
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(20),
-//                       side: BorderSide(
-//                         color: Colors.white,
-//                         style: BorderStyle.solid,
-//                         width: 2,
+//                     Align(
+//                       alignment: Alignment.bottomLeft,
+//                       child: Container(
+//                         padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+//                         height: 65,
+//                         child: Row(
+//                           children: <Widget>[
+//                             sendMessageTextFields(),
+//                             SizedBox(width: 05),
+//                             FloatingActionButton(
+//                               onPressed: () async {
+//                                 if (sendMessageFormKey.currentState!
+//                                     .validate()) {
+//                                   if (sendMessageController.text.isEmpty) {
+//                                     toastFailedMessage(
+//                                         'please type a message', Colors.red);
+//                                   } else {
+//                                     setState(() {
+//                                       progress = true;
+//                                     });
+//                                     await sendMessageApiWidget();
+//                                     Future.delayed(Duration(seconds: 3), () {
+//                                       print("sendMessage Success");
+//                                       // toastSuccessMessage("Message sent successfully2.", colorGreen);
+//                                       setState(() {
+//                                         sendMessageController.clear();
+//                                         progress = false;
+//                                       });
+//                                       print("false: $progress");
+//                                     });
+//                                   }
+//                                 }
+//                               },
+//                               backgroundColor: Colors.grey,
+//                               elevation: 0,
+//                               child: Image.asset(
+//                                 'assets/live_chat_images/send.png',
+//                                 height: 30,
+//                                 width: 30,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
 //                       ),
 //                     ),
-//                     enableDrag: false,
-//                   );
-//                   pickImageGallery();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: SvgPicture.asset(
-                    "assets/images/paperclip.svg",
-                    width: 25,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  // padding: EdgeInsets.symmetric(horizontal: 05, vertical: 0),
-                  // decoration: BoxDecoration(
-                  //     color: Color(0xffF9F9F9),
-                  //     borderRadius: BorderRadius.circular(20)),
-                  child: TextField(
-                    cursorColor: Colors.blue,
-                    textAlign: TextAlign.left,
-                    controller: sendMessageController,
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 10, bottom: 3),
-                        hintText: "Type your message",
-                        hintStyle: TextStyle(
-                            fontSize: 14,
-                            fontFamily: "Outfit",
-                            color: Color(0xffD4DCE1)),
-                        fillColor: Colors.white,
-                        border: InputBorder.none),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//                   ],
+//                 ),
+//               ),
+//             ),
+//     );
+//   }
+//
+//   Widget sendMessageTextFields() {
+//     return Form(
+//       key: sendMessageFormKey,
+//       child: Expanded(
+//         child: Container(
+//           padding: EdgeInsets.symmetric(horizontal: 05, vertical: 0),
+//           decoration: BoxDecoration(
+//               color: Colors.white, borderRadius: BorderRadius.circular(20)),
+//           child: TextField(
+//             cursorColor: Colors.black,
+//             textAlign: TextAlign.left,
+//             controller: sendMessageController,
+//             decoration: InputDecoration(
+//                 contentPadding: EdgeInsets.only(left: 10, bottom: 3),
+//                 hintText: "Type your message here.....",
+//                 hintStyle: TextStyle(
+//                     fontSize: 14,
+//                     fontFamily: "Outfit",
+//                     color: Color(0xffD4DCE1)),
+//                 fillColor: Colors.white,
+//                 border: InputBorder.none),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// class ChatMessage {
+//   String? messageContent;
+//   String? messageType;
+//
+//   ChatMessage({@required this.messageContent, @required this.messageType});
+// }
+//
+// class ChatScreen extends StatefulWidget {
+//   final String? usersCustomersId;
+//   final String? other_users_customers_id;
+//   final String? name;
+//   final String? img;
+//
+//   ChatScreen(
+//       {Key? key,
+//       this.usersCustomersId,
+//       this.other_users_customers_id,
+//       this.name,
+//       this.img})
+//       : super(key: key);
+//
+//   @override
+//   _ChatScreenState createState() => _ChatScreenState();
+// }
+//
+// class _ChatScreenState extends State<ChatScreen> {
+//   List<UpdateMessgeModel> updateMessageModelObject = [];
+//   List<String> messages = [
+//     // 'Hello',
+//     // 'How are you?',
+//     // 'I am doing well. Thanks for asking.',
+//     // 'That\'s great!',
+//     // 'Bye',
+//     // 'Hello',
+//     // 'How are you?',
+//     // 'I am doing well. Thanks for asking.',
+//     // 'That\'s great!',
+//     // 'Bye',
+//     // 'Hello',
+//     // 'How are you?',
+//     // 'I am doing well. Thanks for asking.',
+//     // 'That\'s great!',
+//     // 'Bye',
+//     // 'Hello',
+//     // 'How are you?',
+//     // 'I am doing well. Thanks for asking.',
+//     // 'That\'s great!',
+//     // 'Bye',
+//   ];
+//
+//   ScrollController _scrollController = ScrollController();
+//   String? Image;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     usersCustomersId = widget.usersCustomersId;
+//     Image = widget.img;
+//     print("usersCustomersId $usersCustomersId");
+//     sharedPrefs();
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       _scrollController.animateTo(
+//         _scrollController.position.maxScrollExtent,
+//         duration: Duration(milliseconds: 1000),
+//         curve: Curves.easeInOut,
+//       );
+//     });
+//   }
+//
+//   @override
+//   void dispose() {
+//     _scrollController.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Colors.white,
+//         elevation: 0,
+//         leading: GestureDetector(
+//           onTap: () {
+//             Get.to(bottom_bar(
+//               currentIndex: 1,
+//             ));
+//           },
+//           child: Center(
+//               child: SvgPicture.asset(
+//             "assets/images/left.svg",
+//           )),
+//         ),
+//         title: Padding(
+//           padding: const EdgeInsets.symmetric(vertical: 05),
+//           child: ListTile(
+//             title: Text(
+//               // fullName!,
+//               // g.data![index].usersData!.fullName.toString(),
+//               "${widget.name.toString()}",
+//               style: TextStyle(
+//                 color: Colors.black,
+//                 fontFamily: "Outfit",
+//                 fontWeight: FontWeight.w500,
+//                 fontSize: 14,
+//               ),
+//             ),
+//             subtitle: Text(
+//               "Online",
+//               // getUserChatModel.data
+//               style: TextStyle(
+//                 color: Color(0xffA7AEC1),
+//                 fontFamily: "Outfit",
+//                 fontWeight: FontWeight.w300,
+//                 fontSize: 14,
+//               ),
+//             ),
+//             leading: Stack(
+//               children: [
+//                 // ClipRRect(
+//                 //   borderRadius: BorderRadius.circular(120),
+//                 //   child: FadeInImage(
+//                 //     placeholder: AssetImage("assets/images/fade_in_image.jpeg"),
+//                 //     image: NetworkImage("${widget.img}"),
+//                 //   ),
+//                 // ),
+//                 CircleAvatar(
+//                   // radius: (screenWidth > 600) ? 90 : 70,
+//                   radius: 30,
+//
+//                   backgroundImage: NetworkImage("${widget.img}"),
+//                 ),
+//                 // Image.network(widget.img.toString(),),
+//                 Positioned(
+//                   top: 5,
+//                   right: 3,
+//                   child: Container(
+//                     height: 10,
+//                     width: 10,
+//                     decoration: BoxDecoration(
+//                       color: Colors.green,
+//                       shape: BoxShape.circle,
+//                       border: Border.all(
+//                           color: Theme.of(context).scaffoldBackgroundColor,
+//                           width: 1.5),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//       backgroundColor: Colors.white,
+//       body: Column(
+//         children: [
+//           getMessageModel.data != null
+//               ? Container(
+//                   height: Get.height * 0.78,
+//                   child: ListView.builder(
+//                     // reverse: true,
+//                     controller: _scrollController,
+//                     itemCount: getMessageModel.data?.length,
+//                     itemBuilder: (BuildContext context, int index) {
+//                       // getMessageModel.data?[index] = messages as Datum;
+//                       final message = getMessageModel.data?[index];
+//
+//                       return getMessageModel.data!.isEmpty
+//                           ? Center(child: Text("no chat history"))
+//                           : Container(
+//                               padding: EdgeInsets.only(
+//                                 left: 14,
+//                                 right: 14,
+//                                 top: 10,
+//                                 bottom: 10,
+//                               ),
+//                               child: Align(
+//                                 alignment: (
+//                                     // messageDetailsModelObject[reverseIndex].data?[index].senderType == "Customer"
+//                                     // messages[reverseIndex].data?[index].senderType == "Customer"
+//                                     message?.senderType == "Customer"
+//                                         ? Alignment.topRight
+//                                         : Alignment.topLeft),
+//                                 child: Container(
+//                                   decoration: BoxDecoration(
+//                                     borderRadius: BorderRadius.circular(20),
+//                                     color: (message?.senderType == "Customer"
+//                                         ? Color(0xff2B65EC)
+//                                         : Color(0xffEBEBEB)),
+//                                   ),
+//                                   padding: EdgeInsets.all(10),
+//                                   child: message?.senderType == "Customer"
+//                                       ? Column(
+//                                           mainAxisAlignment:
+//                                               MainAxisAlignment.end,
+//                                           crossAxisAlignment:
+//                                               CrossAxisAlignment.end,
+//                                           children: [
+//                                             Text(
+//                                                 // "${messages[].}",
+//                                                 "${message?.message}",
+//                                                 // "${messageDetailsModelObject[reverseIndex].data?[index].message}",
+//                                                 maxLines: 3,
+//                                                 overflow: TextOverflow.ellipsis,
+//                                                 textAlign: TextAlign.left,
+//                                                 style: TextStyle(
+//                                                     fontSize: 14,
+//                                                     fontFamily: "Outfit",
+//                                                     color: Colors.white)),
+//                                             SizedBox(height: 03),
+//                                             Text(
+//                                                 // "time",
+//                                                 "${message?.time} ${message?.date}",
+//                                                 maxLines: 1,
+//                                                 overflow: TextOverflow.ellipsis,
+//                                                 textAlign: TextAlign.right,
+//                                                 style: TextStyle(
+//                                                     fontSize: 10,
+//                                                     color: Colors.white,
+//                                                     fontFamily: "Outfit")),
+//                                           ],
+//                                         )
+//                                       : Column(
+//                                           mainAxisAlignment:
+//                                               MainAxisAlignment.end,
+//                                           crossAxisAlignment:
+//                                               CrossAxisAlignment.end,
+//                                           children: [
+//                                             Text("${message?.message}",
+//                                                 maxLines: 3,
+//                                                 overflow: TextOverflow.ellipsis,
+//                                                 textAlign: TextAlign.left,
+//                                                 style: TextStyle(
+//                                                     fontSize: 14,
+//                                                     color: Colors.black,
+//                                                     fontFamily: "Outfit")),
+//                                             SizedBox(height: 03),
+//                                             Text(
+//                                               // "time",
+//                                               "${message?.time} ${message?.date}",
+//                                               overflow: TextOverflow.ellipsis,
+//                                               textAlign: TextAlign.left,
+//                                               style: TextStyle(
+//                                                   fontSize: 10,
+//                                                   color: Colors.black,
+//                                                   fontFamily: "Outfit"),
+//                                             ),
+//                                           ],
+//                                         ),
+//                                 ),
+//                               ),
+//                             );
+//                     },
+//                   ),
+//                 )
+//               : Container(
+//                   height: Get.height * 0.78,
+//                 ),
+//           Align(
+//             alignment: Alignment.bottomLeft,
+//             child: Container(
+//               padding: EdgeInsets.only(left: 10, top: 30),
+//               child: Row(
+//                 children: <Widget>[
+//                   sendMessageTextFields(),
+//                   SizedBox(width: 05),
+//                   FloatingActionButton(
+//                     onPressed: () async {
+//                       if (sendMessageFormKey.currentState!.validate()) {
+//                         if (sendMessageController.text.isEmpty) {
+//                           toastFailedMessage(
+//                               'please type a message', Colors.red);
+//                         } else {
+//                           setState(() {
+//                             progress = true;
+//                           });
+//                           await sendMessageApiWidget();
+//                           Future.delayed(Duration(seconds: 3), () {
+//                             print("sendMessage Success");
+//                             setState(() {
+//                               progress = false;
+//                               sendMessageController.clear();
+//                             });
+//                             print("false: $progress");
+//                           });
+//                         }
+//                       }
+//                     },
+//                     backgroundColor: Colors.white,
+//                     elevation: 0,
+//                     child: Padding(
+//                       padding: const EdgeInsets.only(top: 10.0),
+//                       child: SvgPicture.asset("assets/images/send.svg"),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   SendMessgeCustomerModel sendMessageCustomerModel = SendMessgeCustomerModel();
+//   GetMessgeModel getMessageModel = GetMessgeModel();
+//
+//   sendMessageApiWidget() async {
+//     setState(() {
+//       progress = true;
+//     });
+//
+//     prefs = await SharedPreferences.getInstance();
+//     usersCustomersId = prefs!.getString('usersCustomersId');
+//     // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+//     print("usersCustomersId = $usersCustomersId");
+//     print("empUsersCustomersId = ${widget.other_users_customers_id}");
+//
+//     Map body = {
+//       "requestType": "sendMessage",
+//       "sender_type": "Customer",
+//       "messageType": "1",
+//       "users_customers_id": usersCustomersId,
+//       "other_users_customers_id": widget.other_users_customers_id,
+//       "content": sendMessageController.text,
+//     };
+//     http.Response response = await http.post(
+//         Uri.parse(sendMessageCustomerApiUrl),
+//         body: body,
+//         headers: {"Accept": "application/json"});
+//     Map jsonData = jsonDecode(response.body);
+//     print("sendMessageApiUrl: $sendMessageCustomerApiUrl");
+//     print("sendMessageText: ${sendMessageController.text}");
+//     print('sendMessageApiResponse $jsonData');
+//     if (jsonData['message'] == 'Message sent successfully.') {
+//       // toastSuccessMessage("Message sent.", Colors.green);
+//       print('Message sent successfully.');
+//       setState(() {
+//         progress = false;
+//         getMessageApi();
+//       });
+//     }
+//   }
+//
+//   getMessageApi() async {
+//     prefs = await SharedPreferences.getInstance();
+//     usersCustomersId = prefs!.getString('usersCustomersId');
+//     // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+//     print("usersCustomersId = $usersCustomersId");
+//     print("empUsersCustomersId = ${widget.other_users_customers_id}");
+//
+//     setState(() {
+//       progress = true;
+//     });
+//     String apiUrl = getUserChatApiUrl;
+//     print("working");
+//     final response = await http.post(
+//       Uri.parse(apiUrl),
+//       headers: {"Accept": "application/json"},
+//       body: {
+//         "requestType": "getMessages",
+//         "users_customers_id": usersCustomersId,
+//         "other_users_customers_id": widget.other_users_customers_id,
+//       },
+//     );
+//     final responseString = response.body;
+//     print("getMessgeModelApiUrl: ${response.body}");
+//     print("status Code getMessgeModel: ${response.statusCode}");
+//     print("in 200 getMessgeModel");
+//     if (response.statusCode == 200) {
+//       getMessageModel = getMessgeModelFromJson(responseString);
+//       // setState(() {});
+//       print('getMessgemodel status: ${getMessageModel.status}');
+//       print('getMessgemodel message: ${getMessageModel.data?[0].message}');
+//     }
+//     setState(() {
+//       progress = false;
+//     });
+//   }
+//
+//   updateChatApiWidget() async {
+//     setState(() {
+//       progress = true;
+//     });
+//
+//     prefs = await SharedPreferences.getInstance();
+//     usersCustomersId = prefs!.getString('usersCustomersId');
+//     // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+//     print("usersCustomersId = $usersCustomersId");
+//     print("empUsersCustomersId = ${widget.other_users_customers_id}");
+//
+//     Map body = {
+//       "requestType": "updateMessages",
+//       "users_customers_id": usersCustomersId,
+//       "other_users_customers_id": widget.other_users_customers_id,
+//     };
+//     http.Response response = await http.post(Uri.parse(updateMessageApiUrl),
+//         body: body, headers: {"Accept": "application/json"});
+//     Map jsonData = jsonDecode(response.body);
+//     print("updateMessageApiUrl: $updateMessageApiUrl");
+//     print('updateMessageApiResponse $jsonData');
+//
+//     if (jsonData['message'] == 'no chat found') {
+//       print('no chat found');
+//       // setState(() {
+//       //   loading = false;
+//       // });
+//     } else if (response.statusCode == 200) {
+//       for (int i = 0; i < jsonData['data'].length; i++) {
+//         Map<String, dynamic> obj = jsonData['data'][i];
+//         print(obj['id']);
+//         var pos = UpdateMessgeModel();
+//         pos = UpdateMessgeModel.fromJson(obj);
+//         updateMessageModelObject.add(pos);
+//         print("updateMessagesLength: ${updateMessageModelObject.length}");
+//         setState(() {
+//           getMessageApi();
+//         });
+//       }
+//     }
+//   }
+//
+//   sharedPrefs() async {
+//     setState(() {
+//       getMessageApi();
+//     });
+//   }
+//
+//   bool progress = false;
+//   var sendMessageController = TextEditingController();
+//   final GlobalKey<FormState> sendMessageFormKey = GlobalKey<FormState>();
+//
+//   Widget sendMessageTextFields() {
+//     return Form(
+//       key: sendMessageFormKey,
+//       child: Expanded(
+//         child: Container(
+//           padding: EdgeInsets.symmetric(horizontal: 05, vertical: 0),
+//           decoration: BoxDecoration(
+//               color: Color(0xffF9F9F9),
+//               borderRadius: BorderRadius.circular(20)),
+//           child: Row(
+//             children: [
+//               GestureDetector(
+//                 onTap: () {
+// //                   Get.bottomSheet(
+// //                     Container(
+// //                       height: 100,
+// //                       child: Wrap(
+// //                         children: [
+// //                           ListTile(
+// //                             title: Text("Pick from Gallery"),
+// //                             leading: Icon(Icons.photo),
+// //                             onTap: () {
+// //                              pickImageGallery();
+// //                              Get.back();
+// //                             },
+// //                           ),
+// //                           // ListTile(
+// //                           //   title: Text("Pick from "),
+// //                           //   leading: Icon(Icons.dark_mode_rounded),
+// //                           //   onTap: () {
+// //                           //     Get.changeTheme(ThemeData.dark());
+// //                           //   },
+// //                           // ),
+// //                         ],
+// //                       ),
+// //                     ),
+// //                     // barrierColor: Colors.greenAccent,
+// //                     backgroundColor: Colors.grey.shade200,
+// // // isDismissible: false,
+// //                     shape: RoundedRectangleBorder(
+// //                       borderRadius: BorderRadius.circular(20),
+// //                       side: BorderSide(
+// //                         color: Colors.white,
+// //                         style: BorderStyle.solid,
+// //                         width: 2,
+// //                       ),
+// //                     ),
+// //                     enableDrag: false,
+// //                   );
+// //                   pickImageGallery();
+//                 },
+//                 child: Padding(
+//                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+//                   child: SvgPicture.asset(
+//                     "assets/images/paperclip.svg",
+//                     width: 25,
+//                   ),
+//                 ),
+//               ),
+//               Expanded(
+//                 child: Container(
+//                   // padding: EdgeInsets.symmetric(horizontal: 05, vertical: 0),
+//                   // decoration: BoxDecoration(
+//                   //     color: Color(0xffF9F9F9),
+//                   //     borderRadius: BorderRadius.circular(20)),
+//                   child: TextField(
+//                     cursorColor: Colors.blue,
+//                     textAlign: TextAlign.left,
+//                     controller: sendMessageController,
+//                     decoration: InputDecoration(
+//                         contentPadding: EdgeInsets.only(left: 10, bottom: 3),
+//                         hintText: "Type your message",
+//                         hintStyle: TextStyle(
+//                             fontSize: 14,
+//                             fontFamily: "Outfit",
+//                             color: Color(0xffD4DCE1)),
+//                         fillColor: Colors.white,
+//                         border: InputBorder.none),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
