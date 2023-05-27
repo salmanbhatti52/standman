@@ -30,6 +30,7 @@ Estimated_PaymentMethod({
   String? price,
   String? amount,
   String? chargers,
+  String? tax,
   // String? address
 }) {
   int _selected = 0;
@@ -293,7 +294,7 @@ Estimated_PaymentMethod({
                         SizedBox(width: Get.width * 0.28,),
                         Text(
                           // "\$20",
-                          "\$$amount",
+                          "\$$tax",
                           // '\$$discountPrice',
                           style: TextStyle(
                             color: Color(0xff000000),

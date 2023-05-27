@@ -42,6 +42,7 @@ class Data {
     this.description,
     this.price,
     this.serviceCharges,
+    this.tax,
     this.totalPrice,
     this.paymentGatewaysName,
     this.paymentStatus,
@@ -67,6 +68,7 @@ class Data {
   String? description;
   String? price;
   String? serviceCharges;
+  String? tax;
   String? totalPrice;
   String? paymentGatewaysName;
   String? paymentStatus;
@@ -92,6 +94,7 @@ class Data {
     description: json["description"],
     price: json["price"],
     serviceCharges: json["service_charges"],
+    tax: json["tax"],
     totalPrice: json["total_price"],
     paymentGatewaysName: json["payment_gateways_name"],
     paymentStatus: json["payment_status"],
@@ -118,6 +121,7 @@ class Data {
     "description": description,
     "price": price,
     "service_charges": serviceCharges,
+    "tax": tax,
     "total_price": totalPrice,
     "payment_gateways_name": paymentGatewaysName,
     "payment_status": paymentStatus,

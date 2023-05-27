@@ -693,11 +693,13 @@ class _JobDetailsState extends State<JobDetails> {
                                      jobCreated();
                                     Future.delayed(const Duration(seconds: 2),
                                         () {
+                                      if(jobsCreateModel.status == "success")
                                       Estimated_PaymentMethod(
                                           ctx: context,
-                                          price: "${jobsCreateModel.data?.totalPrice}",
-                                      amount: "${jobsCreateModel.data?.price}",
-                                      chargers: "${jobsCreateModel.data?.serviceCharges}");
+                                          price: jobsCreateModel.data?.totalPrice,
+                                      amount: jobsCreateModel.data?.price,
+                                      chargers: jobsCreateModel.data?.serviceCharges,
+                                      tax: jobsCreateModel.data?.tax);
                                     });
                                   }
                                 }
