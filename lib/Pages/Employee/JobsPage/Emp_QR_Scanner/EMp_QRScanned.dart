@@ -1,3 +1,4 @@
+import 'package:StandMan/Pages/Customer/HomePage/HomePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,7 +6,15 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../widgets/TopBar.dart';
 class EMpQRScanneer extends StatelessWidget {
-  const EMpQRScanneer({Key? key}) : super(key: key);
+  final String? customerId;
+  String? jobName;
+
+  String? myJobId;
+   EMpQRScanneer({Key? key,
+     this.customerId,
+     this.myJobId,
+     this.jobName,
+   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +77,7 @@ class EMpQRScanneer extends StatelessWidget {
                       SizedBox(height: height * 0.1,),
                       // Image.asset("assets/images/qrcode.png"),
                       QrImageView(
-                        data: '123456789',
+                        data: "${usersCustomersId}${myJobId}${jobName}",
                         version: QrVersions.auto,
                         size: 350.0,
                       ),

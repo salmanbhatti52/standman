@@ -2,9 +2,13 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'Pages/SplashScreen.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Stripe.publishableKey = 'pk_test_51MV6RqJ1o3iGht9r3wtt4ZaiaiDqA0hcF03p9Kj0FhU3qgPnZI03BKzFxTniYSGjGklLrRqIhEcM5O67OWiJBEyS00xupHP2IW';
   runApp(MyApp());
 }
 

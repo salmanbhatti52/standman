@@ -71,9 +71,10 @@ dependencies:
   device_preview: ^1.1.0
   after_layout: ^1.2.0
   qr_flutter: ^4.1.0
-  flutter_barcode_scanner: ^2.0.0
   shimmer: ^3.0.0
   rename: ^2.1.1
+  flutter_stripe: ^9.2.0
+  qr_code_scanner: ^1.0.1
 
 dev_dependencies:
   flutter_test:

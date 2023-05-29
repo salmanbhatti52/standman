@@ -1,9 +1,5 @@
-import 'package:StandMan/widgets/ToastMessage.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,8 +24,9 @@ class Customer_JobsDetails_Completed_with_QR extends StatefulWidget {
   String? name;
   String? status;
   String? employeeId;
+  int? jobId;
    Customer_JobsDetails_Completed_with_QR({Key? key, this.image,
-     this.jobName, this.totalPrice, this.address,
+     this.jobName, this.totalPrice, this.address, this.jobId,
      this.completeJobTime, this.description, this.employeeId,
      this.profilePic, this.name, this.status}) : super(key: key);
 
@@ -354,13 +351,14 @@ class _Customer_JobsDetails_Completed_with_QRState
                             onTap: ()  {
 
                                // scanQRCode();
+                               Get.to(CustomerQRCodeScanner());
                                // Future.delayed(const Duration(seconds: 3), () {
-                               //   if(getResult == ""){
+                               //   if(getResult == "${widget.employeeId}${widget.jobId}${widget.jobName}"){
+                               //     toastSuccessMessage("Success scan QR Code.", Colors.red);
+                               //     Payment(ctx: context);
+                               //   } else {
                                //     toastFailedMessage("Failed to scan QR Code.", Colors.red);
-                                 // } else {
-                                   // Get.to(() => CustomerQRCodeScanner(qrresult: getResult,));
-                                   Payment(ctx: context);
-                                 // }
+                               //   }
                                // });
                             },
                             child: mainButton("Complete Job using QR",
@@ -411,21 +409,5 @@ class _Customer_JobsDetails_Completed_with_QRState
         ),
       ),
     );
-  }
-  void scanQRCode() async {
-    try{
-      final qrCode = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.QR);
-
-      if (!mounted) return;
-
-      setState(() {
-        getResult = qrCode;
-      });
-      print("QRCode_Result:--");
-      print(qrCode);
-    } on PlatformException {
-      getResult = 'Failed to scan QR Code.';
-    }
-
   }
 }

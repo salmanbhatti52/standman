@@ -141,11 +141,11 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     Map body = {
       "requestType": "sendMessage",
       "sender_type": "Customer",
-      "messageType": image == false ?  "text" : "attachment",
+      "messageType":   "text",
       "users_customers_id": usersCustomersId,
       "other_users_customers_id": widget.other_users_customers_id,
       "content": sendMessageController.text,
-      "image" : base64img,
+      "image" : "",
     };
     http.Response response = await http.post(
         Uri.parse(sendMessageCustomerApiUrl),
@@ -381,245 +381,307 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                         child: CircularProgressIndicator(
                             color: Colors.blueAccent)))
                 : ModalProgressHUD(
-                    inAsyncCall: progress,
-                    opacity: 0.02,
-                    blur: 0.5,
-                    color: Colors.transparent,
-                    progressIndicator:
-                        CircularProgressIndicator(color: Colors.blue),
-                    child: SingleChildScrollView(
-                      child: Column(
+              inAsyncCall: progress,
+              opacity: 0.02,
+              blur: 0.5,
+              color: Colors.transparent,
+              progressIndicator:
+              CircularProgressIndicator(color: Colors.blue),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    getMessageModel.data != null
+                        ? Container(
+                      height:
+                      MediaQuery.of(context).size.height * 0.78,
+                      color: Colors.transparent,
+                      child: Stack(
                         children: [
-                          getMessageModel.data != null
-                              ? Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.78,
-                                  color: Colors.transparent,
-                                  child: Stack(
-                                    children: [
-                                      ListView.builder(
-                                        itemCount: getMessageModel.data?.length,
-                                        shrinkWrap: true,
-                                        controller: _scrollController,
-                                        reverse: true,
-                                        padding: EdgeInsets.only(
-                                            top: 10, bottom: 10),
-                                        physics: BouncingScrollPhysics(),
-                                        itemBuilder: (context, index) {
-                                          // final message = getMessageModel.data?[index];
-                                          int reverseIndex =
-                                              getMessageModel.data!.length -
-                                                  1 -
-                                                  index;
-                                          return getMessageModel.data!.isEmpty
-                                              ? Center(
-                                                  child:
-                                                      Text("no chat history"))
-                                              : Container(
-                                                  padding: EdgeInsets.only(
-                                                    left: 14,
-                                                    right: 14,
-                                                    top: 10,
-                                                    bottom: 10,
-                                                  ),
-                                                  child: Align(
-                                                    alignment: (
-                                                        // messageDetailsModelObject[reverseIndex].data?[index].senderType == "Customer"
-                                                        // messages[reverseIndex].data?[index].senderType == "Customer"
-                                                        getMessageModel.data?[reverseIndex].senderType == "Customer"
-                                                            ? Alignment.topRight
-                                                            : Alignment.topLeft),
-                                                    child:  Container(
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  20),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  20),
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  20),
-                                                        ),
-                                                        color: (getMessageModel
-                                                                    .data?[
-                                                                        reverseIndex]
-                                                                    .senderType ==
-                                                                "Customer"
-                                                            ? Color(0xff2B65EC)
-                                                            : Color(
-                                                                0xffEBEBEB)),
-                                                      ),
-                                                      padding:
-                                                          EdgeInsets.all(10),
-                                                      child: getMessageModel
-                                                                  .data?[
-                                                                      reverseIndex]
-                                                                  .senderType ==
-                                                              "Customer"
-                                                          ? getMessageModel.data![reverseIndex].msgType == "attachment" ? Container(
-                                                        child: Column(
-                                                          children: [
-                                                            ClipRRect(
-                                                              borderRadius: BorderRadius.circular(10.0),
-                                                              child:
-                                                              // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
-                                                              FadeInImage(
-                                                                placeholder:  AssetImage("assets/images/fade_in_image.jpeg",),
-                                                                fit: BoxFit.fill,
-                                                                width: 115,
-                                                                height: 96,
-                                                                image: NetworkImage("$baseUrlImage${getMessageModel.data?[reverseIndex].message}"),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ) :
-                                                          Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                    // "${messages[].}",
-                                                                    "${getMessageModel.data?[reverseIndex].message}",
-                                                                    // "${messageDetailsModelObject[reverseIndex].data?[index].message}",
-                                                                    maxLines: 3,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .left,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontFamily:
-                                                                            "Outfit",
-                                                                        color: Colors
-                                                                            .white)),
-                                                                SizedBox(
-                                                                    height: 03),
-                                                                Text(
-                                                                    // "time",
-                                                                    "${getMessageModel.data?[reverseIndex].time} ${getMessageModel.data?[reverseIndex].date}",
-                                                                    maxLines: 1,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .right,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            10,
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontFamily:
-                                                                            "Outfit")),
-                                                              ],
-                                                            )
-                                                          : Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Text(
-                                                                    "${getMessageModel.data?[reverseIndex].message}",
-                                                                    maxLines: 3,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .left,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            14,
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontFamily:
-                                                                            "Outfit")),
-                                                                SizedBox(
-                                                                    height: 03),
-                                                                Text(
-                                                                  // "time",
-                                                                  "${getMessageModel.data?[reverseIndex].time} ${getMessageModel.data?[reverseIndex].date}",
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .left,
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          10,
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontFamily:
-                                                                          "Outfit"),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                    ),
-                                                  ),
-                                                );
-                                        },
-                                      ),
-                                    ],
+                          ListView.builder(
+                            itemCount: getMessageModel.data?.length,
+                            shrinkWrap: true,
+                            controller: _scrollController,
+                            reverse: true,
+                            padding: EdgeInsets.only(
+                                top: 10, bottom: 10),
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              // final message = getMessageModel.data?[index];
+                              int reverseIndex = getMessageModel.data!.length - 1 - index;
+                              return getMessageModel.data!.isEmpty
+                                  ? Center(child: Text("no chat history"),)
+                                  : Container(
+                                padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10,),
+                                child: Align(
+                                  alignment: (
+                                      getMessageModel.data?[
+                                      reverseIndex].senderType == "Customer"
+                                          ? Alignment.topRight
+                                          : Alignment.topLeft
                                   ),
-                                )
-                              : Container(
-                                  height: Get.height * 0.78,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        topLeft: Radius.circular(20),
+                                        bottomLeft: Radius.circular(20),
+                                      ),
+                                      color: (getMessageModel.data?[reverseIndex].senderType == "Customer" && getMessageModel.data?[reverseIndex].msgType == "text"
+                                          ? Color(0xff2B65EC)
+                                          : Colors.transparent
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.all(10),
+                                    child: getMessageModel.data?[reverseIndex].senderType == "Customer"
+                                        ? getMessageModel.data![reverseIndex].msgType == "attachment"
+                                        ? Container(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .end,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment
+                                            .end,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.only(
+                                              topRight:
+                                              Radius.circular(20),
+                                              topLeft:
+                                              Radius.circular(20),
+                                              bottomLeft:
+                                              Radius.circular(20),
+                                            ),
+                                            child:
+                                            // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
+                                            FadeInImage(
+                                              placeholder:
+                                              AssetImage(
+                                                "assets/images/fade_in_image.jpeg",
+                                              ),
+                                              fit: BoxFit
+                                                  .fill,
+                                              width:
+                                              115,
+                                              height:
+                                              110,
+                                              image:
+                                              NetworkImage("$baseUrlImage${getMessageModel.data?[reverseIndex].message}"),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                            const EdgeInsets.only(top: 3.0),
+                                            child: Text(
+                                              // "time",
+                                                "${getMessageModel.data?[reverseIndex].time} ${getMessageModel.data?[reverseIndex].date}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.right,
+                                                style: TextStyle(fontSize: 10, color: Color(0xffA7A9B7), fontFamily: "Outfit")),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                        : Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .end,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment
+                                          .end,
+                                      children: [
+                                        Text(
+                                          // "${messages[].}",
+                                            "${getMessageModel.data?[reverseIndex].message}",
+                                            // "${messageDetailsModelObject[reverseIndex].data?[index].message}",
+                                            maxLines:
+                                            3,
+                                            overflow:
+                                            TextOverflow
+                                                .ellipsis,
+                                            textAlign:
+                                            TextAlign
+                                                .left,
+                                            style: TextStyle(
+                                                fontSize:
+                                                14,
+                                                fontFamily:
+                                                "Outfit",
+                                                color:
+                                                Colors.white)),
+                                        SizedBox(
+                                            height:
+                                            03),
+                                        Text(
+                                          // "time",
+                                            "${getMessageModel.data?[reverseIndex].time} ${getMessageModel.data?[reverseIndex].date}",
+                                            maxLines:
+                                            1,
+                                            overflow:
+                                            TextOverflow
+                                                .ellipsis,
+                                            textAlign:
+                                            TextAlign
+                                                .right,
+                                            style: TextStyle(
+                                                fontSize:
+                                                10,
+                                                color:
+                                                Colors.white,
+                                                fontFamily: "Outfit")),
+                                      ],
+                                    )
+                                        : getMessageModel
+                                        .data?[
+                                    reverseIndex]
+                                        .senderType !=
+                                        "Customer"
+                                        ? getMessageModel
+                                        .data![
+                                    reverseIndex]
+                                        .msgType ==
+                                        "attachment"
+                                        ? Container(
+                                      child:
+                                      Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.only(
+                                              topRight: Radius.circular(20),
+                                              topLeft: Radius.circular(20),
+                                              bottomRight: Radius.circular(20),
+                                            ),
+                                            child:
+                                            // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
+                                            FadeInImage(
+                                              placeholder: AssetImage(
+                                                "assets/images/fade_in_image.jpeg",
+                                              ),
+                                              fit: BoxFit.fill,
+                                              width: 115,
+                                              height: 110,
+                                              image: NetworkImage("$baseUrlImage${getMessageModel.data?[reverseIndex].message}"),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                            const EdgeInsets.only(top: 3.0),
+                                            child: Text(
+                                              // "time",
+                                                "${getMessageModel.data?[reverseIndex].time} ${getMessageModel.data?[reverseIndex].date}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.right,
+                                                style: TextStyle(fontSize: 10, color: Color(0xffA7A9B7), fontFamily: "Outfit")),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                        : Container(
+                                      height: 54,
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.only(
+                                          topRight: Radius.circular(20),
+                                          topLeft: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                        ),
+                                        color: (getMessageModel.data?[reverseIndex].senderType != "Customer" && getMessageModel.data?[reverseIndex].msgType == "text"
+                                            ? Color(0xffEBEBEB)
+                                            : Color(0xff2B65EC)
+                                        ),
+                                      ),
+                                      child:
+                                      Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                              "${getMessageModel.data?[reverseIndex].message}",
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(fontSize: 14, color: Colors.black, fontFamily: "Outfit")),
+                                          SizedBox(
+                                              height: 03),
+                                          Text(
+                                            // "time",
+                                            "${getMessageModel.data?[reverseIndex].time} ${getMessageModel.data?[reverseIndex].date}",
+                                            overflow:
+                                            TextOverflow.ellipsis,
+                                            textAlign:
+                                            TextAlign.left,
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.black,
+                                                fontFamily: "Outfit"),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                        : Container(),
+                                  ),
                                 ),
-                          // Chat(
-                          //   theme: DefaultChatTheme(
-                          //     inputTextCursorColor: Color(0xff8C8C8C),
-                          //     inputTextColor: Color(0xff8C8C8C),
-                          //     inputTextStyle: TextStyle(
-                          //       color: Color(0xff8C8C8C),
-                          //       fontFamily: "Outfit",
-                          //       fontWeight: FontWeight.w300,
-                          //       fontSize: 14,
-                          //     ),
-                          //     // primaryColor: Color(Helpers.secondry),
-                          //     // secondaryColor: Colors.white,
-                          //     // backgroundColor:Colors.white,
-                          //
-                          //     inputBorderRadius: BorderRadius.circular(10),
-                          //     inputBackgroundColor: Color(0xffF9F9F9),
-                          //     inputContainerDecoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(40),
-                          //         boxShadow: [
-                          //           // BoxShadow(
-                          //           //   // color: Color(0xff4DA0E6),
-                          //           //   blurRadius: 8,
-                          //           //     offset:  Offset(0, -3),
-                          //           // ),
-                          //         ]),
-                          //   ),
-                          //   disableImageGallery: true,
-                          //   messages: _messages,
-                          //   onAttachmentPressed: _handleAttachmentPressed,
-                          //   onMessageTap: _handleMessageTap,
-                          //   onPreviewDataFetched: _handlePreviewDataFetched,
-                          //   onSendPressed: _handleSendPressed,
-                          //   showUserAvatars: true,
-                          //   showUserNames: true,
-                          //   user: _user,
-                          // ),
+                              );
+                            },
+                          ),
                         ],
                       ),
+                    )
+                        : Container(
+                      height: Get.height * 0.78,
                     ),
-                  ),
+                    // Chat(
+                    //   theme: DefaultChatTheme(
+                    //     inputTextCursorColor: Color(0xff8C8C8C),
+                    //     inputTextColor: Color(0xff8C8C8C),
+                    //     inputTextStyle: TextStyle(
+                    //       color: Color(0xff8C8C8C),
+                    //       fontFamily: "Outfit",
+                    //       fontWeight: FontWeight.w300,
+                    //       fontSize: 14,
+                    //     ),
+                    //     // primaryColor: Color(Helpers.secondry),
+                    //     // secondaryColor: Colors.white,
+                    //     // backgroundColor:Colors.white,
+                    //
+                    //     inputBorderRadius: BorderRadius.circular(10),
+                    //     inputBackgroundColor: Color(0xffF9F9F9),
+                    //     inputContainerDecoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(40),
+                    //         boxShadow: [
+                    //           // BoxShadow(
+                    //           //   // color: Color(0xff4DA0E6),
+                    //           //   blurRadius: 8,
+                    //           //     offset:  Offset(0, -3),
+                    //           // ),
+                    //         ]),
+                    //   ),
+                    //   disableImageGallery: true,
+                    //   messages: _messages,
+                    //   onAttachmentPressed: _handleAttachmentPressed,
+                    //   onMessageTap: _handleMessageTap,
+                    //   onPreviewDataFetched: _handlePreviewDataFetched,
+                    //   onSendPressed: _handleSendPressed,
+                    //   showUserAvatars: true,
+                    //   showUserNames: true,
+                    //   user: _user,
+                    // ),
+                  ],
+                ),
+              ),
+            ),
             Align(
               alignment: Alignment.bottomLeft,
               child: Container(
@@ -666,7 +728,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
       ),
     );
   }
- bool image = false;
+
   Widget sendMessageTextFields() {
     return Form(
       key: sendMessageFormKey,
@@ -716,10 +778,18 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 //                     ),
 //                     enableDrag: false,
 //                   );
-                  setState(() {
-                    image = true;
+//                 if(base64img == null )
+//                 sendImageApiWidget();
+//                   setState(() {
                     pickImageGallery();
-                  });
+//                   });
+            Future.delayed(const Duration(seconds: 5), () {
+              if(base64img != null){
+                sendImageApiWidget();
+              } else{
+                toastFailedMessage("failed", Colors.red);
+              }
+            });
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -760,6 +830,44 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 
   File? imagePath;
   String? base64img;
+
+  sendImageApiWidget() async {
+    setState(() {
+      loading = true;
+    });
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+    print("usersCustomersId = $usersCustomersId");
+    print("empUsersCustomersId = ${widget.other_users_customers_id}");
+
+    Map body = {
+      "requestType": "sendMessage",
+      "sender_type": "Customer",
+      "messageType":   "attachment",
+      "users_customers_id": usersCustomersId,
+      "other_users_customers_id": widget.other_users_customers_id,
+      "content": "",
+      "image" : base64img,
+    };
+    http.Response response = await http.post(
+        Uri.parse(sendMessageCustomerApiUrl),
+        body: body,
+        headers: {"Accept": "application/json"});
+    Map jsonData = jsonDecode(response.body);
+    print("sendImageApiUrl: $sendMessageCustomerApiUrl");
+    print("sendMessageText: ${sendMessageController.text}");
+    print('sendImage $jsonData');
+    if (jsonData['message'] == 'Message sent successfully.') {
+      // toastSuccessMessage("Message sent.", Colors.green);
+      print('Message sent successfully.');
+      setState(() {
+        loading = false;
+        getMessageApi();
+      });
+    }
+  }
 
   Future pickImageGallery() async {
     try {

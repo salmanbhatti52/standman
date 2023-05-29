@@ -1,4 +1,5 @@
 import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
+import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -176,14 +177,17 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                                // crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  SvgPicture.asset("assets/images/sms-tracking.svg", color: Colors.white,),
-                                  Text(
-                                   "  ${usersProfileModel.data!.email}",
-                                   // "    Dosamarvis@gmail.com",
-                                   style: TextStyle(
-                                     color: Color(0xffffffff),
-                                     fontFamily: "Outfit",
-                                     fontWeight: FontWeight.w300,
-                                     fontSize: 14,
+                                 ConstrainedBox(
+                                   constraints: BoxConstraints(
+                                       maxWidth: MediaQuery.of(context).size.width * 0.45),
+                                   child: Padding(
+                                     padding: const EdgeInsets.only(left: 8.0),
+                                     child: AutoSizeText(
+                                       "${usersProfileModel.data!.email}",
+                                       style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                       maxLines: 1,
+                                       overflow: TextOverflow.ellipsis,
+                                     ),
                                    ),
                                  ),
                                ],

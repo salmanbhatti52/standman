@@ -434,7 +434,7 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                         SizedBox(height: height * 0.04,),
                         GestureDetector(
                             onTap: () {
-                              Get.to(EMpQRScanneer());
+                              Get.to(EMpQRScanneer(customerId: widget.customerId, jobName: widget.jobName, myJobId: widget.myJobId,));
                             },
                             child: mainButton("Job Completed",
                                 Color(0xff2B65EC), context)),
