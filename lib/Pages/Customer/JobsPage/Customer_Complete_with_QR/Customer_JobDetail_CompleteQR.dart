@@ -2,6 +2,7 @@ import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Models/chat_start_user_Model.dart';
 import '../../../../Utils/api_urls.dart';
@@ -13,6 +14,8 @@ import '../../MessagePage/MessageDetails.dart';
 import '../Customer_QR_Scanner/QRCodeScanner.dart';
 import 'package:http/http.dart' as http;
 
+import '../Payment_Sheet/Customer_Payment_Sheet.dart';
+
 class Customer_JobsDetails_Completed_with_QR extends StatefulWidget {
   String? image;
   String? jobName;
@@ -23,11 +26,12 @@ class Customer_JobsDetails_Completed_with_QR extends StatefulWidget {
   String? profilePic;
   String? name;
   String? status;
+  String? customerId;
   String? employeeId;
-  int? jobId;
+  String? jobId;
    Customer_JobsDetails_Completed_with_QR({Key? key, this.image,
-     this.jobName, this.totalPrice, this.address, this.jobId,
-     this.completeJobTime, this.description, this.employeeId,
+     this.jobName, this.totalPrice, this.address, this.jobId, this.employeeId,
+     this.completeJobTime, this.description, this.customerId,
      this.profilePic, this.name, this.status}) : super(key: key);
 
   @override
@@ -53,7 +57,7 @@ class _Customer_JobsDetails_Completed_with_QRState
     usersCustomersId = prefs!.getString('usersCustomersId');
     empUsersCustomersId = empPrefs?.getString('empUsersCustomersId');
     print("usersCustomersId = $usersCustomersId");
-    print("empUsersCustomersId = ${widget.employeeId}");
+    print("empUsersCustomersId = ${widget.customerId}");
 
     // try {
       String apiUrl = userChatApiUrl;
@@ -63,7 +67,7 @@ class _Customer_JobsDetails_Completed_with_QRState
         body: {
           "requestType": "startChat",
           "users_customers_id": usersCustomersId,
-          "other_users_customers_id": widget.employeeId,
+          "other_users_customers_id": widget.customerId,
         },
         headers: {'Accept': 'application/json'},
       );
@@ -334,7 +338,7 @@ class _Customer_JobsDetails_Completed_with_QRState
                                     await chatStartUser();
                                     Get.to(MessagesDetails(
                                       usersCustomersId: usersCustomersId,
-                                      other_users_customers_id: widget.employeeId,
+                                      other_users_customers_id: widget.customerId,
                                       img: widget.profilePic.toString(),
                                       name: widget.name.toString(),
                                     ),
@@ -350,8 +354,17 @@ class _Customer_JobsDetails_Completed_with_QRState
                         GestureDetector(
                             onTap: ()  {
 
+                              DateTime buttonClickTime = DateTime.now();
+                              String? formattedTime = DateFormat('HH:mm:ss').format(buttonClickTime); // Format the time
+                              print("buttonClickTime ${formattedTime}");
                                // scanQRCode();
-                               Get.to(CustomerQRCodeScanner());
+                               Get.to(CustomerQRCodeScanner(
+                                 customerId: widget.customerId,
+                                 employeeId: widget.employeeId,
+                                 jobId: "${widget.jobId}",
+                                 jobName: widget.jobName,
+                                 buttonClickTime: "${formattedTime}",
+                               ));
                                // Future.delayed(const Duration(seconds: 3), () {
                                //   if(getResult == "${widget.employeeId}${widget.jobId}${widget.jobName}"){
                                //     toastSuccessMessage("Success scan QR Code.", Colors.red);

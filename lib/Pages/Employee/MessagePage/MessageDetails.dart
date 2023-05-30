@@ -418,56 +418,80 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                                           ? Alignment.topRight
                                           : Alignment.topLeft
                                   ),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.only(
-                                        topRight: Radius.circular(20),
-                                        topLeft: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20),
-                                      ),
-                                      color: (getMessgeModel.data?[reverseIndex].senderType == "Employee" && getMessgeModel.data?[reverseIndex].msgType == "text"
-                                          ? Color(0xff2B65EC)
-                                          : Colors.transparent
-                                      ),
-                                    ),
-                                    padding: EdgeInsets.all(10),
-                                    child: getMessgeModel.data?[reverseIndex].senderType == "Employee"
-                                        ? getMessgeModel.data![reverseIndex].msgType == "attachment"
+                                  child:getMessgeModel.data?[reverseIndex].senderType == "Employee"
+                                      ? Container(
+                                    child:  getMessgeModel.data?[reverseIndex].senderType == "Employee" &&
+                                        getMessgeModel.data?[reverseIndex].msgType == "text"
                                         ? Container(
+                                      // height: 54,
+
+                                      child:
+                                      Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(15),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.only(
+                                                topRight: Radius.circular(20),
+                                                topLeft: Radius.circular(20),
+                                                bottomLeft: Radius.circular(20),
+                                              ),
+                                              color:  Color(0xff2B65EC),
+                                            ),
+                                            child: Text(
+                                                "${getMessgeModel.data?[reverseIndex].message}",
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(fontSize: 14, color: Color(0xffffffff), fontFamily: "Outfit")),
+                                          ),
+
+                                          SizedBox(
+                                              height: 03),
+                                          Text(
+                                            // "time",
+                                            "${getMessgeModel.data?[reverseIndex].time} ${getMessgeModel.data?[reverseIndex].date}",
+                                            overflow:
+                                            TextOverflow.ellipsis,
+                                            textAlign:
+                                            TextAlign.left,
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Color(0xffA7A9B7),
+                                                fontFamily: "Outfit"),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                        : Container(
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .end,
+                                        MainAxisAlignment.end,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment
-                                            .end,
+                                        CrossAxisAlignment.end,
                                         children: [
                                           ClipRRect(
                                             borderRadius:
                                             BorderRadius.only(
-                                              topRight:
-                                              Radius.circular(20),
-                                              topLeft:
-                                              Radius.circular(20),
-                                              bottomLeft:
-                                              Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                              topLeft: Radius.circular(20),
+                                              bottomLeft: Radius.circular(20),
                                             ),
                                             child:
                                             // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
                                             FadeInImage(
-                                              placeholder:
-                                              AssetImage(
+                                              placeholder: AssetImage(
                                                 "assets/images/fade_in_image.jpeg",
                                               ),
-                                              fit: BoxFit
-                                                  .fill,
-                                              width:
-                                              115,
-                                              height:
-                                              110,
-                                              image:
-                                              NetworkImage("$baseUrlImage${getMessgeModel.data?[reverseIndex].message}"),
+                                              fit: BoxFit.fill,
+                                              width: 115,
+                                              height: 110,
+                                              image: NetworkImage("$baseUrlImage${getMessgeModel.data?[reverseIndex].message}"),
                                             ),
                                           ),
                                           Padding(
@@ -483,69 +507,59 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                                           ),
                                         ],
                                       ),
-                                    )
-                                        : Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .end,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment
-                                          .end,
-                                      children: [
-                                        Text(
-                                          // "${messages[].}",
-                                            "${getMessgeModel.data?[reverseIndex].message}",
-                                            // "${messageDetailsModelObject[reverseIndex].data?[index].message}",
-                                            maxLines:
-                                            3,
-                                            overflow:
-                                            TextOverflow
-                                                .ellipsis,
-                                            textAlign:
-                                            TextAlign
-                                                .left,
-                                            style: TextStyle(
-                                                fontSize:
-                                                14,
-                                                fontFamily:
-                                                "Outfit",
-                                                color:
-                                                Colors.white)),
-                                        SizedBox(
-                                            height:
-                                            03),
-                                        Text(
-                                          // "time",
-                                            "${getMessgeModel.data?[reverseIndex].time} ${getMessgeModel.data?[reverseIndex].date}",
-                                            maxLines:
-                                            1,
-                                            overflow:
-                                            TextOverflow
-                                                .ellipsis,
-                                            textAlign:
-                                            TextAlign
-                                                .right,
-                                            style: TextStyle(
-                                                fontSize:
-                                                10,
-                                                color:
-                                                Colors.white,
-                                                fontFamily: "Outfit")),
-                                      ],
-                                    )
-                                        : getMessgeModel
-                                        .data?[
-                                    reverseIndex]
-                                        .senderType !=
-                                        "Employee"
-                                        ? getMessgeModel
-                                        .data![
-                                    reverseIndex]
-                                        .msgType ==
-                                        "attachment"
+                                    ),
+                                  )
+                                      : Container(
+                                    child: getMessgeModel.data?[reverseIndex].senderType != "Employee" &&
+                                        getMessgeModel.data?[reverseIndex].msgType == "text"
                                         ? Container(
+                                      // height: 54,
+
                                       child:
                                       Column(
+                                        // mainAxisAlignment:
+                                        // MainAxisAlignment.end,
+                                        // crossAxisAlignment:
+                                        // CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(15),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.only(
+                                                topRight: Radius.circular(20),
+                                                topLeft: Radius.circular(20),
+                                                bottomRight: Radius.circular(20),
+                                              ),
+                                              color:  Color(0xffEBEBEB),
+                                            ),
+                                            child: Text(
+                                                "${getMessgeModel.data?[reverseIndex].message}",
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(fontSize: 14, color: Color(0xff000000), fontFamily: "Outfit")),
+                                          ),
+
+                                          SizedBox(
+                                              height: 03),
+                                          Text(
+                                            // "time",
+                                            "${getMessgeModel.data?[reverseIndex].time} ${getMessgeModel.data?[reverseIndex].date}",
+                                            overflow:
+                                            TextOverflow.ellipsis,
+                                            textAlign:
+                                            TextAlign.left,
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Color(0xffA7A9B7),
+                                                fontFamily: "Outfit"),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                        : Container(
+                                      child: Column(
                                         mainAxisAlignment:
                                         MainAxisAlignment.end,
                                         crossAxisAlignment:
@@ -583,53 +597,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                                           ),
                                         ],
                                       ),
-                                    )
-                                        : Container(
-                                      height: 54,
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.only(
-                                          topRight: Radius.circular(20),
-                                          topLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                        ),
-                                        color: (getMessgeModel.data?[reverseIndex].senderType != "Employee" && getMessgeModel.data?[reverseIndex].msgType == "text"
-                                            ? Color(0xffEBEBEB)
-                                            : Color(0xff2B65EC)
-                                        ),
-                                      ),
-                                      child:
-                                      Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                              "${getMessgeModel.data?[reverseIndex].message}",
-                                              maxLines: 3,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(fontSize: 14, color: Colors.black, fontFamily: "Outfit")),
-                                          SizedBox(
-                                              height: 03),
-                                          Text(
-                                            // "time",
-                                            "${getMessgeModel.data?[reverseIndex].time} ${getMessgeModel.data?[reverseIndex].date}",
-                                            overflow:
-                                            TextOverflow.ellipsis,
-                                            textAlign:
-                                            TextAlign.left,
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.black,
-                                                fontFamily: "Outfit"),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                        : Container(),
+                                    ),
                                   ),
                                 ),
                               );

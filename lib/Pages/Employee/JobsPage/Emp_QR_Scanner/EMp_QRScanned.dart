@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../widgets/TopBar.dart';
-class EMpQRScanneer extends StatelessWidget {
+class EMpQRScanneer extends StatefulWidget {
   final String? customerId;
   String? jobName;
 
@@ -16,6 +16,18 @@ class EMpQRScanneer extends StatelessWidget {
      this.jobName,
    }) : super(key: key);
 
+  @override
+  State<EMpQRScanneer> createState() => _EMpQRScanneerState();
+}
+
+class _EMpQRScanneerState extends State<EMpQRScanneer> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("CustomerId, jobId, jobName ${widget.customerId} ${widget.myJobId} ${widget.jobName}");
+  }
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -77,7 +89,7 @@ class EMpQRScanneer extends StatelessWidget {
                       SizedBox(height: height * 0.1,),
                       // Image.asset("assets/images/qrcode.png"),
                       QrImageView(
-                        data: "${usersCustomersId}${myJobId}${jobName}",
+                        data: "${widget.customerId} ${widget.myJobId} ${widget.jobName}",
                         version: QrVersions.auto,
                         size: 350.0,
                       ),

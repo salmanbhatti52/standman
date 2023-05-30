@@ -202,7 +202,8 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                 return GestureDetector(
                   onTap: () {
                     Get.to(Customer_JobsDetails_Completed_with_QR(
-                      employeeId: "${getJobsModel.data?[index].usersCustomersId}",
+                      customerId: "${getJobsModel.data?[index].usersCustomersData?.usersCustomersId}",
+                      employeeId: "${getJobsModel.data?[index].usersEmployeeData?.usersCustomersId}",
                       image:
                       "$baseUrlImage${getJobsModel.data?[index].image}",
                       jobName: getJobsModel
@@ -214,7 +215,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                       completeJobTime: getJobsModel
                           .data?[index].dateAdded
                           .toString(),
-                      jobId: getJobsModel.data?[index].jobsId,
+                      jobId: "${getJobsModel.data?[index].jobsId}",
                       description: getJobsModel
                           .data?[index].description,
                       name: "${getJobsModel.data?[index].usersCustomersData?.firstName} ${getJobsModel.data?[index].usersCustomersData?.lastName}",

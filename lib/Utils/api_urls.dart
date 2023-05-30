@@ -65,3 +65,5 @@ String system_settingsModelApiUrl = "${baseUrl}system_settings/";
 String notificationPermissionModelApiUrl = "${baseUrl}notification_permission";
 
 String messagesPermissionModelApiUrl = "${baseUrl}messages_permission";
+
+String jobsExtraAmountModelApiUrl = "${baseUrl}jobs_extra_amount";
