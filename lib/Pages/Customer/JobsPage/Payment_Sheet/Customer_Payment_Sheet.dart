@@ -5,6 +5,8 @@ import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import '../../../../Models/jobs_customers_complete_Model.dart';
+import '../../../../Utils/api_urls.dart';
 import '../../../../widgets/TopBar.dart';
 import '../../HomePage/Paymeny_details.dart';
 import 'package:http/http.dart' as http;
@@ -20,9 +22,51 @@ Payment({
   String? BookedClosed,
   String? ExtraTime,
   String? jobId,
+  String? userCustomerId,
+  String? userEmployeeId,
 }) {
   int _selected = 0;
 
+
+  JobsCustomersCompleteModel jobsCustomersCompleteModel = JobsCustomersCompleteModel();
+
+  bool progress = false;
+
+  jobsCustomersCompleteWidget() async {
+    progress = true;
+    // setState(() {});
+
+    print("userCustomerId = ${userCustomerId}");
+    print("userEmployeeId ${userEmployeeId}");
+    print("jobId ${jobId}");
+
+    // try {
+    String apiUrl = jobsCustomersCompleteModelApiUrl;
+    print("jobsCustomersCompleteApi: $apiUrl");
+    final response = await http.post(Uri.parse(apiUrl),
+        body: {
+          "users_customers_id": userCustomerId,
+          "employee_users_customers_id":userEmployeeId,
+          "jobs_id":jobId
+        }, headers: {
+          'Accept': 'application/json'
+        });
+    print('${response.statusCode}');
+    print(response);
+    if (response.statusCode == 200) {
+      final responseString = response.body;
+      print("jobsCustomersCompleteResponse: ${responseString.toString()}");
+      jobsCustomersCompleteModel = jobsCustomersCompleteModelFromJson(responseString);
+      // print("uusersCustomersId ${jobsExtraAmount.message?.usersCustomersId}");
+      // print("employeeUsersCustomersId ${jobsExtraAmount.message?.employeeUsersCustomersId}");
+      // print("jobsId ${jobsExtraAmount.message?.jobsId}");
+    }
+    // } catch (e) {
+    //   print('Error in jobsExtraAmountWidget: ${e.toString()}');
+    // }
+    // setState(() {});
+    progress = false;
+  }
 
   Map<String, dynamic>? paymentIntent;
 
@@ -143,7 +187,8 @@ Payment({
                                       textAlign: TextAlign.left,
                                     ),
                                     Text(
-                                      ' 22.00',
+                                      jobsCustomersCompleteModel.message!.job!.price.toString(),
+                                      // ' 22.00',
                                       style: TextStyle(
                                         color: Color(0xff2B65EC),
                                         fontFamily: "Outfit",
@@ -187,8 +232,9 @@ Payment({
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            const Text(
-                              "Beby Jovanca",
+                             Text(
+                              "${jobsCustomersCompleteModel.message!.customer!.firstName} ${jobsCustomersCompleteModel.message!.customer!.lastName}",
+                              // "Beby Jovanca",
                               style: TextStyle(
                                 color: Color.fromRGBO(0, 0, 0, 1),
                                 fontFamily: "Outfit",
@@ -224,8 +270,9 @@ Payment({
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            const Text(
-                              "Annette Black",
+                             Text(
+                               "${jobsCustomersCompleteModel.message!.employee!.firstName} ${jobsCustomersCompleteModel.message!.employee!.lastName}",
+                              // "Annette Black",
                               style: TextStyle(
                                 color: Color.fromRGBO(0, 0, 0, 1),
                                 fontFamily: "Outfit",
@@ -265,8 +312,9 @@ Payment({
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                const Text(
-                                  "24 Jul 2020",
+                                 Text(
+                                   "${jobsCustomersCompleteModel.message!.job!.startDate}",
+                                  // "24 Jul 2020",
                                   style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 1),
                                     fontFamily: "Outfit",
@@ -277,7 +325,8 @@ Payment({
                                   textAlign: TextAlign.right,
                                 ),
                                 Text(
-                                  '15:30',
+                                  "${jobsCustomersCompleteModel.message!.job!.startTime}",
+                                  // '15:30',
                                   style: TextStyle(
                                     color: Color(0xffA7A9B7),
                                     fontFamily: "Outfit",
@@ -359,6 +408,7 @@ Payment({
       print('exception:$e$s');
     }
   }
+
 
   return showFlexibleBottomSheet(
       isExpand: false,
@@ -885,9 +935,10 @@ Payment({
                       ),
                       GestureDetector(
                           onTap: () async {
-                        await makePayment();
+                         await   jobsCustomersCompleteWidget();
+                            await makePayment();
                       }
-                          ,child: mainButton("Pay", Color(0xff2B65EC), context))
+                          ,child: mainButton("Pay", Color(0xff2B65EC), context),),
                     ],
                   ),
                 ),

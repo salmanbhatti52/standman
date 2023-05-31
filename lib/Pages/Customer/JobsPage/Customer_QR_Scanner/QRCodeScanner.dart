@@ -146,6 +146,9 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
         BookedTime: jobsExtraAmount.message?.bookedTime,
         BookedClosed: jobsExtraAmount.message?.bookedClose,
         ExtraTime: jobsExtraAmount.message?.extraTime.toString(),
+        userCustomerId: jobsExtraAmount.message?.usersCustomersId.toString(),
+        userEmployeeId: jobsExtraAmount.message?.employeeUsersCustomersId.toString(),
+          jobId: jobsExtraAmount.message?.jobsId.toString(),
       );
     });
   }

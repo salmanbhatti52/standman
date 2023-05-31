@@ -3,6 +3,7 @@ import 'dart:convert';
 // import 'dart:html';
 import 'dart:typed_data';
 import 'dart:io';
+import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -519,11 +520,8 @@ class _WorkProofState extends State<WorkProof> {
                                 "${employeeSignupModel.data?.usersCustomersId.toString()}");
 
                             Future.delayed(const Duration(seconds: 3), () {
-                              Get.to(Empbottom_bar(
-                                currentIndex: 0,
-                              ));
-                              toastSuccessMessage(
-                                  "Signup Successfully", Colors.green);
+                              toastSuccessMessage(employeeSignupModel.message, Colors.green);
+                              Get.to(LoginTabClass(login: 1,));
                               setState(() {
                                 isInAsyncCall = false;
                               });

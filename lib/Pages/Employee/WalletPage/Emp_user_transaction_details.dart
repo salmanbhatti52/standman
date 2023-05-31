@@ -8,6 +8,15 @@ import '../../../widgets/TopBar.dart';
 
 Emp_user_transaction_details({
   BuildContext? ctx,
+  String? name,
+  String? date,
+  String? price,
+  String? previousAmount,
+  String? extraAmount,
+  String? serviceCharges,
+  String? bookTime,
+  String? closeTime,
+  String? extraTime,
 }) {
   return showFlexibleBottomSheet(
       isExpand: false,
@@ -38,12 +47,12 @@ Emp_user_transaction_details({
                     // mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Bar("Kathryn Murphy", "assets/images/left.svg", Colors.black, Colors.black, (){Get.back();}),
+                      Bar("${name}", "assets/images/left.svg", Colors.black, Colors.black, (){Get.back();}),
                       Padding(
                         padding: const EdgeInsets.only(top: 2.0, right: 20),
                         child: Text(
-                          // "\$${price}",
-                          "Mar 03, 2023",
+                          "${date}",
+                          // "Mar 03, 2023",
                           // "\$$price",
                           style: TextStyle(
                             color: Color(0xff9D9FAD),
@@ -61,8 +70,8 @@ Emp_user_transaction_details({
                        child: Column(
                          children: [
                            Text(
-                             // "\$${price}",
-                             "\$47.11",
+                             "\$${price}",
+                             // "\$47.11",
                              // "\$$price",
                              style: TextStyle(
                                color: Color(0xff2B65EC),
@@ -91,8 +100,8 @@ Emp_user_transaction_details({
                                  width: Get.width * 0.12,
                                ),
                                Text(
-                                 "\$21",
-                                 // "\$$amount",
+                                 // "\$21",
+                                 "\$$previousAmount",
                                  // '\$$discountPrice',
                                  style: TextStyle(
                                    color: Color(0xff000000),
@@ -121,8 +130,8 @@ Emp_user_transaction_details({
                                    width: Get.width * 0.12,
                                  ),
                                  Text(
-                                   "\$15.75",
-                                   // "\$$chargers",
+                                   // "\$15.75",
+                                   "\$$extraAmount",
                                    style: TextStyle(
                                      color: Color(0xff000000),
                                      fontFamily: "Outfit",
@@ -150,8 +159,8 @@ Emp_user_transaction_details({
                                  width: Get.width * 0.10,
                                ),
                                Text(
-                                 "\$7.50",
-                                 // "\$$amount",
+                                 // "\$7.50",
+                                 "\$$serviceCharges",
                                  // '\$$discountPrice',
                                  style: TextStyle(
                                    color: Color(0xff000000),
@@ -182,8 +191,8 @@ Emp_user_transaction_details({
                                  width: Get.width * 0.15,
                                ),
                                Text(
-                                 "12:00-13:00",
-                                 // "\$$chargers",
+                                 // "12:00-13:00",
+                                 "$bookTime",
                                  style: TextStyle(
                                    color: Color(0xffC70000),
                                    fontFamily: "Outfit",
@@ -210,8 +219,8 @@ Emp_user_transaction_details({
                                  width: Get.width * 0.23,
                                ),
                                Text(
-                                 "13:45",
-                                 // "\$$amount",
+                                 // "13:45",
+                                 "$closeTime",
                                  // '\$$discountPrice',
                                  style: TextStyle(
                                    color: Color(0xffC70000),
@@ -239,8 +248,8 @@ Emp_user_transaction_details({
                                  width: Get.width * 0.34,
                                ),
                                Text(
-                                 "45",
-                                 // "\$$amount",
+                                 // "45",
+                                 "$extraTime",
                                  // '\$$discountPrice',
                                  style: TextStyle(
                                    color: Color(0xffC70000),

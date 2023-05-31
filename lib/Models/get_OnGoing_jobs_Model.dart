@@ -49,7 +49,7 @@ class Datum {
   dynamic dateStartJob;
   dynamic dateEndJob;
   String? status;
-  DateTime? dateAdded;
+  String? dateAdded;
   DateTime? dateModified;
   dynamic rating;
   UsersData? usersCustomersData;
@@ -102,7 +102,7 @@ class Datum {
     dateStartJob: json["date_start_job"],
     dateEndJob: json["date_end_job"],
     status: json["status"],
-    dateAdded: DateTime.parse(json["date_added"]),
+    dateAdded: json["date_added"],
     dateModified: DateTime.parse(json["date_modified"]),
     rating: json["rating"],
     usersCustomersData: UsersData.fromJson(json["users_customers_data"]),
@@ -129,7 +129,7 @@ class Datum {
     "date_start_job": dateStartJob,
     "date_end_job": dateEndJob,
     "status": status,
-    "date_added": dateAdded!.toIso8601String(),
+    "date_added": dateAdded,
     "date_modified": dateModified!.toIso8601String(),
     "rating": rating,
     "users_customers_data": usersCustomersData!.toJson(),

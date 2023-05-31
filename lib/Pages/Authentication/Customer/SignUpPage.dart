@@ -854,9 +854,9 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                       await sharedPref.setString('password', "${customerSignupModel.data?.password.toString()}");
 
                                       Future.delayed(const Duration(seconds: 3), () {
-                                        toastSuccessMessage("Signup Successfully", Colors.green);
+                                        toastSuccessMessage(customerSignupModel.message, Colors.green);
                                         // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
-                                        Get.to(bottom_bar(currentIndex: 0,));
+                                        Get.to(LoginTabClass(login: 0,));
                                         setState(() {
                                           isInAsyncCall = false;
                                         });
@@ -874,8 +874,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                               },
                               child: isInAsyncCall
                                   ?  loadingBar(context)
-                             : mainButton("Sign Up",
-                                  Color.fromRGBO(43, 101, 236, 1), context)),
+                             : mainButton("Sign Up", Color.fromRGBO(43, 101, 236, 1), context)),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 15.0),
                             child: Text(

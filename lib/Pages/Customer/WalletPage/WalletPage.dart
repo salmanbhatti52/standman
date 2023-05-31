@@ -3,11 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../Models/customer_wallet_txn_Model.dart';
+import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/TopBar.dart';
 import '../../Drawer.dart';
+import '../HomePage/HomePage.dart';
 import '../HomePage/RecentJobs.dart';
 import 'CardList.dart';
+import 'package:http/http.dart' as http;
 
 class WalletPage extends StatefulWidget {
   const WalletPage({Key? key}) : super(key: key);
@@ -17,6 +22,52 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
+  CustomerWalletTxnModel customerWalletTxnModel = CustomerWalletTxnModel();
+
+  bool loading = false;
+
+  customerWalletTxn() async {
+    setState(() {
+      loading = true;
+    });
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("userId = $usersCustomersId");
+    String apiUrl = customerWalletTxnModelApiUrl;
+    print("working");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+      },
+    );
+    final responseString = response.body;
+    print("customerWalletTxnModelApi: ${response.body}");
+    print("status Code customerWalletTxnModel: ${response.statusCode}");
+    print("in 200 customerWalletTxnModel");
+    if (response.statusCode == 200) {
+      customerWalletTxnModel = customerWalletTxnModelFromJson(responseString);
+      // setState(() {});
+      // print('getJobsModelImage: $baseUrlImage${getJobsModel.data?[0].image}');
+      // print('getJobsModelLength: ${getJobsModel.data?.length}');
+      // print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
+      // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
+    }
+    setState(() {
+      loading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("users_customers_id: ${usersCustomersId}");
+    super.initState();
+    customerWalletTxn();
+    // getUserProfileWidget();
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -72,8 +123,11 @@ class _WalletPageState extends State<WalletPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const Text(
-                        "\$4,875.00",
+                      Text(
+                        customerWalletTxnModel.data?.transactionHistory?.length != null
+                            ? "\$${customerWalletTxnModel.data?.expenses}"
+                        : "",
+                        // "\$4,875.00",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Outfit",
@@ -117,45 +171,49 @@ class _WalletPageState extends State<WalletPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) => Dialog(
-                              shadowColor: Color(0xff0f172a).withOpacity(0.3) ,
-                              // backgroundColor: Color(0xff0f172a).withOpacity(0.3),
-                              backgroundColor: Colors.transparent,
-                              elevation: 0,
-                              child: Container(
-                                // color: Color(0xff0f172a).withOpacity(0.3),
-                                width: width,
-                                // height: 423,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset("assets/images/cardcomplete.png"),
-                                    const Text(
-                                      "Card added\nSuccessfully",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "Outfit",
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 32,
+                                shadowColor: Color(0xff0f172a).withOpacity(0.3),
+                                // backgroundColor: Color(0xff0f172a).withOpacity(0.3),
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                                child: Container(
+                                  // color: Color(0xff0f172a).withOpacity(0.3),
+                                  width: width,
+                                  // height: 423,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                          "assets/images/cardcomplete.png"),
+                                      const Text(
+                                        "Card added\nSuccessfully",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Outfit",
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 32,
+                                        ),
+                                        textAlign: TextAlign.left,
                                       ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.04,
-                                    ),
-                                    GestureDetector(
-                                      onTap: (){
-                                        Get.back();
-                                      },
-                                        child: mainButton("Go Back to Wallet Screen", Color.fromRGBO(43, 101, 236, 1), context))
-                                  ],
-                                ),
-                              )
-                            ),
+                                      SizedBox(
+                                        height: height * 0.04,
+                                      ),
+                                      GestureDetector(
+                                          onTap: () {
+                                            Get.back();
+                                          },
+                                          child: mainButton(
+                                              "Go Back to Wallet Screen",
+                                              Color.fromRGBO(43, 101, 236, 1),
+                                              context))
+                                    ],
+                                  ),
+                                )),
                           );
                         },
                         child: Container(
@@ -211,108 +269,175 @@ class _WalletPageState extends State<WalletPage> {
                       ),
                     ),
                     Container(
-                      // height: MediaQuery.of(context).size.height * 0.16,
-                      width: width,
-                      color: Colors.transparent,
-                      height:  height * 0.29, //300,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          // physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          itemCount: transactionList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 0.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Get.to("jh");
-                                },
-                                child: Container(
-                                  // height: MediaQuery.of(context).size.height * 0.4,
-                                  // width: MediaQuery.of(context).size.width * 0.3,
-                                  // width: 358,
-                                  height: height * 0.1, //80,
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                          width: 1.0,
-                                          color: Color(0xffF4F5F7)),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              transactionList[index].image,
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 3.0),
-                                                  child: Text(
-                                                    transactionList[index].title,
-                                                    style: const TextStyle(
-                                                      color:
-                                                          Color(0xff000000),
-                                                      fontFamily: "Outfit",
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 14,
-                                                    ),
-                                                    textAlign: TextAlign.left,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  transactionList[index].subTitle,
-                                                  style: const TextStyle(
-                                                    color: Color(0xff9D9FAD),
-                                                    fontFamily: "Outfit",
-                                                    fontWeight:
-                                                        FontWeight.w400,
-                                                    fontSize: 10,
-                                                  ),
-                                                  textAlign: TextAlign.left,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                      child: loading
+                          ? Center(child: CircularProgressIndicator())
+                          : customerWalletTxnModel
+                                      .data?.transactionHistory?.length ==
+                                  null
+                              ? Center(
+                                  child: Container(
+                                    width: width,
+                                    color: Colors.transparent,
+                                    height: height * 0.33,
+                                    child: Center(
+                                      child: Text(
+                                        "No Transaction History",
+                                        style: TextStyle(
+                                          color: Color(0xff000000),
+                                          fontFamily: "OutFit",
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
                                         ),
-                                        const Row(
-                                          children: [
-                                            Text(
-                                              "\$25.5",
-                                              style: TextStyle(
-                                                color: Color(0xff18C85E),
-                                                fontFamily: "Outfit",
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
-                                              ),
-                                              textAlign: TextAlign.right,
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                        textAlign: TextAlign.left,
+                                      ),
                                     ),
                                   ),
+                                )
+                              : Container(
+                                  // height: MediaQuery.of(context).size.height * 0.16,
+                                  width: width,
+                                  color: Colors.transparent,
+                                  height: height * 0.29, //300,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      // physics: NeverScrollableScrollPhysics(),
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: customerWalletTxnModel
+                                          .data?.transactionHistory?.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 0.0),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              // Get.to("jh");
+                                            },
+                                            child: Container(
+                                              // height: MediaQuery.of(context).size.height * 0.4,
+                                              // width: MediaQuery.of(context).size.width * 0.3,
+                                              // width: 358,
+                                              height: height * 0.1, //80,
+                                              decoration: const BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                      width: 1.0,
+                                                      color: Color(0xffF4F5F7)),
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 20.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            backgroundImage: customerWalletTxnModel
+                                                                        .data
+                                                                        ?.transactionHistory?[
+                                                                            index]
+                                                                        .userData
+                                                                        ?.profilePic ==
+                                                                    null
+                                                                ? Image.asset(
+                                                                        "assets/images/person2.png")
+                                                                    .image
+                                                                : NetworkImage(
+                                                                    baseUrlImage +
+                                                                        "${customerWalletTxnModel.data?.transactionHistory?[index].userData!.profilePic.toString()}")
+                                                            // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
+
+                                                            ),
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          3.0),
+                                                              child: Text(
+                                                                "${customerWalletTxnModel.data?.transactionHistory?[index].userData?.firstName} ${customerWalletTxnModel.data?.transactionHistory?[index].userData?.lastName}",
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Color(
+                                                                      0xff000000),
+                                                                  fontFamily:
+                                                                      "Outfit",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 14,
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              "${customerWalletTxnModel.data?.transactionHistory?[index].dateAdded}",
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Color(
+                                                                    0xff9D9FAD),
+                                                                fontFamily:
+                                                                    "Outfit",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 10,
+                                                              ),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "\$${customerWalletTxnModel.data?.transactionHistory?[index].totalAmount}",
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xff18C85E),
+                                                            fontFamily:
+                                                                "Outfit",
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 12,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.right,
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
                                 ),
-                              ),
-                            );
-                          }),
                     ),
                   ],
                 ),
@@ -326,10 +451,14 @@ class _WalletPageState extends State<WalletPage> {
 }
 
 List transactionList = [
-  _transactionList("assets/images/g2.png", "Dr.	Jane	N.	Dacks", '02 Mar 222', Colors.grey),
-  _transactionList("assets/images/g2.png", "Dr.	Jane	N.	Dacks", '02 Mar 222', Colors.grey),
-  _transactionList("assets/images/g2.png", "Dr.	Jane	N.	Dacks", '02 Mar 222', Colors.grey),
-  _transactionList("assets/images/g2.png", "Dr.	Jane	N.	Dacks", '02 Mar 222', Colors.grey),
+  _transactionList(
+      "assets/images/g2.png", "Dr.	Jane	N.	Dacks", '02 Mar 222', Colors.grey),
+  _transactionList(
+      "assets/images/g2.png", "Dr.	Jane	N.	Dacks", '02 Mar 222', Colors.grey),
+  _transactionList(
+      "assets/images/g2.png", "Dr.	Jane	N.	Dacks", '02 Mar 222', Colors.grey),
+  _transactionList(
+      "assets/images/g2.png", "Dr.	Jane	N.	Dacks", '02 Mar 222', Colors.grey),
 ];
 
 class _transactionList {
