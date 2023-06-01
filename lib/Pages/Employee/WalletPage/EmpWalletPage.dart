@@ -18,7 +18,7 @@ class EmpWalletPage extends StatefulWidget {
 
 class _EmpWalletPageState extends State<EmpWalletPage> {
 
-  EmpolyeeWalletTxnModel empolyeeWalletTxnModel = EmpolyeeWalletTxnModel();
+  EmployeewalletTxnModel empolyeeWalletTxnModel = EmployeewalletTxnModel();
 
   bool loading = false;
 
@@ -43,7 +43,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
     print("status Code employeeWalletTxnModel: ${response.statusCode}");
     print("in 200 employeeWalletTxnModel");
     if (response.statusCode == 200) {
-      empolyeeWalletTxnModel = empolyeeWalletTxnModelFromJson(responseString);
+      empolyeeWalletTxnModel = employeewalletTxnModelFromJson(responseString);
       // setState(() {});
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data?[0].image}');
       // print('getJobsModelLength: ${getJobsModel.data?.length}');
@@ -259,10 +259,20 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                                   onTap: () {
                                     // Get.to("jh");
                                     Emp_user_transaction_details(
-                                      // name: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].userData?.firstName} ${empolyeeWalletTxnModel.data?.transactionHistory?[index].userData?.lastName}",
-                                      // date: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].dateAdded}",
-                                      // price: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].totalAmount}",
-                                      // previousAmount: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].}",
+                                      ctx: context,
+                                      name: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].userData?.firstName} ${empolyeeWalletTxnModel.data?.transactionHistory?[index].userData?.lastName}",
+                                      date: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.date}",
+                                      price: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.totalPrice}",
+                                      previousAmount: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.previousPrice != null
+                                          ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.previousPrice}" : "0"}",
+                                      extraAmount: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraPrice != null
+                                          ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraPrice}" : "0"}",
+                                      serviceCharges: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraServiceCharges != null
+                                          ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraServiceCharges}" : "0"}",
+                                      bookTime: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.bookedTime}",
+                                      closeTime: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.bookedClose}",
+                                      extraTime: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraTime != null
+                                          ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraTime}" : "0"}",
                                     );
                                   },
                                   child: Container(

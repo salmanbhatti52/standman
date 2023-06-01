@@ -175,11 +175,11 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
     return Scaffold(
       appBar: StandManAppBar1(
         title: "Scan QR",
-        bgcolor: Color(0xffffffff),
+        bgcolor: Color(0xff000000),
         titlecolor: Colors.white,
         iconcolor: Colors.white,
       ),
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Expanded(flex: 4, child: _buildQrView(context)),

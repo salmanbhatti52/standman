@@ -1,3 +1,4 @@
+import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +12,7 @@ import '../Customer_Rating/Customer_JobDetails_Rating.dart';
 class Customer_AddRating extends StatefulWidget {
   String? image;
   String? jobName;
+  String? jobId;
   String? totalPrice;
   String? address;
   String? completeJobTime;
@@ -19,7 +21,8 @@ class Customer_AddRating extends StatefulWidget {
   String? name;
   String? status;
   String? employeeId;
-   Customer_AddRating({Key? key,  this.image,
+  String? customerId;
+   Customer_AddRating({Key? key,  this.image, this.customerId, this.jobId,
      this.jobName, this.totalPrice, this.address,
      this.completeJobTime, this.description, this.employeeId,
      this.profilePic, this.name, this.status,
@@ -74,7 +77,7 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                         children: [
                           Stack(
                             children: [
-                              Image.asset("assets/images/areaa.png"),
+                              Image.network("${widget.image}"),
                               Positioned(
                                 bottom: 10,
                                   left: 10,
@@ -88,7 +91,7 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    "Completed",
+                                    "${widget.status}",
                                     style: TextStyle(
                                       color: Color(0xff10C900),
                                       fontFamily: "Outfit",
@@ -106,8 +109,8 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                "Eleanor Pena",
+                               Text(
+                                "${widget.jobName}",
                                 style: TextStyle(
                                   color: Color.fromRGBO(0, 0, 0, 1),
                                   fontFamily: "Outfit",
@@ -117,8 +120,8 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                                 ),
                                 textAlign: TextAlign.left,
                               ),
-                              const Text(
-                                "\$22",
+                               Text(
+                                 "\$${widget.totalPrice}",
                                 style: TextStyle(
                                   color: Color(0xff2B65EC),
                                   fontFamily: "Outfit",
@@ -142,17 +145,25 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "No 15 uti street off ovie palace road effurun delta state",
-                                    style: const TextStyle(
-                                      color: Color.fromRGBO(0, 0, 0, 1),
-                                      fontFamily: "Outfit",
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
+                                  Container(
+                                    width: width * 0.8,
+                                    child: AutoSizeText(
+                                      "${widget.address}",
+                                      style: const TextStyle(
+                                        color: Color.fromRGBO(0, 0, 0, 1),
+                                        fontFamily: "Outfit",
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                      ),
+                                      maxLines: 2,
+                                      minFontSize: 12,
+                                      presetFontSizes: [12],
+                                      maxFontSize: 12,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Text(
-                                    "Complete job time 03 March - 4:40 PM",
+                                    "${widget.completeJobTime}",
                                     style: const TextStyle(
                                       color: Color.fromRGBO(167, 169, 183, 1),
                                       fontFamily: "Outfit",
@@ -165,15 +176,22 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                             ],
                           ),
                           SizedBox(height: height * 0.02,),
-                          const Text(
-                            "Donec dictum tristique porta. Etiam convallis lorem lobortis nulla molestie, nec tincidunt ex ullamcorper. Quisque ultrices lobortis elit sed euismod. Duis in ultrices dolor, ac rhoncus odio. Suspendisse tempor sollicitudin dui sed lacinia. Nulla quis enim posuere, congue libero quis, commodo purus. Cras iaculis massa ut elit.",
-                            style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontFamily: "Outfit",
-                              fontSize: 10,
-                              fontWeight: FontWeight.w400,
-                              // letterSpacing: -0.3,
-                            ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "${widget.description}",
+                                  // "Donec dictum tristique porta. Etiam convallis lorem lobortis nulla molestie, nec tincidunt ex ullamcorper. Quisque ultrices lobortis elit sed euismod. Duis in ultrices dolor, ac rhoncus odio. Suspendisse tempor sollicitudin dui sed lacinia. Nulla quis enim posuere, congue libero quis, commodo purus. Cras iaculis massa ut elit.",
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: "Outfit",
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    // letterSpacing: -0.3,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: height * 0.02,),
                           Row(
@@ -201,7 +219,13 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                                 crossAxisAlignment:
                                 CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset("assets/images/g2.png",),
+                                  Container(
+                                    width: 50,
+                                    height: 50,
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.network("${widget.profilePic}")),
+                                  ),
                                   SizedBox(
                                     width: 5,
                                   ),
@@ -214,7 +238,7 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                                       CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Wade Warren',
+                                          "${widget.name}",
                                           style: TextStyle(
                                             color: Color(0xff000000),
                                             fontFamily: "Outfit",
@@ -247,7 +271,19 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                               ),
                               GestureDetector(
                                 onTap: (){
-                                  Get.to(Customer_Rating());
+                                  Get.to(Customer_Rating(
+                                    jobName:   "${widget.jobName}",
+                                    totalPrice: "${widget.totalPrice}",
+                                    customerId: "${widget.customerId}",
+                                    employeeId: "${widget.employeeId}",
+                                    address:  "${widget.address}",
+                                    completeJobTime:  "${widget.completeJobTime}",
+                                    description:    "${widget.description}",
+                                    jobId:    "${widget.jobId}",
+                                    // name: "${getPreviousJobsModel.data?[index].usersCustomersData?.firstName} ${getPreviousJobsModel.data?[index].usersCustomersData?.lastName}",
+                                    // profilePic: "$baseUrlImage${getPreviousJobsModel.data?[index].usersCustomersData?.profilePic}",
+                                    status:  "${widget.status}",
+                                  ));
                                 },
                                 child: smallButton("Add Ratings", Color(0xff2B65EC) , context),
                               ),

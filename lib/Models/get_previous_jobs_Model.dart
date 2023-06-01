@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final getPreviousJobsModel = getPreviousJobsModelFromJson(jsonString);
+
 import 'dart:convert';
 
 GetPreviousJobsModel getPreviousJobsModelFromJson(String str) => GetPreviousJobsModel.fromJson(json.decode(str));
@@ -15,8 +19,7 @@ class GetPreviousJobsModel {
 
   factory GetPreviousJobsModel.fromJson(Map<String, dynamic> json) => GetPreviousJobsModel(
     status: json["status"],
-    // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-    data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))): null,
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -42,6 +45,10 @@ class Datum {
   String? tax;
   String? totalPrice;
   String? paymentGatewaysName;
+  String?  extraTimePrice;
+  String?  extraTimeTax;
+  String?  extraTimeServiceCharges;
+  String?  extraTime;
   String? paymentStatus;
   dynamic hiredUsersCustomersId;
   dynamic dateStartJob;
@@ -50,8 +57,8 @@ class Datum {
   String? dateAdded;
   DateTime? dateModified;
   dynamic rating;
-  UsersCustomersData? usersCustomersData;
-  List<dynamic>? usersEmployeeData;
+  UsersData? usersCustomersData;
+  UsersData? usersEmployeeData;
 
   Datum({
     this.jobsId,
@@ -70,6 +77,10 @@ class Datum {
     this.tax,
     this.totalPrice,
     this.paymentGatewaysName,
+    this.extraTimePrice,
+    this.extraTimeTax,
+    this.extraTimeServiceCharges,
+    this.extraTime,
     this.paymentStatus,
     this.hiredUsersCustomersId,
     this.dateStartJob,
@@ -99,6 +110,10 @@ class Datum {
     tax: json["tax"],
     totalPrice: json["total_price"],
     paymentGatewaysName: json["payment_gateways_name"],
+    extraTimePrice: json["extra_time_price"],
+    extraTimeTax: json["extra_time_tax"],
+    extraTimeServiceCharges: json["extra_time_service_charges"],
+    extraTime: json["extra_time"],
     paymentStatus: json["payment_status"],
     hiredUsersCustomersId: json["hired_users_customers_id"],
     dateStartJob: json["date_start_job"],
@@ -107,8 +122,8 @@ class Datum {
     dateAdded: json["date_added"],
     dateModified: DateTime.parse(json["date_modified"]),
     rating: json["rating"],
-    usersCustomersData: UsersCustomersData.fromJson(json["users_customers_data"]),
-    usersEmployeeData: List<dynamic>.from(json["users_employee_data"].map((x) => x)),
+    usersCustomersData: UsersData.fromJson(json["users_customers_data"]),
+    usersEmployeeData: UsersData.fromJson(json["users_employee_data"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -128,6 +143,10 @@ class Datum {
     "tax": tax,
     "total_price": totalPrice,
     "payment_gateways_name": paymentGatewaysName,
+    "extra_time_price": extraTimePrice,
+    "extra_time_tax": extraTimeTax,
+    "extra_time_service_charges": extraTimeServiceCharges,
+    "extra_time": extraTime,
     "payment_status": paymentStatus,
     "hired_users_customers_id": hiredUsersCustomersId,
     "date_start_job": dateStartJob,
@@ -137,11 +156,11 @@ class Datum {
     "date_modified": dateModified!.toIso8601String(),
     "rating": rating,
     "users_customers_data": usersCustomersData!.toJson(),
-    "users_employee_data": List<dynamic>.from(usersEmployeeData!.map((x) => x)),
+    "users_employee_data": usersEmployeeData!.toJson(),
   };
 }
 
-class UsersCustomersData {
+class UsersData {
   int? usersCustomersId;
   String? oneSignalId;
   String? usersCustomersType;
@@ -151,8 +170,8 @@ class UsersCustomersData {
   String? email;
   String? password;
   String? profilePic;
-  dynamic proofDocument;
-  dynamic validDocument;
+  String?  proofDocument;
+  String?  validDocument;
   String? messages;
   String? notifications;
   String? accountType;
@@ -165,7 +184,7 @@ class UsersCustomersData {
   DateTime? dateAdded;
   String? status;
 
-  UsersCustomersData({
+  UsersData({
     this.usersCustomersId,
     this.oneSignalId,
     this.usersCustomersType,
@@ -190,7 +209,7 @@ class UsersCustomersData {
     this.status,
   });
 
-  factory UsersCustomersData.fromJson(Map<String, dynamic> json) => UsersCustomersData(
+  factory UsersData.fromJson(Map<String, dynamic> json) => UsersData(
     usersCustomersId: json["users_customers_id"],
     oneSignalId: json["one_signal_id"],
     usersCustomersType: json["users_customers_type"],

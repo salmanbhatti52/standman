@@ -73,3 +73,5 @@ String jobsCustomersCompleteModelApiUrl = "${baseUrl}jobs_customers_complete";
 String customerWalletTxnModelApiUrl = "${baseUrl}customer_wallet_txn";
 
 String employeeWalletTxnModelApiUrl = "${baseUrl}employee_wallet_txn";
+
+String addJobRatingModelApiUrl = "${baseUrl}add_job_rating";

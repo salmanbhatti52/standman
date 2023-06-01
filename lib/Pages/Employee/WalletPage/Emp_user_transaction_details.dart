@@ -66,7 +66,7 @@ Emp_user_transaction_details({
                         height: Get.height * 0.03,
                       ),
                      Padding(
-                       padding: const EdgeInsets.only(right: 35.0),
+                       padding: const EdgeInsets.only(right: 35.0,),
                        child: Column(
                          children: [
                            Text(
@@ -83,34 +83,38 @@ Emp_user_transaction_details({
                            SizedBox(
                              height: Get.height * 0.01,
                            ),
-                           Row(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               Text(
-                                 "Previous Amount",
-                                 style: TextStyle(
-                                   color: Color(0xff000000),
-                                   fontFamily: "Outfit",
-                                   fontWeight: FontWeight.w300,
-                                   fontSize: 14,
+                           Container(
+                             child: previousAmount != null
+                                 ? Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               crossAxisAlignment: CrossAxisAlignment.center,
+                               children: [
+                                 Text(
+                                   "Previous Amount",
+                                   style: TextStyle(
+                                     color: Color(0xff000000),
+                                     fontFamily: "Outfit",
+                                     fontWeight: FontWeight.w300,
+                                     fontSize: 14,
+                                   ),
                                  ),
-                               ),
-                               SizedBox(
-                                 width: Get.width * 0.12,
-                               ),
-                               Text(
-                                 // "\$21",
-                                 "\$$previousAmount",
-                                 // '\$$discountPrice',
-                                 style: TextStyle(
-                                   color: Color(0xff000000),
-                                   fontFamily: "Outfit",
-                                   fontWeight: FontWeight.w300,
-                                   fontSize: 14,
+                                 SizedBox(
+                                   width: Get.width * 0.12,
                                  ),
-                               ),
-                             ],
+                                 Text(
+                                   // "\$21",
+                                   "\$$previousAmount",
+                                   // '\$$discountPrice',
+                                   style: TextStyle(
+                                     color: Color(0xff000000),
+                                     fontFamily: "Outfit",
+                                     fontWeight: FontWeight.w300,
+                                     fontSize: 14,
+                                   ),
+                                 ),
+                               ],
+                             )
+                                 : SizedBox(height: 1,),
                            ),
                            Padding(
                              padding: const EdgeInsets.symmetric(vertical: 2.0),

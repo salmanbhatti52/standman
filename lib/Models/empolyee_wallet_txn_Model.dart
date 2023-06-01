@@ -1,19 +1,23 @@
+// To parse this JSON data, do
+//
+//     final employeewalletTxnModel = employeewalletTxnModelFromJson(jsonString);
+
 import 'dart:convert';
 
-EmpolyeeWalletTxnModel empolyeeWalletTxnModelFromJson(String str) => EmpolyeeWalletTxnModel.fromJson(json.decode(str));
+EmployeewalletTxnModel employeewalletTxnModelFromJson(String str) => EmployeewalletTxnModel.fromJson(json.decode(str));
 
-String empolyeeWalletTxnModelToJson(EmpolyeeWalletTxnModel data) => json.encode(data.toJson());
+String employeewalletTxnModelToJson(EmployeewalletTxnModel data) => json.encode(data.toJson());
 
-class EmpolyeeWalletTxnModel {
+class EmployeewalletTxnModel {
   String? status;
   Data? data;
 
-  EmpolyeeWalletTxnModel({
-   this.status,
-   this.data,
+  EmployeewalletTxnModel({
+    this.status,
+    this.data,
   });
 
-  factory EmpolyeeWalletTxnModel.fromJson(Map<String, dynamic> json) => EmpolyeeWalletTxnModel(
+  factory EmployeewalletTxnModel.fromJson(Map<String, dynamic> json) => EmployeewalletTxnModel(
     status: json["status"],
     data: Data.fromJson(json["data"]),
   );
@@ -25,18 +29,18 @@ class EmpolyeeWalletTxnModel {
 }
 
 class Data {
-  double? earning;
+  String? earning;
   String? withdraw;
   List<TransactionHistory>? transactionHistory;
 
   Data({
-    this.earning,
-    this.withdraw,
-    this.transactionHistory,
+   this.earning,
+   this.withdraw,
+   this.transactionHistory,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    earning: json["earning"]?.toDouble(),
+    earning: json["earning"],
     withdraw: json["withdraw"],
     transactionHistory: List<TransactionHistory>.from(json["transaction_history"].map((x) => TransactionHistory.fromJson(x))),
   );
@@ -64,6 +68,7 @@ class TransactionHistory {
   String? status;
   String? narration;
   UserData? userData;
+  TxnDetail? txnDetail;
 
   TransactionHistory({
     this.walletTxnsId,
@@ -81,6 +86,7 @@ class TransactionHistory {
     this.status,
     this.narration,
     this.userData,
+    this.txnDetail,
   });
 
   factory TransactionHistory.fromJson(Map<String, dynamic> json) => TransactionHistory(
@@ -99,6 +105,7 @@ class TransactionHistory {
     status: json["status"],
     narration: json["narration"],
     userData: UserData.fromJson(json["user_data"]),
+    txnDetail: TxnDetail.fromJson(json["txn_detail"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -117,6 +124,55 @@ class TransactionHistory {
     "status": status,
     "narration": narration,
     "user_data": userData!.toJson(),
+    "txn_detail": txnDetail!.toJson(),
+  };
+}
+
+class TxnDetail {
+  String? userName;
+  String? date;
+  String? totalPrice;
+  String? previousPrice;
+  String?  extraServiceCharges;
+  String? bookedTime;
+  String? bookedClose;
+  String?  extraPrice;
+  String?  extraTime;
+
+  TxnDetail({
+    this.userName,
+    this.date,
+    this.totalPrice,
+    this.previousPrice,
+    this.extraServiceCharges,
+    this.bookedTime,
+    this.bookedClose,
+    this.extraPrice,
+    this.extraTime,
+  });
+
+  factory TxnDetail.fromJson(Map<String, dynamic> json) => TxnDetail(
+    userName: json["user_name"],
+    date: json["date"],
+    totalPrice: json["total_price"],
+    previousPrice: json["previous_price"],
+    extraServiceCharges: json["extra_service_charges"],
+    bookedTime: json["booked_time"],
+    bookedClose: json["booked_close"],
+    extraPrice: json["extra_price"],
+    extraTime: json["extra_time"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "user_name": userName,
+    "date": date,
+    "total_price": totalPrice,
+    "previous_price": previousPrice,
+    "extra_service_charges": extraServiceCharges,
+    "booked_time": bookedTime,
+    "booked_close": bookedClose,
+    "extra_price": extraPrice,
+    "extra_time": extraTime,
   };
 }
 

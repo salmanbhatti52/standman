@@ -316,7 +316,7 @@ class _Customer_JobsDetails_Completed_with_QRState
                                             size: 15,
                                           ),
                                           Text(
-                                            '4.5',
+                                            '--',
                                             style: TextStyle(
                                               color: Color(0xff000000),
                                               fontFamily: "Outfit",

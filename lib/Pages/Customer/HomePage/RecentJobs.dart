@@ -192,7 +192,7 @@ class _RecentJobsState extends State<RecentJobs> {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                                       child: Text(
-                                        "${getJobsModel.data![index].startDate}",
+                                        "${getJobsModel.data![index].dateAdded}",
                                         // 'Mar 03, 2023',
                                         style: TextStyle(
                                           color: Color(0xff9D9FAD),
@@ -232,12 +232,13 @@ class _RecentJobsState extends State<RecentJobs> {
                                           // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
                                         ),
-                                        SizedBox(width: 5,),
+                                        // SizedBox(width: 5,),
                                         Container(
                                           width: 65,
+                                          margin: EdgeInsets.only(top: 10),
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            // mainAxisAlignment: MainAxisAlignment.center,
+                                            // crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Text(
                                                 // "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
@@ -254,11 +255,13 @@ class _RecentJobsState extends State<RecentJobs> {
                                                 textAlign: TextAlign.left,
                                               ),
                                               Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   Image.asset(
                                                       "assets/images/star.png"),
                                                   Text(
-                                                    '4.5',
+                                                    '--',
                                                     style: TextStyle(
                                                       color: Color(0xff000000),
                                                       fontFamily: "Outfit",

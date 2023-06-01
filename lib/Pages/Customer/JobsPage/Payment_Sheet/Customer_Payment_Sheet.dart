@@ -343,7 +343,17 @@ Payment({
                       ),
                       SizedBox(height: Get.height * 0.02,),
                       GestureDetector(onTap: (){
-                        Get.to(Customer_Rating());
+                        Get.to(Customer_Rating(
+                          name: "${jobsCustomersCompleteModel.message?.job?.name}",
+                          totalPrice:  "${jobsCustomersCompleteModel.message?.job?.totalPrice}",
+                          address:  "${jobsCustomersCompleteModel.message?.job?.location}",
+                          jobId:  "${jobsCustomersCompleteModel.message?.job?.jobsId}",
+                          completeJobTime:  "${jobsCustomersCompleteModel.message?.job?.dateAdded}",
+                          description:  "${jobsCustomersCompleteModel.message?.job?.description}",
+                          status:  "${jobsCustomersCompleteModel.message?.job?.status}",
+                          customerId: "${jobsCustomersCompleteModel.message?.customer?.usersCustomersId}",
+                          employeeId: "${jobsCustomersCompleteModel.message?.employee?.usersCustomersId}",
+                        ));
                       },child: mainButton("Add Ratings", Color(0xff2B65EC), context)),
                     ],
                   ),

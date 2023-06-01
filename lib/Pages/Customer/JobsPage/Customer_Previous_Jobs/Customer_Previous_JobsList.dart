@@ -122,17 +122,20 @@ class _Customer_PreviousJobListState extends State<Customer_PreviousJobList> {
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: (){
-                  Get.to(Customer_AddRating(
-                    // employeeId: "${getPreviousJobsModel.data?[index].usersEmployeeData!.usersCustomersId}",
-                    // image: "$baseUrlImage${getJobsModel.data?[index].image}",
-                    // jobName: getJobsModel.data?[index].name,
-                    // totalPrice: getJobsModel.data?[index].totalPrice,
-                    // address: getJobsModel.data?[index].location,
-                    // completeJobTime: getJobsModel.data?[index].dateAdded.toString(),
-                    // description: getJobsModel.data?[index].description,
-                    // name: "${getJobsModel.data?[index].usersCustomersData?.firstName} ${getJobsModel.data?[index].usersCustomersData?.lastName}",
-                    // profilePic: "$baseUrlImage${getJobsModel.data?[index].usersCustomersData?.profilePic}",
-                    // status: getJobsModel.data![index].status,
+                  Get.to(
+                      Customer_AddRating(
+                    employeeId: "${getPreviousJobsModel.data?[index].usersEmployeeData?.usersCustomersId}",
+                    customerId: "${getPreviousJobsModel.data?[index].usersCustomersData?.usersCustomersId}",
+                    image: "$baseUrlImage${getPreviousJobsModel.data?[index].image}",
+                    jobId: "$baseUrlImage${getPreviousJobsModel.data?[index].jobsId}",
+                    jobName: getPreviousJobsModel.data?[index].name,
+                    totalPrice: getPreviousJobsModel.data?[index].totalPrice,
+                    address: getPreviousJobsModel.data?[index].location,
+                    completeJobTime: getPreviousJobsModel.data?[index].dateAdded.toString(),
+                    description: getPreviousJobsModel.data?[index].description,
+                    name: "${getPreviousJobsModel.data?[index].usersEmployeeData?.firstName} ${getPreviousJobsModel.data?[index].usersEmployeeData?.lastName}",
+                    profilePic: "$baseUrlImage${getPreviousJobsModel.data?[index].usersEmployeeData?.profilePic}",
+                    status: getPreviousJobsModel.data![index].status,
                     )
                       );
                 },
@@ -178,7 +181,7 @@ class _Customer_PreviousJobListState extends State<Customer_PreviousJobList> {
                                 width: Get.width * 0.32,
                                 child: AutoSizeText(
                                   // 'Eleanor Pena',
-                                  "${getPreviousJobsModel.data?[index].name.toString()}",
+                                  "${getPreviousJobsModel.data?[index].name}",
                                   style: TextStyle(
                                     color: Color(0xff000000),
                                     fontFamily: "Outfit",
@@ -232,9 +235,9 @@ class _Customer_PreviousJobListState extends State<Customer_PreviousJobList> {
                                     // radius: (screenWidth > 600) ? 90 : 70,
                                     //   radius: 35,
                                       backgroundColor: Colors.transparent,
-                                      backgroundImage: getPreviousJobsModel.data?[index].usersCustomersData?.profilePic== null
+                                      backgroundImage: getPreviousJobsModel.data?[index].usersEmployeeData?.profilePic== null
                                           ? Image.asset("assets/images/person2.png").image
-                                          : NetworkImage(baseUrlImage+"${getPreviousJobsModel.data?[index].usersCustomersData?.profilePic.toString()}")
+                                          : NetworkImage(baseUrlImage+"${getPreviousJobsModel.data?[index].usersEmployeeData?.profilePic.toString()}")
                                     // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
                                   ),
@@ -243,13 +246,14 @@ class _Customer_PreviousJobListState extends State<Customer_PreviousJobList> {
                                   ),
                                   Container(
                                     width: 65,
+                                    margin: EdgeInsets.only(top: 10,),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           // 'Wade Warren',
-                                          "${getPreviousJobsModel.data?[index].usersCustomersData?.firstName} ${getPreviousJobsModel.data?[index].usersCustomersData?.lastName}",
+                                          "${getPreviousJobsModel.data?[index].usersEmployeeData?.firstName} ${getPreviousJobsModel.data?[index].usersEmployeeData?.lastName}",
                                           style: TextStyle(
                                             color: Color(0xff000000),
                                             fontFamily: "Outfit",
@@ -263,7 +267,7 @@ class _Customer_PreviousJobListState extends State<Customer_PreviousJobList> {
                                           children: [
                                             Image.asset("assets/images/star.png"),
                                             Text(
-                                              '4.5',
+                                              '--',
                                               style: TextStyle(
                                                 color: Color(0xff000000),
                                                 fontFamily: "Outfit",

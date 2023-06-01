@@ -286,7 +286,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                                       vertical: 5.0),
                                   child: Text(
                                     // 'Mar 03, 2023',
-                                    "${getJobsModel.data?[index].startDate}",
+                                    "${getJobsModel.data?[index].dateAdded}",
                                     style: TextStyle(
                                       color: Color(0xff9D9FAD),
                                       fontFamily: "Outfit",
@@ -365,7 +365,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                                               Image.asset(
                                                   "assets/images/star.png"),
                                               Text(
-                                                '4.5',
+                                                '--',
                                                 // getJobsModel.data?[index].rating,
                                                 style: TextStyle(
                                                   color: Color(0xff000000),

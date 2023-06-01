@@ -164,6 +164,15 @@ class _JobDetailsState extends State<JobDetails> {
       // setState(() {});
       print('jobsCreateModel status: ${jobsCreateModel.status}');
     }
+    Future.delayed(const Duration(seconds: 2),
+            () {
+          Estimated_PaymentMethod(
+              ctx: context,
+              price: jobsCreateModel.data?.totalPrice,
+              amount: jobsCreateModel.data?.price,
+              chargers: jobsCreateModel.data?.serviceCharges,
+              tax: jobsCreateModel.data?.tax);
+        });
   }
 
 
@@ -691,15 +700,6 @@ class _JobDetailsState extends State<JobDetails> {
                                     print("image: ${base64ID}");
 
                                      jobCreated();
-                                    Future.delayed(const Duration(seconds: 2),
-                                        () {
-                                      Estimated_PaymentMethod(
-                                          ctx: context,
-                                          price: jobsCreateModel.data?.totalPrice,
-                                      amount: jobsCreateModel.data?.price,
-                                      chargers: jobsCreateModel.data?.serviceCharges,
-                                      tax: jobsCreateModel.data?.tax);
-                                    });
                                   }
                                 }
                               },

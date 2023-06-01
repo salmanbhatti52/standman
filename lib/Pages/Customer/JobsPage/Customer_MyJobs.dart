@@ -269,7 +269,7 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
                                     vertical: 5.0),
                                 child: Text(
                                   // 'Mar 03, 2023',
-                                  "${customerMyJobModel.data?[index].dateModified}",
+                                  "${customerMyJobModel.data?[index].dateAdded}",
                                   style: TextStyle(
                                     color: Color(0xff9D9FAD),
                                     fontFamily: "Outfit",
@@ -351,7 +351,7 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
                                           ),
                                         ),
                                         Text(
-                                         "${customerMyJobModel.data?[index].dateAdded}",
+                                         "${customerMyJobModel.data?[index].dateModified}",
                                           style: TextStyle(
                                             color: Color(0xff000000),
                                             fontFamily: "Outfit",

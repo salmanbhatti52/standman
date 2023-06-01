@@ -29,7 +29,7 @@ class CustomerWalletTxnModel {
 }
 
 class Data {
-  double? expenses;
+  String? expenses;
   List<TransactionHistory>? transactionHistory;
 
   Data({
@@ -38,7 +38,7 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    expenses: json["expenses"]?.toDouble(),
+    expenses: json["expenses"],
     transactionHistory: List<TransactionHistory>.from(json["transaction_history"].map((x) => TransactionHistory.fromJson(x))),
   );
 
@@ -64,6 +64,7 @@ class TransactionHistory {
   String? status;
   String? narration;
   UserData? userData;
+  TxnDetail? txnDetail;
 
   TransactionHistory({
     this.walletTxnsId,
@@ -81,6 +82,7 @@ class TransactionHistory {
     this.status,
     this.narration,
     this.userData,
+    this.txnDetail,
   });
 
   factory TransactionHistory.fromJson(Map<String, dynamic> json) => TransactionHistory(
@@ -99,6 +101,7 @@ class TransactionHistory {
     status: json["status"],
     narration: json["narration"],
     userData: UserData.fromJson(json["user_data"]),
+    txnDetail: TxnDetail.fromJson(json["txn_detail"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -117,6 +120,55 @@ class TransactionHistory {
     "status": status,
     "narration": narration,
     "user_data": userData!.toJson(),
+    "txn_detail": txnDetail!.toJson(),
+  };
+}
+
+class TxnDetail {
+  String? userName;
+  String? data;
+  String? totalPrice;
+  String? previousPrice;
+  String?  extraServiceCharges;
+  String? bookedTime;
+  String? bookedClose;
+  String?  extraTime;
+  String?  extraPrice;
+
+  TxnDetail({
+    this.userName,
+    this.data,
+    this.totalPrice,
+    this.previousPrice,
+    this.extraServiceCharges,
+    this.bookedTime,
+    this.bookedClose,
+    this.extraTime,
+    this.extraPrice,
+  });
+
+  factory TxnDetail.fromJson(Map<String, dynamic> json) => TxnDetail(
+    userName: json["user_name"],
+    data: json["data"],
+    totalPrice: json["total_price"],
+    previousPrice: json["previous_price"],
+    extraServiceCharges: json["extra_service_charges"],
+    bookedTime: json["booked_time"],
+    bookedClose: json["booked_close"],
+    extraTime: json["extra_time"],
+    extraPrice: json["extra_price"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "user_name": userName,
+    "data": data,
+    "total_price": totalPrice,
+    "previous_price": previousPrice,
+    "extra_service_charges": extraServiceCharges,
+    "booked_time": bookedTime,
+    "booked_close": bookedClose,
+    "extra_time": extraTime,
+    "extra_price": extraPrice,
   };
 }
 
