@@ -344,7 +344,7 @@ Payment({
                       SizedBox(height: Get.height * 0.02,),
                       GestureDetector(onTap: (){
                         Get.to(Customer_Rating(
-                          name: "${jobsCustomersCompleteModel.message?.job?.name}",
+                          jobName: "${jobsCustomersCompleteModel.message?.job?.name}",
                           totalPrice:  "${jobsCustomersCompleteModel.message?.job?.totalPrice}",
                           address:  "${jobsCustomersCompleteModel.message?.job?.location}",
                           jobId:  "${jobsCustomersCompleteModel.message?.job?.jobsId}",

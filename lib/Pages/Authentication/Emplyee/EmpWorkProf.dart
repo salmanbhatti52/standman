@@ -507,20 +507,20 @@ class _WorkProofState extends State<WorkProof> {
                           //   });
                           // }
                           if (employeeSignupModel.status == "success") {
-                            SharedPreferences sharedPref =
-                                await SharedPreferences.getInstance();
-                            await sharedPref.setString('empUser_email',
-                                "${employeeSignupModel.data?.email.toString()}");
-                            await sharedPref.setString('empPhoneNumber',
-                                "${employeeSignupModel.data?.phone.toString()}");
-                            await sharedPref.setString('empFullName', "${employeeSignupModel.data?.firstName.toString()} ${employeeSignupModel.data?.lastName.toString()}");
-                            await sharedPref.setString('empProfilePic',
-                                "${employeeSignupModel.data?.profilePic.toString()}");
-                            await sharedPref.setString('empUsersCustomersId',
-                                "${employeeSignupModel.data?.usersCustomersId.toString()}");
+                            // SharedPreferences sharedPref =
+                            //     await SharedPreferences.getInstance();
+                            // await sharedPref.setString('empUser_email',
+                            //     "${employeeSignupModel.data?.email.toString()}");
+                            // await sharedPref.setString('empPhoneNumber',
+                            //     "${employeeSignupModel.data?.phone.toString()}");
+                            // await sharedPref.setString('empFullName', "${employeeSignupModel.data?.firstName.toString()} ${employeeSignupModel.data?.lastName.toString()}");
+                            // await sharedPref.setString('empProfilePic',
+                            //     "${employeeSignupModel.data?.profilePic.toString()}");
+                            // await sharedPref.setString('empUsersCustomersId',
+                            //     "${employeeSignupModel.data?.usersCustomersId.toString()}");
 
                             Future.delayed(const Duration(seconds: 3), () {
-                              toastSuccessMessage(employeeSignupModel.message, Colors.green);
+                              toastSuccessMessage(employeeSignupModel.data, Colors.green);
                               Get.to(LoginTabClass(login: 1,));
                               setState(() {
                                 isInAsyncCall = false;
@@ -530,7 +530,7 @@ class _WorkProofState extends State<WorkProof> {
                           }
                           if (employeeSignupModel.status != "success") {
                             toastFailedMessage(
-                                employeeSignupModel.message, Colors.red);
+                                employeeSignupModel.data, Colors.red);
                             setState(() {
                               isInAsyncCall = false;
                             });

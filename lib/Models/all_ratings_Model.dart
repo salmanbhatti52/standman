@@ -1,54 +1,35 @@
 // To parse this JSON data, do
 //
-//     final addJobRatingModel = addJobRatingModelFromJson(jsonString);
+//     final allRatingsModel = allRatingsModelFromJson(jsonString);
 
 import 'dart:convert';
 
-AddJobRatingModel addJobRatingModelFromJson(String str) => AddJobRatingModel.fromJson(json.decode(str));
+AllRatingsModel allRatingsModelFromJson(String str) => AllRatingsModel.fromJson(json.decode(str));
 
-String addJobRatingModelToJson(AddJobRatingModel data) => json.encode(data.toJson());
+String allRatingsModelToJson(AllRatingsModel data) => json.encode(data.toJson());
 
-class AddJobRatingModel {
+class AllRatingsModel {
   String? status;
-  Data? data;
+  List<Datum>? data;
 
-  AddJobRatingModel({
+  AllRatingsModel({
     this.status,
     this.data,
   });
 
-  factory AddJobRatingModel.fromJson(Map<String, dynamic> json) => AddJobRatingModel(
+  factory AllRatingsModel.fromJson(Map<String, dynamic> json) => AllRatingsModel(
     status: json["status"],
-    data: Data.fromJson(json["data"]),
+    // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))): null,
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data!.toJson(),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
-class Data {
-  JobRated? jobRated;
-  UserData? userData;
-
-  Data({
-    this.jobRated,
-    this.userData,
-  });
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    jobRated: JobRated.fromJson(json["job_rated"]),
-    userData: UserData.fromJson(json["user_data"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "job_rated": jobRated!.toJson(),
-    "user_data": userData!.toJson(),
-  };
-}
-
-class JobRated {
+class Datum {
   int? jobsRatingsId;
   int? usersCustomersId;
   int? employeeUsersCustomersId;
@@ -56,9 +37,10 @@ class JobRated {
   String? rating;
   String? comment;
   DateTime? dateAdded;
-  String?  status;
+  String? status;
+  CustomerData? customerData;
 
-  JobRated({
+  Datum({
     this.jobsRatingsId,
     this.usersCustomersId,
     this.employeeUsersCustomersId,
@@ -67,9 +49,10 @@ class JobRated {
     this.comment,
     this.dateAdded,
     this.status,
+    this.customerData,
   });
 
-  factory JobRated.fromJson(Map<String, dynamic> json) => JobRated(
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     jobsRatingsId: json["jobs_ratings_id"],
     usersCustomersId: json["users_customers_id"],
     employeeUsersCustomersId: json["employee_users_customers_id"],
@@ -78,6 +61,7 @@ class JobRated {
     comment: json["comment"],
     dateAdded: DateTime.parse(json["date_added"]),
     status: json["status"],
+    customerData: CustomerData.fromJson(json["customer_data"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -89,10 +73,11 @@ class JobRated {
     "comment": comment,
     "date_added": dateAdded!.toIso8601String(),
     "status": status,
+    "customer_data": customerData!.toJson(),
   };
 }
 
-class UserData {
+class CustomerData {
   int? usersCustomersId;
   String? oneSignalId;
   String? usersCustomersType;
@@ -116,7 +101,7 @@ class UserData {
   DateTime? dateAdded;
   String? status;
 
-  UserData({
+  CustomerData({
     this.usersCustomersId,
     this.oneSignalId,
     this.usersCustomersType,
@@ -141,7 +126,7 @@ class UserData {
     this.status,
   });
 
-  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+  factory CustomerData.fromJson(Map<String, dynamic> json) => CustomerData(
     usersCustomersId: json["users_customers_id"],
     oneSignalId: json["one_signal_id"],
     usersCustomersType: json["users_customers_type"],

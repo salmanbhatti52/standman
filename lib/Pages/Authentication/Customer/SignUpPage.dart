@@ -844,17 +844,17 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
 
                                     if(customerSignupModel.status == "success"){
 
-                                      SharedPreferences sharedPref = await SharedPreferences.getInstance();
-                                      await sharedPref.setString('user_email', "${customerSignupModel.data?.email.toString()}");
-                                      await sharedPref.setString('phoneNumber', "${customerSignupModel.data?.phone.toString()}");
-                                      await sharedPref.setString('firstName', "${customerSignupModel.data?.firstName.toString()}");
-                                      await sharedPref.setString('lastName', "${customerSignupModel.data?.lastName.toString()}");
-                                      await sharedPref.setString('profilePic', "${customerSignupModel.data?.profilePic.toString()}");
-                                      await sharedPref.setString('usersCustomersId', "${customerSignupModel.data?.usersCustomersId.toString()}");
-                                      await sharedPref.setString('password', "${customerSignupModel.data?.password.toString()}");
+                                      // SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                                      // await sharedPref.setString('user_email', "${customerSignupModel.data?.email.toString()}");
+                                      // await sharedPref.setString('phoneNumber', "${customerSignupModel.data?.phone.toString()}");
+                                      // await sharedPref.setString('firstName', "${customerSignupModel.data?.firstName.toString()}");
+                                      // await sharedPref.setString('lastName', "${customerSignupModel.data?.lastName.toString()}");
+                                      // await sharedPref.setString('profilePic', "${customerSignupModel.data?.profilePic.toString()}");
+                                      // await sharedPref.setString('usersCustomersId', "${customerSignupModel.data?.usersCustomersId.toString()}");
+                                      // await sharedPref.setString('password', "${customerSignupModel.data?.password.toString()}");
 
                                       Future.delayed(const Duration(seconds: 3), () {
-                                        toastSuccessMessage(customerSignupModel.message, Colors.green);
+                                        toastSuccessMessage(customerSignupModel.data, Colors.green);
                                         // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
                                         Get.to(LoginTabClass(login: 0,));
                                         setState(() {
@@ -864,7 +864,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                       });
                                     }
                                     if(customerSignupModel.status != "success"){
-                                      toastFailedMessage(customerSignupModel.message, Colors.red);
+                                      toastFailedMessage(customerSignupModel.data, Colors.red);
                                       setState(() {
                                         isInAsyncCall = false;
                                       });

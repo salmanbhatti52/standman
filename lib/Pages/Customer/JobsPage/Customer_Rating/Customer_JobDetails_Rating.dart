@@ -55,9 +55,9 @@ class _Customer_RatingState extends State<Customer_Rating> {
       body: {
         "users_customers_id": "${widget.customerId}",
         "employee_users_customers_id": "${widget.employeeId}",
-        "jobs_id": "${widget.jobId}",
-        "rating": "${_ratingValue}",
-        "comment": "${commentJob.text.toString()}",
+        "jobs_id": widget.jobId,
+        "rating": _ratingValue.toString(),
+        "comment": commentJob.text.toString(),
       },
     );
     final responseString = response.body;
@@ -67,12 +67,26 @@ class _Customer_RatingState extends State<Customer_Rating> {
     if (response.statusCode == 200) {
       addJobRatingModel = addJobRatingModelFromJson(responseString);
       // setState(() {});
-      // print('getPreviousJobsModel status: ${getPreviousJobsModel.status}');
-      // print('getPreviousJobsModelLength: ${getPreviousJobsModel.data?.length}');
+      print('addJobRatingModel status: ${addJobRatingModel.status}');
+      print('addJobRatingModel data: ${addJobRatingModel.data}');
     }
     setState(() {
       loading = false;
     });
+    Future.delayed(const Duration(seconds: 1),
+            () {
+          if(addJobRatingModel.status == "success"){
+            toastSuccessMessage("Add Rating Successfully", Colors.green);
+            Get.to(Customer_Profile(
+              customerId: widget.customerId.toString(),
+             rating: "${addJobRatingModel.data?.jobRated?.rating}",
+              profilePic: "$baseUrlImage${addJobRatingModel.data?.userData?.profilePic}",
+              username: "${addJobRatingModel.data?.userData?.firstName} ${addJobRatingModel.data?.userData?.lastName}",
+            ));
+          } else{
+            toastFailedMessage("Something Went Wrong", Colors.red);
+          }
+        });
     // Get.to(Customer_Profile());
   }
 
@@ -354,12 +368,6 @@ class _Customer_RatingState extends State<Customer_Rating> {
                                   'Please Add Comment', Colors.red);
                             } else {
                               addJobRating();
-                              if(addJobRatingModel.status == "success"){
-                                toastSuccessMessage("${addJobRatingModel.message}", Colors.green);
-                                Get.to(Customer_Profile());
-                              } else{
-                                toastFailedMessage("${addJobRatingModel.message}", Colors.red);
-                              }
                               // print("hello");
                               // addJobRating();
                             }

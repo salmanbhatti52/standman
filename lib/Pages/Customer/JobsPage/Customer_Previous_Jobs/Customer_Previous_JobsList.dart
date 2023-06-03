@@ -127,7 +127,7 @@ class _Customer_PreviousJobListState extends State<Customer_PreviousJobList> {
                     employeeId: "${getPreviousJobsModel.data?[index].usersEmployeeData?.usersCustomersId}",
                     customerId: "${getPreviousJobsModel.data?[index].usersCustomersData?.usersCustomersId}",
                     image: "$baseUrlImage${getPreviousJobsModel.data?[index].image}",
-                    jobId: "$baseUrlImage${getPreviousJobsModel.data?[index].jobsId}",
+                    jobId: "${getPreviousJobsModel.data?[index].jobsId}",
                     jobName: getPreviousJobsModel.data?[index].name,
                     totalPrice: getPreviousJobsModel.data?[index].totalPrice,
                     address: getPreviousJobsModel.data?[index].location,
