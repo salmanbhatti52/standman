@@ -36,6 +36,8 @@ String updateMessageApiUrl = "${baseUrl}user_chat";
 
 String jobsCreateModelApiUrl = "${baseUrl}jobs_create";
 
+String jobsPriceModelApiUrl = "${baseUrl}jobs_price";
+
 String getJobsEmployeesModelApiUrl = "${baseUrl}get_jobs_employees";
 
 String getPreviousJobsModelApiUrl = "${baseUrl}get_previous_jobs";

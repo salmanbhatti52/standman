@@ -209,7 +209,7 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
                         Row(
                           children: [
                             const Text(
-                              "Job Taken by",
+                              "Job Posted by",
                               style: TextStyle(
                                 color: Color.fromRGBO(0, 0, 0, 1),
                                 fontFamily: "Outfit",
@@ -292,45 +292,45 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        GestureDetector(
-                          onTap: (){
-                            Get.to(EMpQRScanneer());
-                          },
-                            child: mainButton("Complete Job ", Color(0xff2B65EC), context)),
+                        // GestureDetector(
+                        //   onTap: (){
+                        //     Get.to(EMpQRScanneer());
+                        //   },
+                        //     child: mainButton("Complete Job ", Color(0xff2B65EC), context)),
                         // SizedBox(
                         //   height: height * 0.03,
                         // ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height*0.07,
-                            // height: 48,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              // color: Color(0xff4DA0E6),
-                              //   color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Color(0xffC70000), width: 1),
-                                boxShadow: [
-                                  BoxShadow(
-                                      spreadRadius: 0,
-                                      blurRadius: 15,
-                                      offset: Offset(1 , 10),
-                                      color: Color.fromRGBO(7, 1, 87, 0.1)
-                                  ),
-                                ]
-                            ),
-                            child:  Center(
-                              child: Text("Cancel Job",
-                                style: TextStyle(
-                                    fontFamily: "Outfit",
-                                    fontSize: 14,
-                                    color: Color(0xffC70000),
-                                    fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
-                            ),
-
-                          ),
-                        )
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                        //   child: Container(
+                        //     height: MediaQuery.of(context).size.height*0.07,
+                        //     // height: 48,
+                        //     width: MediaQuery.of(context).size.width,
+                        //     decoration: BoxDecoration(
+                        //       // color: Color(0xff4DA0E6),
+                        //       //   color: Colors.white,
+                        //         borderRadius: BorderRadius.circular(12),
+                        //         border: Border.all(color: Color(0xffC70000), width: 1),
+                        //         boxShadow: [
+                        //           BoxShadow(
+                        //               spreadRadius: 0,
+                        //               blurRadius: 15,
+                        //               offset: Offset(1 , 10),
+                        //               color: Color.fromRGBO(7, 1, 87, 0.1)
+                        //           ),
+                        //         ]
+                        //     ),
+                        //     child:  Center(
+                        //       child: Text("Cancel Job",
+                        //         style: TextStyle(
+                        //             fontFamily: "Outfit",
+                        //             fontSize: 14,
+                        //             color: Color(0xffC70000),
+                        //             fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
+                        //     ),
+                        //
+                        //   ),
+                        // )
                       ],
                     ),
                   ),

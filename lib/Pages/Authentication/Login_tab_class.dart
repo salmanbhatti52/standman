@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'Customer/AuthTextWidget.dart';
 import 'Customer/login_page.dart';
 import 'Emplyee/Emplogin_page.dart';

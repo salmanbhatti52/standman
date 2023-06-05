@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../Models/chat_start_user_Model.dart';
 import '../../../../Models/jobs_action_employees_Model.dart';
 import '../../../../Utils/api_urls.dart';
@@ -16,7 +15,6 @@ import '../../HomePage/EmpHomePage.dart';
 import '../../MessagePage/MessageDetails.dart';
 import '../Emp_Complete_Profilewithdetails/Emp_Profile_details.dart';
 import 'package:http/http.dart' as http;
-
 import '../Emp_QR_Scanner/EMp_QRScanned.dart';
 
 class EmpCompleteProfile extends StatefulWidget {

@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Models/all_ratings_Model.dart';
+import '../../../../Models/chat_start_user_Model.dart';
 import '../../../../Utils/api_urls.dart';
 import '../../../../widgets/TopBar.dart';
 import '../../../Drawer.dart';
+import '../../../Employee/HomePage/EmpHomePage.dart';
 import '../../HomePage/HomePage.dart';
 import '../../MessagePage/MessageDetails.dart';
 import '../Customer_JobCompletedBy/Customer_JobsDetails_CompletedBy.dart';
@@ -18,10 +20,11 @@ import 'package:http/http.dart' as http;
 
 class Customer_Profile extends StatefulWidget {
   String? customerId;
-  String? username;
+  String? employeeId;
+  String? name;
   String? rating;
   String? profilePic;
-   Customer_Profile({Key? key, this.customerId, this.profilePic, this.username, this.rating}) : super(key: key);
+   Customer_Profile({Key? key, this.customerId, this.employeeId, this.profilePic, this.name, this.rating}) : super(key: key);
 
   @override
   State<Customer_Profile> createState() => _Customer_ProfileState();
@@ -71,6 +74,50 @@ class _Customer_ProfileState extends State<Customer_Profile> {
     // TODO: implement initState
     super.initState();
     allJobRating();
+  }
+
+  ChatStartUserModel chatStartUserModel = ChatStartUserModel();
+
+  bool progress = false;
+
+  chatStartUser() async {
+
+    progress = true;
+    setState(() {});
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    empUsersCustomersId = empPrefs?.getString('empUsersCustomersId');
+    print("usersCustomersId = $usersCustomersId");
+    print("empUsersCustomersId = ${widget.customerId}");
+
+    // try {
+    String apiUrl = userChatApiUrl;
+    print("userChatApiUrl: $apiUrl");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "requestType": "startChat",
+        "users_customers_id": usersCustomersId,
+        "other_users_customers_id": widget.customerId,
+      },
+      headers: {'Accept': 'application/json'},
+    );
+    print('${response.statusCode}');
+    print(response);
+    print("responseStartChat: $response");
+    print("status Code chat: ${response.statusCode}");
+    print("in 200 chat");
+    if (response.statusCode == 200) {
+      final responseString = response.body;
+      print("userChatResponse: ${responseString.toString()}");
+      chatStartUserModel = chatStartUserModelFromJson(responseString);
+    }
+    // } catch (e) {
+    //   print('Error in userChatApiUrl: ${e.toString()}');
+    // }
+    progress = false;
+    setState(() {});
   }
 
   @override
@@ -143,7 +190,7 @@ class _Customer_ProfileState extends State<Customer_Profile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                   "${widget.username}",
+                   "${widget.name}",
                     style: const TextStyle(
                       color: Colors.white,
                       fontFamily: "Outfit",
@@ -152,8 +199,15 @@ class _Customer_ProfileState extends State<Customer_Profile> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){
-                      // Get.to(MessagesDetails());
+                    onTap: () async {
+                      await chatStartUser();
+                      Get.to(MessagesDetails(
+                        usersCustomersId: widget.customerId,
+                        other_users_customers_id: widget.employeeId,
+                        img: widget.profilePic.toString(),
+                        name: widget.name.toString(),
+                      ),
+                      );
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 8),

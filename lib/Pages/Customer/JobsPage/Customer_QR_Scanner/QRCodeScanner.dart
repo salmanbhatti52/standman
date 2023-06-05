@@ -96,7 +96,6 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
   }
 
   JobsExtraAmount jobsExtraAmount = JobsExtraAmount();
-
   bool progress = false;
 
   jobsExtraAmountWidget() async {
@@ -158,11 +157,11 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
     // TODO: implement initState
     super.initState();
     print("CustomerId, jobId, jobName ${widget.customerId} ${widget.jobId} ${widget.jobName}");
-      Future.delayed(const Duration(seconds: 3), () async {
-        print("resultssss ${result?.code}");
+      Future.delayed(const Duration(seconds: 10), ()  {
+        print("resultssss ${result!.code}");
       if(result?.code == "${widget.customerId} ${widget.jobId} ${widget.jobName}" ){
 
-      await  jobsExtraAmountWidget();
+        jobsExtraAmountWidget();
 
       } else {
         toastFailedMessage("Failed to Scan", Colors.red);

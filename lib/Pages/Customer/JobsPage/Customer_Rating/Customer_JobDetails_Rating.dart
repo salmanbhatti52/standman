@@ -79,9 +79,10 @@ class _Customer_RatingState extends State<Customer_Rating> {
             toastSuccessMessage("Add Rating Successfully", Colors.green);
             Get.to(Customer_Profile(
               customerId: widget.customerId.toString(),
+              employeeId: widget.employeeId.toString(),
              rating: "${addJobRatingModel.data?.jobRated?.rating}",
               profilePic: "$baseUrlImage${addJobRatingModel.data?.userData?.profilePic}",
-              username: "${addJobRatingModel.data?.userData?.firstName} ${addJobRatingModel.data?.userData?.lastName}",
+              name: "${addJobRatingModel.data?.userData?.firstName} ${addJobRatingModel.data?.userData?.lastName}",
             ));
           } else{
             toastFailedMessage("Something Went Wrong", Colors.red);

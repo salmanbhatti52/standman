@@ -336,7 +336,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                             Future.delayed(const Duration(seconds: 3), () {
                               if(customerSigninModel.data!.usersCustomersType == "Customer"){
                                 // Get.to(bottom_bar());
-                                Get.to(bottom_bar(currentIndex: 0,));
+                                Get.offAll(bottom_bar(currentIndex: 0,));
                                 toastSuccessMessage("Login Successfully", Colors.green);
                               } else {
                                 toastFailedMessage("Invalid email", Colors.red);

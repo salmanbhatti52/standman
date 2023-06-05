@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/jobs_create_Model.dart';
+import '../../../Models/jobs_price_Model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
@@ -126,61 +127,56 @@ class _JobDetailsState extends State<JobDetails> {
   //   return selectedDateTime.isAfter(now);
   // }
 
-  JobsCreateModel jobsCreateModel = JobsCreateModel();
-
-  jobCreated() async {
-    print("working");
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('usersCustomersId');
-    print("userId in Prefs is = $usersCustomersId");
-
-    String apiUrl = jobsCreateModelApiUrl;
-    print("working");
-
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {"Accept": "application/json"},
-      body: {
-        "users_customers_id": usersCustomersId,
-        "name": jobName.text.toString(),
-        "location": widget.currentaddress.toString() == "" ? widget.currentaddress1.toString() : widget.currentaddress.toString(),
-        "longitude": widget.longitude,
-        "lattitude": widget.latitude,
-        "start_date": selectedDate.toString(),
-        "start_time": startTime?.format(context),
-        "end_time": endTime?.format(context),
-        "description": describeJob.text.toString(),
-        "payment_gateways_name": "GPay",
-        "payment_status": "Paid",
-        "image": base64ID,
-      },
-    );
-    final responseString = response.body;
-    print("jobsCreateModelApi: ${response.body}");
-    print("status Code jobsCreateModel: ${response.statusCode}");
-    print("in 200 jobsCreate");
-    if (response.statusCode == 200) {
-      jobsCreateModel = jobsCreateModelFromJson(responseString);
-      // setState(() {});
-      print('jobsCreateModel status: ${jobsCreateModel.status}');
-    }
-    Future.delayed(const Duration(seconds: 2),
-            () {
-          Estimated_PaymentMethod(
-              ctx: context,
-              price: jobsCreateModel.data?.totalPrice,
-              amount: jobsCreateModel.data?.price,
-              chargers: jobsCreateModel.data?.serviceCharges,
-              tax: jobsCreateModel.data?.tax);
-        });
-  }
-
-
-  // sharePref() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setDouble('latitude', widget.latitude as double);
-  //   prefs.setDouble('longitude', widget.longitude as double);
+  // JobsCreateModel jobsCreateModel = JobsCreateModel();
+  //
+  // jobCreated() async {
+  //   print("working");
+  //   prefs = await SharedPreferences.getInstance();
+  //   usersCustomersId = prefs!.getString('usersCustomersId');
+  //   print("userId in Prefs is = $usersCustomersId");
+  //
+  //   String apiUrl = jobsCreateModelApiUrl;
+  //   print("working");
+  //
+  //   final response = await http.post(
+  //     Uri.parse(apiUrl),
+  //     headers: {"Accept": "application/json"},
+  //     body: {
+  //       "users_customers_id": usersCustomersId,
+  //       "name": jobName.text.toString(),
+  //       "location": widget.currentaddress.toString() == "" ? widget.currentaddress1.toString() : widget.currentaddress.toString(),
+  //       "longitude": widget.longitude,
+  //       "lattitude": widget.latitude,
+  //       "start_date": selectedDate.toString(),
+  //       "start_time": startTime?.format(context),
+  //       "end_time": endTime?.format(context),
+  //       "description": describeJob.text.toString(),
+  //       "payment_gateways_name": "GPay",
+  //       "payment_status": "Paid",
+  //       "image": base64ID,
+  //     },
+  //   );
+  //   final responseString = response.body;
+  //   print("jobsCreateModelApi: ${response.body}");
+  //   print("status Code jobsCreateModel: ${response.statusCode}");
+  //   print("in 200 jobsCreate");
+  //   if (response.statusCode == 200) {
+  //     jobsCreateModel = jobsCreateModelFromJson(responseString);
+  //     // setState(() {});
+  //     print('jobsCreateModel status: ${jobsCreateModel.status}');
+  //   }
+  //   Future.delayed(const Duration(seconds: 2),
+  //           () {
+  //         Estimated_PaymentMethod(
+  //             ctx: context,
+  //             price: jobsCreateModel.data?.totalPrice,
+  //             amount: jobsCreateModel.data?.price,
+  //             chargers: jobsCreateModel.data?.serviceCharges,
+  //             tax: jobsCreateModel.data?.tax);
+  //       });
   // }
+
+
 
   @override
   void initState() {
@@ -193,6 +189,50 @@ class _JobDetailsState extends State<JobDetails> {
     print(widget.currentaddress);
     print(widget.currentaddress1);
   }
+
+  JobsPriceModel jobsPriceModel = JobsPriceModel();
+
+  JobsPrice() async {
+    print("working");
+    String apiUrl = jobsPriceModelApiUrl;
+    final response = await http.post(Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "start_time": startTime?.format(context),
+        "end_time": endTime?.format(context),
+      },
+    );
+    final responseString = response.body;
+    print("jobPriceModelApi: ${response.body}");
+    print("status Code jobPriceModel: ${response.statusCode}");
+    print("in 200 jobPrice");
+    if (response.statusCode == 200) {
+      jobsPriceModel = jobsPriceModelFromJson(responseString);
+      // setState(() {});
+      print('jobsCreateModel status: ${jobsPriceModel.status}');
+    }
+    Future.delayed(const Duration(seconds: 2),
+            () {
+          Estimated_PaymentMethod(
+              ctx: context,
+              price: jobsPriceModel.data?.totalPrice,
+              amount: jobsPriceModel.data?.price,
+              chargers: jobsPriceModel.data?.serviceCharges,
+              tax: jobsPriceModel.data?.tax,
+            img: base64ID,
+            jobName: jobName.text.toString(),
+            date: selectedDate.toString(),
+            time: startTime?.format(context),
+            endtime: endTime?.format(context),
+            describe:  describeJob.text.toString(),
+            address: widget.currentaddress.toString() == "" ? widget.currentaddress1.toString() : widget.currentaddress.toString(),
+            long: widget.longitude,
+            lat: widget.latitude,
+          );
+        });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -699,7 +739,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     print("payment_status :Paid");
                                     print("image: ${base64ID}");
 
-                                     jobCreated();
+                                     JobsPrice();
                                   }
                                 }
                               },

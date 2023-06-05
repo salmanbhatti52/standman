@@ -353,7 +353,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                             Future.delayed(const Duration(seconds: 3), () {
                               if (employeeSigninModel.data!.usersCustomersType ==
                                   "Employee") {
-                                Get.to(Empbottom_bar(currentIndex: 0,));
+                                Get.offAll(Empbottom_bar(currentIndex: 0,));
                                 toastSuccessMessage("Login Successfully", Colors.green);
                               } else {
                                 toastFailedMessage("Invalid email", Colors.red);

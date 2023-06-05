@@ -179,7 +179,7 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                                  SvgPicture.asset("assets/images/sms-tracking.svg", color: Colors.white,),
                                  ConstrainedBox(
                                    constraints: BoxConstraints(
-                                       maxWidth: MediaQuery.of(context).size.width * 0.45),
+                                       maxWidth: MediaQuery.of(context).size.width * 0.4),
                                    child: Padding(
                                      padding: const EdgeInsets.only(left: 8.0),
                                      child: AutoSizeText(

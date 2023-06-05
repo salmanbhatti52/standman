@@ -187,7 +187,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
         ],
       )) :
            Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         child: Container(
           // color: Color(0xff9D9FAD),
           // height: MediaQuery.of(context).size.height * 0.16,
@@ -224,8 +224,8 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                     ));
                   },
                   child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 5),
+                    padding: EdgeInsets.only(top: 10),
                     // width: MediaQuery.of(context).size.width * 0.51,
                     decoration: BoxDecoration(
                         color: Colors.white,

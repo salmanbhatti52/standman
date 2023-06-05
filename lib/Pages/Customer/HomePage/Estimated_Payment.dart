@@ -16,14 +16,14 @@ import 'package:http/http.dart' as http;
 import 'Paymeny_details.dart';
 
 Estimated_PaymentMethod({
-  //   String? img,
-  // String? jobName,
-  // String? date,
-  // String? long,
-  // String? lat,
-  // String? time,
-  // String? endtime,
-  // String? describe,
+    String? img,
+  String? jobName,
+  String? date,
+  String? long,
+  String? lat,
+  String? time,
+  String? endtime,
+  String? describe,
   // String? price,
   // double? discountPrice,
   BuildContext? ctx,
@@ -31,139 +31,63 @@ Estimated_PaymentMethod({
   String? amount,
   String? chargers,
   String? tax,
-  // String? address
+  String? address
 }) {
   int _selected = 0;
-
-  // JobsCreateModel jobsCreateModel = JobsCreateModel();
-
-  // jobCreated() async {
-  //   print("working");
-  //
-  //   String apiUrl = jobsCreateModelApiUrl;
-  //   print("working");
-  //
-  //   final response = await http.post(
-  //     Uri.parse(apiUrl),
-  //     headers: {"Accept": "application/json"},
-  //     body: {
-  //       "users_customers_id": usersCustomersId,
-  //       "name": jobName,
-  //       "location": address,
-  //       "longitude": long,
-  //       "lattitude": lat,
-  //       "start_date": date.toString(),
-  //       "start_time": time.toString(),
-  //       "end_time": endtime.toString(),
-  //       "description": describe.toString(),
-  //       // "price": discountPrice.toString(),
-  //       "price": "100",
-  //       "service_charges": "2",
-  //       "total_price": "102",
-  //       "payment_gateways_name": "GPay",
-  //       "payment_status": "Paid",
-  //       "image": img,
-  //     },
-  //   );
-  //   final responseString = response.body;
-  //   print("jobsCreateModelApi: ${response.body}");
-  //   print("status Code jobsCreateModel: ${response.statusCode}");
-  //   print("in 200 jobsCreate");
-  //   if (response.statusCode == 200) {
-  //     jobsCreateModel = jobsCreateModelFromJson(responseString);
-  //     // setState(() {});
-  //     print('jobsCreateModel status: ${jobsCreateModel.status}');
-  //   }
-  // }
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   sharedPrefs();
-  // }
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   getUserProfileWidget();
-  //
-  // }
-
-  // sharedPrefs() async {
-  //   // loading = true;
-  //   setState(() {});
-  //   print('in LoginPage shared prefs');
-  //   prefs = await SharedPreferences.getInstance();
-  //   // userId = (prefs!.getString('userid'));
-  //   userEmail = (prefs!.getString('user_email'));
-  //   phoneNumber = (prefs!.getString('phoneNumber'));
-  //   fullName = (prefs!.getString('fullName'));
-  //   profilePic1 = (prefs!.getString('profilePic'));
-  //   password = (prefs!.getString('password'));
-  //   usersCustomersId = prefs!.getString('usersCustomersId');
-  //   print("userId in Prefs is = $usersCustomersId");
-  //   print("oldpass = $password");
-  //   // userFirstName = (prefs!.getString('user_first_name'));
-  //   // userLastName = (prefs!.getString('user_last_name'));
-  //   // print("userId in LoginPrefs is = $userId");
-  //   print("userEmail in Profile is = $userEmail");
-  //   print("userprofilePic in Profile is = $profilePic1");
-  //   // print("userFirstName in LoginPrefs is = $userFirstName $userLastName");
-  // }
-
-  UsersProfileModel usersProfileModel = UsersProfileModel();
-
-  bool progress = false;
   bool isInAsyncCall = false;
 
-  // getUserProfileWidget() async {
-  //   progress = true;
-  //   // setState(() {});
-  //   try {
-  //     String apiUrl = usersProfileApiUrl;
-  //     print("getUserProfileApi: $apiUrl");
-  //     final response = await http.post(Uri.parse(apiUrl),
-  //         body: {
-  //           "users_customers_id": usersCustomersId.toString(),
-  //         }, headers: {
-  //           'Accept': 'application/json'
-  //         });
-  //     print('${response.statusCode}');
-  //     print(response);
-  //     if (response.statusCode == 200) {
-  //       final responseString = response.body;
-  //       print("getUserProfileResponse: ${responseString.toString()}");
-  //       usersProfileModel = usersProfileModelFromJson(responseString);
-  //       print("getUserName: ${usersProfileModel.data!.lastName}");
-  //       print("getUserEmail: ${usersProfileModel.data!.email}");
-  //       print("getUserEmail: ${usersProfileModel.data!.email}");
-  //       print("getUserNumber: ${usersProfileModel.data!.phone}");
-  //       print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-  //       print(
-  //           "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
-  //     }
-  //   } catch (e) {
-  //     print('Error in getUserProfileWidget: ${e.toString()}');
-  //   }
-  //   progress = false;
-  //   // setState(() {});
-  // }
+  JobsCreateModel jobsCreateModel = JobsCreateModel();
 
-  // @override
-  // void initState() {
-  //    TODO: implement initState
-  //   print("img: ${img}");
-  //   print("jobName: ${jobName}");
-  //   print("date: ${date}");
-  //   print("price: ${price}");
-  //   print("describe: ${describe}");
-  //   super.initState();
-  //   // Future.delayed(Duration.zero, () {
-  //   //   this.PaymentMethod();
-  //   // });
-  // }
+  jobCreated() async {
+    print("working");
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("userId in Prefs is = $usersCustomersId");
+
+    String apiUrl = jobsCreateModelApiUrl;
+    print("working");
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+        "name": jobName,
+        "location": address,
+        "longitude": long,
+        "lattitude": lat,
+        "start_date": date,
+        "start_time": time,
+        "end_time": endtime,
+        "description": describe,
+        "price": price,
+        "service_charges": chargers,
+        "tax": tax,
+        "payment_gateways_name": "GPay",
+        "payment_status": "Paid",
+        "image": img,
+      },
+    );
+    final responseString = response.body;
+    print("jobsCreateModelApi: ${response.body}");
+    print("status Code jobsCreateModel: ${response.statusCode}");
+    print("in 200 jobsCreate");
+    if (response.statusCode == 200) {
+      jobsCreateModel = jobsCreateModelFromJson(responseString);
+      // setState(() {});
+      print('jobsCreateModel status: ${jobsCreateModel.status}');
+    }
+    // Future.delayed(const Duration(seconds: 2),
+    //         () {
+    //       Estimated_PaymentMethod(
+    //           ctx: context,
+    //           price: jobsCreateModel.data?.totalPrice,
+    //           amount: jobsCreateModel.data?.price,
+    //           chargers: jobsCreateModel.data?.serviceCharges,
+    //           tax: jobsCreateModel.data?.tax);
+    //     });
+  }
+
 
   return showFlexibleBottomSheet(
       isExpand: false,
@@ -566,28 +490,28 @@ Estimated_PaymentMethod({
                       padding: const EdgeInsets.symmetric(vertical: 15.0),
                       child: GestureDetector(
                           onTap: () async {
-                            // print("users_customers_id: ${usersCustomersId}");
-                            // print("jobName: ${jobName}");
-                            // // print("name123: ${usersProfileModel.data!.fullName}");
-                            // print("location: ${address}");
-                            // print("longitude: ${long}");
-                            // print("lattitude: ${lat}");
-                            // print("start_date: ${date}");
-                            // print("start_time: ${time}");
-                            // print("end_time: ${endtime}");
-                            // print("description: ${describe}");
-                            // print("price: 100");
-                            // print("service_charges: 2");
-                            // print("total_price: 100");
-                            // print("payment_gateways_name: gPay");
-                            // print("payment_status :Paid");
-                            // print("image: ${img}");
+                            print("users_customers_id: ${usersCustomersId}");
+                            print("jobName: ${jobName}");
+                            // print("name123: ${usersProfileModel.data!.fullName}");
+                            print("location: ${address}");
+                            print("longitude: ${long}");
+                            print("lattitude: ${lat}");
+                            print("start_date: ${date}");
+                            print("start_time: ${time}");
+                            print("end_time: ${endtime}");
+                            print("description: ${describe}");
+                            print("price: 100");
+                            print("service_charges: 2");
+                            print("total_price: 100");
+                            print("payment_gateways_name: gPay");
+                            print("payment_status :Paid");
+                            print("image: ${img}");
 
                             stateSetterObject(() {
                               isInAsyncCall = true;
                             });
 
-                            // await jobCreated();
+                            await jobCreated();
 
                             // SharedPreferences sharedPref = await SharedPreferences.getInstance();
                             // await sharedPref.setString('longitude', "${long}");
@@ -595,13 +519,9 @@ Estimated_PaymentMethod({
 
                             // await getUserProfileWidget();
 
-                            // if(jobsCreateModel.status == "success"){
+                            if(jobsCreateModel.status == "success"){
                             Future.delayed(const Duration(seconds: 2), () {
-                              toastSuccessMessage(
-                                  "Job Created Successfully", Colors.green);
-                              // Get.to(bottom_bar(currentIndex: 0));
-
-                              // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
+                              toastSuccessMessage("Job Created Successfully", Colors.green);
 
                               showDialog(
                                 context: context,
@@ -675,7 +595,12 @@ Estimated_PaymentMethod({
                               });
                               print("false: $isInAsyncCall");
                             });
-                            // }
+                            } else {
+                              toastFailedMessage(jobsCreateModel.message, Colors.red);
+                              stateSetterObject(() {
+                                isInAsyncCall = false;
+                              });
+                            }
 
                             // if(jobsCreateModel.status != "success"){
                             //   toastFailedMessage(jobsCreateModel.message, Colors.red);
