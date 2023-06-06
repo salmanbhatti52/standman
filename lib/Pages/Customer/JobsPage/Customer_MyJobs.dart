@@ -214,7 +214,7 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
                       name: "${customerMyJobModel.data?[index].usersCustomersData?.firstName} ${customerMyJobModel.data?[index].usersCustomersData?.lastName}",
                       profilePic: "$baseUrlImage${customerMyJobModel.data?[index].usersCustomersData?.profilePic}",
                       status: customerMyJobModel.data![index].status,
-                    ));
+                    ),);
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 5),

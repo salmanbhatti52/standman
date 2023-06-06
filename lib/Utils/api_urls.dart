@@ -79,3 +79,5 @@ String employeeWalletTxnModelApiUrl = "${baseUrl}employee_wallet_txn";
 String addJobRatingModelApiUrl = "${baseUrl}add_job_rating";
 
 String allJobRatingModelApiUrl = "${baseUrl}all_ratings";
+
+String unreadedMessagesModelApiUrl = "${baseUrl}unreaded_messages";

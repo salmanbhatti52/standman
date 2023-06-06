@@ -19,7 +19,8 @@ class GetPreviousJobsModel {
 
   factory GetPreviousJobsModel.fromJson(Map<String, dynamic> json) => GetPreviousJobsModel(
     status: json["status"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))): null,
   );
 
   Map<String, dynamic> toJson() => {

@@ -284,10 +284,10 @@ class _Customer_RatingState extends State<Customer_Rating> {
                               itemSize: 30,
                               itemCount: 5,
                               ratingWidget: RatingWidget(
-                                  full: const Icon(Icons.star, color: Color(0xffD1D100),),
+                                  full: const Icon(Icons.star, color: Color(0xffFFDF00),),
                                   half: const Icon(
                                     Icons.star_half,
-                                    color: Color(0xffD1D100),
+                                    color: Color(0xffFFDF00),
                                   ),
                                   empty: const Icon(
                                     Icons.star_outline,

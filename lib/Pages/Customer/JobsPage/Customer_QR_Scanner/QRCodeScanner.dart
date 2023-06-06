@@ -141,7 +141,7 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
         PreviousAmount: jobsExtraAmount.message?.previousAmount,
         ExtraAmount: "${jobsExtraAmount.message?.extraAmount}",
         ServiceCharges: jobsExtraAmount.message?.serviceCharges.toString(),
-        Tax: jobsExtraAmount.message?.tax,
+        Tax: "${jobsExtraAmount.message?.tax}",
         BookedTime: jobsExtraAmount.message?.bookedTime,
         BookedClosed: jobsExtraAmount.message?.bookedClose,
         ExtraTime: jobsExtraAmount.message?.extraTime.toString(),
@@ -157,8 +157,8 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
     // TODO: implement initState
     super.initState();
     print("CustomerId, jobId, jobName ${widget.customerId} ${widget.jobId} ${widget.jobName}");
-      Future.delayed(const Duration(seconds: 10), ()  {
-        print("resultssss ${result!.code}");
+      Future.delayed(const Duration(seconds: 5), ()  {
+        print("resultssss ${result?.code}");
       if(result?.code == "${widget.customerId} ${widget.jobId} ${widget.jobName}" ){
 
         jobsExtraAmountWidget();

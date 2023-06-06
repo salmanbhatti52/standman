@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Models/chat_start_user_Model.dart';
 import '../../../../Utils/api_urls.dart';
@@ -352,19 +356,30 @@ class _Customer_JobsDetails_Completed_with_QRState
                           height: height * 0.02,
                         ),
                         GestureDetector(
-                            onTap: ()  {
+                            onTap: ()  async {
 
                               DateTime buttonClickTime = DateTime.now();
                               String? formattedTime = DateFormat('HH:mm:ss').format(buttonClickTime); // Format the time
                               print("buttonClickTime ${formattedTime}");
                                // scanQRCode();
-                               Get.to(CustomerQRCodeScanner(
+                              // await makePayment();
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context) => QRScannerPage()),
+                              // );
+                               Get.to(
+
+                                   CustomerQRCodeScanner(
                                  customerId: widget.customerId,
                                  employeeId: widget.employeeId,
                                  jobId: "${widget.jobId}",
                                  jobName: widget.jobName,
                                  buttonClickTime: "${formattedTime}",
-                               ));
+                               ),
+                                 // Payment(
+                                 //   ctx: context
+                                 // ),
+                               );
                                // Future.delayed(const Duration(seconds: 3), () {
                                //   if(getResult == "${widget.employeeId}${widget.jobId}${widget.jobName}"){
                                //     toastSuccessMessage("Success scan QR Code.", Colors.red);
@@ -424,3 +439,93 @@ class _Customer_JobsDetails_Completed_with_QRState
     );
   }
 }
+
+class QRScannerPage extends StatefulWidget {
+  @override
+  _QRScannerPageState createState() => _QRScannerPageState();
+}
+
+class _QRScannerPageState extends State<QRScannerPage>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    )..repeat(reverse: true);
+
+    _animation = Tween<double>(begin: -1.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          QRView(
+            key: qrKey,
+            onQRViewCreated: _onQRViewCreated,
+          ),
+          Center(
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+          AnimatedBuilder(
+            animation: _animationController,
+            builder: (BuildContext context, Widget? child) { // Update the parameter type to Widget?
+              return Positioned(
+                top: MediaQuery.of(context).size.height * 0.5 +
+                    (_animation.value * (MediaQuery.of(context).size.height * 0.15)),
+                left: MediaQuery.of(context).size.height * 0.09 ,
+                right: MediaQuery.of(context).size.height * 0.09 ,
+                child: Container(
+                  height: 2,
+                  color: Colors.red,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    controller.scannedDataStream.listen((scanData) {
+      // Handle the scanned QR code data here
+      print(scanData);
+    });
+  }
+}
+
+
+
+
+
+

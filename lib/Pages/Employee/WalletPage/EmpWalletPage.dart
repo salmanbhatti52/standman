@@ -265,14 +265,12 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                                       price: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.totalPrice}",
                                       previousAmount: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.previousPrice != null
                                           ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.previousPrice}" : "0"}",
-                                      extraAmount: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraPrice != null
-                                          ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraPrice}" : "0"}",
+                                      extraAmount: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraPrice}",
                                       serviceCharges: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraServiceCharges != null
                                           ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraServiceCharges}" : "0"}",
                                       bookTime: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.bookedTime}",
                                       closeTime: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.bookedClose}",
-                                      extraTime: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraTime != null
-                                          ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraTime}" : "0"}",
+                                      extraTime: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraTime}",
                                     );
                                   },
                                   child: Container(
@@ -377,7 +375,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                                           Row(
                                             children: [
                                               Text(
-                                                "\$${empolyeeWalletTxnModel.data?.transactionHistory?[index].totalAmount}",
+                                                "\$${empolyeeWalletTxnModel.data?.transactionHistory?[index].standmanAmount}",
                                                 style: TextStyle(
                                                   color: Color(
                                                       0xff18C85E),

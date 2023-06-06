@@ -259,10 +259,10 @@ class _Customer_ProfileState extends State<Customer_Profile> {
                           itemSize: 20,
                           itemCount: 5,
                           ratingWidget: RatingWidget(
-                              full: const Icon(Icons.star, color: Color(0xffD1D100),),
+                              full: const Icon(Icons.star, color: Color(0xffFFDF00),),
                               half: const Icon(
                                 Icons.star_half,
-                                color: Color(0xffD1D100),
+                                color: Color(0xffFFDF00),
                               ),
                               empty: const Icon(
                                 Icons.star_outline,

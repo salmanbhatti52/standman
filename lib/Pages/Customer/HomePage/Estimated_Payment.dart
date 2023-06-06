@@ -492,7 +492,6 @@ Estimated_PaymentMethod({
                           onTap: () async {
                             print("users_customers_id: ${usersCustomersId}");
                             print("jobName: ${jobName}");
-                            // print("name123: ${usersProfileModel.data!.fullName}");
                             print("location: ${address}");
                             print("longitude: ${long}");
                             print("lattitude: ${lat}");
@@ -500,9 +499,9 @@ Estimated_PaymentMethod({
                             print("start_time: ${time}");
                             print("end_time: ${endtime}");
                             print("description: ${describe}");
-                            print("price: 100");
-                            print("service_charges: 2");
-                            print("total_price: 100");
+                            print("price: ${price}");
+                            print("service_charges: ${chargers}");
+                            print("tax: ${tax}");
                             print("payment_gateways_name: gPay");
                             print("payment_status :Paid");
                             print("image: ${img}");

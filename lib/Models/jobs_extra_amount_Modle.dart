@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final jobsExtraAmount = jobsExtraAmountFromJson(jsonString);
+
 import 'dart:convert';
 
 JobsExtraAmount jobsExtraAmountFromJson(String str) => JobsExtraAmount.fromJson(json.decode(str));
@@ -27,8 +31,8 @@ class JobsExtraAmount {
 class Message {
   String? payment;
   String? previousAmount;
-  int? extraAmount;
-  int? serviceCharges;
+  String? extraAmount;
+  String? serviceCharges;
   String? tax;
   String? bookedTime;
   String? bookedClose;

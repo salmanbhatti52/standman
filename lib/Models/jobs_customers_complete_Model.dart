@@ -73,7 +73,7 @@ class Customer {
   String? verifiedBadge;
   dynamic dateExpiry;
   String? walletAmount;
-  DateTime? dateAdded;
+  String? dateAdded;
   String? status;
 
   Customer({
@@ -122,7 +122,7 @@ class Customer {
     verifiedBadge: json["verified_badge"],
     dateExpiry: json["date_expiry"],
     walletAmount: json["wallet_amount"],
-    dateAdded: DateTime.parse(json["date_added"]),
+    dateAdded: json["date_added"],
     status: json["status"],
   );
 
@@ -147,7 +147,7 @@ class Customer {
     "verified_badge": verifiedBadge,
     "date_expiry": dateExpiry,
     "wallet_amount": walletAmount,
-    "date_added": dateAdded!.toIso8601String(),
+    "date_added": dateAdded,
     "status": status,
   };
 }

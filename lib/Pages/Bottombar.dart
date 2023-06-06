@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Models/get_jobs_employees_Model.dart';
 import '../Models/jobs_action_employees_Model.dart';
+import '../Models/unreaded_messages_Model.dart';
+import '../Utils/api_urls.dart';
 import '../widgets/MyButton.dart';
 import '../widgets/ToastMessage.dart';
 import 'Authentication/Login_tab_class.dart';
@@ -60,18 +63,74 @@ class _bottom_barState extends State<bottom_bar> {
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("usersCustomersId: ${usersCustomersId}");
   }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   sharepref();
+  //   if(jobsActionEmployeesModel.status == "Accepted" && usersCustomersId == getJobsEmployeesModel.data?[index].usersEmployeeData?[index].usersCustomersId){
+  //     jobAccepted();
+  //   } else
+  //     // if(usersCustomersId == getJobsEmployeesModel.data?[index].usersCustomersData?.usersCustomersId)
+  //     {
+  //     return print("Helloerror");
+  //   }
+  // }
+
+
+  UnreadedMessagesModel unreadedMessagesModel = UnreadedMessagesModel();
+
+  unreadedMessages() async {
+    // setState(() {
+    //   loading = true;
+    // });
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    // print("usersCustomersId = $usersCustomersId");
+
+    String apiUrl = unreadedMessagesModelApiUrl;
+    // print("working");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+      },
+    );
+    final responseString = response.body;
+    // print("unreadedMessagesModelApiUrl: ${response.body}");
+    // print("status Code unreadedMessagesModel: ${response.statusCode}");
+    // print("in 200 unreadedMessagesModel");
+    if (response.statusCode == 200) {
+      unreadedMessagesModel = unreadedMessagesModelFromJson(responseString);
+      // setState(() {});
+      // print('unreadedMessagesModel status: ${unreadedMessagesModel.status}');
+      // print('unreadedMessagesModel data: ${unreadedMessagesModel.data}');
+    }
+    // setState(() {
+    //   loading = false;
+    // });
+  }
+
+
+  Timer? _timer;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    sharepref();
-    if(jobsActionEmployeesModel.status == "Accepted" && usersCustomersId == getJobsEmployeesModel.data?[index].usersEmployeeData?[index].usersCustomersId){
-      jobAccepted();
-    } else
-      // if(usersCustomersId == getJobsEmployeesModel.data?[index].usersCustomersData?.usersCustomersId)
-      {
-      return print("Helloerror");
-    }
+    // Start the timer when the widget is initialized
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      // Make your API call here
+      unreadedMessages();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Cancel the timer when the widget is disposed
+    _timer?.cancel();
   }
 
   @override
@@ -124,10 +183,26 @@ class _bottom_barState extends State<bottom_bar> {
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      widget.currentIndex == 1
-                          ? 'assets/images/messages-2.svg'
-                          : 'assets/images/messages.svg',
+                    icon: Stack(
+                      children: [
+                        SvgPicture.asset(
+                          widget.currentIndex == 1
+                              ? 'assets/images/messages-2.svg'
+                              : 'assets/images/messages.svg',
+                        ),
+                        Positioned(
+                          right: 0,
+                          child: Container(
+                            height: 12,
+                            width: 12,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.blueAccent,
+                            ),
+                            child: Center(child: Text(unreadedMessagesModel.data.toString() == 0 ? "0" : unreadedMessagesModel.data.toString(),style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,)),
+                          ),
+                        )
+                      ],
                     ),
                     label: 'Messages'),
                 BottomNavigationBarItem(

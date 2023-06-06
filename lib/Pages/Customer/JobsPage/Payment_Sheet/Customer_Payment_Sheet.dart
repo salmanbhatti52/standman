@@ -71,7 +71,8 @@ Payment({
   Map<String, dynamic>? paymentIntent;
 
   calculateAmount(String amount) {
-    final calculatedAmout = (int.parse(amount)) * 100 ;
+    amount = "${jobsCustomersCompleteModel.message?.job?.totalPrice}";
+    final calculatedAmout = (int.parse(amount));
     return calculatedAmout.toString();
   }
 
@@ -504,35 +505,69 @@ Payment({
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Extra Amount",
-                              style: TextStyle(
-                                color: Color(0xff000000),
-                                fontFamily: "Outfit",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 14,
+                      Container(
+                        height: 1,
+                        child: "$ExtraAmount" == 0 ? Container(
+                          height: 1,
+                        ) : Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Extra Amount",
+                                style: TextStyle(
+                                  color: Color(0xff000000),
+                                  fontFamily: "Outfit",
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 14,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: Get.width * 0.12,
-                            ),
-                            Text(
-                              "\$$ExtraAmount",
-                              style: TextStyle(
-                                color: Color(0xff000000),
-                                fontFamily: "Outfit",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 14,
+                              SizedBox(
+                                width: Get.width * 0.12,
                               ),
-                            ),
-                          ],
+                              Text(
+                                "\$$ExtraAmount",
+                                style: TextStyle(
+                                  color: Color(0xff000000),
+                                  fontFamily: "Outfit",
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Text(
+                      //         "Extra Amount",
+                      //         style: TextStyle(
+                      //           color: Color(0xff000000),
+                      //           fontFamily: "Outfit",
+                      //           fontWeight: FontWeight.w300,
+                      //           fontSize: 14,
+                      //         ),
+                      //       ),
+                      //       SizedBox(
+                      //         width: Get.width * 0.12,
+                      //       ),
+                      //       Text(
+                      //         "\$$ExtraAmount",
+                      //         style: TextStyle(
+                      //           color: Color(0xff000000),
+                      //           fontFamily: "Outfit",
+                      //           fontWeight: FontWeight.w300,
+                      //           fontSize: 14,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,

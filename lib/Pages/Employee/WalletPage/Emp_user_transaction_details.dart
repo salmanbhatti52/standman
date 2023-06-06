@@ -116,65 +116,98 @@ Emp_user_transaction_details({
                              )
                                  : SizedBox(height: 1,),
                            ),
-                           Padding(
-                             padding: const EdgeInsets.symmetric(vertical: 2.0),
-                             child: Row(
-                               mainAxisAlignment: MainAxisAlignment.center,
-                               children: [
-                                 Text(
-                                   "Extra Amount",
-                                   style: TextStyle(
-                                     color: Color(0xff000000),
-                                     fontFamily: "Outfit",
-                                     fontWeight: FontWeight.w300,
-                                     fontSize: 14,
+                           Container(
+                             height: 1,
+                             child: "$extraAmount" == 0 ? Container(height: 1,): Padding(
+                               padding: const EdgeInsets.symmetric(vertical: 2.0),
+                               child: Row(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   Text(
+                                     "Extra Amount",
+                                     style: TextStyle(
+                                       color: Color(0xff000000),
+                                       fontFamily: "Outfit",
+                                       fontWeight: FontWeight.w300,
+                                       fontSize: 14,
+                                     ),
                                    ),
-                                 ),
-                                 SizedBox(
-                                   width: Get.width * 0.12,
-                                 ),
-                                 Text(
-                                   // "\$15.75",
-                                   "\$$extraAmount",
-                                   style: TextStyle(
-                                     color: Color(0xff000000),
-                                     fontFamily: "Outfit",
-                                     fontWeight: FontWeight.w300,
-                                     fontSize: 14,
+                                   SizedBox(
+                                     width: Get.width * 0.12,
                                    ),
-                                 ),
-                               ],
-                             ),
+                                   Text(
+                                     // "\$15.75",
+                                     "\$$extraAmount",
+                                     style: TextStyle(
+                                       color: Color(0xff000000),
+                                       fontFamily: "Outfit",
+                                       fontWeight: FontWeight.w300,
+                                       fontSize: 14,
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                             ) ,
                            ),
-                           Row(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               Text(
-                                 "Service Charges",
-                                 style: TextStyle(
-                                   color: Color(0xff000000),
-                                   fontFamily: "Outfit",
-                                   fontWeight: FontWeight.w300,
-                                   fontSize: 14,
-                                 ),
-                               ),
-                               SizedBox(
-                                 width: Get.width * 0.10,
-                               ),
-                               Text(
-                                 // "\$7.50",
-                                 "\$$serviceCharges",
-                                 // '\$$discountPrice',
-                                 style: TextStyle(
-                                   color: Color(0xff000000),
-                                   fontFamily: "Outfit",
-                                   fontWeight: FontWeight.w300,
-                                   fontSize: 14,
-                                 ),
-                               ),
-                             ],
-                           ),
+                           // Padding(
+                           //   padding: const EdgeInsets.symmetric(vertical: 2.0),
+                           //   child: Row(
+                           //     mainAxisAlignment: MainAxisAlignment.center,
+                           //     children: [
+                           //       Text(
+                           //         "Extra Amount",
+                           //         style: TextStyle(
+                           //           color: Color(0xff000000),
+                           //           fontFamily: "Outfit",
+                           //           fontWeight: FontWeight.w300,
+                           //           fontSize: 14,
+                           //         ),
+                           //       ),
+                           //       SizedBox(
+                           //         width: Get.width * 0.12,
+                           //       ),
+                           //       Text(
+                           //         // "\$15.75",
+                           //         "\$$extraAmount",
+                           //         style: TextStyle(
+                           //           color: Color(0xff000000),
+                           //           fontFamily: "Outfit",
+                           //           fontWeight: FontWeight.w300,
+                           //           fontSize: 14,
+                           //         ),
+                           //       ),
+                           //     ],
+                           //   ),
+                           // ),
+                           // Row(
+                           //   mainAxisAlignment: MainAxisAlignment.center,
+                           //   crossAxisAlignment: CrossAxisAlignment.center,
+                           //   children: [
+                           //     Text(
+                           //       "Service Charges",
+                           //       style: TextStyle(
+                           //         color: Color(0xff000000),
+                           //         fontFamily: "Outfit",
+                           //         fontWeight: FontWeight.w300,
+                           //         fontSize: 14,
+                           //       ),
+                           //     ),
+                           //     SizedBox(
+                           //       width: Get.width * 0.10,
+                           //     ),
+                           //     Text(
+                           //       // "\$7.50",
+                           //       "\$$serviceCharges",
+                           //       // '\$$discountPrice',
+                           //       style: TextStyle(
+                           //         color: Color(0xff000000),
+                           //         fontFamily: "Outfit",
+                           //         fontWeight: FontWeight.w300,
+                           //         fontSize: 14,
+                           //       ),
+                           //     ),
+                           //   ],
+                           // ),
                            SizedBox(
                              height: Get.height * 0.02,
                            ),
@@ -220,7 +253,7 @@ Emp_user_transaction_details({
                                  ),
                                ),
                                SizedBox(
-                                 width: Get.width * 0.23,
+                                 width: Get.width * 0.32,
                                ),
                                Text(
                                  // "13:45",
@@ -235,35 +268,39 @@ Emp_user_transaction_details({
                                ),
                              ],
                            ),
-                           Row(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               Text(
-                                 "Extra time",
-                                 style: TextStyle(
-                                   color: Color(0xffC70000),
-                                   fontFamily: "Outfit",
-                                   fontWeight: FontWeight.w300,
-                                   fontSize: 14,
+                           Container(
+                             height: 1,
+                             child:  "$extraTime" == 0 ? Container(height: 1,) :Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               crossAxisAlignment: CrossAxisAlignment.center,
+                               children: [
+                                 Text(
+                                   "Extra time",
+                                   style: TextStyle(
+                                     color: Color(0xffC70000),
+                                     fontFamily: "Outfit",
+                                     fontWeight: FontWeight.w300,
+                                     fontSize: 14,
+                                   ),
                                  ),
-                               ),
-                               SizedBox(
-                                 width: Get.width * 0.34,
-                               ),
-                               Text(
-                                 // "45",
-                                 "$extraTime",
-                                 // '\$$discountPrice',
-                                 style: TextStyle(
-                                   color: Color(0xffC70000),
-                                   fontFamily: "Outfit",
-                                   fontWeight: FontWeight.w300,
-                                   fontSize: 14,
+                                 SizedBox(
+                                   width: Get.width * 0.34,
                                  ),
-                               ),
-                             ],
+                                 Text(
+                                   // "45",
+                                   "$extraTime",
+                                   // '\$$discountPrice',
+                                   style: TextStyle(
+                                     color: Color(0xffC70000),
+                                     fontFamily: "Outfit",
+                                     fontWeight: FontWeight.w300,
+                                     fontSize: 14,
+                                   ),
+                                 ),
+                               ],
+                             ),
                            ),
+
                            SizedBox(
                              height: Get.height * 0.02,
                            ),
