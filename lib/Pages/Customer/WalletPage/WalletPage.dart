@@ -126,7 +126,7 @@ class _WalletPageState extends State<WalletPage> {
                       Text(
                         customerWalletTxnModel.data?.transactionHistory?.length != null
                             ? "\$${customerWalletTxnModel.data?.expenses}"
-                        : "",
+                        : "\$0.00",
                         // "\$4,875.00",
                         style: TextStyle(
                           color: Colors.white,
@@ -275,24 +275,22 @@ class _WalletPageState extends State<WalletPage> {
                                       .data?.transactionHistory?.length ==
                                   null
                               ? Center(
-                                  child: Container(
-                                    width: width,
-                                    color: Colors.transparent,
-                                    height: height * 0.33,
-                                    child: Center(
-                                      child: Text(
-                                        "No Transaction History",
-                                        style: TextStyle(
-                                          color: Color(0xff000000),
-                                          fontFamily: "OutFit",
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16,
-                                        ),
-                                        textAlign: TextAlign.left,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: Get.height * 0.1),
+                                    Text(
+                                      "No Transaction History",
+                                      style: TextStyle(
+                                        color: Color(0xff000000),
+                                        fontFamily: "OutFit",
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
                                       ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                )
+                                  ],
+                                ),
+                              )
                               : Container(
                                   // height: MediaQuery.of(context).size.height * 0.16,
                                   width: width,

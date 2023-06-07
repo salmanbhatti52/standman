@@ -36,7 +36,7 @@ class Message {
   String? tax;
   String? bookedTime;
   String? bookedClose;
-  int? extraTime;
+  String? extraTime;
   int? usersCustomersId;
   int? employeeUsersCustomersId;
   int? jobsId;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/empolyee_wallet_txn_Model.dart';
 import '../../../Utils/api_urls.dart';
@@ -121,7 +123,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                        Text(
                          empolyeeWalletTxnModel.data?.transactionHistory?.length != null
                         ? "\$${empolyeeWalletTxnModel.data?.earning}"
-                         : "",
+                         : "\$0.00",
                          // "\$4,875.00",
                         style: TextStyle(
                           color: Colors.white,
@@ -167,7 +169,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                        Text(
                          empolyeeWalletTxnModel.data?.transactionHistory?.length != null
                              ? "\$${empolyeeWalletTxnModel.data?.withdraw}"
-                         : "",
+                         : "\$0.00",
                         // "\$4,875.00",
                         style: TextStyle(
                           color: Color(0xff2B65EC),
@@ -221,22 +223,20 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                           .data?.transactionHistory?.length ==
                           null
                           ? Center(
-                        child: Container(
-                          width: width,
-                          color: Colors.transparent,
-                          height: height * 0.36,
-                          child: Center(
-                            child: Text(
-                              "No Transaction History",
+                        child: Column(
+                          children: [
+                            SizedBox(height: Get.height * 0.1),
+                            Text(
+                              "No Amount History",
                               style: TextStyle(
                                 color: Color(0xff000000),
                                 fontFamily: "OutFit",
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16,
                               ),
-                              textAlign: TextAlign.left,
+                              textAlign: TextAlign.center,
                             ),
-                          ),
+                          ],
                         ),
                       )
                           : Container(

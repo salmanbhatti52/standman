@@ -5,9 +5,11 @@ import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Models/jobs_customers_complete_Model.dart';
 import '../../../../Utils/api_urls.dart';
 import '../../../../widgets/TopBar.dart';
+import '../../HomePage/HomePage.dart';
 import '../../HomePage/Paymeny_details.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,6 +38,7 @@ Payment({
     progress = true;
     // setState(() {});
 
+
     print("userCustomerId = ${userCustomerId}");
     print("userEmployeeId ${userEmployeeId}");
     print("jobId ${jobId}");
@@ -45,8 +48,8 @@ Payment({
     print("jobsCustomersCompleteApi: $apiUrl");
     final response = await http.post(Uri.parse(apiUrl),
         body: {
-          "users_customers_id": userCustomerId,
-          "employee_users_customers_id":userEmployeeId,
+          "users_customers_id": userCustomerId.toString(),
+          "employee_users_customers_id":userEmployeeId.toString(),
           "jobs_id":jobId
         }, headers: {
           'Accept': 'application/json'
@@ -71,7 +74,8 @@ Payment({
   Map<String, dynamic>? paymentIntent;
 
   calculateAmount(String amount) {
-    amount = "${jobsCustomersCompleteModel.message?.job?.totalPrice}";
+    amount = "${jobsCustomersCompleteModel.message?.job?.price}";
+    print("amount ${amount}");
     final calculatedAmout = (int.parse(amount));
     return calculatedAmout.toString();
   }
@@ -405,7 +409,7 @@ Payment({
       //Payment Sheet
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
-              paymentIntentClientSecret: paymentIntent!['client_secret'],
+              paymentIntentClientSecret: paymentIntent?['client_secret'],
               // applePay: const PaymentSheetApplePay(merchantCountryCode: '+92',),
               // googlePay: const PaymentSheetGooglePay(testEnv: true, currencyCode: "US", merchantCountryCode: "+92"),
               style: ThemeMode.dark,

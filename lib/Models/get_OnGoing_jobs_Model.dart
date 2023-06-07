@@ -39,11 +39,17 @@ class Datum {
   String? lattitude;
   DateTime? startDate;
   String? startTime;
+  String? endTime;
   String? description;
   String? price;
   String? serviceCharges;
+  String? tax;
   String? totalPrice;
   String? paymentGatewaysName;
+  dynamic extraTimePrice;
+  dynamic extraTimeTax;
+  dynamic extraTimeServiceCharges;
+  dynamic extraTime;
   String? paymentStatus;
   dynamic hiredUsersCustomersId;
   dynamic dateStartJob;
@@ -65,11 +71,17 @@ class Datum {
     this.lattitude,
     this.startDate,
     this.startTime,
+    this.endTime,
     this.description,
     this.price,
     this.serviceCharges,
+    this.tax,
     this.totalPrice,
     this.paymentGatewaysName,
+    this.extraTimePrice,
+    this.extraTimeTax,
+    this.extraTimeServiceCharges,
+    this.extraTime,
     this.paymentStatus,
     this.hiredUsersCustomersId,
     this.dateStartJob,
@@ -92,11 +104,17 @@ class Datum {
     lattitude: json["lattitude"],
     startDate: DateTime.parse(json["start_date"]),
     startTime: json["start_time"],
+    endTime: json["end_time"],
     description: json["description"],
     price: json["price"],
     serviceCharges: json["service_charges"],
+    tax: json["tax"],
     totalPrice: json["total_price"],
     paymentGatewaysName: json["payment_gateways_name"],
+    extraTimePrice: json["extra_time_price"],
+    extraTimeTax: json["extra_time_tax"],
+    extraTimeServiceCharges: json["extra_time_service_charges"],
+    extraTime: json["extra_time"],
     paymentStatus: json["payment_status"],
     hiredUsersCustomersId: json["hired_users_customers_id"],
     dateStartJob: json["date_start_job"],
@@ -119,11 +137,17 @@ class Datum {
     "lattitude": lattitude,
     "start_date": "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
     "start_time": startTime,
+    "end_time": endTime,
     "description": description,
     "price": price,
     "service_charges": serviceCharges,
+    "tax": tax,
     "total_price": totalPrice,
     "payment_gateways_name": paymentGatewaysName,
+    "extra_time_price": extraTimePrice,
+    "extra_time_tax": extraTimeTax,
+    "extra_time_service_charges": extraTimeServiceCharges,
+    "extra_time": extraTime,
     "payment_status": paymentStatus,
     "hired_users_customers_id": hiredUsersCustomersId,
     "date_start_job": dateStartJob,
@@ -138,50 +162,54 @@ class Datum {
 }
 
 class UsersData {
-  int usersCustomersId;
-  String oneSignalId;
-  String usersCustomersType;
-  String firstName;
-  dynamic lastName;
-  String phone;
-  String email;
-  String password;
-  String profilePic;
-  String? proofDocument;
-  String? validDocument;
-  String messages;
-  String notifications;
-  String accountType;
-  String socialAccType;
-  String googleAccessToken;
+  int? usersCustomersId;
+  String? oneSignalId;
+  String? usersCustomersType;
+  String? firstName;
+  String? lastName;
+  String? phone;
+  String? email;
+  String? password;
+  String? profilePic;
+  String?  proofDocument;
+  String?  validDocument;
+  String? messages;
+  String? notifications;
+  String? accountType;
+  String? socialAccType;
+  String? googleAccessToken;
   dynamic verifyCode;
-  String verifiedBadge;
+  String? verifiedBadge;
   dynamic dateExpiry;
-  DateTime dateAdded;
-  String status;
+  String? walletAmount;
+  String? rating;
+  DateTime? dateAdded;
+  String? status;
 
   UsersData({
-    required this.usersCustomersId,
-    required this.oneSignalId,
-    required this.usersCustomersType,
-    required this.firstName,
+    this.usersCustomersId,
+    this.oneSignalId,
+    this.usersCustomersType,
+    this.firstName,
     this.lastName,
-    required this.phone,
-    required this.email,
-    required this.password,
-    required this.profilePic,
+    this.phone,
+    this.email,
+    this.password,
+    this.profilePic,
     this.proofDocument,
     this.validDocument,
-    required this.messages,
-    required this.notifications,
-    required this.accountType,
-    required this.socialAccType,
-    required this.googleAccessToken,
+    this.messages,
+    this.notifications,
+    this.accountType,
+    this.socialAccType,
+    this.googleAccessToken,
     this.verifyCode,
-    required this.verifiedBadge,
+    this.verifiedBadge,
     this.dateExpiry,
-    required this.dateAdded,
-    required this.status,
+    this.walletAmount,
+    this.rating,
+    this.dateAdded,
+    this.status,
   });
 
   factory UsersData.fromJson(Map<String, dynamic> json) => UsersData(
@@ -204,6 +232,8 @@ class UsersData {
     verifyCode: json["verify_code"],
     verifiedBadge: json["verified_badge"],
     dateExpiry: json["date_expiry"],
+    walletAmount: json["wallet_amount"],
+    rating: json["rating"],
     dateAdded: DateTime.parse(json["date_added"]),
     status: json["status"],
   );
@@ -228,7 +258,9 @@ class UsersData {
     "verify_code": verifyCode,
     "verified_badge": verifiedBadge,
     "date_expiry": dateExpiry,
-    "date_added": dateAdded.toIso8601String(),
+    "wallet_amount": walletAmount,
+    "rating": rating,
+    "date_added": dateAdded!.toIso8601String(),
     "status": status,
   };
 }

@@ -61,7 +61,7 @@ class _Customer_JobsDetails_Completed_with_QRState
     usersCustomersId = prefs!.getString('usersCustomersId');
     empUsersCustomersId = empPrefs?.getString('empUsersCustomersId');
     print("usersCustomersId = $usersCustomersId");
-    print("empUsersCustomersId = ${widget.customerId}");
+    print("empUsersCustomersId = $empUsersCustomersId");
 
     // try {
       String apiUrl = userChatApiUrl;

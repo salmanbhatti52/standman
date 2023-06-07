@@ -91,7 +91,7 @@ class _EMpQRScanneerState extends State<EMpQRScanneer> {
                       QrImageView(
                         data: "${widget.customerId} ${widget.myJobId} ${widget.jobName}",
                         version: QrVersions.auto,
-                        size: 350.0,
+                        size: 300.0,
                       ),
                       SizedBox(
                         height: height * 0.04,

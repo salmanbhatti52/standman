@@ -77,7 +77,28 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
     return loading? Center(child: CircularProgressIndicator()):
 
     getPreviousJobsEmployeeModel.data?.length == null ?
-    Center(child: Text('No Previous Jobs')) :
+    Center(child:  Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "No Previous Jobs",
+          style: TextStyle(
+            color: Color(0xff2B65EC),
+            fontFamily: "Outfit",
+            fontWeight: FontWeight.w500,
+            fontSize: 32,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(
+          height: Get.height * 0.1,
+        ),
+        SvgPicture.asset(
+          'assets/images/cartoon.svg',
+        ),
+      ],
+    )):
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       child: Container(

@@ -62,8 +62,8 @@ class Customer {
   String? email;
   String? password;
   String? profilePic;
-  String? proofDocument;
-  String? validDocument;
+  String?  proofDocument;
+  String?  validDocument;
   String? messages;
   String? notifications;
   String? accountType;
@@ -73,6 +73,7 @@ class Customer {
   String? verifiedBadge;
   dynamic dateExpiry;
   String? walletAmount;
+  String? rating;
   String? dateAdded;
   String? status;
 
@@ -97,6 +98,7 @@ class Customer {
     this.verifiedBadge,
     this.dateExpiry,
     this.walletAmount,
+    this.rating,
     this.dateAdded,
     this.status,
   });
@@ -122,6 +124,7 @@ class Customer {
     verifiedBadge: json["verified_badge"],
     dateExpiry: json["date_expiry"],
     walletAmount: json["wallet_amount"],
+    rating: json["rating"],
     dateAdded: json["date_added"],
     status: json["status"],
   );
@@ -147,6 +150,7 @@ class Customer {
     "verified_badge": verifiedBadge,
     "date_expiry": dateExpiry,
     "wallet_amount": walletAmount,
+    "rating": rating,
     "date_added": dateAdded,
     "status": status,
   };
@@ -169,6 +173,10 @@ class Job {
   String? tax;
   String? totalPrice;
   String? paymentGatewaysName;
+  dynamic extraTimePrice;
+  dynamic extraTimeTax;
+  dynamic extraTimeServiceCharges;
+  dynamic extraTime;
   String? paymentStatus;
   dynamic hiredUsersCustomersId;
   dynamic dateStartJob;
@@ -195,6 +203,10 @@ class Job {
     this.tax,
     this.totalPrice,
     this.paymentGatewaysName,
+    this.extraTimePrice,
+    this.extraTimeTax,
+    this.extraTimeServiceCharges,
+    this.extraTime,
     this.paymentStatus,
     this.hiredUsersCustomersId,
     this.dateStartJob,
@@ -222,6 +234,10 @@ class Job {
     tax: json["tax"],
     totalPrice: json["total_price"],
     paymentGatewaysName: json["payment_gateways_name"],
+    extraTimePrice: json["extra_time_price"],
+    extraTimeTax: json["extra_time_tax"],
+    extraTimeServiceCharges: json["extra_time_service_charges"],
+    extraTime: json["extra_time"],
     paymentStatus: json["payment_status"],
     hiredUsersCustomersId: json["hired_users_customers_id"],
     dateStartJob: json["date_start_job"],
@@ -249,6 +265,10 @@ class Job {
     "tax": tax,
     "total_price": totalPrice,
     "payment_gateways_name": paymentGatewaysName,
+    "extra_time_price": extraTimePrice,
+    "extra_time_tax": extraTimeTax,
+    "extra_time_service_charges": extraTimeServiceCharges,
+    "extra_time": extraTime,
     "payment_status": paymentStatus,
     "hired_users_customers_id": hiredUsersCustomersId,
     "date_start_job": dateStartJob,

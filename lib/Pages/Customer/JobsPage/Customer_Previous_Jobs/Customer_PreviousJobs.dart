@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:StandMan/Pages/Customer/HomePage/HomePage.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,7 +71,28 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
       body: loading? Center(child: CircularProgressIndicator()):
 
       getPreviousJobsModel.data?.length == null ?
-      Center(child: Text("No Previous Jobs"),)
+      Center(child:  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            "No Previous Jobs",
+            style: TextStyle(
+              color: Color(0xff2B65EC),
+              fontFamily: "Outfit",
+              fontWeight: FontWeight.w500,
+              fontSize: 32,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: height * 0.1,
+          ),
+          SvgPicture.asset(
+            'assets/images/cartoon.svg',
+          ),
+        ],
+      ))
       // : Center(child: Text("No Previous1 Jobs"));
           : Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),

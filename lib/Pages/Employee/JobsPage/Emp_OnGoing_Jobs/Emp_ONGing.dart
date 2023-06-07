@@ -75,7 +75,28 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
       body: loading? Center(child: CircularProgressIndicator()):
 
       employeeOngoingJobsModel.data?.length == null ?
-      Center(child: Text('No Jobs')) :
+      Center(child:  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            "No Jobs",
+            style: TextStyle(
+              color: Color(0xff2B65EC),
+              fontFamily: "Outfit",
+              fontWeight: FontWeight.w500,
+              fontSize: 32,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: Get.height * 0.1,
+          ),
+          SvgPicture.asset(
+            'assets/images/cartoon.svg',
+          ),
+        ],
+      )) :
       // Center(child: Text('No Recent Jobs'));
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
