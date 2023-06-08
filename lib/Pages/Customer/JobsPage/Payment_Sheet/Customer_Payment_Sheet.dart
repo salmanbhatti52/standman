@@ -74,9 +74,11 @@ Payment({
   Map<String, dynamic>? paymentIntent;
 
   calculateAmount(String amount) {
-    amount = "${jobsCustomersCompleteModel.message?.job?.price}";
-    print("amount ${amount}");
-    final calculatedAmout = (int.parse(amount));
+    amount = "${jobsCustomersCompleteModel.data?.job?.price}";
+    final a = (int.parse(amount)) * 100;
+    print("amount ${a}");
+    final calculatedAmout = a;
+    print("calculatedAmout ${calculatedAmout}");
     return calculatedAmout.toString();
   }
 
@@ -192,7 +194,7 @@ Payment({
                                       textAlign: TextAlign.left,
                                     ),
                                     Text(
-                                      jobsCustomersCompleteModel.message!.job!.price.toString(),
+                                      jobsCustomersCompleteModel.data!.job!.price.toString(),
                                       // ' 22.00',
                                       style: TextStyle(
                                         color: Color(0xff2B65EC),
@@ -238,7 +240,7 @@ Payment({
                               textAlign: TextAlign.left,
                             ),
                              Text(
-                              "${jobsCustomersCompleteModel.message!.customer!.firstName} ${jobsCustomersCompleteModel.message!.customer!.lastName}",
+                              "${jobsCustomersCompleteModel.data!.customer!.firstName} ${jobsCustomersCompleteModel.data!.customer!.lastName}",
                               // "Beby Jovanca",
                               style: TextStyle(
                                 color: Color.fromRGBO(0, 0, 0, 1),
@@ -276,7 +278,7 @@ Payment({
                               textAlign: TextAlign.left,
                             ),
                              Text(
-                               "${jobsCustomersCompleteModel.message!.employee!.firstName} ${jobsCustomersCompleteModel.message!.employee!.lastName}",
+                               "${jobsCustomersCompleteModel.data!.employee!.firstName} ${jobsCustomersCompleteModel.data!.employee!.lastName}",
                               // "Annette Black",
                               style: TextStyle(
                                 color: Color.fromRGBO(0, 0, 0, 1),
@@ -318,7 +320,7 @@ Payment({
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                  Text(
-                                   "${jobsCustomersCompleteModel.message!.job!.startDate}",
+                                   "${jobsCustomersCompleteModel.data!.job!.startDate}",
                                   // "24 Jul 2020",
                                   style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 1),
@@ -330,7 +332,7 @@ Payment({
                                   textAlign: TextAlign.right,
                                 ),
                                 Text(
-                                  "${jobsCustomersCompleteModel.message!.job!.startTime}",
+                                  "${jobsCustomersCompleteModel.data!.job!.startTime}",
                                   // '15:30',
                                   style: TextStyle(
                                     color: Color(0xffA7A9B7),
@@ -349,15 +351,15 @@ Payment({
                       SizedBox(height: Get.height * 0.02,),
                       GestureDetector(onTap: (){
                         Get.to(Customer_Rating(
-                          jobName: "${jobsCustomersCompleteModel.message?.job?.name}",
-                          totalPrice:  "${jobsCustomersCompleteModel.message?.job?.totalPrice}",
-                          address:  "${jobsCustomersCompleteModel.message?.job?.location}",
-                          jobId:  "${jobsCustomersCompleteModel.message?.job?.jobsId}",
-                          completeJobTime:  "${jobsCustomersCompleteModel.message?.job?.dateAdded}",
-                          description:  "${jobsCustomersCompleteModel.message?.job?.description}",
-                          status:  "${jobsCustomersCompleteModel.message?.job?.status}",
-                          customerId: "${jobsCustomersCompleteModel.message?.customer?.usersCustomersId}",
-                          employeeId: "${jobsCustomersCompleteModel.message?.employee?.usersCustomersId}",
+                          jobName: "${jobsCustomersCompleteModel.data?.job?.name}",
+                          totalPrice:  "${jobsCustomersCompleteModel.data?.job?.totalPrice}",
+                          address:  "${jobsCustomersCompleteModel.data?.job?.location}",
+                          jobId:  "${jobsCustomersCompleteModel.data?.job?.jobsId}",
+                          completeJobTime:  "${jobsCustomersCompleteModel.data?.job?.dateAdded}",
+                          description:  "${jobsCustomersCompleteModel.data?.job?.description}",
+                          status:  "${jobsCustomersCompleteModel.data?.job?.status}",
+                          customerId: "${jobsCustomersCompleteModel.data?.customer?.usersCustomersId}",
+                          employeeId: "${jobsCustomersCompleteModel.data?.employee?.usersCustomersId}",
                         ));
                       },child: mainButton("Add Ratings", Color(0xff2B65EC), context)),
                     ],
@@ -405,7 +407,7 @@ Payment({
 
   Future<void> makePayment() async {
     try {
-      paymentIntent = await createPaymentIntent('10', 'USD');
+      paymentIntent = await createPaymentIntent('20', 'USD');
       //Payment Sheet
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
@@ -685,33 +687,37 @@ Payment({
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Extra time",
-                            style: TextStyle(
-                              color: Color(0xffC70000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
+                      Container(
+                        height: 1,
+                        child: "$ExtraTime" == 0 ?
+                            Container(height: 1,): Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Extra time",
+                              style: TextStyle(
+                                color: Color(0xffC70000),
+                                fontFamily: "Outfit",
+                                fontWeight: FontWeight.w300,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: Get.width * 0.34,
-                          ),
-                          Text(
-                            // "45",
-                            "$ExtraTime",
-                            style: TextStyle(
-                              color: Color(0xffC70000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
+                            SizedBox(
+                              width: Get.width * 0.34,
                             ),
-                          ),
-                        ],
+                            Text(
+                              // "45",
+                              "$ExtraTime",
+                              style: TextStyle(
+                                color: Color(0xffC70000),
+                                fontFamily: "Outfit",
+                                fontWeight: FontWeight.w300,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: Get.height * 0.012,

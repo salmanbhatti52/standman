@@ -359,7 +359,7 @@ class _Customer_JobsDetails_Completed_with_QRState
                             onTap: ()  async {
 
                               DateTime buttonClickTime = DateTime.now();
-                              String? formattedTime = DateFormat('HH:mm:ss').format(buttonClickTime); // Format the time
+                              String? formattedTime = DateFormat('HH:mm').format(buttonClickTime); // Format the time
                               print("buttonClickTime ${formattedTime}");
                                // scanQRCode();
                               // await makePayment();

@@ -74,6 +74,7 @@ class _Customer_ProfileState extends State<Customer_Profile> {
     // TODO: implement initState
     super.initState();
     allJobRating();
+    print("rating ${widget.rating}");
   }
 
   ChatStartUserModel chatStartUserModel = ChatStartUserModel();

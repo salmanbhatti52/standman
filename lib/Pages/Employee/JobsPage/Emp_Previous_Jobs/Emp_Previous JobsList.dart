@@ -117,6 +117,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                 child: GestureDetector(
                   onTap: (){
                     Get.to(EMp_Job_Completed(
+                      ratings: "${getPreviousJobsEmployeeModel.data?[index].jobsRatings?.rating == null ? 0.0: getPreviousJobsEmployeeModel.data?[index].jobsRatings?.rating}",
                       myJobId: "${getPreviousJobsEmployeeModel.data?[index].jobsId}",
                       image:"$baseUrlImage${getPreviousJobsEmployeeModel.data?[index].image}",
                       jobName: getPreviousJobsEmployeeModel.data?[index].name,

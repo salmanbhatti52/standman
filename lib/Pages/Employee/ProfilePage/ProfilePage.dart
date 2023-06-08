@@ -215,18 +215,30 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                              // mainAxisAlignment: MainAxisAlignment.center,
                              // crossAxisAlignment: CrossAxisAlignment.center,
                              children: [
-                               RatingBarIndicator(
-                                 rating: 4.00,
-                                 itemBuilder: (context, index) => Icon(
-                                   Icons.star,
-                                   color: Color(0xffFFDF00),
-                                 ),
-                                 itemCount: 5,
-                                 itemSize: 20.0,
+                               RatingBar(
+                                 initialRating: double.parse(usersProfileModel.data!.rating.toString()),
                                  direction: Axis.horizontal,
+                                 allowHalfRating: true,
+                                 itemSize: 20,
+                                 itemCount: 5,
+                                 ratingWidget: RatingWidget(
+                                     full: const Icon(Icons.star, color: Color(0xffFFDF00),),
+                                     half: const Icon(
+                                       Icons.star_half,
+                                       color: Color(0xffFFDF00),
+                                     ),
+                                     empty: const Icon(
+                                       Icons.star_outline,
+                                       color: Color(0xffA7A9B7),
+                                     )), onRatingUpdate: (double value) { },
+                                 // onRatingUpdate: (value) {
+                                 //   setState(() {
+                                 //     _ratingValue = value;
+                                 //   });
+                                 // }
                                ),
                                 Text(
-                                 "4.5",
+                                  "${usersProfileModel.data!.rating.toString() == 0.0 ? '0.0' : usersProfileModel.data!.rating.toString()}",
                                  style: TextStyle(
                                    color: Color(0xffffffff),
                                    fontFamily: "Outfit",

@@ -43,6 +43,7 @@ class Data {
   String? messages;
   String? notifications;
   String? accountType;
+  String? rating;
   String? socialAccType;
   String? googleAccessToken;
   dynamic verifyCode;
@@ -56,6 +57,7 @@ class Data {
     this.oneSignalId,
     this.usersCustomersType,
     this.firstName,
+    this.rating,
     this.lastName,
     this.phone,
     this.email,
@@ -86,6 +88,7 @@ class Data {
     password: json["password"],
     profilePic: json["profile_pic"],
     proofDocument: json["proof_document"],
+    rating: json["rating"],
     validDocument: json["valid_document"],
     messages: json["messages"],
     notifications: json["notifications"],
@@ -110,6 +113,7 @@ class Data {
     "password": password,
     "profile_pic": profilePic,
     "proof_document": proofDocument,
+    "rating": rating,
     "valid_document": validDocument,
     "messages": messages,
     "notifications": notifications,

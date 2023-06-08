@@ -1,3 +1,6 @@
+// To parse this JSON data, do
+//
+//     final getPreviousJobsEmployeeModel = getPreviousJobsEmployeeModelFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -18,7 +21,6 @@ class GetPreviousJobsEmployeeModel {
     status: json["status"],
     // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
     data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))): null,
-
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,15 +39,21 @@ class Datum {
   String? lattitude;
   DateTime? startDate;
   String? startTime;
+  String? endTime;
   String? description;
   String? price;
   String? serviceCharges;
+  String? tax;
   String? totalPrice;
   String? paymentGatewaysName;
+  String? extraTimePrice;
+  String? extraTimeTax;
+  String? extraTimeServiceCharges;
+  String? extraTime;
   String? paymentStatus;
   dynamic hiredUsersCustomersId;
   dynamic dateStartJob;
-  dynamic dateEndJob;
+  DateTime? dateEndJob;
   String? status;
   String? dateAdded;
   DateTime? dateModified;
@@ -53,6 +61,7 @@ class Datum {
   double? distance;
   UsersCustomersData? usersCustomersData;
   List<dynamic>? employeeData;
+  JobsRatings? jobsRatings;
 
   Datum({
     this.jobsId,
@@ -64,11 +73,17 @@ class Datum {
     this.lattitude,
     this.startDate,
     this.startTime,
+    this.endTime,
     this.description,
     this.price,
     this.serviceCharges,
+    this.tax,
     this.totalPrice,
     this.paymentGatewaysName,
+    this.extraTimePrice,
+    this.extraTimeTax,
+    this.extraTimeServiceCharges,
+    this.extraTime,
     this.paymentStatus,
     this.hiredUsersCustomersId,
     this.dateStartJob,
@@ -80,6 +95,7 @@ class Datum {
     this.distance,
     this.usersCustomersData,
     this.employeeData,
+    this.jobsRatings,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -92,15 +108,21 @@ class Datum {
     lattitude: json["lattitude"],
     startDate: DateTime.parse(json["start_date"]),
     startTime: json["start_time"],
+    endTime: json["end_time"],
     description: json["description"],
     price: json["price"],
     serviceCharges: json["service_charges"],
+    tax: json["tax"],
     totalPrice: json["total_price"],
     paymentGatewaysName: json["payment_gateways_name"],
+    extraTimePrice: json["extra_time_price"],
+    extraTimeTax: json["extra_time_tax"],
+    extraTimeServiceCharges: json["extra_time_service_charges"],
+    extraTime: json["extra_time"],
     paymentStatus: json["payment_status"],
     hiredUsersCustomersId: json["hired_users_customers_id"],
     dateStartJob: json["date_start_job"],
-    dateEndJob: json["date_end_job"],
+    dateEndJob: DateTime.parse(json["date_end_job"]),
     status: json["status"],
     dateAdded: json["date_added"],
     dateModified: DateTime.parse(json["date_modified"]),
@@ -108,6 +130,7 @@ class Datum {
     distance: json["distance"]?.toDouble(),
     usersCustomersData: UsersCustomersData.fromJson(json["users_customers_data"]),
     employeeData: List<dynamic>.from(json["employee_data"].map((x) => x)),
+    jobsRatings: json["jobs_ratings"] == null ? null : JobsRatings.fromJson(json["jobs_ratings"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -120,15 +143,21 @@ class Datum {
     "lattitude": lattitude,
     "start_date": "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
     "start_time": startTime,
+    "end_time": endTime,
     "description": description,
     "price": price,
     "service_charges": serviceCharges,
+    "tax": tax,
     "total_price": totalPrice,
     "payment_gateways_name": paymentGatewaysName,
+    "extra_time_price": extraTimePrice,
+    "extra_time_tax": extraTimeTax,
+    "extra_time_service_charges": extraTimeServiceCharges,
+    "extra_time": extraTime,
     "payment_status": paymentStatus,
     "hired_users_customers_id": hiredUsersCustomersId,
     "date_start_job": dateStartJob,
-    "date_end_job": dateEndJob,
+    "date_end_job": dateEndJob!.toIso8601String(),
     "status": status,
     "date_added": dateAdded,
     "date_modified": dateModified!.toIso8601String(),
@@ -136,6 +165,51 @@ class Datum {
     "distance": distance,
     "users_customers_data": usersCustomersData!.toJson(),
     "employee_data": List<dynamic>.from(employeeData!.map((x) => x)),
+    "jobs_ratings": jobsRatings?.toJson(),
+  };
+}
+
+class JobsRatings {
+  int? jobsRatingsId;
+  int? usersCustomersId;
+  int? employeeUsersCustomersId;
+  int? jobsId;
+  String? rating;
+  String? comment;
+  DateTime? dateAdded;
+  String? status;
+
+  JobsRatings({
+    this.jobsRatingsId,
+    this.usersCustomersId,
+    this.employeeUsersCustomersId,
+    this.jobsId,
+    this.rating,
+    this.comment,
+    this.dateAdded,
+    this.status,
+  });
+
+  factory JobsRatings.fromJson(Map<String, dynamic> json) => JobsRatings(
+    jobsRatingsId: json["jobs_ratings_id"],
+    usersCustomersId: json["users_customers_id"],
+    employeeUsersCustomersId: json["employee_users_customers_id"],
+    jobsId: json["jobs_id"],
+    rating: json["rating"],
+    comment: json["comment"],
+    dateAdded: DateTime.parse(json["date_added"]),
+    status: json["status"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "jobs_ratings_id": jobsRatingsId,
+    "users_customers_id": usersCustomersId,
+    "employee_users_customers_id": employeeUsersCustomersId,
+    "jobs_id": jobsId,
+    "rating": rating,
+    "comment": comment,
+    "date_added": dateAdded!.toIso8601String(),
+    "status": status,
   };
 }
 
@@ -150,7 +224,7 @@ class UsersCustomersData {
   String? password;
   String? profilePic;
   dynamic proofDocument;
-  String? validDocument;
+  dynamic validDocument;
   String? messages;
   String? notifications;
   String? accountType;
@@ -159,6 +233,8 @@ class UsersCustomersData {
   dynamic verifyCode;
   String? verifiedBadge;
   dynamic dateExpiry;
+  String? walletAmount;
+  String? rating;
   DateTime? dateAdded;
   String? status;
 
@@ -182,6 +258,8 @@ class UsersCustomersData {
     this.verifyCode,
     this.verifiedBadge,
     this.dateExpiry,
+    this.walletAmount,
+    this.rating,
     this.dateAdded,
     this.status,
   });
@@ -206,6 +284,8 @@ class UsersCustomersData {
     verifyCode: json["verify_code"],
     verifiedBadge: json["verified_badge"],
     dateExpiry: json["date_expiry"],
+    walletAmount: json["wallet_amount"],
+    rating: json["rating"],
     dateAdded: DateTime.parse(json["date_added"]),
     status: json["status"],
   );
@@ -230,6 +310,8 @@ class UsersCustomersData {
     "verify_code": verifyCode,
     "verified_badge": verifiedBadge,
     "date_expiry": dateExpiry,
+    "wallet_amount": walletAmount,
+    "rating": rating,
     "date_added": dateAdded!.toIso8601String(),
     "status": status,
   };

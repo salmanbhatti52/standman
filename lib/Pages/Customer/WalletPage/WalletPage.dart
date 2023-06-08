@@ -271,9 +271,7 @@ class _WalletPageState extends State<WalletPage> {
                     Container(
                       child: loading
                           ? Center(child: CircularProgressIndicator())
-                          : customerWalletTxnModel
-                                      .data?.transactionHistory?.length ==
-                                  null
+                          : customerWalletTxnModel.data?.transactionHistory?.length == null
                               ? Center(
                                 child: Column(
                                   children: [

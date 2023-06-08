@@ -108,6 +108,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                   onTap: (){
                     Get.to(
                         Customer_AddRating(
+                          ratings: "${getPreviousJobsModel.data?[index].jobsRatings?.rating == null ? 0.0 : getPreviousJobsModel.data?[index].jobsRatings?.rating}",
                           employeeId: "${getPreviousJobsModel.data?[index].usersEmployeeData?.usersCustomersId}",
                           customerId: "${getPreviousJobsModel.data?[index].usersCustomersData?.usersCustomersId}",
                           image: "$baseUrlImage${getPreviousJobsModel.data?[index].image}",
@@ -250,7 +251,8 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                                             children: [
                                               Image.asset("assets/images/star.png"),
                                               Text(
-                                                '--',
+                                                "${getPreviousJobsModel.data?[index].jobsRatings?.rating == 0.0 ? '--' : getPreviousJobsModel.data?[index].jobsRatings?.rating }",
+                                                // '--',
                                                 style: TextStyle(
                                                   color: Color(0xff000000),
                                                   fontFamily: "Outfit",

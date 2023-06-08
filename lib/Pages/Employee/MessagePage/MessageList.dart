@@ -90,7 +90,7 @@ class _EmpMessagesListsState extends State<EmpMessagesLists> {
                           CircularProgressIndicator(color: Colors.blueAccent))
                   : getAllChatModel.status != "success"
                       ? Center(
-                          child: Text('no data found...',
+                          child: Text('no Chat found...',
                               style: TextStyle(fontWeight: FontWeight.bold)))
                       : ListView.builder(
                           shrinkWrap: true,

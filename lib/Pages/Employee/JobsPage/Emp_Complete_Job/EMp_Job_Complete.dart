@@ -18,12 +18,14 @@ class EMp_Job_Completed extends StatefulWidget {
   String? description;
   String? profilePic;
   String? status;
+  String? ratings;
   String? name;
   String? myJobId;
    EMp_Job_Completed({Key? key , this.customerId, this.image,
      this.myJobId,
      this.jobName,
      this.totalPrice,
+     this.ratings,
      this.status,
      this.address,
      this.completeJobTime,
@@ -269,7 +271,7 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
                                         children: [
                                           Icon(Icons.star, color: Color(0xffFFDF00), size: 15,),
                                           Text(
-                                            '4.5',
+                                           "${ widget.ratings == null ? 0.0 : widget.ratings}",
                                             style: TextStyle(
                                               color: Color(0xff000000),
                                               fontFamily: "Outfit",

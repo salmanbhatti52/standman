@@ -21,9 +21,10 @@ class Customer_AddRating extends StatefulWidget {
   String? name;
   String? status;
   String? employeeId;
+  String? ratings;
   String? customerId;
    Customer_AddRating({Key? key,  this.image, this.customerId, this.jobId,
-     this.jobName, this.totalPrice, this.address,
+     this.jobName, this.totalPrice, this.ratings, this.address,
      this.completeJobTime, this.description, this.employeeId,
      this.profilePic, this.name, this.status,
    }) : super(key: key);
@@ -252,7 +253,7 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                                           children: [
                                             Icon(Icons.star, color: Color(0xffFFDF00), size: 15,),
                                             Text(
-                                              '--',
+                                              "${ widget.ratings == null ? 0.0 : widget.ratings}",
                                               style: TextStyle(
                                                 color: Color(0xff000000),
                                                 fontFamily: "Outfit",

@@ -10,36 +10,36 @@ String jobsCustomersCompleteModelToJson(JobsCustomersCompleteModel data) => json
 
 class JobsCustomersCompleteModel {
   String? status;
-  Message? message;
+  Data? data;
 
   JobsCustomersCompleteModel({
     this.status,
-    this.message,
+    this.data,
   });
 
   factory JobsCustomersCompleteModel.fromJson(Map<String, dynamic> json) => JobsCustomersCompleteModel(
     status: json["status"],
-    message: Message.fromJson(json["message"]),
+    data: Data.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "message": message!.toJson(),
+    "data": data!.toJson(),
   };
 }
 
-class Message {
+class Data {
   Job? job;
   Customer? customer;
   Customer? employee;
 
-  Message({
+  Data({
     this.job,
     this.customer,
     this.employee,
   });
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
     job: Job.fromJson(json["job"]),
     customer: Customer.fromJson(json["customer"]),
     employee: Customer.fromJson(json["employee"]),
@@ -168,7 +168,7 @@ class Job {
   String? startTime;
   String? endTime;
   String? description;
-  String? price;
+  int? price;
   String? serviceCharges;
   String? tax;
   String? totalPrice;

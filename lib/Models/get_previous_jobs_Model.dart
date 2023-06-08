@@ -46,20 +46,21 @@ class Datum {
   String? tax;
   String? totalPrice;
   String? paymentGatewaysName;
-  String?  extraTimePrice;
-  String?  extraTimeTax;
-  String?  extraTimeServiceCharges;
-  String?  extraTime;
+  dynamic extraTimePrice;
+  dynamic extraTimeTax;
+  dynamic extraTimeServiceCharges;
+  dynamic extraTime;
   String? paymentStatus;
   dynamic hiredUsersCustomersId;
   dynamic dateStartJob;
-  DateTime? dateEndJob;
+  dynamic dateEndJob;
   String? status;
   String? dateAdded;
   DateTime? dateModified;
   dynamic rating;
   UsersData? usersCustomersData;
   UsersData? usersEmployeeData;
+  JobsRatings? jobsRatings;
 
   Datum({
     this.jobsId,
@@ -92,6 +93,7 @@ class Datum {
     this.rating,
     this.usersCustomersData,
     this.usersEmployeeData,
+    this.jobsRatings,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -118,13 +120,14 @@ class Datum {
     paymentStatus: json["payment_status"],
     hiredUsersCustomersId: json["hired_users_customers_id"],
     dateStartJob: json["date_start_job"],
-    dateEndJob: json["date_end_job"] == null ? null : DateTime.parse(json["date_end_job"]),
+    dateEndJob: json["date_end_job"],
     status: json["status"],
     dateAdded: json["date_added"],
     dateModified: DateTime.parse(json["date_modified"]),
     rating: json["rating"],
     usersCustomersData: UsersData.fromJson(json["users_customers_data"]),
     usersEmployeeData: UsersData.fromJson(json["users_employee_data"]),
+    jobsRatings: JobsRatings.fromJson(json["jobs_ratings"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -151,13 +154,58 @@ class Datum {
     "payment_status": paymentStatus,
     "hired_users_customers_id": hiredUsersCustomersId,
     "date_start_job": dateStartJob,
-    "date_end_job": dateEndJob?.toIso8601String(),
+    "date_end_job": dateEndJob,
     "status": status,
     "date_added": dateAdded,
     "date_modified": dateModified!.toIso8601String(),
     "rating": rating,
     "users_customers_data": usersCustomersData!.toJson(),
     "users_employee_data": usersEmployeeData!.toJson(),
+    "jobs_ratings": jobsRatings!.toJson(),
+  };
+}
+
+class JobsRatings {
+  int? jobsRatingsId;
+  int? usersCustomersId;
+  int? employeeUsersCustomersId;
+  int? jobsId;
+  String? rating;
+  String? comment;
+  DateTime? dateAdded;
+  String? status;
+
+  JobsRatings({
+    this.jobsRatingsId,
+    this.usersCustomersId,
+    this.employeeUsersCustomersId,
+    this.jobsId,
+    this.rating,
+    this.comment,
+    this.dateAdded,
+    this.status,
+  });
+
+  factory JobsRatings.fromJson(Map<String, dynamic> json) => JobsRatings(
+    jobsRatingsId: json["jobs_ratings_id"],
+    usersCustomersId: json["users_customers_id"],
+    employeeUsersCustomersId: json["employee_users_customers_id"],
+    jobsId: json["jobs_id"],
+    rating: json["rating"],
+    comment: json["comment"],
+    dateAdded: DateTime.parse(json["date_added"]),
+    status: json["status"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "jobs_ratings_id": jobsRatingsId,
+    "users_customers_id": usersCustomersId,
+    "employee_users_customers_id": employeeUsersCustomersId,
+    "jobs_id": jobsId,
+    "rating": rating,
+    "comment": comment,
+    "date_added": dateAdded!.toIso8601String(),
+    "status": status,
   };
 }
 
@@ -182,6 +230,7 @@ class UsersData {
   String? verifiedBadge;
   dynamic dateExpiry;
   String? walletAmount;
+  String? rating;
   DateTime? dateAdded;
   String? status;
 
@@ -206,6 +255,7 @@ class UsersData {
     this.verifiedBadge,
     this.dateExpiry,
     this.walletAmount,
+    this.rating,
     this.dateAdded,
     this.status,
   });
@@ -231,6 +281,7 @@ class UsersData {
     verifiedBadge: json["verified_badge"],
     dateExpiry: json["date_expiry"],
     walletAmount: json["wallet_amount"],
+    rating: json["rating"],
     dateAdded: DateTime.parse(json["date_added"]),
     status: json["status"],
   );
@@ -256,6 +307,7 @@ class UsersData {
     "verified_badge": verifiedBadge,
     "date_expiry": dateExpiry,
     "wallet_amount": walletAmount,
+    "rating": rating,
     "date_added": dateAdded!.toIso8601String(),
     "status": status,
   };
