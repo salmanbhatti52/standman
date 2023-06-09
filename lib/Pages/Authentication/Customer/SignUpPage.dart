@@ -862,13 +862,18 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                         });
                                         print("false: $isInAsyncCall");
                                       });
-                                    }
-                                    if(customerSignupModel.status != "success"){
-                                      toastFailedMessage(customerSignupModel.data, Colors.red);
+                                    } else {
+                                      toastFailedMessage(customerSignupModel.message, Colors.red);
                                       setState(() {
                                         isInAsyncCall = false;
                                       });
                                     }
+                                    // if(customerSignupModel.status != "success"){
+                                    //   toastFailedMessage(customerSignupModel.data, Colors.red);
+                                    //   setState(() {
+                                    //     isInAsyncCall = false;
+                                    //   });
+                                    // }
                                   }
                                 }
                               },

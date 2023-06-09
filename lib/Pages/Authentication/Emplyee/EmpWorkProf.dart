@@ -41,7 +41,9 @@ class WorkProof extends StatefulWidget {
       this.email,
       this.phonenumber,
       this.password,
-      this.uploadID, this.firstname, this.lastname})
+      this.uploadID,
+      this.firstname,
+      this.lastname})
       : super(key: key);
 
   @override
@@ -62,7 +64,7 @@ class _WorkProofState extends State<WorkProof> {
       body: {
         "one_signal_id": "123456",
         "users_customers_type": "Employee",
-        "first_name":widget.firstname,
+        "first_name": widget.firstname,
         "last_name": widget.lastname,
         "phone": widget.phonenumber,
         "email": widget.email,
@@ -157,9 +159,13 @@ class _WorkProofState extends State<WorkProof> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 ,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -171,7 +177,9 @@ class _WorkProofState extends State<WorkProof> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                        ),
                         child: Text(
                           "Birth certificate",
                           style: TextStyle(
@@ -185,9 +193,13 @@ class _WorkProofState extends State<WorkProof> {
                     ],
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 ,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -199,7 +211,9 @@ class _WorkProofState extends State<WorkProof> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                        ),
                         child: Text(
                           "Citizenship card",
                           style: TextStyle(
@@ -213,9 +227,13 @@ class _WorkProofState extends State<WorkProof> {
                     ],
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 , ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -227,7 +245,9 @@ class _WorkProofState extends State<WorkProof> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                        ),
                         child: Text(
                           "Passport",
                           style: TextStyle(
@@ -241,9 +261,13 @@ class _WorkProofState extends State<WorkProof> {
                     ],
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 ,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -255,7 +279,9 @@ class _WorkProofState extends State<WorkProof> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                        ),
                         child: Text(
                           "Permanent PR card",
                           style: TextStyle(
@@ -269,9 +295,13 @@ class _WorkProofState extends State<WorkProof> {
                     ],
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 ,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -283,7 +313,9 @@ class _WorkProofState extends State<WorkProof> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                        ),
                         child: Text(
                           "Work permit",
                           style: TextStyle(
@@ -297,9 +329,13 @@ class _WorkProofState extends State<WorkProof> {
                     ],
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 ,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -311,7 +347,9 @@ class _WorkProofState extends State<WorkProof> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                        ),
                         child: Text(
                           "Social Insurance Number Card or letter",
                           style: TextStyle(
@@ -325,9 +363,13 @@ class _WorkProofState extends State<WorkProof> {
                     ],
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 , ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -340,7 +382,9 @@ class _WorkProofState extends State<WorkProof> {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, ),
+                          padding: const EdgeInsets.only(
+                            left: 8.0,
+                          ),
                           child: Text(
                             "Study permit (if it declares the ability to work off-campus unrelated to program of study)",
                             style: TextStyle(
@@ -355,9 +399,13 @@ class _WorkProofState extends State<WorkProof> {
                     ],
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 ,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -369,7 +417,9 @@ class _WorkProofState extends State<WorkProof> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                        ),
                         child: Text(
                           "Certificate of Indian Status",
                           style: TextStyle(
@@ -383,9 +433,13 @@ class _WorkProofState extends State<WorkProof> {
                     ],
                   ),
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0 ,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -397,7 +451,9 @@ class _WorkProofState extends State<WorkProof> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0, ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                        ),
                         child: Text(
                           "Canadian Forces Identification Card",
                           style: TextStyle(
@@ -520,21 +576,30 @@ class _WorkProofState extends State<WorkProof> {
                             //     "${employeeSignupModel.data?.usersCustomersId.toString()}");
 
                             Future.delayed(const Duration(seconds: 3), () {
-                              toastSuccessMessage(employeeSignupModel.data, Colors.green);
-                              Get.to(LoginTabClass(login: 1,));
+                              toastSuccessMessage(
+                                  employeeSignupModel.data, Colors.green);
+                              Get.to(LoginTabClass(
+                                login: 1,
+                              ));
                               setState(() {
                                 isInAsyncCall = false;
                               });
                               print("false: $isInAsyncCall");
                             });
-                          }
-                          if (employeeSignupModel.status != "success") {
+                          } else {
                             toastFailedMessage(
-                                employeeSignupModel.data, Colors.red);
+                                employeeSignupModel.message, Colors.red);
                             setState(() {
                               isInAsyncCall = false;
                             });
                           }
+                          // if (employeeSignupModel.status != "success") {
+                          //   toastFailedMessage(
+                          //       employeeSignupModel.data, Colors.red);
+                          //   setState(() {
+                          //     isInAsyncCall = false;
+                          //   });
+                          // }
                         }
                       }
                     },

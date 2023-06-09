@@ -6,15 +6,18 @@ String customerSignupModelToJson(CustomerSignupModel data) => json.encode(data.t
 
 class CustomerSignupModel {
   String? status;
+  String? message;
   String? data;
 
   CustomerSignupModel({
     this.status,
+    this.message,
     this.data,
   });
 
   factory CustomerSignupModel.fromJson(Map<String, dynamic> json) => CustomerSignupModel(
     status: json["status"],
+    message : json["message"] != null ? json["message"] : null,
     data: json["data"],
   );
 

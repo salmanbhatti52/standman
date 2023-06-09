@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "951920697765",
+    "project_id": "standman-7e58f",
+    "storage_bucket": "standman-7e58f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951920697765:android:8d8346b717f4c34f8c884c",
+        "android_client_info": {
+          "package_name": "com.standman.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951920697765-k722d7f72l65nh2ils3kpj46uelkv5a2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGi4A96Y0HW9uYnZWu9jsPaId7dV_y_uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951920697765-epodeo9rgh5u478iil68ta6lgbnsikm8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

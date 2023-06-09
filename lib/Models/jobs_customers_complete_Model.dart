@@ -19,7 +19,8 @@ class JobsCustomersCompleteModel {
 
   factory JobsCustomersCompleteModel.fromJson(Map<String, dynamic> json) => JobsCustomersCompleteModel(
     status: json["status"],
-    data: Data.fromJson(json["data"]),
+    data : json["data"] != null ? Data.fromJson(json["data"]) : null,
+    // data: Data.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -74,7 +75,7 @@ class Customer {
   dynamic dateExpiry;
   String? walletAmount;
   String? rating;
-  String? dateAdded;
+  DateTime? dateAdded;
   String? status;
 
   Customer({
@@ -125,7 +126,7 @@ class Customer {
     dateExpiry: json["date_expiry"],
     walletAmount: json["wallet_amount"],
     rating: json["rating"],
-    dateAdded: json["date_added"],
+    dateAdded: DateTime.parse(json["date_added"]),
     status: json["status"],
   );
 
@@ -151,7 +152,7 @@ class Customer {
     "date_expiry": dateExpiry,
     "wallet_amount": walletAmount,
     "rating": rating,
-    "date_added": dateAdded,
+    "date_added": dateAdded!.toIso8601String(),
     "status": status,
   };
 }
@@ -182,7 +183,7 @@ class Job {
   dynamic dateStartJob;
   dynamic dateEndJob;
   String? status;
-  DateTime? dateAdded;
+  String? dateAdded;
   DateTime? dateModified;
   dynamic rating;
 
@@ -243,7 +244,7 @@ class Job {
     dateStartJob: json["date_start_job"],
     dateEndJob: json["date_end_job"],
     status: json["status"],
-    dateAdded: DateTime.parse(json["date_added"]),
+    dateAdded: json["date_added"],
     dateModified: DateTime.parse(json["date_modified"]),
     rating: json["rating"],
   );
@@ -274,7 +275,7 @@ class Job {
     "date_start_job": dateStartJob,
     "date_end_job": dateEndJob,
     "status": status,
-    "date_added": dateAdded!.toIso8601String(),
+    "date_added": dateAdded,
     "date_modified": dateModified!.toIso8601String(),
     "rating": rating,
   };

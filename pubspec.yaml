@@ -75,6 +75,9 @@ dependencies:
   rename: ^2.1.1
   flutter_stripe: ^9.2.0
   qr_code_scanner: ^1.0.1
+  google_sign_in: ^6.1.4
+  firebase_auth: ^4.6.2
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
