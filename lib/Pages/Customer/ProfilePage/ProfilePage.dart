@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../Drawer.dart';
@@ -42,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // userId = (prefs!.getString('userid'));
     userEmail = (prefs!.getString('user_email'));
     phoneNumber = (prefs!.getString('phoneNumber'));
-    fullName = (prefs!.getString('fullName'));
+    // fullName = (prefs!.getString('fullName'));
     // profilePic1 = (prefs!.getString('profilePic'));
     password = (prefs!.getString('password'));
     usersCustomersId = prefs!.getString('usersCustomersId');
@@ -156,13 +157,13 @@ class _ProfilePageState extends State<ProfilePage> {
       // drawer: MyDrawer(),
       // backgroundColor: Colors.white,
       body:
-      progress
-          ? Center(child: CircularProgressIndicator(color: Colors.blueAccent))
-          : usersProfileModel.status != "success"
-              ? Center(
-                  child: Text('no data found...',
-                      style: TextStyle(fontWeight: FontWeight.bold)))
-              :
+      // progress
+      //     ? Center(child: CircularProgressIndicator(color: Colors.blueAccent))
+      //     : usersProfileModel.status != "success"
+      //         ? Center(
+      //             child: Text('no data found...',
+      //                 style: TextStyle(fontWeight: FontWeight.bold)))
+      //         :
       ModalProgressHUD(
         inAsyncCall: isInAsyncCall,
         opacity: 0.02,
@@ -201,44 +202,29 @@ class _ProfilePageState extends State<ProfilePage> {
                               //     backgroundImage: AssetImage("assets/images/person2.png"),
                               // ),
 
-                              CircleAvatar(
-                                  // radius: (screenWidth > 600) ? 90 : 70,
+                              Container(
+                                child: progress
+                                    ? CircleAvatar(
                                   radius: 50,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
-                                      ? Image.asset("assets/images/person2.png").image
-                                      : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
-                                  // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.grey.shade100,
+                                    child: Text('',),),)
+                                    : usersProfileModel.status != "success"
+                                    ? Center(
+                                    child: Text('',
+                                        style: TextStyle(fontWeight: FontWeight.bold)))
+                                    : CircleAvatar(
+                                    // radius: (screenWidth > 600) ? 90 : 70,
+                                    radius: 50,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
+                                        ? Image.asset("assets/images/person2.png").image
+                                        : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
+                                    // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
-                                  ),
-                          // CachedNetworkImage(
-                          //   imageUrl: (baseUrlImage + usersProfileModel.data!.profilePic.toString()),
-                          //   imageBuilder: (context, imageProvider) => Container(
-                          //     height: 171,
-                          //     width: 171,
-                          //     decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(16),
-                          //       color: Colors.black,
-                          //       image: DecorationImage(
-                          //         image: imageProvider,
-                          //         fit: BoxFit.fill,
-                          //       ),
-                          //     ),
-                          //   ),
-                          //   placeholder: (context, url) => const CircularProgressIndicator(),
-                          //   errorWidget: (context, url, error) => Container(
-                          //     height: 171,
-                          //     width: 171,
-                          //     decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(16),
-                          //       color: Colors.black,
-                          //       image: DecorationImage(
-                          //         image: Image.asset("assets/images/person2.png").image,
-                          //         fit: BoxFit.fill,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+                                    ),
+                              ),
                               SizedBox(
                                 width: width * 0.03,
                               ),
@@ -246,75 +232,81 @@ class _ProfilePageState extends State<ProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Outfit",
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 18,
+                                  Container(
+                                    child:usersProfileModel.status != "success" ? Text(""): Text(
+                                      "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Outfit",
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Row(
-                                      // mainAxisAlignment:
-                                          // MainAxisAlignment.center,
+                                  Container(
+                                    child: usersProfileModel.status != "success" ? Text(""): Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Row(
+                                        // mainAxisAlignment:
+                                            // MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/images/sms-tracking.svg",
+                                            color: Colors.white,
+                                          ),
+                                          usersProfileModel.status != "success" ? Text(""): ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                                maxWidth: MediaQuery.of(context).size.width * 0.45),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: AutoSizeText(
+                                                "${usersProfileModel.data!.email}",
+                                                style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+
+                                              ),
+                                            ),
+                                          ),
+                                          // Text(
+                                          //     "  ${usersProfileModel.data!.email}",
+                                          //     style: TextStyle(
+                                          //       color: Color(0xffffffff),
+                                          //       fontFamily: "Outfit",
+                                          //       fontWeight: FontWeight.w300,
+                                          //       fontSize: 14,
+                                          //     ),
+                                          //   ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    child:  usersProfileModel.status != "success" ? Text(""):Row(
+                                      // mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
                                         SvgPicture.asset(
-                                          "assets/images/sms-tracking.svg",
+                                          "assets/images/call.svg",
                                           color: Colors.white,
+                                          width: 16,
+                                          height: 16,
                                         ),
-                                        ConstrainedBox(
-                                          constraints: BoxConstraints(
-                                              maxWidth: MediaQuery.of(context).size.width * 0.45),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(left: 8.0),
-                                            child: AutoSizeText(
-                                              "${usersProfileModel.data!.email}",
-                                              style: TextStyle(fontSize: 16.0, color: Colors.white),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-
-                                            ),
+                                        Text(
+                                          "  ${usersProfileModel.data!.phone.toString()}",
+                                          style: TextStyle(
+                                            color: Color(0xffffffff),
+                                            fontFamily: "Outfit",
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14,
                                           ),
                                         ),
-                                        // Text(
-                                        //     "  ${usersProfileModel.data!.email}",
-                                        //     style: TextStyle(
-                                        //       color: Color(0xffffffff),
-                                        //       fontFamily: "Outfit",
-                                        //       fontWeight: FontWeight.w300,
-                                        //       fontSize: 14,
-                                        //     ),
-                                        //   ),
                                       ],
                                     ),
-                                  ),
-                                  Row(
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/images/call.svg",
-                                        color: Colors.white,
-                                        width: 16,
-                                        height: 16,
-                                      ),
-                                      Text(
-                                        "  ${usersProfileModel.data!.phone.toString()}",
-                                        style: TextStyle(
-                                          color: Color(0xffffffff),
-                                          fontFamily: "Outfit",
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ],
                               ),

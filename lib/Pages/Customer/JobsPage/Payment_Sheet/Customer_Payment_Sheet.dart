@@ -320,7 +320,7 @@ Payment({
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                  Text(
-                                   "${jobsCustomersCompleteModel.data!.job!.startDate}",
+                                   "${jobsCustomersCompleteModel.data?.job?.dateAdded}",
                                   // "24 Jul 2020",
                                   style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 1),
@@ -332,7 +332,7 @@ Payment({
                                   textAlign: TextAlign.right,
                                 ),
                                 Text(
-                                  "${jobsCustomersCompleteModel.data!.job!.startTime}",
+                                  "${jobsCustomersCompleteModel.data?.job?.startTime}",
                                   // '15:30',
                                   style: TextStyle(
                                     color: Color(0xffA7A9B7),

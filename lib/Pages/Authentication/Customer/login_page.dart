@@ -328,8 +328,9 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                             SharedPreferences sharedPref = await SharedPreferences.getInstance();
                             await sharedPref.setString('user_email', "${customerSigninModel.data?.email.toString()}");
                             await sharedPref.setString('phoneNumber', "${customerSigninModel.data?.phone.toString()}");
-                            await sharedPref.setString('fullName', "${customerSigninModel.data?.fullName.toString()}");
-                            await sharedPref.setString('profilePic', "${customerSigninModel.data?.profilePic.toString()}");
+                            await sharedPref.setString('firstName', "${customerSigninModel.data?.firstName.toString()}");
+                            await sharedPref.setString('lastName', "${customerSigninModel.data?.lastName.toString()}");
+                            await sharedPref.setString('profilePic', "${baseUrlImage+customerSigninModel.data!.profilePic.toString()}");
                             await sharedPref.setString('usersCustomersId', "${customerSigninModel.data?.usersCustomersId.toString()}");
                             await sharedPref.setString('password', "${customerSigninModel.data?.password.toString()}");
 

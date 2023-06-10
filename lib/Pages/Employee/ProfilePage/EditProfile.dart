@@ -697,8 +697,8 @@ class _EmpEditProfileState extends State<EmpEditProfile> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              fullName = nameController.text;
-                              print("fullName $fullName");
+                              // fullName = nameController.text;
+                              // print("fullName $fullName");
                               setState(() {
                                 isInAsyncCall = true;
                               });

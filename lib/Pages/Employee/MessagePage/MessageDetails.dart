@@ -169,29 +169,32 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut);
-        print("objectr3qF");
-      }
-      print("object");
-    });
-    usersCustomersId = widget.usersCustomersId;
-    Image = widget.img;
-    print("usersCustomersId $usersCustomersId");
-    sharedPrefs();
+  void scrollToBottom() {
+    final bottomOffset = _scrollController.position.maxScrollExtent;
+    _scrollController.animateTo(
+      bottomOffset,
+      duration: Duration(milliseconds: 1000),
+      curve: Curves.easeInOut,
+    );
   }
+
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
+
+  @override
+  void initState() {
+    super.initState();
+    usersCustomersId = widget.usersCustomersId;
+    Image = widget.img;
+    print("usersCustomersId $usersCustomersId");
+    _scrollController = ScrollController();
+    sharedPrefs();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -398,7 +401,6 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                         children: [
                           ListView.builder(
                             itemCount: getMessgeModel.data?.length,
-                            shrinkWrap: true,
                             controller: _scrollController,
                             reverse: true,
                             padding: EdgeInsets.only(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
@@ -119,13 +120,13 @@ class _EmpHomePageState extends State<EmpHomePage> {
       // drawer: MyDrawer(),
       backgroundColor: Color(0xff2B65EC),
       body:
-      progress
-          ? Center(child: CircularProgressIndicator(color: Colors.blueAccent))
-          : usersProfileModel.status != "success"
-          ? Center(
-          child: Text('no data found...',
-              style: TextStyle(fontWeight: FontWeight.bold)))
-          :
+      // progress
+      //     ? Center(child: CircularProgressIndicator(color: Colors.blueAccent))
+      //     : usersProfileModel.status != "success"
+      //     ? Center(
+      //     child: Text('no data found...',
+      //         style: TextStyle(fontWeight: FontWeight.bold)))
+      //     :
       SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: SafeArea(
@@ -140,15 +141,26 @@ class _EmpHomePageState extends State<EmpHomePage> {
                           left: 18.0, right: 18, bottom: 0),
                       child:
                       // Image.asset("assets/images/person.png"),
-                      CircleAvatar(
-                        // radius: (screenWidth > 600) ? 90 : 70,
+                      Container(
+                        child: progress
+                            ? CircleAvatar(
                           radius: 35,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
-                              ? Image.asset("assets/images/person2.png").image
-                              : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
-                        // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Text('',),),)
+                            : usersProfileModel.status != "success"
+                            ? Center(
+                            child: Text('',
+                                style: TextStyle(fontWeight: FontWeight.bold)))
+                            : CircleAvatar(
+                            radius: 35,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:  usersProfileModel.data!.usersCustomersId.toString() == null
+                                ? Image.asset("assets/images/person2.png").image
+                                : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
 
+                        ),
                       ),
                     ),
                     Column(
@@ -165,17 +177,20 @@ class _EmpHomePageState extends State<EmpHomePage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
-                         Text(
-                           "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
-                          // "Marvis Ighedosa",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Outfit",
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18,
+                        Container(
+                          child: usersProfileModel.status != "success" ? Text("") : Text(
+                            "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
+                            // "${usersProfileModel.data!.firstName "$+" usersProfileModel.data.lastName}",
+                            // "Marvis Ighedosa",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Outfit",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                            ),
+                            textAlign: TextAlign.left,
                           ),
-                          textAlign: TextAlign.left,
-                        ),
+                        )
                       ],
                     ),
                   ],

@@ -71,7 +71,7 @@ class _EditProfileState extends State<EditProfile> {
     // userId = (prefs!.getString('userid'));
     userEmail = (prefs!.getString('user_email'));
     phoneNumber = (prefs!.getString('phoneNumber'));
-    fullName = (prefs!.getString('fullName'));
+    // fullName = (prefs!.getString('fullName'));
     profilePic1 = (prefs!.getString('profilePic'));
     usersCustomersId = prefs?.getString('usersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -840,11 +840,11 @@ class _EditProfileState extends State<EditProfile> {
                       GestureDetector(
                         onTap: () async {
                           // fullName= nameController.text;
-                          print("fullName $fullName");
+                          // print("fullName $fullName");
                           print("imafe $imagePath");
-                          print("fullName $fullName");
-                          print("fullName $fullName");
-                          print("fullName $fullName");
+                          // print("fullName $fullName");
+                          // print("fullName $fullName");
+                          // print("fullName $fullName");
                               setState(() {
                                 isInAsyncCall = true;
                               });
