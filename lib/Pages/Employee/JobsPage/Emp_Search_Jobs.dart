@@ -24,7 +24,12 @@ class _EmpSearchJobsState extends State<EmpSearchJobs> {
     String apiUrl = searchJobsEmployeesApiUrl;
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
-    print("empUsersCustomersId: ${usersCustomersId}");
+    longitude =  prefs!.getString('longitude1');
+    lattitude =  prefs!.getString('lattitude1');
+    print("usersCustomersId = $usersCustomersId");
+    print("longitude1111: ${longitude}");
+    print("lattitude1111: ${lattitude}");
+
     if (searchController.text.isNotEmpty) {
       print("searchControllerValue ${searchController.text}");
       searchEmployeeJobsModel.data?.clear();
@@ -32,8 +37,8 @@ class _EmpSearchJobsState extends State<EmpSearchJobs> {
       print("empUsersCustomersId $usersCustomersId");
       final response = await http.post(Uri.parse(apiUrl), body: {
         "users_customers_id": usersCustomersId,
-        "employee_longitude": "123123",
-        "employee_lattitude": "123123",
+        "employee_longitude": longitude,
+        "employee_lattitude": lattitude,
         "job_name": searchController.text
       }, headers: {
         'Accept': 'application/json'

@@ -37,11 +37,11 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
-    longitude =  prefs!.getDouble('longitude');
-    lattitude =  prefs!.getDouble('latitude');
+    longitude =  prefs!.getString('longitude1');
+    lattitude =  prefs!.getString('lattitude1');
     print("usersCustomersId = $usersCustomersId");
-    print("longitude: ${longitude}");
-    print("lattitude: ${lattitude}");
+    print("longitude1111: ${longitude}");
+    print("lattitude1111: ${lattitude}");
 
     String apiUrl = getJobsEmployeesModelApiUrl;
     print("working");
@@ -51,9 +51,9 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
       body: {
         "users_customers_id": usersCustomersId,
         // "employee_longitude": "${longitude.toString()}",
-        "employee_longitude": "123123",
+        "employee_longitude": longitude,
         // "employee_lattitude": "${lattitude.toString()}",
-        "employee_lattitude": "123123",
+        "employee_lattitude": lattitude,
       },
     );
     final responseString = response.body;

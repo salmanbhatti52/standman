@@ -241,8 +241,7 @@ class _WalletPageState extends State<WalletPage> {
               height: height * 0.01,
             ),
             Container(
-              width: width,
-              height: 267.2,
+              height: Get.height * 0.343,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(

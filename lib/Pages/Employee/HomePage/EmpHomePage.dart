@@ -36,7 +36,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
     // TODO: implement initState
     super.initState();
     getUserProfileWidget();
-
+    sharePref();
   }
 
   UsersProfileModel usersProfileModel = UsersProfileModel();
@@ -81,6 +81,16 @@ class _EmpHomePageState extends State<EmpHomePage> {
    setState(() {
 
    });
+  }
+
+  sharePref() async {
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
+    longitude =  prefs!.getString('longitude1');
+    lattitude =  prefs!.getString('lattitude1');
+    print("usersCustomersId = $usersCustomersId");
+    print("longitude1111: ${longitude}");
+    print("lattitude1111: ${lattitude}");
   }
 
   @override
@@ -198,7 +208,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
               ),
               Container(
                 width: width,
-                height: height * 0.67,
+                height: height * 0.7,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(

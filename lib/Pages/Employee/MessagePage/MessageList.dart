@@ -90,7 +90,7 @@ class _EmpMessagesListsState extends State<EmpMessagesLists> {
                           CircularProgressIndicator(color: Colors.blueAccent))
                   : getAllChatModel.status != "success"
                       ? Center(
-                          child: Text('no Chat found...',
+                          child: Text('no Chat available...',
                               style: TextStyle(fontWeight: FontWeight.bold)))
                       : ListView.builder(
                           shrinkWrap: true,
@@ -126,15 +126,31 @@ class _EmpMessagesListsState extends State<EmpMessagesLists> {
                                             ),
                                             // textAlign: TextAlign.center,
                                           ),
-                                          subtitle: Text(
-                                           "${ getAllChatModel.data![index].lastMessage}",
-                                            style: const TextStyle(
-                                              color: Color.fromRGBO(0, 0, 0, 1),
-                                              fontFamily: "Outfit",
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
+                                          subtitle: Container(
+                                            child: getAllChatModel.data![index].messageType  == "attachment" ? Row(
+                                              children: [
+                                                ClipRRect(
+                                                    borderRadius: BorderRadius.circular(5.0),
+                                                    child: Image.asset("assets/images/fade_in_image.jpeg", width: 25, height: 25,)),
+                                                SizedBox(width: 5),
+                                                Text("Image", style: const TextStyle(
+                                                  color: Color.fromRGBO(0, 0, 0, 1),
+                                                  fontFamily: "Outfit",
+                                                  fontWeight: FontWeight.w200,
+                                                  fontSize: 15,
+                                                ),
+                                                ),
+                                              ],
+                                            ) : Text(
+                                              "${ getAllChatModel.data![index].lastMessage}",
+                                              style: const TextStyle(
+                                                color: Color.fromRGBO(0, 0, 0, 1),
+                                                fontFamily: "Outfit",
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12,
+                                              ),
+                                              // textAlign: TextAlign.left,
                                             ),
-                                            // textAlign: TextAlign.left,
                                           ),
                                           leading: ClipRRect(
                                             borderRadius:

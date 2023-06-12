@@ -24,8 +24,8 @@ String? fullName;
 String? phoneNumber;
 String? profilePic1;
 String? usersCustomersId;
-double? longitude;
-double? lattitude;
+String? longitude;
+String? lattitude;
 SharedPreferences? prefs;
 
 class HomePage extends StatefulWidget {
@@ -55,11 +55,11 @@ class _HomePageState extends State<HomePage> {
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
-    longitude =  prefs!.getDouble('longitude');
-    lattitude =  prefs!.getDouble('latitude');
+    // longitude =  prefs!.getDouble('longitude');
+    // lattitude =  prefs!.getDouble('latitude');
     print("usersCustomersId = $usersCustomersId");
-    print("longitude: ${longitude}");
-    print("lattitude: ${lattitude}");
+    print("longitude1: ${longitude}");
+    print("lattitude1: ${lattitude}");
 
     try {
       String apiUrl = usersProfileApiUrl;

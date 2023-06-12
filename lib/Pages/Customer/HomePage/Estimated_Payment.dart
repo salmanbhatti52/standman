@@ -38,6 +38,15 @@ Estimated_PaymentMethod({
 
   JobsCreateModel jobsCreateModel = JobsCreateModel();
 
+  // sharepref() async {
+  //     print('Longitude Lattitude sharePref');
+  //     prefs = await SharedPreferences.getInstance();
+  //     longitude = (prefs!.getString('longitude'));
+  //     lattitude = (prefs!.getString('lattitude'));
+  //     print("longitude = $longitude");
+  //     print("lattitude = $lattitude");
+  // }
+
   jobCreated() async {
     print("working");
     prefs = await SharedPreferences.getInstance();
@@ -86,6 +95,8 @@ Estimated_PaymentMethod({
     //           chargers: jobsCreateModel.data?.serviceCharges,
     //           tax: jobsCreateModel.data?.tax);
     //     });
+
+    // sharepref();
   }
 
 

@@ -64,6 +64,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   getUserProfileWidget() async {
     progress = true;
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    // longitude =  prefs!.getDouble('longitude');
+    // lattitude =  prefs!.getDouble('latitude');
+    print("usersCustomersId = $usersCustomersId");
+    print("longitude1: ${longitude}");
+    print("lattitude1: ${lattitude}");
     setState(() {});
     try {
       String apiUrl = usersProfileApiUrl;

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,6 +83,75 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
     //   // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
     //   print("userId value is = $usersCustomersId");
     // }
+  }
+
+  // void getLocation() async {
+  //   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+  //   print("Current Latitude ==  ${position.latitude}");
+  //   print("Current Longitude == ${position.longitude}");
+  // }
+
+
+  String? _currentAddress;
+  TextEditingController _currentAddress1 = TextEditingController();
+  Position? _currentPosition;
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition().then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress = '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+        _currentAddress1 = TextEditingController(
+            text: " ${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}");
+        print("long : ${_currentPosition!.longitude}");
+        print("lat : ${_currentPosition!.latitude}");
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   // bool isLoggedIn = false;
@@ -337,6 +408,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                             isInAsyncCall = true;
                           });
                           await employeesignin();
+                          await _getCurrentPosition();
 
                           if (employeeSigninModel.status == "success") {
                             SharedPreferences sharedPref = await SharedPreferences.getInstance();
@@ -349,6 +421,8 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                                 "${employeeSigninModel.data?.profilePic.toString()}");
                             await sharedPref.setString('empUsersCustomersId',
                                 "${employeeSigninModel.data?.usersCustomersId.toString()}");
+                            await sharedPref.setString('longitude1', "${_currentPosition?.longitude}");
+                            await sharedPref.setString('lattitude1', "${_currentPosition?.latitude}");
 
                             Future.delayed(const Duration(seconds: 3), () {
                               if (employeeSigninModel.data!.usersCustomersType ==

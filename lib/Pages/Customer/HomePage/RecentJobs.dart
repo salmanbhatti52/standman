@@ -2,6 +2,7 @@ import 'package:StandMan/Pages/Bottombar.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/get_OnGoing_jobs_Model.dart';
 import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
@@ -21,6 +22,9 @@ class _RecentJobsState extends State<RecentJobs> {
     setState(() {
       loading = true;
     });
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("userId in Prefs is = $usersCustomersId");
     String apiUrl = getOngoingJobsModelApiUrl;
     print("working");
     final response = await http.post(

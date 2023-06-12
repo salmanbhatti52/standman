@@ -13,8 +13,8 @@ class GetPreviousJobsModel {
   List<Datum>? data;
 
   GetPreviousJobsModel({
-    this.status,
-    this.data,
+   this.status,
+   this.data,
   });
 
   factory GetPreviousJobsModel.fromJson(Map<String, dynamic> json) => GetPreviousJobsModel(
@@ -46,14 +46,14 @@ class Datum {
   String? tax;
   String? totalPrice;
   String? paymentGatewaysName;
-  dynamic extraTimePrice;
-  dynamic extraTimeTax;
-  dynamic extraTimeServiceCharges;
-  dynamic extraTime;
+  String? extraTimePrice;
+  String? extraTimeTax;
+  String? extraTimeServiceCharges;
+  String? extraTime;
   String? paymentStatus;
   dynamic hiredUsersCustomersId;
   dynamic dateStartJob;
-  dynamic dateEndJob;
+  DateTime? dateEndJob;
   String? status;
   String? dateAdded;
   DateTime? dateModified;
@@ -120,14 +120,14 @@ class Datum {
     paymentStatus: json["payment_status"],
     hiredUsersCustomersId: json["hired_users_customers_id"],
     dateStartJob: json["date_start_job"],
-    dateEndJob: json["date_end_job"],
+    dateEndJob: DateTime.parse(json["date_end_job"]),
     status: json["status"],
     dateAdded: json["date_added"],
     dateModified: DateTime.parse(json["date_modified"]),
     rating: json["rating"],
     usersCustomersData: UsersData.fromJson(json["users_customers_data"]),
     usersEmployeeData: UsersData.fromJson(json["users_employee_data"]),
-    jobsRatings: JobsRatings.fromJson(json["jobs_ratings"]),
+    jobsRatings: json["jobs_ratings"] == null ? null : JobsRatings.fromJson(json["jobs_ratings"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -154,14 +154,14 @@ class Datum {
     "payment_status": paymentStatus,
     "hired_users_customers_id": hiredUsersCustomersId,
     "date_start_job": dateStartJob,
-    "date_end_job": dateEndJob,
+    "date_end_job": dateEndJob!.toIso8601String(),
     "status": status,
     "date_added": dateAdded,
     "date_modified": dateModified!.toIso8601String(),
     "rating": rating,
     "users_customers_data": usersCustomersData!.toJson(),
     "users_employee_data": usersEmployeeData!.toJson(),
-    "jobs_ratings": jobsRatings!.toJson(),
+    "jobs_ratings": jobsRatings?.toJson(),
   };
 }
 
@@ -219,8 +219,8 @@ class UsersData {
   String? email;
   String? password;
   String? profilePic;
-  String?  proofDocument;
-  String?  validDocument;
+  String? proofDocument;
+  String? validDocument;
   String? messages;
   String? notifications;
   String? accountType;

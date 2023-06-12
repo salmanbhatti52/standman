@@ -176,8 +176,6 @@ class _JobDetailsState extends State<JobDetails> {
   //       });
   // }
 
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -195,7 +193,8 @@ class _JobDetailsState extends State<JobDetails> {
   JobsPrice() async {
     print("working");
     String apiUrl = jobsPriceModelApiUrl;
-    final response = await http.post(Uri.parse(apiUrl),
+    final response = await http.post(
+      Uri.parse(apiUrl),
       headers: {"Accept": "application/json"},
       body: {
         "start_time": startTime?.format(context),
@@ -211,468 +210,82 @@ class _JobDetailsState extends State<JobDetails> {
       // setState(() {});
       print('jobsCreateModel status: ${jobsPriceModel.status}');
     }
-    Future.delayed(const Duration(seconds: 2),
-            () {
-          Estimated_PaymentMethod(
-              ctx: context,
-              price: jobsPriceModel.data?.totalPrice,
-              amount: jobsPriceModel.data?.price,
-              chargers: jobsPriceModel.data?.serviceCharges,
-              tax: jobsPriceModel.data?.tax,
-            img: base64ID,
-            jobName: jobName.text.toString(),
-            date: selectedDate.toString(),
-            time: startTime?.format(context),
-            endtime: endTime?.format(context),
-            describe:  describeJob.text.toString(),
-            address: widget.currentaddress.toString() == "" ? widget.currentaddress1.toString() : widget.currentaddress.toString(),
-            long: widget.longitude,
-            lat: widget.latitude,
-          );
-        });
+    Future.delayed(const Duration(seconds: 2), () {
+      Estimated_PaymentMethod(
+        ctx: context,
+        price: jobsPriceModel.data?.totalPrice,
+        amount: jobsPriceModel.data?.price,
+        chargers: jobsPriceModel.data?.serviceCharges,
+        tax: jobsPriceModel.data?.tax,
+        img: base64ID,
+        jobName: jobName.text.toString(),
+        date: selectedDate.toString(),
+        time: startTime?.format(context),
+        endtime: endTime?.format(context),
+        describe: describeJob.text.toString(),
+        address: widget.currentaddress.toString() == ""
+            ? widget.currentaddress1.toString()
+            : widget.currentaddress.toString(),
+        long: widget.longitude,
+        lat: widget.latitude,
+      );
+    });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: StandManAppBar1(
-        title: "Job Details",
-        bgcolor: Colors.white,
-        titlecolor: Colors.black,
-        iconcolor: Colors.black,
-      ),
-      body: SingleChildScrollView(
-        physics: ScrollPhysics(),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 0),
-            child: Column(
-              children: [
-                Container(
-                  child: Form(
-                    key: key,
-                    child: SingleChildScrollView(
-                      // physics: BouncingScrollPhysics(),
-                      // physics: NeverScrollableScrollPhysics(),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 8.0, bottom: 0),
-                                child: SvgPicture.asset(
-                                  'assets/images/locationfill.svg',
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  widget.currentaddress.toString() == ""
-                                      ? widget.currentaddress1.toString()
-                                      : widget.currentaddress.toString(),
-                                  // "No 15 uti street off ovie palace road effurun\ndelta state",
-                                  style: const TextStyle(
-                                    color: Color.fromRGBO(167, 169, 183, 1),
-                                    fontFamily: "Outfit",
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 14,
+    return GestureDetector(
+      onTap: () {
+        // Dismiss keyboard when the user taps anywhere on the screen
+        final currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: StandManAppBar1(
+          title: "Job Details",
+          bgcolor: Colors.white,
+          titlecolor: Colors.black,
+          iconcolor: Colors.black,
+        ),
+        body: SingleChildScrollView(
+          physics: ScrollPhysics(),
+          child: SafeArea(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 0),
+              child: Column(
+                children: [
+                  Container(
+                    child: Form(
+                      key: key,
+                      child: SingleChildScrollView(
+                        // physics: BouncingScrollPhysics(),
+                        // physics: NeverScrollableScrollPhysics(),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8.0, bottom: 0),
+                                  child: SvgPicture.asset(
+                                    'assets/images/locationfill.svg',
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: height * 0.02,
-                          ),
-                          // Container(
-                          //   width: width * 0.9,
-                          //   height: height * 0.17,
-                          //   // width: 330,
-                          //   // height: 139,
-                          //   decoration: BoxDecoration(
-                          //     borderRadius: BorderRadius.circular(12),
-                          //     color: Color(0xffF3F3F3),
-                          //   ),
-                          //   child: Center(child: SvgPicture.asset("assets/images/uploadimage.svg", width: 75, height: 52,)),
-                          // ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              // width: width * 0.9,
-                              height: height * 0.2,
-                              // width: 330,
-                              // height: 139,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Color(0xffF3F3F3),
-                              ),
-                              child: uploadimg == null
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        pickUploadId();
-                                      },
-                                      child: Center(
-                                          child: SvgPicture.asset(
-                                        "assets/images/uploadimage.svg",
-                                        width: 75,
-                                        height: 52,
-                                      )))
-                                  : Image.file(
-                                      uploadimg!,
-                                      fit: BoxFit.fill,
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                    ),
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              const Text(
-                                "Name",
-                                style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 1),
-                                  fontFamily: "Outfit",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  // letterSpacing: -0.3,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              TextFormField(
-                                controller: jobName,
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(
-                                  color: Color.fromRGBO(167, 169, 183, 1),
-                                  fontFamily: "Outfit",
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 14,
-                                ),
-                                keyboardType: TextInputType.name,
-                                decoration: InputDecoration(
-                                  // contentPadding: const EdgeInsets.only(top: 12.0),
-                                  hintText: "Name your job post",
-                                  hintStyle: const TextStyle(
-                                    color: Color.fromRGBO(167, 169, 183, 1),
-                                    fontFamily: "Outfit",
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 14,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                      color: Color.fromRGBO(243, 243, 243, 1),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                      color: Color.fromRGBO(243, 243, 243, 1),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              const Text(
-                                "Job Date",
-                                style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 1),
-                                  fontFamily: "Outfit",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  // letterSpacing: -0.3,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              // TextFormField(
-                              //   controller: date,
-                              //   textAlign: TextAlign.left,
-                              //   style: const TextStyle(
-                              //     color: Color.fromRGBO(167, 169, 183, 1),
-                              //     fontFamily: "Outfit",
-                              //     fontWeight: FontWeight.w300,
-                              //     fontSize: 14,
-                              //   ),
-                              //   keyboardType: TextInputType.number,
-                              //   decoration: InputDecoration(
-                              //     // contentPadding: const EdgeInsets.only(top: 12.0),
-                              //     hintText: "Select Date",
-                              //     hintStyle: const TextStyle(
-                              //       color: Color.fromRGBO(167, 169, 183, 1),
-                              //       fontFamily: "Outfit",
-                              //       fontWeight: FontWeight.w300,
-                              //       fontSize: 14,
-                              //     ),
-                              //     suffixIcon: Padding(
-                              //       padding: const EdgeInsets.all(12.0),
-                              //       child: GestureDetector(
-                              //         onTap: (){
-                              //
-                              //         },
-                              //         child: SvgPicture.asset(
-                              //             "assets/images/note.svg"),
-                              //       ),
-                              //     ),
-                              //     enabledBorder: OutlineInputBorder(
-                              //       borderRadius: BorderRadius.circular(12),
-                              //       borderSide: const BorderSide(
-                              //         color: Color.fromRGBO(243, 243, 243, 1),
-                              //         width: 1.0,
-                              //       ),
-                              //     ),
-                              //     focusedBorder: OutlineInputBorder(
-                              //       borderRadius: BorderRadius.circular(12),
-                              //       borderSide: const BorderSide(
-                              //         color: Color.fromRGBO(243, 243, 243, 1),
-                              //         width: 1.0,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-
-                              Container(
-                                width: width,
-                                height: 50,
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: Color.fromRGBO(243, 243, 243, 1),
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      selectedDate != null
-                                          ? '${selectedDate.toString().split(' ')[0]}'
-                                          : 'Select Date',
-                                      style: TextStyle(
-                                        color: selectedDate != null
-                                            ? Colors.black
-                                            : Color.fromRGBO(167, 169, 183, 1),
-                                        fontFamily: "Outfit",
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    //     hintStyle: const
-
-                                    InkWell(
-                                      onTap: () {
-                                        _selectDate(context);
-                                      },
-                                      child:
-                                          // Text(
-                                          //   valueDate,
-                                          //   style: TextStyle(
-                                          //       color: valueDate == "Select"
-                                          //           ? Colors.green
-                                          //           : Colors.black, fontSize: 16 ),
-                                          // ),
-                                          SvgPicture.asset(
-                                              "assets/images/note.svg"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Start Time",
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(0, 0, 0, 1),
-                                          fontFamily: "Outfit",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                          // letterSpacing: -0.3,
-                                        ),
-                                      ),
-                                      SizedBox(height: 6),
-                                      GestureDetector(
-                                          onTap: () =>
-                                              _selectStartTime(context),
-                                          // onTap: () => selectTime(context),
-                                          child: dateContainer(
-                                            size,
-                                            startTime != null
-                                                ? '${startTime?.format(context)}'
-                                                : 'Start Time',
-                                            // valueTime.toString(),
-                                            // _selectedTime.format(context),
-                                            Icons.calendar_today,
-                                          )),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "End Time",
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(0, 0, 0, 1),
-                                          fontFamily: "Outfit",
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                          // letterSpacing: -0.3,
-                                        ),
-                                      ),
-                                      SizedBox(height: 6),
-                                      GestureDetector(
-                                          onTap: () => _selectEndTime(context),
-                                          // onTap: () => _EndSelectTime(context),
-                                          child: dateContainer(
-                                              size,
-                                              // ' ${_endSelectedTime.format(context)}',
-                                              endTime != null
-                                                  ? '${endTime?.format(context)}'
-                                                  : 'End Time',
-                                              Icons.calendar_today)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Text(
-                                "These times are approximate and will be adjusted on the bill based on the registered"
-                                " time when a StandMan starts and when the Customer confirms the job is completed",
-                                style: TextStyle(
-                                  color: Color(0xffC70000).withOpacity(0.5),
-                                  fontFamily: "Outfit",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              // const Text(
-                              //   "Price",
-                              //   style: TextStyle(
-                              //     color: Color.fromRGBO(0, 0, 0, 1),
-                              //     fontFamily: "Outfit",
-                              //     fontSize: 16,
-                              //     fontWeight: FontWeight.w400,
-                              //     // letterSpacing: -0.3,
-                              //   ),
-                              //   textAlign: TextAlign.left,
-                              // ),
-                              // const SizedBox(
-                              //   height: 10,
-                              // ),
-                              // TextFormField(
-                              //   controller: price,
-                              //   textAlign: TextAlign.left,
-                              //   style: const TextStyle(
-                              //     color: Color.fromRGBO(167, 169, 183, 1),
-                              //     fontFamily: "Outfit",
-                              //     fontWeight: FontWeight.w300,
-                              //     fontSize: 14,
-                              //   ),
-                              //   keyboardType: TextInputType.number,
-                              //   decoration: InputDecoration(
-                              //     // contentPadding: const EdgeInsets.only(top: 12.0),
-                              //     hintText: "Enter Price you want to offer",
-                              //     hintStyle: const TextStyle(
-                              //       color: Color.fromRGBO(167, 169, 183, 1),
-                              //       fontFamily: "Outfit",
-                              //       fontWeight: FontWeight.w300,
-                              //       fontSize: 14,
-                              //     ),
-                              //     enabledBorder: OutlineInputBorder(
-                              //       borderRadius: BorderRadius.circular(12),
-                              //       borderSide: const BorderSide(
-                              //         color: Color.fromRGBO(243, 243, 243, 1),
-                              //         width: 1.0,
-                              //       ),
-                              //     ),
-                              //     focusedBorder: OutlineInputBorder(
-                              //       borderRadius: BorderRadius.circular(12),
-                              //       borderSide: const BorderSide(
-                              //         color: Color.fromRGBO(243, 243, 243, 1),
-                              //         width: 1.0,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   height: height * 0.02,
-                              // ),
-                              const Text(
-                                "Special Instructions",
-                                style: TextStyle(
-                                  color: Color.fromRGBO(25, 29, 49, 1),
-                                  fontFamily: "Outfit",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w300,
-                                  // letterSpacing: -0.3,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: Color.fromRGBO(243, 243, 243, 1),
-                                      width: 1.0,
-                                    )),
-                                height: height * 0.12, // 97,
-                                child: TextField(
-                                  maxLines: null,
-                                  controller: describeJob,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                    color: Color.fromRGBO(167, 169, 183, 1),
-                                    fontFamily: "Outfit",
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 14,
-                                  ),
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    contentPadding: const EdgeInsets.only(
-                                        top: 0.0, left: 12),
-                                    hintText: "Enter here.....",
-                                    hintStyle: const TextStyle(
+                                Expanded(
+                                  child: Text(
+                                    widget.currentaddress.toString() == ""
+                                        ? widget.currentaddress1.toString()
+                                        : widget.currentaddress.toString(),
+                                    // "No 15 uti street off ovie palace road effurun\ndelta state",
+                                    style: const TextStyle(
                                       color: Color.fromRGBO(167, 169, 183, 1),
                                       fontFamily: "Outfit",
                                       fontWeight: FontWeight.w300,
@@ -680,80 +293,489 @@ class _JobDetailsState extends State<JobDetails> {
                                     ),
                                   ),
                                 ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
+                            // Container(
+                            //   width: width * 0.9,
+                            //   height: height * 0.17,
+                            //   // width: 330,
+                            //   // height: 139,
+                            //   decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(12),
+                            //     color: Color(0xffF3F3F3),
+                            //   ),
+                            //   child: Center(child: SvgPicture.asset("assets/images/uploadimage.svg", width: 75, height: 52,)),
+                            // ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                // width: width * 0.9,
+                                height: height * 0.2,
+                                // width: 330,
+                                // height: 139,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Color(0xffF3F3F3),
+                                ),
+                                child: uploadimg == null
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          pickUploadId();
+                                        },
+                                        child: Center(
+                                            child: SvgPicture.asset(
+                                          "assets/images/uploadimage.svg",
+                                          width: 75,
+                                          height: 52,
+                                        )))
+                                    : Image.file(
+                                        uploadimg!,
+                                        fit: BoxFit.fill,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      ),
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: height * 0.02,
-                          ),
-                          GestureDetector(
-                              // onTap: (){
-                              //   PaymentMethod(context);
-                              // },
-                              onTap: ()   {
-                                if (key.currentState!.validate()) {
-                                  if (jobName.text.isEmpty) {
-                                    toastFailedMessage(
-                                        'JobName cannot be empty', Colors.red);
-                                  } else if (selectedDate.toString().isEmpty) {
-                                    toastFailedMessage(
-                                        'Date cannot be empty', Colors.red);
-                                  } else if (startTime!.format(context)
-                                      .isEmpty) {
-                                    toastFailedMessage(
-                                        'Start Time  cannot be empty',
-                                        Colors.red);
-                                  } else if (endTime!.format(context).isEmpty) {
-                                    toastFailedMessage(
-                                        'End Time cannot be empty', Colors.red);
-                                  }
-                                  // else if (price.text.isEmpty) {
-                                  //   toastFailedMessage(
-                                  //       'Price cannot be empty', Colors.red);
-                                  // }
-                                  else if (describeJob.text.isEmpty) {
-                                    toastFailedMessage(
-                                        'Description cannot be empty',
-                                        Colors.red);
-                                  } else if (base64ID == null) {
-                                    toastFailedMessage(
-                                        'Image required', Colors.red);
-                                  } else {
-                                    print(
-                                        "users_customers_id: ${usersCustomersId}");
-                                    print("jobName: ${jobName}");
-                                    // print("name123: ${usersProfileModel.data!.fullName}");
-                                    print(
-                                        "location: ${widget.currentaddress.toString() == "" ? widget.currentaddress1.toString() : widget.currentaddress.toString()}");
-                                    print("longitude: ${widget.longitude}");
-                                    print("lattitude: ${widget.latitude}");
-                                    print(
-                                        "start_date: ${selectedDate.toString()}");
-                                    print(
-                                        "start_time: ${startTime?.format(context)}");
-                                    print(
-                                        "end_time: ${endTime?.format(context)}");
-                                    print(
-                                        "description: ${describeJob.text.toString()}");
-                                    print("payment_gateways_name: gPay");
-                                    print("payment_status :Paid");
-                                    print("image: ${base64ID}");
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                const Text(
+                                  "Name",
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: "Outfit",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    // letterSpacing: -0.3,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: jobName,
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(167, 169, 183, 1),
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 14,
+                                  ),
+                                  keyboardType: TextInputType.name,
+                                  decoration: InputDecoration(
+                                    // contentPadding: const EdgeInsets.only(top: 12.0),
+                                    hintText: "Name your job post",
+                                    hintStyle: const TextStyle(
+                                      color: Color.fromRGBO(167, 169, 183, 1),
+                                      fontFamily: "Outfit",
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 14,
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                        color: Color.fromRGBO(243, 243, 243, 1),
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: const BorderSide(
+                                        color: Color.fromRGBO(243, 243, 243, 1),
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                const Text(
+                                  "Job Date",
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    fontFamily: "Outfit",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    // letterSpacing: -0.3,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                // TextFormField(
+                                //   controller: date,
+                                //   textAlign: TextAlign.left,
+                                //   style: const TextStyle(
+                                //     color: Color.fromRGBO(167, 169, 183, 1),
+                                //     fontFamily: "Outfit",
+                                //     fontWeight: FontWeight.w300,
+                                //     fontSize: 14,
+                                //   ),
+                                //   keyboardType: TextInputType.number,
+                                //   decoration: InputDecoration(
+                                //     // contentPadding: const EdgeInsets.only(top: 12.0),
+                                //     hintText: "Select Date",
+                                //     hintStyle: const TextStyle(
+                                //       color: Color.fromRGBO(167, 169, 183, 1),
+                                //       fontFamily: "Outfit",
+                                //       fontWeight: FontWeight.w300,
+                                //       fontSize: 14,
+                                //     ),
+                                //     suffixIcon: Padding(
+                                //       padding: const EdgeInsets.all(12.0),
+                                //       child: GestureDetector(
+                                //         onTap: (){
+                                //
+                                //         },
+                                //         child: SvgPicture.asset(
+                                //             "assets/images/note.svg"),
+                                //       ),
+                                //     ),
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(12),
+                                //       borderSide: const BorderSide(
+                                //         color: Color.fromRGBO(243, 243, 243, 1),
+                                //         width: 1.0,
+                                //       ),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(12),
+                                //       borderSide: const BorderSide(
+                                //         color: Color.fromRGBO(243, 243, 243, 1),
+                                //         width: 1.0,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
 
-                                     JobsPrice();
+                                Container(
+                                  width: width,
+                                  height: 50,
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Color.fromRGBO(243, 243, 243, 1),
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        selectedDate != null
+                                            ? '${selectedDate.toString().split(' ')[0]}'
+                                            : 'Select Date',
+                                        style: TextStyle(
+                                          color: selectedDate != null
+                                              ? Colors.black
+                                              : Color.fromRGBO(
+                                                  167, 169, 183, 1),
+                                          fontFamily: "Outfit",
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      //     hintStyle: const
+
+                                      InkWell(
+                                        onTap: () {
+                                          _selectDate(context);
+                                        },
+                                        child:
+                                            // Text(
+                                            //   valueDate,
+                                            //   style: TextStyle(
+                                            //       color: valueDate == "Select"
+                                            //           ? Colors.green
+                                            //           : Colors.black, fontSize: 16 ),
+                                            // ),
+                                            SvgPicture.asset(
+                                                "assets/images/note.svg"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Start Time",
+                                          style: TextStyle(
+                                            color: Color.fromRGBO(0, 0, 0, 1),
+                                            fontFamily: "Outfit",
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            // letterSpacing: -0.3,
+                                          ),
+                                        ),
+                                        SizedBox(height: 6),
+                                        GestureDetector(
+                                            onTap: () =>
+                                                _selectStartTime(context),
+                                            // onTap: () => selectTime(context),
+                                            child: dateContainer(
+                                              size,
+                                              startTime != null
+                                                  ? '${startTime?.format(context)}'
+                                                  : 'Start Time',
+                                              // valueTime.toString(),
+                                              // _selectedTime.format(context),
+                                              Icons.calendar_today,
+                                            )),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "End Time",
+                                          style: TextStyle(
+                                            color: Color.fromRGBO(0, 0, 0, 1),
+                                            fontFamily: "Outfit",
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            // letterSpacing: -0.3,
+                                          ),
+                                        ),
+                                        SizedBox(height: 6),
+                                        GestureDetector(
+                                            onTap: () =>
+                                                _selectEndTime(context),
+                                            // onTap: () => _EndSelectTime(context),
+                                            child: dateContainer(
+                                                size,
+                                                // ' ${_endSelectedTime.format(context)}',
+                                                endTime != null
+                                                    ? '${endTime?.format(context)}'
+                                                    : 'End Time',
+                                                Icons.calendar_today)),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                Text(
+                                  "These times are approximate and will be adjusted on the bill based on the registered"
+                                  " time when a StandMan starts and when the Customer confirms the job is completed",
+                                  style: TextStyle(
+                                    color: Color(0xffC70000).withOpacity(0.5),
+                                    fontFamily: "Outfit",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                // const Text(
+                                //   "Price",
+                                //   style: TextStyle(
+                                //     color: Color.fromRGBO(0, 0, 0, 1),
+                                //     fontFamily: "Outfit",
+                                //     fontSize: 16,
+                                //     fontWeight: FontWeight.w400,
+                                //     // letterSpacing: -0.3,
+                                //   ),
+                                //   textAlign: TextAlign.left,
+                                // ),
+                                // const SizedBox(
+                                //   height: 10,
+                                // ),
+                                // TextFormField(
+                                //   controller: price,
+                                //   textAlign: TextAlign.left,
+                                //   style: const TextStyle(
+                                //     color: Color.fromRGBO(167, 169, 183, 1),
+                                //     fontFamily: "Outfit",
+                                //     fontWeight: FontWeight.w300,
+                                //     fontSize: 14,
+                                //   ),
+                                //   keyboardType: TextInputType.number,
+                                //   decoration: InputDecoration(
+                                //     // contentPadding: const EdgeInsets.only(top: 12.0),
+                                //     hintText: "Enter Price you want to offer",
+                                //     hintStyle: const TextStyle(
+                                //       color: Color.fromRGBO(167, 169, 183, 1),
+                                //       fontFamily: "Outfit",
+                                //       fontWeight: FontWeight.w300,
+                                //       fontSize: 14,
+                                //     ),
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(12),
+                                //       borderSide: const BorderSide(
+                                //         color: Color.fromRGBO(243, 243, 243, 1),
+                                //         width: 1.0,
+                                //       ),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(12),
+                                //       borderSide: const BorderSide(
+                                //         color: Color.fromRGBO(243, 243, 243, 1),
+                                //         width: 1.0,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                // SizedBox(
+                                //   height: height * 0.02,
+                                // ),
+                                const Text(
+                                  "Special Instructions",
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(25, 29, 49, 1),
+                                    fontFamily: "Outfit",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                    // letterSpacing: -0.3,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: Color.fromRGBO(243, 243, 243, 1),
+                                        width: 1.0,
+                                      )),
+                                  height: height * 0.12, // 97,
+                                  child: TextField(
+                                    maxLines: null,
+                                    controller: describeJob,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                      color: Color.fromRGBO(167, 169, 183, 1),
+                                      fontFamily: "Outfit",
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 14,
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                          top: 0.0, left: 12),
+                                      hintText: "Enter here.....",
+                                      hintStyle: const TextStyle(
+                                        color: Color.fromRGBO(167, 169, 183, 1),
+                                        fontFamily: "Outfit",
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
+                            GestureDetector(
+                                onTap: () async {
+                                  final currentFocus = FocusScope.of(context);
+                                  if (!currentFocus.hasPrimaryFocus &&
+                                      currentFocus.focusedChild != null) {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
                                   }
-                                }
-                              },
-                              child: mainButton("Next",
-                                  Color.fromRGBO(43, 101, 236, 1), context)),
-                          SizedBox(
-                            height: height * 0.03,
-                          ),
-                        ],
+                                  if (key.currentState!.validate()) {
+                                    if (jobName.text.isEmpty) {
+                                      toastFailedMessage(
+                                          'JobName cannot be empty',
+                                          Colors.red);
+                                    } else if (selectedDate?.toString() ==
+                                        null) {
+                                      toastFailedMessage(
+                                          'Date cannot be empty', Colors.red);
+                                    } else if (startTime?.format(context) ==
+                                        null) {
+                                      toastFailedMessage(
+                                          'Start Time  cannot be empty',
+                                          Colors.red);
+                                    } else if (endTime?.format(context) ==
+                                        null) {
+                                      toastFailedMessage(
+                                          'End Time cannot be empty',
+                                          Colors.red);
+                                    }
+                                    // else if (price.text.isEmpty) {
+                                    //   toastFailedMessage(
+                                    //       'Price cannot be empty', Colors.red);
+                                    // }
+                                    else if (describeJob.text.isEmpty) {
+                                      toastFailedMessage(
+                                          'Description cannot be empty',
+                                          Colors.red);
+                                    } else if (base64ID == null) {
+                                      toastFailedMessage(
+                                          'Image required', Colors.red);
+                                    } else {
+                                      print(
+                                          "users_customers_id: ${usersCustomersId}");
+                                      print("jobName: ${jobName}");
+                                      // print("name123: ${usersProfileModel.data!.fullName}");
+                                      print(
+                                          "location: ${widget.currentaddress.toString() == "" ? widget.currentaddress1.toString() : widget.currentaddress.toString()}");
+                                      print("longitude: ${widget.longitude}");
+                                      print("lattitude: ${widget.latitude}");
+                                      print(
+                                          "start_date: ${selectedDate.toString()}");
+                                      print(
+                                          "start_time: ${startTime?.format(context)}");
+                                      print(
+                                          "end_time: ${endTime?.format(context)}");
+                                      print(
+                                          "description: ${describeJob.text.toString()}");
+                                      print("payment_gateways_name: gPay");
+                                      print("payment_status :Paid");
+                                      print("image: ${base64ID}");
+
+                                      // SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                                      // await sharedPref.setString('longitude', "${widget.longitude}");
+                                      // await sharedPref.setString('lattitude', "${widget.latitude}");
+
+                                      JobsPrice();
+                                    }
+                                  }
+                                },
+                                child: mainButton("Next",
+                                    Color.fromRGBO(43, 101, 236, 1), context)),
+                            SizedBox(
+                              height: height * 0.03,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

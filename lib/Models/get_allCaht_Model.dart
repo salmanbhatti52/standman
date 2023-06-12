@@ -21,6 +21,7 @@ class GetAllCahtModel {
     status: json["status"],
     // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
     data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))): null,
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -32,32 +33,40 @@ class GetAllCahtModel {
 class Datum {
   int? senderId;
   int? receiverId;
-  UserData? userData;
   String? date;
+  String? status;
+  String? messageType;
   String? lastMessage;
+  UserData? userData;
 
   Datum({
     this.senderId,
     this.receiverId,
-    this.userData,
     this.date,
+    this.status,
+    this.messageType,
     this.lastMessage,
+    this.userData,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     senderId: json["sender_id"],
     receiverId: json["receiver_id"],
-    userData: UserData.fromJson(json["user_data"]),
     date: json["date"],
+    status: json["status"],
+    messageType: json["message_type"],
     lastMessage: json["last_message"],
+    userData: UserData.fromJson(json["user_data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "sender_id": senderId,
     "receiver_id": receiverId,
-    "user_data": userData!.toJson(),
     "date": date,
+    "status": status,
+    "message_type": messageType,
     "last_message": lastMessage,
+    "user_data": userData!.toJson(),
   };
 }
 
@@ -71,16 +80,18 @@ class UserData {
   String? email;
   String? password;
   String? profilePic;
-  String? proofDocument;
-  String? validDocument;
+  dynamic proofDocument;
+  dynamic validDocument;
   String? messages;
   String? notifications;
   String? accountType;
   String? socialAccType;
   String? googleAccessToken;
-  String? verifyCode;
+  dynamic verifyCode;
   String? verifiedBadge;
   dynamic dateExpiry;
+  String? walletAmount;
+  String? rating;
   DateTime? dateAdded;
   String? status;
 
@@ -104,6 +115,8 @@ class UserData {
     this.verifyCode,
     this.verifiedBadge,
     this.dateExpiry,
+    this.walletAmount,
+    this.rating,
     this.dateAdded,
     this.status,
   });
@@ -128,6 +141,8 @@ class UserData {
     verifyCode: json["verify_code"],
     verifiedBadge: json["verified_badge"],
     dateExpiry: json["date_expiry"],
+    walletAmount: json["wallet_amount"],
+    rating: json["rating"],
     dateAdded: DateTime.parse(json["date_added"]),
     status: json["status"],
   );
@@ -152,6 +167,8 @@ class UserData {
     "verify_code": verifyCode,
     "verified_badge": verifiedBadge,
     "date_expiry": dateExpiry,
+    "wallet_amount": walletAmount,
+    "rating": rating,
     "date_added": dateAdded!.toIso8601String(),
     "status": status,
   };

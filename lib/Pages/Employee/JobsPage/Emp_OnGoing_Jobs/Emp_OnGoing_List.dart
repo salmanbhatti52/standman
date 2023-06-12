@@ -27,11 +27,11 @@ class _EmpOnGoingJobListState extends State<EmpOnGoingJobList> {
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
-    longitude =  prefs!.getDouble('longitude');
-    lattitude =  prefs!.getDouble('latitude');
+    longitude =  prefs!.getString('longitude1');
+    lattitude =  prefs!.getString('lattitude1');
     print("usersCustomersId = $usersCustomersId");
-    print("longitude: ${longitude}");
-    print("lattitude: ${lattitude}");
+    print("longitude1111: ${longitude}");
+    print("lattitude1111: ${lattitude}");
 
     String apiUrl = getOngoingJobsEmployeeModelApiUrl;
     print("working");

@@ -251,7 +251,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                                             children: [
                                               Image.asset("assets/images/star.png"),
                                               Text(
-                                                "${getPreviousJobsModel.data?[index].jobsRatings?.rating == 0.0 ? '--' : getPreviousJobsModel.data?[index].jobsRatings?.rating }",
+                                                "${getPreviousJobsModel.data?[index].jobsRatings?.rating == null ? '--' : getPreviousJobsModel.data?[index].jobsRatings?.rating }",
                                                 // '--',
                                                 style: TextStyle(
                                                   color: Color(0xff000000),
