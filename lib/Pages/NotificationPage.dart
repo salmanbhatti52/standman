@@ -16,8 +16,7 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  List<NotificationsModel> todayDataList = [];
-  List<NotificationsModel> yesterdayDataList = [];
+
   NotificationsModel notificationsModel = NotificationsModel();
   bool loading = false;
 
@@ -54,34 +53,11 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
 
-  void separateNotificationsByDate(List<Notification> apiNotificationsList) {
-    DateTime now = DateTime.now();
-    DateTime today = DateTime(now.year, now.month, now.day);
-    DateTime yesterday = today.subtract(Duration(days: 1));
-
-    for (var notification in apiNotificationsList) {
-      DateTime notificationDate = DateTime.now();
-
-      if (isSameDate(notificationDate, today)) {
-        todayDataList.add(NotificationsModel());
-      } else if (isSameDate(notificationDate, yesterday)) {
-        yesterdayDataList.add(NotificationsModel());
-      }
-    }
-  }
-
-  bool isSameDate(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-        date1.month == date2.month &&
-        date1.day == date2.day;
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     notificationApi();
-    separateNotificationsByDate(todayDataList.cast<Notification>());
   }
 
 

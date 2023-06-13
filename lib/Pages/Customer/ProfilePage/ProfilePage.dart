@@ -143,11 +143,11 @@ class _ProfilePageState extends State<ProfilePage> {
             child: GestureDetector(
               onTap: () {
                 Get.to(EditProfile(
-                  email: usersProfileModel.data!.email.toString(),
-                  phone: usersProfileModel.data!.phone.toString(),
-                  firstname: "${usersProfileModel.data!.firstName}",
-                  lastname: "${usersProfileModel.data!.lastName}",
-                  profilePic: "$baseUrlImage${usersProfileModel.data!.profilePic.toString()}",
+                  email: usersProfileModel.data?.email.toString(),
+                  phone: usersProfileModel.data?.phone.toString(),
+                  firstname: "${usersProfileModel.data?.firstName}",
+                  lastname: "${usersProfileModel.data?.lastName}",
+                  profilePic: "$baseUrlImage${usersProfileModel.data?.profilePic.toString()}",
                 ),
                 );
               },

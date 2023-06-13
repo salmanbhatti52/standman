@@ -397,6 +397,12 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                 ),
                 GestureDetector(
                     onTap: () async {
+                        final currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus &&
+                            currentFocus.focusedChild != null) {
+                          FocusManager.instance.primaryFocus
+                              ?.unfocus();
+                        }
                       if (key.currentState!.validate()) {
                         if (emailController.text.isEmpty) {
                           toastFailedMessage('email cannot be empty', Colors.red);

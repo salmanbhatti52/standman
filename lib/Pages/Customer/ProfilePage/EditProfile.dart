@@ -35,6 +35,8 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+
+
   _saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('value', _selected);
@@ -46,7 +48,6 @@ class _EditProfileState extends State<EditProfile> {
     return count;
   }
 
-
   checkvalue() async {
     int count = await _getData() ?? 0;
     setState(() {
@@ -54,8 +55,7 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
-  UpdateProfileCustomerModel updateProfileCustomerModel =
-      UpdateProfileCustomerModel();
+  UpdateProfileCustomerModel updateProfileCustomerModel = UpdateProfileCustomerModel();
   final key = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final nameController = TextEditingController();
@@ -85,7 +85,6 @@ class _EditProfileState extends State<EditProfile> {
     await sharedPref.setString('_selectedC', "${_selected}");
     _selected = "${(prefs!.getString('_selectedC'))}" as int;
   }
-
 
   setData() {
     nameController.text = "${widget.firstname}${widget.lastname}";
@@ -651,29 +650,7 @@ class _EditProfileState extends State<EditProfile> {
                                           width: 1.0,
                                         ),
                                       ),
-                                      // errorBorder: OutlineInputBorder(
-                                      //   borderRadius: BorderRadius.circular(12),
-                                      //   borderSide: const BorderSide(
-                                      //     color: Colors.red,
-                                      //     width: 1.0,
-                                      //   ),
-                                      // ),
-                                      // focusedErrorBorder: OutlineInputBorder(
-                                      //   borderRadius: BorderRadius.circular(12),
-                                      //   borderSide: const BorderSide(
-                                      //     color: Colors.red,
-                                      //     width: 1.0,
-                                      //   ),
-                                      // ),
                                     ),
-                                    // initialCountryCode: 'PK',
-                                    onChanged: (phone) {
-                                      print("phone: ${phone}");
-                                    },
-                                    // onCountryChanged: (country) {
-                                    //   print('Country changed to: ' +
-                                    //       country.name);
-                                    // },
                                   ),
                                 ],
                               ),

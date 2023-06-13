@@ -142,106 +142,106 @@ class _WalletPageState extends State<WalletPage> {
                 ],
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Payment methods',
-                    style: TextStyle(
-                      color: Color(0xffffffff),
-                      fontFamily: "Outfit",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300,
-                      // letterSpacing: -0.3,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Add Card  ',
-                        style: TextStyle(
-                          color: Color(0xffffffff),
-                          fontFamily: "Outfit",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          // letterSpacing: -0.3,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                                shadowColor: Color(0xff0f172a).withOpacity(0.3),
-                                // backgroundColor: Color(0xff0f172a).withOpacity(0.3),
-                                backgroundColor: Colors.transparent,
-                                elevation: 0,
-                                child: Container(
-                                  // color: Color(0xff0f172a).withOpacity(0.3),
-                                  width: width,
-                                  // height: 423,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                          "assets/images/cardcomplete.png"),
-                                      const Text(
-                                        "Card added\nSuccessfully",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Outfit",
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 32,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.04,
-                                      ),
-                                      GestureDetector(
-                                          onTap: () {
-                                            Get.back();
-                                          },
-                                          child: mainButton(
-                                              "Go Back to Wallet Screen",
-                                              Color.fromRGBO(43, 101, 236, 1),
-                                              context))
-                                    ],
-                                  ),
-                                )),
-                          );
-                        },
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: Center(
-                              child: Icon(
-                            Icons.add,
-                            color: Color(0xff2B65EC),
-                            size: 20,
-                          )),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            CardList(),
+            // Padding(
+            //   padding:
+            //       const EdgeInsets.symmetric(vertical: 15.0, horizontal: 25),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Text(
+            //         'Payment methods',
+            //         style: TextStyle(
+            //           color: Color(0xffffffff),
+            //           fontFamily: "Outfit",
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.w300,
+            //           // letterSpacing: -0.3,
+            //         ),
+            //       ),
+            //       Row(
+            //         children: [
+            //           Text(
+            //             'Add Card  ',
+            //             style: TextStyle(
+            //               color: Color(0xffffffff),
+            //               fontFamily: "Outfit",
+            //               fontSize: 12,
+            //               fontWeight: FontWeight.w500,
+            //               // letterSpacing: -0.3,
+            //             ),
+            //           ),
+            //           GestureDetector(
+            //             onTap: () {
+            //               showDialog(
+            //                 context: context,
+            //                 builder: (BuildContext context) => Dialog(
+            //                     shadowColor: Color(0xff0f172a).withOpacity(0.3),
+            //                     // backgroundColor: Color(0xff0f172a).withOpacity(0.3),
+            //                     backgroundColor: Colors.transparent,
+            //                     elevation: 0,
+            //                     child: Container(
+            //                       // color: Color(0xff0f172a).withOpacity(0.3),
+            //                       width: width,
+            //                       // height: 423,
+            //                       child: Column(
+            //                         mainAxisAlignment: MainAxisAlignment.center,
+            //                         crossAxisAlignment:
+            //                             CrossAxisAlignment.center,
+            //                         children: [
+            //                           Image.asset(
+            //                               "assets/images/cardcomplete.png"),
+            //                           const Text(
+            //                             "Card added\nSuccessfully",
+            //                             style: TextStyle(
+            //                               color: Colors.white,
+            //                               fontFamily: "Outfit",
+            //                               fontWeight: FontWeight.w500,
+            //                               fontSize: 32,
+            //                             ),
+            //                             textAlign: TextAlign.left,
+            //                           ),
+            //                           SizedBox(
+            //                             height: height * 0.04,
+            //                           ),
+            //                           GestureDetector(
+            //                               onTap: () {
+            //                                 Get.back();
+            //                               },
+            //                               child: mainButton(
+            //                                   "Go Back to Wallet Screen",
+            //                                   Color.fromRGBO(43, 101, 236, 1),
+            //                                   context))
+            //                         ],
+            //                       ),
+            //                     )),
+            //               );
+            //             },
+            //             child: Container(
+            //               width: 20,
+            //               height: 20,
+            //               decoration: BoxDecoration(
+            //                 color: Colors.white,
+            //                 borderRadius: BorderRadius.circular(3),
+            //               ),
+            //               child: Center(
+            //                   child: Icon(
+            //                 Icons.add,
+            //                 color: Color(0xff2B65EC),
+            //                 size: 20,
+            //               )),
+            //             ),
+            //           )
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // CardList(),
             SizedBox(
               height: height * 0.01,
             ),
             Container(
-              height: Get.height * 0.343,
+              // height: Get.height * 0.343,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -268,6 +268,7 @@ class _WalletPageState extends State<WalletPage> {
                       ),
                     ),
                     Container(
+                      height: height * 0.535,
                       child: loading
                           ? Center(child: CircularProgressIndicator())
                           : customerWalletTxnModel.data?.transactionHistory?.length == null
@@ -292,7 +293,7 @@ class _WalletPageState extends State<WalletPage> {
                                   // height: MediaQuery.of(context).size.height * 0.16,
                                   width: width,
                                   color: Colors.transparent,
-                                  height: height * 0.29, //300,
+                                  height: height * 0.535, //300,
                                   child: ListView.builder(
                                       shrinkWrap: true,
                                       // physics: NeverScrollableScrollPhysics(),

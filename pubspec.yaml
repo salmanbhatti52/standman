@@ -78,6 +78,7 @@ dependencies:
   google_sign_in: ^6.1.4
   firebase_auth: ^4.6.2
   provider: ^6.0.5
+  is_first_run: ^1.0.0
 
 dev_dependencies:
   flutter_test:

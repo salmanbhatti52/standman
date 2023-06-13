@@ -343,7 +343,7 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                               children: [
                                 GestureDetector(
                                   onTap : (){
-                                    Get.to(Emp_Profile_details());
+                                    // Get.to(Emp_Profile_details());
               },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(50),

@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
     print('usersCustomersId123 $usersCustomersId');
 
     if (usersCustomersId != null) {
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => bottom_bar(
@@ -81,21 +81,10 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(Duration(seconds: 1), () async {
       if (_seen) {
         if (usersCustomersId == null) {
-          // Navigator.of(context).pushReplacement(
-          //     new MaterialPageRoute(
-          //         builder: (context) => new LoginTabClass(login: 0)));
           sharedPrefs();
         } else if (empUsersCustomersId == null) {
-          // Navigator.of(context).pushReplacement(
-          //     new MaterialPageRoute(builder: (context) => new LoginTabClass(login: 1)));
           sharedPrefsEmp();
         }
-        // else{
-        //   await prefs.setBool('seen', true);
-        //   Navigator.of(context).pushReplacement(
-        //       new MaterialPageRoute(
-        //           builder: (context) => new OnboardingPageView()));
-        // }
       } else {
         await prefs.setBool('seen', true);
         Navigator.of(context).pushReplacement(new MaterialPageRoute(

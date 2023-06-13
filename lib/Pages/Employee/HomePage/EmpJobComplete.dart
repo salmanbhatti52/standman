@@ -27,11 +27,13 @@ class EmpJobComplete extends StatefulWidget {
   String? profilePic;
   String? name;
   String? myJobId;
+  final String? customerId;
 
   EmpJobComplete(
       {Key? key,
       this.image,
       this.myJobId,
+      this.customerId,
       this.jobName,
       this.totalPrice,
       this.address,
@@ -50,7 +52,11 @@ class _EmpJobCompleteState extends State<EmpJobComplete> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("customerid : ${widget.customerId}");
+    print("jobname : ${widget.jobName}");
+    print("jobid : ${widget.myJobId}");
     // getUserProfileWidget();
+
   }
 
   UsersProfileModel usersProfileModel = UsersProfileModel();
@@ -346,7 +352,7 @@ class _EmpJobCompleteState extends State<EmpJobComplete> {
                                       //   "assets/images/g2.png",
                                       // ),
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(50),
                                         child: Image.network(
                                           "${widget.profilePic}",
                                           width: 50,
@@ -395,7 +401,7 @@ class _EmpJobCompleteState extends State<EmpJobComplete> {
                                   ),
                                   GestureDetector(
                                       onTap: () {
-                                        Get.to(EMpQRScanneer());
+                                        Get.to(EMpQRScanneer(customerId: widget.customerId, jobName: widget.jobName, myJobId: widget.myJobId,));
                                       },
                                       child: mainButton("Job Completed",
                                           Color(0xff2B65EC), context)),

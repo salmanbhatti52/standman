@@ -360,6 +360,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                                           myJobId: "${getJobsEmployeesModel.data?[index].jobsId}",
                                                           image:"$baseUrlImage${getJobsEmployeesModel.data?[index].image}",
                                                           jobName: getJobsEmployeesModel.data?[index].name,
+                                                          customerId: getJobsEmployeesModel.data?[index].usersCustomersId.toString(),
                                                           totalPrice: getJobsEmployeesModel.data?[index].totalPrice,
                                                           address: getJobsEmployeesModel.data?[index].location,
                                                           completeJobTime: getJobsEmployeesModel.data?[index].dateAdded.toString(),
