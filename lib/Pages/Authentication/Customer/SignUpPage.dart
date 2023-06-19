@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/customer_signup_model.dart';
@@ -38,6 +39,14 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
   bool isPasswordObscure = true;
   bool isPasswordConfirmObscure = true;
   bool isInAsyncCall = false;
+  String countryCode = '';
+
+  void onCountryChange(PhoneNumber number) {
+    setState(() {
+      countryCode = number.countryISOCode;
+      print("countryCode ${countryCode}");
+    });
+  }
   // String imagePath = "";
   // final picker = ImagePicker();
 
@@ -56,6 +65,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
         "first_name":firstNameController.text,
         "last_name":lastNameController.text,
         "phone":phoneController.text,
+        "country_code":"${countryCode.toString()}",
         "email":emailController.text,
         "password": passwordController.text,
         "account_type":"SignupWithApp",
@@ -396,7 +406,8 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                           fontSize: 14,
                                         ),
                                         controller: phoneController,
-
+                                        initialCountryCode: 'US',
+                                        onChanged: onCountryChange,
                                         decoration: InputDecoration(
                                           // contentPadding: const EdgeInsets.only(top: 12.0),
                                           hintText: "Enter your phone name",
@@ -440,14 +451,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                             ),
                                           ),
                                         ),
-                                        // initialCountryCode: 'PK',
-                                        onChanged: (phone) {
-                                          print("phone: ${phone}");
-                                        },
-                                        // onCountryChanged: (country) {
-                                        //   print('Country changed to: ' +
-                                        //       country.name);
-                                        // },
                                       ),
                                     ],
                                   ),

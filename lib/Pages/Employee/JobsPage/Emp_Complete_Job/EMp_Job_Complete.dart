@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../Models/chat_start_user_Model.dart';
+import '../../../../Utils/api_urls.dart';
 import '../../../../widgets/MyButton.dart';
 import '../../../../widgets/TopBar.dart';
+import '../../../Customer/HomePage/HomePage.dart';
+import '../../../Customer/MessagePage/MessageDetails.dart';
+import '../../HomePage/EmpHomePage.dart';
+import '../../MessagePage/MessageDetails.dart';
 import '../Emp_QR_Scanner/EMp_QRScanned.dart';
+import 'package:http/http.dart' as http;
 
 class EMp_Job_Completed extends StatefulWidget {
   final String? customerId;
@@ -38,6 +46,52 @@ class EMp_Job_Completed extends StatefulWidget {
 }
 
 class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
+
+  bool progress = false;
+  // bool isInAsyncCall = false;
+
+  ChatStartUserModel chatStartUserModel = ChatStartUserModel();
+
+  chatStartUserEmp() async {
+
+    progress = true;
+    setState(() {});
+
+    prefs = await SharedPreferences.getInstance();
+    // usersCustomersId = prefs!.getString('usersCustomersId');
+    empUsersCustomersId = empPrefs?.getString('empUsersCustomersId');
+    print("empUsersCustomersId = $empUsersCustomersId");
+    print("usersCustomersId = ${widget.customerId}");
+
+    // try {
+    String apiUrl = userChatApiUrl;
+    print("userChatApiUrl: $apiUrl");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "requestType": "startChat",
+        "users_customers_id": empUsersCustomersId,
+        "other_users_customers_id": widget.customerId,
+      },
+      headers: {'Accept': 'application/json'},
+    );
+    print('${response.statusCode}');
+    print(response);
+    print("responseStartChat: $response");
+    print("status Code chat: ${response.statusCode}");
+    print("in 200 chat");
+    if (response.statusCode == 200) {
+      final responseString = response.body;
+      print("userChatResponse: ${responseString.toString()}");
+      chatStartUserModel = chatStartUserModelFromJson(responseString);
+    }
+    // } catch (e) {
+    //   print('Error in userChatApiUrl: ${e.toString()}');
+    // }
+    progress = false;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -288,7 +342,16 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
                                 )
                               ],
                             ),
-                            smallButton("Chat", Color(0xff2B65EC) , context),
+                            GestureDetector(onTap: () async {
+                              await chatStartUserEmp();
+                              Get.to(EmpMessagesDetails(
+                                usersCustomersId: empUsersCustomersId,
+                                other_users_customers_id: widget.customerId,
+                                img: widget.profilePic.toString(),
+                                name: widget.name.toString(),
+                              ),
+                              );
+                            },child: smallButton("Chat", Color(0xff2B65EC) , context)),
                           ],
                         ),
                         SizedBox(

@@ -6,7 +6,7 @@ String getJobsEmployeesModelToJson(GetJobsEmployeesModel data) => json.encode(da
 
 class GetJobsEmployeesModel {
   String? status;
-  List<Datum>? data;
+  List<Datum3>? data;
 
   GetJobsEmployeesModel({
     this.status,
@@ -16,7 +16,7 @@ class GetJobsEmployeesModel {
   factory GetJobsEmployeesModel.fromJson(Map<String, dynamic> json) => GetJobsEmployeesModel(
     status: json["status"],
     // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-    data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))): null,
+    data: json["data"] != null ? List<Datum3>.from(json["data"].map((x) => Datum3.fromJson(x))): null,
 
   );
 
@@ -26,7 +26,7 @@ class GetJobsEmployeesModel {
   };
 }
 
-class Datum {
+class Datum3 {
   int? jobsId;
   int? usersCustomersId;
   String? name;
@@ -54,7 +54,7 @@ class Datum {
   UsersCustomersData? usersCustomersData;
   List<dynamic>? usersEmployeeData;
 
-  Datum({
+  Datum3({
     this.jobsId,
     this.usersCustomersId,
     this.name,
@@ -83,7 +83,7 @@ class Datum {
     this.usersEmployeeData,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Datum3.fromJson(Map<String, dynamic> json) => Datum3(
     jobsId: json["jobs_id"],
     usersCustomersId: json["users_customers_id"],
     name: json["name"],

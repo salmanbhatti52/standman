@@ -10,7 +10,7 @@ String employeeOngoingJobsModelToJson(EmployeeOngoingJobsModel data) => json.enc
 
 class EmployeeOngoingJobsModel {
   String? status;
-  List<Datum>? data;
+  List<Datum2>? data;
 
   EmployeeOngoingJobsModel({
     this.status,
@@ -20,7 +20,7 @@ class EmployeeOngoingJobsModel {
   factory EmployeeOngoingJobsModel.fromJson(Map<String, dynamic> json) => EmployeeOngoingJobsModel(
     status: json["status"],
     // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-    data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))): null,
+    data: json["data"] != null ? List<Datum2>.from(json["data"].map((x) => Datum2.fromJson(x))): null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -29,7 +29,7 @@ class EmployeeOngoingJobsModel {
   };
 }
 
-class Datum {
+class Datum2 {
   int? jobsId;
   int? usersCustomersId;
   String? name;
@@ -57,7 +57,7 @@ class Datum {
   Data? usersCustomersData;
   Data? employeeData;
 
-  Datum({
+  Datum2({
     this.jobsId,
     this.usersCustomersId,
     this.name,
@@ -86,7 +86,7 @@ class Datum {
     this.employeeData,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Datum2.fromJson(Map<String, dynamic> json) => Datum2(
     jobsId: json["jobs_id"],
     usersCustomersId: json["users_customers_id"],
     name: json["name"],

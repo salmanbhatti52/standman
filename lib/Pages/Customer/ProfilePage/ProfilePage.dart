@@ -32,31 +32,9 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    sharedPrefs();
+    getUserProfileWidget();
   }
 
-  sharedPrefs() async {
-    // loading = true;
-    setState(() {});
-    print('in LoginPage shared prefs');
-    prefs = await SharedPreferences.getInstance();
-    // userId = (prefs!.getString('userid'));
-    userEmail = (prefs!.getString('user_email'));
-    phoneNumber = (prefs!.getString('phoneNumber'));
-    // fullName = (prefs!.getString('fullName'));
-    // profilePic1 = (prefs!.getString('profilePic'));
-    password = (prefs!.getString('password'));
-    usersCustomersId = prefs!.getString('usersCustomersId');
-    print("userId in Prefs is = $usersCustomersId");
-    print("oldpass = $password");
-    getUserProfileWidget();
-    // userFirstName = (prefs!.getString('user_first_name'));
-    // userLastName = (prefs!.getString('user_last_name'));
-    // print("userId in LoginPrefs is = $userId");
-    print("userEmail in Profile is = $userEmail");
-    print("userprofilePic in Profile is = $profilePic1");
-    // print("userFirstName in LoginPrefs is = $userFirstName $userLastName");
-  }
 
   UsersProfileModel usersProfileModel = UsersProfileModel();
   bool progress = false;
@@ -66,13 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
     progress = true;
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
-    // longitude =  prefs!.getDouble('longitude');
-    // lattitude =  prefs!.getDouble('latitude');
     print("usersCustomersId = $usersCustomersId");
-    print("longitude1: ${longitude}");
-    print("lattitude1: ${lattitude}");
     setState(() {});
-    try {
+    // try {
       String apiUrl = usersProfileApiUrl;
       print("getUserProfileApi: $apiUrl");
       final response = await http.post(Uri.parse(apiUrl),
@@ -92,12 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
         print("getUserEmail: ${usersProfileModel.data!.email}");
         print("getUserNumber: ${usersProfileModel.data!.phone}");
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-        print(
-            "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
+        print("getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
       }
-    } catch (e) {
-      print('Error in getUserProfileWidget: ${e.toString()}');
-    }
+    // } catch (e) {
+    //   print('Error in getUserProfileWidget: ${e.toString()}');
+    // }
     progress = false;
     setState(() {});
   }
@@ -144,6 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onTap: () {
                 Get.to(EditProfile(
                   email: usersProfileModel.data?.email.toString(),
+                  countryCode: usersProfileModel.data?.countryCode.toString(),
                   phone: usersProfileModel.data?.phone.toString(),
                   firstname: "${usersProfileModel.data?.firstName}",
                   lastname: "${usersProfileModel.data?.lastName}",

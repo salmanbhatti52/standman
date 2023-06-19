@@ -28,6 +28,7 @@ class WorkProof extends StatefulWidget {
   final String? profileimg;
   final String? uploadID;
   final String? firstname;
+  final String? selectedCountryCode;
   final String? lastname;
   final String? email;
   final String? phonenumber;
@@ -40,6 +41,7 @@ class WorkProof extends StatefulWidget {
       this.profileimg,
       this.email,
       this.phonenumber,
+      this.selectedCountryCode,
       this.password,
       this.uploadID,
       this.firstname,
@@ -67,6 +69,7 @@ class _WorkProofState extends State<WorkProof> {
         "first_name": widget.firstname,
         "last_name": widget.lastname,
         "phone": widget.phonenumber,
+        "country_code":"${widget.selectedCountryCode.toString()}",
         "email": widget.email,
         "password": widget.password,
         "account_type": "SignupWithApp",

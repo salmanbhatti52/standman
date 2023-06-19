@@ -43,6 +43,7 @@ class Data {
   String? messages;
   String? notifications;
   String? accountType;
+  String? countryCode;
   String? rating;
   String? socialAccType;
   String? googleAccessToken;
@@ -59,6 +60,7 @@ class Data {
     this.firstName,
     this.rating,
     this.lastName,
+    this.countryCode,
     this.phone,
     this.email,
     this.password,
@@ -87,6 +89,7 @@ class Data {
     email: json["email"],
     password: json["password"],
     profilePic: json["profile_pic"],
+    countryCode: json["country_code"],
     proofDocument: json["proof_document"],
     rating: json["rating"],
     validDocument: json["valid_document"],
@@ -113,6 +116,7 @@ class Data {
     "password": password,
     "profile_pic": profilePic,
     "proof_document": proofDocument,
+    "country_code": countryCode,
     "rating": rating,
     "valid_document": validDocument,
     "messages": messages,

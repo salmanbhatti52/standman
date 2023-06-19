@@ -144,6 +144,7 @@ class _ProfileTabBarState extends State<ProfileTabBar>
               onTap: () {
                 Get.to(EmpEditProfile(
                   email: usersProfileModel.data!.email.toString(),
+                  countryCode: usersProfileModel.data?.countryCode.toString(),
                   phone: usersProfileModel.data!.phone.toString(),
                   firstname: "${usersProfileModel.data!.firstName}",
                    lastname :   "${usersProfileModel.data!.lastName}",

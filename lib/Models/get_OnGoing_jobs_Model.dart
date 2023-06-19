@@ -10,7 +10,7 @@ String getJobsModelToJson(GetJobsModel data) => json.encode(data.toJson());
 
 class GetJobsModel {
   String? status;
-  List<Datum>? data;
+  List<Datum1>? data;
 
   GetJobsModel({
     this.status,
@@ -20,7 +20,7 @@ class GetJobsModel {
   factory GetJobsModel.fromJson(Map<String, dynamic> json) => GetJobsModel(
     status: json["status"],
     // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-    data: json["data"] != null ? List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))): null,
+    data: json["data"] != null ? List<Datum1>.from(json["data"].map((x) => Datum1.fromJson(x))): null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -29,7 +29,7 @@ class GetJobsModel {
   };
 }
 
-class Datum {
+class Datum1 {
   int? jobsId;
   int? usersCustomersId;
   String? name;
@@ -61,7 +61,7 @@ class Datum {
   UsersData? usersCustomersData;
   UsersData? usersEmployeeData;
 
-  Datum({
+  Datum1({
     this.jobsId,
     this.usersCustomersId,
     this.name,
@@ -94,7 +94,7 @@ class Datum {
     this.usersEmployeeData,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Datum1.fromJson(Map<String, dynamic> json) => Datum1(
     jobsId: json["jobs_id"],
     usersCustomersId: json["users_customers_id"],
     name: json["name"],

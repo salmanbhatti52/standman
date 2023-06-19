@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -17,8 +18,8 @@ import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/TopBar.dart';
 import '../../Customer/HomePage/HomePage.dart';
 class EmpEditProfile extends StatefulWidget {
-  final String? email, firstname, lastname, phone, profilePic;
-   EmpEditProfile({Key? key, this.email, this.firstname,
+  final String? email, firstname,countryCode, lastname, phone, profilePic;
+   EmpEditProfile({Key? key,this.countryCode, this.email, this.firstname,
     this.lastname, this.phone, this.profilePic}) : super(key: key);
 
   @override
@@ -75,13 +76,23 @@ class _EmpEditProfileState extends State<EmpEditProfile> {
   //   _selected = "${(prefs!.getString('_selectedC'))}" as int;
   // }
 
+  String countryCode1 = '';
+
+  void onCountryChange(PhoneNumber number) {
+    setState(() {
+      countryCode1 = number.countryISOCode;
+      print("countryCode ${countryCode1}");
+    });
+  }
 
   setData() {
     nameController.text = "${widget.firstname}${widget.lastname}";
     emailController.text = "${widget.email}";
     phoneController.text = "${widget.phone}";
+    countryCode1 = widget.countryCode.toString();
 
     print("firstName ${nameController.text}");
+    print("selectedCountryCode ${countryCode1.toString()}");
     print("email ${emailController.text}");
     print("phone ${phoneController.text}");
   }
@@ -106,6 +117,7 @@ class _EmpEditProfileState extends State<EmpEditProfile> {
       "company_name": "Test Company",
       "first_name": widget.firstname,
       "last_name": widget.lastname,
+      "country_code": countryCode1.toString(),
       "phone": phoneController.text,
       "email": emailController.text,
       "notifications": "Yes",
@@ -496,14 +508,19 @@ class _EmpEditProfileState extends State<EmpEditProfile> {
                               ),
                               IntlPhoneField(
                                 style: const TextStyle(
-                                  color: Color(0xffBFBFBF),
+                                  color: Colors.black,
                                   fontFamily: "Outfit",
                                   fontWeight: FontWeight.w400,
                                   fontSize: 14,
                                 ),
+                                controller: phoneController,
+                                initialCountryCode: widget.countryCode,
+                                onChanged: onCountryChange,
                                 decoration: InputDecoration(
+                                  // hintText: "123 045 6078",
                                   hintText: "${widget.phone}",
-                                  contentPadding: EdgeInsets.only(top: 12.0),
+                                  contentPadding:
+                                  EdgeInsets.only(top: 12.0),
                                   hintStyle: TextStyle(
                                     fontFamily: "Outfit",
                                     fontWeight: FontWeight.w300,
@@ -517,6 +534,22 @@ class _EmpEditProfileState extends State<EmpEditProfile> {
                                       width: 1.0,
                                     ),
                                   ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: const BorderSide(
+                                      color:
+                                      Color.fromRGBO(243, 243, 243, 1),
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: const BorderSide(
+                                      color:
+                                      Color.fromRGBO(243, 243, 243, 1),
+                                      width: 1.0,
+                                    ),
+                                  ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     borderSide: const BorderSide(
@@ -525,13 +558,6 @@ class _EmpEditProfileState extends State<EmpEditProfile> {
                                     ),
                                   ),
                                 ),
-                                // initialCountryCode: 'IN',
-                                onChanged: (phone) {
-                                  print(phone.completeNumber);
-                                },
-                                // onCountryChanged: (country) {
-                                //   print('Country changed to: ' + country.name);
-                                // },
                               ),
                             ],
                           ),

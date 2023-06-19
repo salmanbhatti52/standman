@@ -120,7 +120,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                           description: getPreviousJobsModel.data?[index].description,
                           name: "${getPreviousJobsModel.data?[index].usersEmployeeData?.firstName} ${getPreviousJobsModel.data?[index].usersEmployeeData?.lastName}",
                           profilePic: "$baseUrlImage${getPreviousJobsModel.data?[index].usersEmployeeData?.profilePic}",
-                          status: getPreviousJobsModel.data![index].status,
+                          status: getPreviousJobsModel.data?[index].status,
                         )
                     );
                   },

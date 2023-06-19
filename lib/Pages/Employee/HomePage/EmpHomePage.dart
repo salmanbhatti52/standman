@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../Models/Employee_OngoingJobs_Model.dart';
+import '../../../Models/get_jobs_employees_Model.dart';
 import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../Customer/HomePage/HeadRow.dart';
@@ -37,6 +39,8 @@ class _EmpHomePageState extends State<EmpHomePage> {
     super.initState();
     getUserProfileWidget();
     sharePref();
+    getOngoingJobsEmployees();
+    GetJobsEmployees();
   }
 
   UsersProfileModel usersProfileModel = UsersProfileModel();
@@ -83,6 +87,41 @@ class _EmpHomePageState extends State<EmpHomePage> {
    });
   }
 
+  EmployeeOngoingJobsModel employeeOngoingJobsModel = EmployeeOngoingJobsModel();
+
+  getOngoingJobsEmployees() async {
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
+    longitude =  prefs!.getString('longitude1');
+    lattitude =  prefs!.getString('lattitude1');
+    print("usersCustomersId = $usersCustomersId");
+    print("longitude1111: ${longitude}");
+    print("lattitude1111: ${lattitude}");
+
+    String apiUrl = getOngoingJobsEmployeeModelApiUrl;
+    print("working");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+        "employee_longitude": longitude,
+        "employee_lattitude": lattitude,
+      },
+    );
+    final responseString = response.body;
+    print("getOngoingJobsEmployeesModelApiUrl: ${response.body}");
+    print("status Code getOngoingJobsEmployeesModel: ${response.statusCode}");
+    print("in 200 getOngoingJobsEmployees");
+    if (response.statusCode == 200) {
+      employeeOngoingJobsModel = employeeOngoingJobsModelFromJson(responseString);
+      // setState(() {});
+      print('getJobsEmployeesModel status: ${employeeOngoingJobsModel.status}');
+      print('getJobsEmployeesModel Length: ${employeeOngoingJobsModel.data?.length}');
+    }
+  }
+
   sharePref() async {
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
@@ -91,6 +130,42 @@ class _EmpHomePageState extends State<EmpHomePage> {
     print("usersCustomersId = $usersCustomersId");
     print("longitude1111: ${longitude}");
     print("lattitude1111: ${lattitude}");
+  }
+
+  GetJobsEmployeesModel getJobsEmployeesModel = GetJobsEmployeesModel();
+
+  String? jobIndex;
+  GetJobsEmployees() async {
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
+    longitude =  prefs!.getString('longitude1');
+    lattitude =  prefs!.getString('lattitude1');
+    print("usersCustomersId = $usersCustomersId");
+    print("longitude1111: ${longitude}");
+    print("lattitude1111: ${lattitude}");
+
+    String apiUrl = getJobsEmployeesModelApiUrl;
+    print("working");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+        "employee_longitude": longitude,
+        "employee_lattitude": lattitude,
+      },
+    );
+    final responseString = response.body;
+    print("getJobsEmployeesModelApiUrl: ${response.body}");
+    print("status Code getJobsEmployeesModel: ${response.statusCode}");
+    print("in 200 getJobsEmployees");
+    if (response.statusCode == 200) {
+      getJobsEmployeesModel = getJobsEmployeesModelFromJson(responseString);
+      // setState(() {});
+      // print('getJobsEmployeesModel status: "${getJobsEmployeesModel.data?[index].usersCustomersData?.first_name} ${getJobsEmployeesModel.data?[index].usersCustomersData?.last_name}",');
+      print('getJobsEmployeesModel Length: ${getJobsEmployeesModel.data?.length}');
+      // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
+    }
   }
 
   @override
@@ -223,9 +298,59 @@ class _EmpHomePageState extends State<EmpHomePage> {
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Heading("Jobs ", "", context),
-                      EmpJobs(),
+                      // EmpJobs(),
+                      Container(
+                        height: 400,
+                        child: getJobsEmployeesModel.data !=null ?
+                        ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            physics: ScrollPhysics(),
+                            itemCount: getJobsEmployeesModel.data?.length,
+                            itemBuilder: (BuildContext context, i) {
+                              jobIndex = "${getJobsEmployeesModel.data?[i].jobsId}";
+                              return  EmpJobs(getJobsEmployeesModel: getJobsEmployeesModel.data![i],);
+                            })
+                            : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: const Text(
+                                "No jobs available in\nyour area.",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: "Outfit",
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 32,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.08,
+                            ),
+                            SvgPicture.asset(
+                              'assets/images/cartoon.svg',
+                            ),
+                          ],
+                        ),
+                      ),
                       Heading("Job in Queue ", "", context),
-                      QueueJobs(),
+                      // QueueJobs(),
+                      Container(
+                        height: 200,
+                        child: employeeOngoingJobsModel.data !=null ?
+                        ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            physics: ScrollPhysics(),
+                            itemCount: employeeOngoingJobsModel.data?.length,
+                            itemBuilder: (BuildContext context, i) {
+                              return  QueueJobs(employeeOngoingJobsModel: employeeOngoingJobsModel.data?[i],);
+                            }): Center(child: Text('No Queue Jobs')),
+                      ),
                     ],
                   ),
                 ),

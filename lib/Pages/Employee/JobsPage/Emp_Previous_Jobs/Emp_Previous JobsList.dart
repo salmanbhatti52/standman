@@ -128,7 +128,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                       name: "${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.firstName} ${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.lastName}",
                       profilePic: "$baseUrlImage${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.profilePic}",
                       customerId: "${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.usersCustomersId}",
-                      status: "${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.status}",
+                      status: "${getPreviousJobsEmployeeModel.data?[index].status}",
                     ));
                   },
                   child: Container(

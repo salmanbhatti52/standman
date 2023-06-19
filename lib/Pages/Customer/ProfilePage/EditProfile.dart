@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/update_profile_customer_model.dart';
@@ -19,7 +20,7 @@ import '../../Bottombar.dart';
 import '../HomePage/HomePage.dart';
 
 class EditProfile extends StatefulWidget {
-  final String? email, firstname, lastname, phone, profilePic;
+  final String? email,  countryCode, firstname, lastname, phone, profilePic;
 
   const EditProfile({
     Key? key,
@@ -27,6 +28,7 @@ class EditProfile extends StatefulWidget {
     this.firstname,
     this.lastname,
     this.phone,
+    this.countryCode,
     this.profilePic,
   }) : super(key: key);
 
@@ -52,6 +54,15 @@ class _EditProfileState extends State<EditProfile> {
     int count = await _getData() ?? 0;
     setState(() {
       _selected = count;
+    });
+  }
+
+  String countryCode1 = '';
+
+  void onCountryChange(PhoneNumber number) {
+    setState(() {
+      countryCode1 = number.countryISOCode;
+      print("countryCode ${countryCode1}");
     });
   }
 
@@ -90,8 +101,10 @@ class _EditProfileState extends State<EditProfile> {
     nameController.text = "${widget.firstname}${widget.lastname}";
     emailController.text = "${widget.email}";
     phoneController.text = "${widget.phone}";
+    countryCode1 = widget.countryCode.toString();
 
     print("firstName ${nameController.text}");
+    print("selectedCountryCode ${countryCode1.toString()}");
     print("email ${emailController.text}");
     print("phone ${phoneController.text}");
   }
@@ -114,6 +127,7 @@ class _EditProfileState extends State<EditProfile> {
       "first_name": widget.firstname,
       "last_name": widget.lastname,
       "phone": phoneController.text,
+      "country_code": countryCode1.toString(),
       "email": emailController.text,
       "notifications": "Yes",
       "profile_pic": " ",
@@ -146,6 +160,7 @@ class _EditProfileState extends State<EditProfile> {
     print("email: ${widget.email}");
     print("phone: ${widget.phone}");
     print("profilePic: ${widget.profilePic}");
+    print("profilePic: ${widget.countryCode}");
     // TODO: implement initState
     super.initState();
     checkvalue();
@@ -154,6 +169,7 @@ class _EditProfileState extends State<EditProfile> {
 
 
   int _selected = 0;
+  String _selectedcountrycode = "Pk";
 
   @override
   Widget build(BuildContext context) {
@@ -608,7 +624,8 @@ class _EditProfileState extends State<EditProfile> {
                                       fontSize: 14,
                                     ),
                                     controller: phoneController,
-
+                                    initialCountryCode: widget.countryCode,
+                                    onChanged: onCountryChange,
                                     decoration: InputDecoration(
                                       // hintText: "123 045 6078",
                                       hintText: "${widget.phone}",

@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../../Models/get_OnGoing_jobs_Model.dart';
 import '../../../Models/jobs_action_employees_Model.dart';
 import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
@@ -37,12 +38,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getUserProfileWidget();
-  }
 
   UsersProfileModel usersProfileModel = UsersProfileModel();
 
@@ -51,7 +46,6 @@ class _HomePageState extends State<HomePage> {
 
   getUserProfileWidget() async {
     progress = true;
-    setState(() {});
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
@@ -92,32 +86,48 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // sharedPrefs() async {
-  //   setState(() {});
-  //   print('LoginPage shared prefs');
-  //   prefs = await SharedPreferences.getInstance();
-  //   userEmail = (prefs!.getString('user_email'));
-  //   // userFirstName = (prefs!.getString('user_first_name'));
-  //   // userLastName = (prefs!.getString('user_last_name'));
-  //   // print("userId in LoginPrefs is = $userId");
-  //   print("userEmail in LoginPrefs is = $userEmail");
-  //   // print("userFirstName in LoginPrefs is = $userFirstName $userLastName");
-  //   setState(() {});
-  //   print('in LoginPage shared prefs');
-  //   prefs = await SharedPreferences.getInstance();
-  //   // userId = (prefs!.getString('userid'));
-  //   userEmail = (prefs!.getString('user_email'));
-  //   phoneNumber = (prefs!.getString('phoneNumber'));
-  //   fullName = (prefs!.getString('fullName'));
-  //   profilePic1 = (prefs!.getString('profilePic'));
-  //   password = (prefs!.getString('password'));
-  //   usersCustomersId = prefs!.getString('usersCustomersId');
-  //   print("userId in Prefs is = $usersCustomersId");
-  //   print("oldpass = $password");
-  //   print("userEmail in Profile is = $userEmail");
-  //   print("userprofilePic in Profile is = $profilePic1");
-  //   getUserProfileResponse();
-  // }
+
+  GetJobsModel getJobsModel = GetJobsModel();
+  bool loading = false;
+  getJobsCustomer() async {
+    setState(() {
+      loading = true;
+    });
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("userId in Prefs is = $usersCustomersId");
+    String apiUrl = getOngoingJobsModelApiUrl;
+    print("working");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+      },
+    );
+    final responseString = response.body;
+    print("getJobsModelApi: ${response.body}");
+    print("status Code getJobsModel: ${response.statusCode}");
+    print("in 200 getJobs");
+    if (response.statusCode == 200) {
+      getJobsModel = getJobsModelFromJson(responseString);
+      // setState(() {});
+      print('getJobsModel status: ${getJobsModel.status}');
+      print('getJobsModelLength: ${getJobsModel.data?.length}');
+      print('getJobsModelImage123: $baseUrlImage${getJobsModel.data?[0].image}');
+    }
+    setState(() {
+      loading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserProfileWidget();
+    getJobsCustomer();
+  }
 
   DateTime currentBackPressTime = DateTime.now();
 
@@ -532,7 +542,20 @@ class _HomePageState extends State<HomePage> {
                         },
                           child: mainButton("Create Job", Color.fromRGBO(43, 101, 236, 1), context)),
                         Heading("Recent Jobs", "", context),
-                        RecentJobs(),
+                        // RecentJobs(),
+                        Container(
+                          height: 180,
+                          // width: 100,
+                          child:
+                          getJobsModel.data !=null ?
+                          ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: ScrollPhysics(),
+                              itemCount: getJobsModel.data?.length,
+                              itemBuilder: (BuildContext context, i) {
+                               return RecentJobs(getJobModel: getJobsModel.data?[i],);
+                              }): Center(child: Text('No Recent Jobs')) ,
+                        ),
                         SizedBox(
                           height: height * 0.12,
                         ),
