@@ -21,9 +21,6 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
 
   systemSettingApi() async {
     // try {
-    setState(() {
-      loading = true;
-    });
     String apiUrl = system_settingsModelApiUrl;
     print("api: $apiUrl");
     final response = await http.get(
@@ -42,14 +39,12 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       print('systemSettingsModel status: ${systemSettingsModel.status}');
       print(
           'getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
+      setState(() {});
     }
     // } catch (e) {
     //   print('Something went wrong = ${e.toString()}');
     //   return null;
     // }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override

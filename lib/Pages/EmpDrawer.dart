@@ -33,8 +33,7 @@ class _EmpDrawerState extends State<EmpDrawer> {
   bool isInAsyncCall = false;
 
   getUserProfileWidget() async {
-    progress = true;
-    setState(() {});
+
     empPrefs = await SharedPreferences.getInstance();
     empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
     print("userId in empPrefs is = $empUsersCustomersId");
@@ -58,13 +57,12 @@ class _EmpDrawerState extends State<EmpDrawer> {
         print("getUserEmail: ${usersProfileModel.data!.email}");
         print("getUserNumber: ${usersProfileModel.data!.phone}");
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
+        setState(() {});
         // print("getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
       }
     // } catch (e) {
     //   print('Error in getUserProfileWidget: ${e.toString()}');
     // }
-    progress = false;
-    setState(() {});
   }
 
 

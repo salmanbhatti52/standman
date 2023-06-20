@@ -33,7 +33,6 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
 
   sharedPrefs() async {
     // loading = true;
-    setState(() {});
     print('in LoginPage shared prefs');
     empPrefs = await SharedPreferences.getInstance();
     // userId = (prefs!.getString('userid'));
@@ -59,8 +58,6 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
   bool isInAsyncCall = false;
 
   getUserProfileWidget() async {
-    progress = true;
-    setState(() {});
     empPrefs = await SharedPreferences.getInstance();
     empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
     print("userId in empPrefs is = $empUsersCustomersId");
@@ -86,12 +83,13 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
         print(
             "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
+        setState(() {
+        });
+
       }
     } catch (e) {
       print('Error in getUserProfileWidget: ${e.toString()}');
     }
-    progress = false;
-    setState(() {});
   }
 
   @override

@@ -27,9 +27,6 @@ class _WalletPageState extends State<WalletPage> {
   bool loading = false;
 
   customerWalletTxn() async {
-    setState(() {
-      loading = true;
-    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId = $usersCustomersId");
@@ -48,15 +45,13 @@ class _WalletPageState extends State<WalletPage> {
     print("in 200 customerWalletTxnModel");
     if (response.statusCode == 200) {
       customerWalletTxnModel = customerWalletTxnModelFromJson(responseString);
+      setState(() {});
       // setState(() {});
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data?[0].image}');
       // print('getJobsModelLength: ${getJobsModel.data?.length}');
       // print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override

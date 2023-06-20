@@ -1,3 +1,4 @@
+import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -24,10 +25,6 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
   bool loading = false;
 
   GetPreviousJobsEmployees() async {
-
-    setState(() {
-      loading = true;
-    });
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
@@ -56,12 +53,12 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
       getPreviousJobsEmployeeModel = getPreviousJobsEmployeeModelFromJson(responseString);
       // setState(() {});
       print('getPreviousJobsEmployeeModel status: ${getPreviousJobsEmployeeModel.status}');
+      setState(() {
+      });
+
       print('getPreviousJobsEmployeeModel Length: ${getPreviousJobsEmployeeModel.data?.length}');
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
     }
-    setState(() {
-      loading = false;
-    });
   }
 
 
@@ -198,13 +195,32 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                                     SvgPicture.asset(
                                       'assets/images/locationfill.svg',
                                     ),
-                                    Text(
-                                      "${getPreviousJobsEmployeeModel.data?[index].location} ",
-                                      style: const TextStyle(
-                                        color: Color(0xff9D9FAD),
-                                        fontFamily: "Outfit",
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 8,
+                                    // Text(
+                                    //   "${getPreviousJobsEmployeeModel.data?[index].location} ",
+                                    //   style: const TextStyle(
+                                    //     color: Color(0xff9D9FAD),
+                                    //     fontFamily: "Outfit",
+                                    //     fontWeight: FontWeight.w400,
+                                    //     fontSize: 8,
+                                    //   ),
+                                    // ),
+                                    Container(
+                                      width: Get.width * 0.37,
+                                      child: AutoSizeText(
+                                        "${getPreviousJobsEmployeeModel.data?[index].location}",
+                                        style: TextStyle(
+                                          color: Color(0xff9D9FAD),
+                                          fontFamily: "Outfit",
+                                          fontSize: 8,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        maxLines: 2,
+                                        minFontSize: 8,
+                                        maxFontSize: 8,
+                                        textAlign: TextAlign.left,
+                                        presetFontSizes: [8],
+
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ],

@@ -109,9 +109,9 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 
     if (jsonData['message'] == 'no chat found') {
       print('no chat found');
-      // setState(() {
-      //   loading = false;
-      // });
+      setState(() {
+        loading = false;
+      });
     } else if (response.statusCode == 200) {
       for (int i = 0; i < jsonData['data'].length; i++) {
         Map<String, dynamic> obj = jsonData['data'][i];

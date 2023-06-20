@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -99,12 +100,34 @@ class _Empbottom_barState extends State<Empbottom_bar> {
     // Cancel the timer when the widget is disposed
     _timer?.cancel();
   }
+
+  bool _shouldExit = false;
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () async {
+        if (_shouldExit) {
+          // Close the app when the back button is pressed again
+          SystemNavigator.pop();
+          return true;
+        } else {
+          // Show the "Tap again to exit" message and set a flag
+          setState(() {
+            _shouldExit = true;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Tap again to exit'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+          // Prevent the app from being closed immediately
+          return false;
+        }
+      },
       child: Scaffold(
         drawer: MyDrawer(),
           extendBody: true,
@@ -197,26 +220,5 @@ class _Empbottom_barState extends State<Empbottom_bar> {
             ),
           )),
     );
-  }
-
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-      context: context,
-      builder: (context) =>
-      new AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('Do you want to exit an App'),
-        actions: <Widget>[
-          new TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: new Text('No'),
-          ),
-          new TextButton(
-            onPressed: () => Get.offAll(LoginTabClass(login: 1,)),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    )) ?? false;
   }
 }

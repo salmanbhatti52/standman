@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
 import 'package:StandMan/Utils/api_urls.dart';
-import 'package:StandMan/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
@@ -10,13 +9,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/customer_signup_model.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/social_button.dart';
-import '../../Bottombar.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../../TermConditions.dart';
@@ -40,6 +36,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
   bool isPasswordConfirmObscure = true;
   bool isInAsyncCall = false;
   String countryCode = '';
+  bool required = false;
 
   void onCountryChange(PhoneNumber number) {
     setState(() {
@@ -47,10 +44,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
       print("countryCode ${countryCode}");
     });
   }
-  // String imagePath = "";
-  // final picker = ImagePicker();
-
-  // ImagePickController controller = Get.put(ImagePickController());
 
   CustomerSignupModel customerSignupModel = CustomerSignupModel();
 
@@ -85,7 +78,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
 
 
   final GlobalKey<FlutterPwValidatorState> validatorKey = GlobalKey<FlutterPwValidatorState>();
-  bool required = false;
 
   @override
   Widget build(BuildContext context) {
@@ -94,24 +86,12 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body:
-      // ModalProgressHUD(
-      //   inAsyncCall: isInAsyncCall,
-      //   opacity: 0.02,
-      //   blur: 0.5,
-      //   color: Colors.transparent,
-      //   progressIndicator: CircularProgressIndicator(
-      //     color: Colors.blue,
-      //   ),
-      //   child:
         Form(
           key: key,
           child: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Fixed Container
-
-                // Scrollable Container
                 Expanded(
                   child: SingleChildScrollView(
                     child: Container(
@@ -121,12 +101,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                           Stack(
                             children: [
                               Center(
-                                // child: CircleAvatar(
-                                //     radius: height * 0.09,
-                                //     // backgroundColor: Colors.grey,
-                                //     backgroundImage: imagePath != null
-                                //         ? Image.file(imagePath.toString())
-                                //         : null),
                                   child: CircleAvatar(
                                     radius: height * 0.08,
                                     backgroundColor: Colors.transparent,
@@ -658,8 +632,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                 height: 160,
                                 onSuccess: () {
                                   print("MATCHED");
-                                  // ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                                  //     content: new Text("Password is matched")));
                                 },
                                 onFail: () {
                                   print("NOT MATCHED");
@@ -690,13 +662,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                       fontWeight: FontWeight.w300,
                                       fontSize: 14,
                                     ),
-                                    // validator: (val) {
-                                    //   return RegExp(
-                                    //       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-                                    //       .hasMatch(val!)
-                                    //       ? null
-                                    //       : "Please enter correct Password";
-                                    // },
                                     validator: (val){
                                       if(val!.isEmpty)
                                         return 'Please enter confirm password';
@@ -858,7 +823,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
 
                                       Future.delayed(const Duration(seconds: 3), () {
                                         toastSuccessMessage(customerSignupModel.data, Colors.green);
-                                        // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
                                         Get.to(LoginTabClass(login: 0,));
                                         setState(() {
                                           isInAsyncCall = false;
@@ -871,12 +835,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                         isInAsyncCall = false;
                                       });
                                     }
-                                    // if(customerSignupModel.status != "success"){
-                                    //   toastFailedMessage(customerSignupModel.data, Colors.red);
-                                    //   setState(() {
-                                    //     isInAsyncCall = false;
-                                    //   });
-                                    // }
                                   }
                                 }
                               },
@@ -914,8 +872,6 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    //   Navigator.pushReplacementNamed(context, '/registerType');
-                                    // Get.to(SignUpTabClass());
                                     Get.to(LoginTabClass(login: 0,));
                                   },
                                   child: const Text(

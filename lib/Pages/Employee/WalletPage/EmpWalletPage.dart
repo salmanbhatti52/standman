@@ -25,9 +25,6 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
   bool loading = false;
 
   employeeWalletTxn() async {
-    setState(() {
-      loading = true;
-    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("userId = $usersCustomersId");
@@ -46,15 +43,16 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
     print("in 200 employeeWalletTxnModel");
     if (response.statusCode == 200) {
       empolyeeWalletTxnModel = employeewalletTxnModelFromJson(responseString);
+      setState(() {
+        loading = false;
+      });
       // setState(() {});
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data?[0].image}');
       // print('getJobsModelLength: ${getJobsModel.data?.length}');
       // print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
     }
-    setState(() {
-      loading = false;
-    });
+
   }
 
   @override

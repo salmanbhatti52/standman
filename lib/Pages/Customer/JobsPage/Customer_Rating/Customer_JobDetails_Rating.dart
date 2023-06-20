@@ -44,9 +44,6 @@ class _Customer_RatingState extends State<Customer_Rating> {
 
   bool loading = false;
   addJobRating() async {
-    setState(() {
-      loading = true;
-    });
     String apiUrl = addJobRatingModelApiUrl;
     print("working");
     final response = await http.post(
@@ -69,10 +66,10 @@ class _Customer_RatingState extends State<Customer_Rating> {
       // setState(() {});
       print('addJobRatingModel status: ${addJobRatingModel.status}');
       print('addJobRatingModel data: ${addJobRatingModel.data}');
+      setState(() {
+        loading = false;
+      });
     }
-    setState(() {
-      loading = false;
-    });
     Future.delayed(const Duration(seconds: 1),
             () {
           if(addJobRatingModel.status == "success"){

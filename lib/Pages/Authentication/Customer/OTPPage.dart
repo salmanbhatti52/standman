@@ -1,4 +1,3 @@
-import 'package:StandMan/Models/customer_forgot_password_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,6 +21,7 @@ class _OTPPageState extends State<OTPPage> {
   final OTpCode = TextEditingController();
   final key = GlobalKey<FormState>();
   bool isInAsyncCall = false;
+
   @override
   void initState() {
     print("otp: ${widget.data}");
@@ -29,6 +29,8 @@ class _OTPPageState extends State<OTPPage> {
     // TODO: implement initState
     super.initState();
   }
+
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -39,7 +41,6 @@ class _OTPPageState extends State<OTPPage> {
         child: Column(
           children: [
             Container(
-              // height: MediaQuery.of(context).size.height * 0.4,
               width: double.infinity,
               child: Column(
                 children: [
@@ -144,7 +145,6 @@ class _OTPPageState extends State<OTPPage> {
                             }
                           }
                         }
-                        // Get.to(OTPPage());
                       },
                       child: mainButton(
                           "Confirm", Color.fromRGBO(43, 101, 236, 1), context)),

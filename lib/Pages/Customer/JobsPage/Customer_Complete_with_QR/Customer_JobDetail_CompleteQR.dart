@@ -28,14 +28,16 @@ class Customer_JobsDetails_Completed_with_QR extends StatefulWidget {
   String? completeJobTime;
   String? description;
   String? profilePic;
+  String? employee_profilePic;
   String? name;
+  String? employee_name;
   String? status;
   String? customerId;
   String? employeeId;
   String? jobId;
    Customer_JobsDetails_Completed_with_QR({Key? key, this.image,
      this.jobName, this.totalPrice, this.address, this.jobId, this.employeeId,
-     this.completeJobTime, this.description, this.customerId,
+     this.completeJobTime,  this.employee_name, this.employee_profilePic, this.description, this.customerId,
      this.profilePic, this.name, this.status}) : super(key: key);
 
   @override
@@ -53,10 +55,6 @@ class _Customer_JobsDetails_Completed_with_QRState
   var getResult = 'QR Code Result';
 
   chatStartUser() async {
-
-    progress = true;
-    setState(() {});
-
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     empUsersCustomersId = empPrefs?.getString('empUsersCustomersId');
@@ -84,12 +82,8 @@ class _Customer_JobsDetails_Completed_with_QRState
         final responseString = response.body;
         print("userChatResponse: ${responseString.toString()}");
         chatStartUserModel = chatStartUserModelFromJson(responseString);
-      }
-    // } catch (e) {
-    //   print('Error in userChatApiUrl: ${e.toString()}');
-    // }
-    progress = false;
-    setState(() {});
+        setState(() {});
+      };
   }
 
   @override
@@ -342,9 +336,9 @@ class _Customer_JobsDetails_Completed_with_QRState
                                     await chatStartUser();
                                     Get.to(MessagesDetails(
                                       usersCustomersId: usersCustomersId,
-                                      other_users_customers_id: widget.customerId,
-                                      img: widget.profilePic.toString(),
-                                      name: widget.name.toString(),
+                                      other_users_customers_id: widget.employeeId,
+                                      img: widget.employee_profilePic.toString(),
+                                      name: widget.employee_name.toString(),
                                     ),
                                     );
                                 },

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
@@ -28,6 +26,8 @@ class _NewPasswordState extends State<NewPassword> {
   bool isPasswordObscure = true;
   bool isPassworconfirmdObscure = true;
   bool isInAsyncCall = false;
+
+
   @override
   void initState() {
     print("otp: ${widget.data}");
@@ -74,8 +74,7 @@ class _NewPasswordState extends State<NewPassword> {
             child: Column(
               children: [
                 Container(
-                  // height: MediaQuery.of(context).size.height * 0.4,
-                  width: double.infinity,
+                 width: double.infinity,
                   child: Column(
                     children: [
                       SizedBox(height: height * 0.03),
@@ -89,15 +88,13 @@ class _NewPasswordState extends State<NewPassword> {
                                 onTap: () {
                                   Get.back();
                                 },
-                                child:
-                                    SvgPicture.asset("assets/images/left.svg")),
+                                child: SvgPicture.asset("assets/images/left.svg")),
                             // SizedBox(width: width * 0.3,),
                             SvgPicture.asset("assets/images/logo.svg"),
                             Text("        "),
                           ],
                         ),
                       ),
-                      // SvgPicture.asset("assets/images/logo.svg"),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                         child: Authheadingtext(
@@ -305,9 +302,7 @@ class _NewPasswordState extends State<NewPassword> {
                                       () {
                                     toastSuccessMessage(
                                         "success", Colors.green);
-                                    // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
-                                    // Get.to(bottom_bar());
-                                    Get.to(LoginTabClass(login: 0,));
+                                  Get.to(LoginTabClass(login: 0,));
                                     setState(() {
                                       isInAsyncCall = false;
                                     });

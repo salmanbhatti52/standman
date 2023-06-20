@@ -112,8 +112,6 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
 
   chatStartUserEmp() async {
 
-    progress = true;
-    setState(() {});
 
     prefs = await SharedPreferences.getInstance();
     // usersCustomersId = prefs!.getString('usersCustomersId');
@@ -142,12 +140,13 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
       final responseString = response.body;
       print("userChatResponse: ${responseString.toString()}");
       chatStartUserModel = chatStartUserModelFromJson(responseString);
+      progress = false;
+      setState(() {});
     }
     // } catch (e) {
     //   print('Error in userChatApiUrl: ${e.toString()}');
     // }
-    progress = false;
-    setState(() {});
+
   }
 
 

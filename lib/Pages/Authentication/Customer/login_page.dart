@@ -27,39 +27,9 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   final key = GlobalKey<FormState>();
   bool isPasswordObscure = true;
   bool isInAsyncCall = false;
+  bool loading = true;
 
   CustomerSigninModel customerSigninModel = CustomerSigninModel();
-
-  bool loading = true;
-  // String? userFirstName, userLastName, userImage;
-  sharedPrefs() async {
-    loading = true;
-    setState(() {});
-    print('in LoginPage shared prefs');
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = (prefs!.getString('usersCustomersId'));
-    userEmail = (prefs!.getString('user_email'));
-    // userFirstName = (prefs!.getString('user_first_name'));
-    // userLastName = (prefs!.getString('user_last_name'));
-    print("userId in LoginPrefs is = $usersCustomersId");
-    print("userEmail in LoginPrefs is = $userEmail");
-    // print("userFirstName in LoginPrefs is = $userFirstName $userLastName");
-  }
-
-  // bool isLoggedIn = false;
-  // void checkLoginStatus() async {
-  //   // bool loggedIn = await SessionManager.isLoggedIn();
-  //   setState(() {
-  //     isLoggedIn = loggedIn;
-  //   });
-  // }
-
-  @override
-  void initState() {
-    super.initState();
-     sharedPrefs();
-     // checkLoginStatus();
-  }
 
   customersignin() async {
     String apiUrl = customerSignInApiUrl;
@@ -82,6 +52,24 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     }
   }
 
+  sharedPrefs() async {
+    loading = true;
+    setState(() {});
+    print('in LoginPage shared prefs');
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = (prefs!.getString('usersCustomersId'));
+    userEmail = (prefs!.getString('user_email'));
+    print("userId in LoginPrefs is = $usersCustomersId");
+    print("userEmail in LoginPrefs is = $userEmail");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+     sharedPrefs();
+  }
+
+
   DateTime currentBackPressTime = DateTime.now();
 
   Future<bool> _onWillPop() async {
@@ -97,26 +85,13 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
         backgroundColor: Colors.white,
         body:
-        // ModalProgressHUD(
-        //   inAsyncCall: isInAsyncCall,
-        //   opacity: 0.02,
-        //   blur: 0.5,
-        //   color: Colors.transparent,
-        //   progressIndicator: CircularProgressIndicator(
-        //     color: Colors.blue,
-        //   ),
-        //   child:
           SingleChildScrollView(
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Form(
                   key: key,
@@ -231,7 +206,6 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             hintText: "Enter your password",
-                            // contentPadding: const EdgeInsets.only(top: 12.0),
                             hintStyle: const TextStyle(
                               color: Color.fromRGBO(167, 169, 183, 1),
                               fontFamily: "Outfit",
@@ -342,19 +316,11 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
                             Future.delayed(const Duration(seconds: 3), () {
                               if(customerSigninModel.data!.usersCustomersType == "Customer"){
-                                // Get.to(bottom_bar());
                                 Get.offAll(bottom_bar(currentIndex: 0,));
                                 toastSuccessMessage("Login Successfully", Colors.green);
                               } else {
                                 toastFailedMessage("Invalid email", Colors.red);
                               }
-                                // customerSigninModel.data!.usersCustomersType == "Customer" ?
-                                // Get.to(bottom_bar()):
-                                // toastFailedMessage("you are not employee", Colors.red);
-                              // toastSuccessMessage("success", Colors.green);
-                              // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
-
-
                               setState(() {
                                 isInAsyncCall = false;
                               });
@@ -370,7 +336,6 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                           }
                         }
                       }
-                      // Get.to(bottom_bar());
                     },
                     child: isInAsyncCall
                  ?  loadingBar(context)
@@ -405,8 +370,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          //   Navigator.pushReplacementNamed(context, '/registerType');
-                          Get.to( SignUpTabClass(signup: 0,));
+                         Get.to( SignUpTabClass(signup: 0,));
                         },
                         child: const Text(
                           'Register Your Account',

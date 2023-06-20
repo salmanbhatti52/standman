@@ -27,9 +27,6 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
 
   bool loading = false;
   getPreviousJobs() async {
-    setState(() {
-      loading = true;
-    });
     String apiUrl = getPreviousJobsModelApiUrl;
     print("working");
     final response = await http.post(
@@ -48,10 +45,10 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
       // setState(() {});
       print('getPreviousJobsModel status: ${getPreviousJobsModel.status}');
       print('getPreviousJobsModelLength: ${getPreviousJobsModel.data?.length}');
+      setState(() {
+
+      });
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override
@@ -124,10 +121,9 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                         )
                     );
                   },
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.only(top: 20),
-                    // padding: EdgeInsets.all(5),
+                  child:  Container(
+                    margin: EdgeInsets.only(top: 5),
+                    // padding: EdgeInsets.all( 10),
                     // width: MediaQuery.of(context).size.width * 0.51,
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -140,13 +136,15 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                               color: Color.fromRGBO(167, 169, 183, 0.1)),
                         ]),
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child:
+                            // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
                             FadeInImage(
                               placeholder:  AssetImage("assets/images/fade_in_image.jpeg",),
                               fit: BoxFit.fill,
@@ -155,142 +153,152 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                               image: NetworkImage("$baseUrlImage${getPreviousJobsModel.data?[index].image}"),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 15.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: Get.width * 0.32,
-                                  child: AutoSizeText(
-                                    // 'Eleanor Pena',
-                                    "${getPreviousJobsModel.data?[index].name}",
-                                    style: TextStyle(
-                                      color: Color(0xff000000),
-                                      fontFamily: "Outfit",
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                    maxLines: 1,
-                                    presetFontSizes: [11],
-                                    maxFontSize: 11,
-                                    minFontSize: 11,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(vertical: 5.0),
-                                  child: Text(
-                                    // 'Mar 03, 2023',
-                                    "${getPreviousJobsModel.data![index].dateAdded}",
-                                    style: TextStyle(
-                                      color: Color(0xff9D9FAD),
-                                      fontFamily: "Outfit",
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.w500,
-// letterSpacing: -0.3,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                                Text(
-                                  'Taken By',
+                          SizedBox(width: Get.width * 0.02,),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: Get.width * 0.32,
+                                child: AutoSizeText(
+                                  // 'Eleanor Pena',
+                                  "${getPreviousJobsModel.data?[index].name.toString()}",
                                   style: TextStyle(
-                                    color: Color(0xff2B65EC),
+                                    color: Color(0xff000000),
+                                    fontFamily: "Outfit",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+// letterSpacing: -0.3,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                  maxLines: 1,
+                                  presetFontSizes: [11],
+                                  maxFontSize: 11,
+                                  minFontSize: 11,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5.0),
+                                child: Text(
+                                  // 'Mar 03, 2023',
+                                  "${getPreviousJobsModel.data?[index].dateAdded}",
+                                  style: TextStyle(
+                                    color: Color(0xff9D9FAD),
                                     fontFamily: "Outfit",
                                     fontSize: 8,
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.w500,
 // letterSpacing: -0.3,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
-                                SizedBox(
-                                  height: 8,
+                              ),
+                              Text(
+                                'Taken By',
+                                style: TextStyle(
+                                  color: Color(0xff2B65EC),
+                                  fontFamily: "Outfit",
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.w400,
+// letterSpacing: -0.3,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Image.asset("assets/images/g1.png"),
-                                    CircleAvatar(
-                                      // radius: (screenWidth > 600) ? 90 : 70,
-                                      //   radius: 35,
-                                        backgroundColor: Colors.transparent,
-                                        backgroundImage: getPreviousJobsModel.data?[index].usersEmployeeData?.profilePic== null
-                                            ? Image.asset("assets/images/person2.png").image
-                                            : NetworkImage(baseUrlImage+"${getPreviousJobsModel.data?[index].usersEmployeeData?.profilePic.toString()}")
-                                      // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
+                                textAlign: TextAlign.left,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // Image.asset("assets/images/g1.png"),
+                                  CircleAvatar(
+                                    // radius: (screenWidth > 600) ? 90 : 70,
+                                    //   radius: 50,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage: getPreviousJobsModel.data![index].usersCustomersData!.profilePic == null
+                                          ? Image.asset("assets/images/person2.png").image
+                                          : NetworkImage(baseUrlImage+getPreviousJobsModel.data![index].usersCustomersData!.profilePic.toString())
+                                    // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Container(
-                                      width: 65,
-                                      margin: EdgeInsets.only(top: 10,),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            // 'Wade Warren',
-                                            "${getPreviousJobsModel.data?[index].usersEmployeeData?.firstName} ${getPreviousJobsModel.data?[index].usersEmployeeData?.lastName}",
-                                            style: TextStyle(
-                                              color: Color(0xff000000),
-                                              fontFamily: "Outfit",
-                                              fontSize: 8,
-                                              fontWeight: FontWeight.w500,
+                                  ),
+                                  // CircleAvatar(
+                                  //     backgroundColor: Colors.transparent,
+                                  //     backgroundImage: profilePic1 == null
+                                  //         ? Image.asset("assets/images/g1.png").image
+                                  //         : NetworkImage(baseUrlImage+getJobsModel.data!.profilePic.toString())
+                                  // ),
+                                  // CircleAvatar(
+                                  //   backgroundColor: Colors.transparent,
+                                  //   backgroundImage: NetworkImage(
+                                  //       "$baseUrlImage${getJobsModel.data?[index].}"),),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    width: 65,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          // 'Wade Warren',
+                                          "${getPreviousJobsModel.data?[index].usersCustomersData?.firstName} ${getPreviousJobsModel.data?[index].usersCustomersData?.lastName}",
+                                          // "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
+                                          style: TextStyle(
+                                            color: Color(0xff000000),
+                                            fontFamily: "Outfit",
+                                            fontSize: 8,
+                                            fontWeight: FontWeight.w500,
 // letterSpacing: -0.3,
-                                            ),
-                                            textAlign: TextAlign.left,
                                           ),
-                                          Row(
-                                            children: [
-                                              Image.asset("assets/images/star.png"),
-                                              Text(
-                                                "${getPreviousJobsModel.data?[index].jobsRatings?.rating == null ? '--' : getPreviousJobsModel.data?[index].jobsRatings?.rating }",
-                                                // '--',
-                                                style: TextStyle(
-                                                  color: Color(0xff000000),
-                                                  fontFamily: "Outfit",
-                                                  fontSize: 8,
-                                                  fontWeight: FontWeight.w400,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                                "assets/images/star.png"),
+                                            Text(
+                                              "${getPreviousJobsModel.data?[index].jobsRatings?.rating == null ? '--' : getPreviousJobsModel.data?[index].jobsRatings?.rating }",
+                                              // getJobsModel.data?[index].rating,
+                                              style: TextStyle(
+                                                color: Color(0xff000000),
+                                                fontFamily: "Outfit",
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.w400,
 // letterSpacing: -0.3,
-                                                ),
-                                                textAlign: TextAlign.left,
                                               ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: width * 0.02,
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 40, left: 2),
-                            width: 67,
+                            margin: EdgeInsets.only(top: 40),
+                            width: Get.width * 0.18,
                             height: 19,
                             decoration: BoxDecoration(
-                              color: Color(0xffE9FFE7),
+                              color: Color(0xffFFDACC),
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Center(
                               child: Text(
-                                "${getPreviousJobsModel.data![index].status}",
+                                // customerongoingjobstList[index].subTitle,
+                                "${ getPreviousJobsModel.data?[index].status.toString()}",
                                 style: TextStyle(
-                                  color: Color(0xff10C900),
+                                  color: Color(0xffFF4700),
                                   fontFamily: "Outfit",
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400,
+// letterSpacing: -0.3,
                                 ),
                                 textAlign: TextAlign.left,
                               ),
@@ -298,8 +306,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                           ),
                         ],
                       ),
-                    ),
-                  ),
+                    ),),
                 );
               }),
         ),

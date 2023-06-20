@@ -99,8 +99,6 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
   bool progress = false;
 
   jobsExtraAmountWidget() async {
-    progress = true;
-    setState(() {});
 
     print("userEmployeeId = ${widget.employeeId}");
     print("buttonClickTime ${widget.buttonClickTime}");
@@ -126,13 +124,13 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
         print("uusersCustomersId ${jobsExtraAmount.message?.usersCustomersId}");
         print("employeeUsersCustomersId ${jobsExtraAmount.message?.employeeUsersCustomersId}");
         print("jobsId ${jobsExtraAmount.message?.jobsId}");
+        setState(() {
+          progress = false;
+        });
       }
     // } catch (e) {
     //   print('Error in jobsExtraAmountWidget: ${e.toString()}');
     // }
-    setState(() {
-      progress = false;
-    });
 
     Future.delayed(const Duration(seconds: 2), () {
       Payment(

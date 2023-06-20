@@ -67,9 +67,7 @@ class _MyDrawerState extends State<MyDrawer> {
   bool isInAsyncCall = false;
 
   getUserProfileWidget() async {
-    progress = true;
-    setState(() {});
-    try {
+    // try {
       String apiUrl = usersProfileApiUrl;
       print("getUserProfileApi: $apiUrl");
       final response = await http.post(Uri.parse(apiUrl),
@@ -91,12 +89,12 @@ class _MyDrawerState extends State<MyDrawer> {
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
         print(
             "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
+        progress = false;
+        setState(() {});
       }
-    } catch (e) {
-      print('Error in getUserProfileWidget: ${e.toString()}');
-    }
-    progress = false;
-    setState(() {});
+    // } catch (e) {
+    //   print('Error in getUserProfileWidget: ${e.toString()}');
+    // }
   }
 
   @override
@@ -143,7 +141,7 @@ class _MyDrawerState extends State<MyDrawer> {
           )
           : usersProfileModel.status != "success"
           ? Center(
-          child: Text('no data found...',
+          child: Text('',
               style: TextStyle(fontWeight: FontWeight.bold),),)
           :
       Drawer(

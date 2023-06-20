@@ -24,9 +24,6 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
   bool loading = false;
 
   getOngoingJobsEmployees() async {
-    setState(() {
-      loading = true;
-    });
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
@@ -56,10 +53,10 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
       // setState(() {});
       print('getJobsEmployeesModel status: ${employeeOngoingJobsModel.status}');
       print('getJobsEmployeesModel Length: ${employeeOngoingJobsModel.data?.length}');
+      setState(() {
+        loading = false;
+      });
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override

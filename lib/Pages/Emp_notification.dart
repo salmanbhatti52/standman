@@ -29,9 +29,7 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("usersCustomersId = $usersCustomersId");
 
-    setState(() {
-      loading = true;
-    });
+
     String apiUrl = notificationsModelApiUrl;
     print("working");
     final response = await http.post(
@@ -49,11 +47,10 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
       notificationsModel = notificationsModelFromJson(responseString);
       // setState(() {});
       print('notificationsModel status: ${notificationsModel.status}');
+      setState(() {
+      });
       // print('notificationsModel message: ${notificationsModel.data?[0].message}');
     }
-    setState(() {
-      loading = false;
-    });
   }
 
 

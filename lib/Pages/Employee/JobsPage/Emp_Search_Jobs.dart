@@ -48,7 +48,8 @@ class _EmpSearchJobsState extends State<EmpSearchJobs> {
         print("responseString $responseString");
         searchEmployeeJobsModel =
             searchEmployeeJobsModelFromJson(responseString);
-        setState(() {});
+        setState(() {
+        });
         print("searchItemsLength: ${searchEmployeeJobsModel.data?.length}");
       }
     }

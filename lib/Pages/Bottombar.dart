@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -133,103 +134,125 @@ class _bottom_barState extends State<bottom_bar> {
     _timer?.cancel();
   }
 
+  bool _shouldExit = false;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return WillPopScope(
-        child: Scaffold(
-      drawer: MyDrawer(),
-      extendBody: true,
-      body: Container(
-        child: _widgetOption[widget.currentIndex],
-      ),
-      bottomNavigationBar: Container(
-        height: height * 0.11, //90,
-        width: width, //390,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(24),
-            topLeft: Radius.circular(24),
+    onWillPop: () async {
+      if (_shouldExit) {
+        // Close the app when the back button is pressed again
+        SystemNavigator.pop();
+        return true;
+      } else {
+        // Show the "Tap again to exit" message and set a flag
+        setState(() {
+          _shouldExit = true;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Tap again to exit'),
+            duration: Duration(seconds: 2),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.02),
-              spreadRadius: 0,
-              blurRadius: 20,
-              offset: Offset(0, -2),
-            ),
-          ],
+        );
+        // Prevent the app from being closed immediately
+        return false;
+      }
+    },
+    child: Scaffold(
+        drawer: MyDrawer(),
+        extendBody: true,
+        body: Container(
+      child: _widgetOption[widget.currentIndex],
         ),
-        child: ClipRRect(
-          // borderRadius: BorderRadius.only(
-          //   topLeft: Radius.circular(24.0),
-          //   topRight: Radius.circular(24.0),
-          // ),
-          child: BottomNavigationBar(
-              onTap: _onItemTapped,
-              currentIndex: widget.currentIndex,
-              elevation: 0,
-              type: BottomNavigationBarType.fixed,
-              unselectedItemColor: Color(0xffA7A9B7),
-              selectedItemColor: Color(0xff000000),
-              items: [
-                BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    widget.currentIndex == 0
-                        ? 'assets/images/home-2.svg'
-                        : 'assets/images/home.svg',
-                  ),
-                  label: 'Home',
+        bottomNavigationBar: Container(
+      height: height * 0.11, //90,
+      width: width, //390,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(24),
+          topLeft: Radius.circular(24),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.02),
+            spreadRadius: 0,
+            blurRadius: 20,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        // borderRadius: BorderRadius.only(
+        //   topLeft: Radius.circular(24.0),
+        //   topRight: Radius.circular(24.0),
+        // ),
+        child: BottomNavigationBar(
+            onTap: _onItemTapped,
+            currentIndex: widget.currentIndex,
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            unselectedItemColor: Color(0xffA7A9B7),
+            selectedItemColor: Color(0xff000000),
+            items: [
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  widget.currentIndex == 0
+                      ? 'assets/images/home-2.svg'
+                      : 'assets/images/home.svg',
                 ),
-                BottomNavigationBarItem(
-                    icon: Stack(
-                      children: [
-                        SvgPicture.asset(
-                          widget.currentIndex == 1
-                              ? 'assets/images/messages-2.svg'
-                              : 'assets/images/messages.svg',
-                        ),
-                        Positioned(
-                          right: 0,
-                          child: Container(
-                            height: 12,
-                            width: 12,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.blueAccent,
-                            ),
-                            child: Center(child: Text(unreadedMessagesModel.data.toString() == 0 ? "0" : unreadedMessagesModel.data.toString(),style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,)),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                  icon: Stack(
+                    children: [
+                      SvgPicture.asset(
+                        widget.currentIndex == 1
+                            ? 'assets/images/messages-2.svg'
+                            : 'assets/images/messages.svg',
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: Container(
+                          height: 12,
+                          width: 12,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Colors.blueAccent,
                           ),
-                        )
-                      ],
-                    ),
-                    label: 'Messages'),
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      widget.currentIndex == 2
-                          ? 'assets/images/wallet-2.svg'
-                          : 'assets/images/wallet.svg',
-                    ),
-                    label: 'Wallet'),
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      widget.currentIndex == 3
-                          ? 'assets/images/job-2.svg'
-                          : 'assets/images/job.svg',
-                    ),
-                    label: 'My Jobs'),
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      widget.currentIndex  == 4
-                          ? 'assets/images/profile-2.svg'
-                          : 'assets/images/profile.svg',
-                    ),
-                    label: 'Profile'),
-              ]),
+                          child: Center(child: Text(unreadedMessagesModel.data.toString() == 0 ? "0" : unreadedMessagesModel.data.toString(),style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,)),
+                        ),
+                      )
+                    ],
+                  ),
+                  label: 'Messages'),
+              BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    widget.currentIndex == 2
+                        ? 'assets/images/wallet-2.svg'
+                        : 'assets/images/wallet.svg',
+                  ),
+                  label: 'Wallet'),
+              BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    widget.currentIndex == 3
+                        ? 'assets/images/job-2.svg'
+                        : 'assets/images/job.svg',
+                  ),
+                  label: 'My Jobs'),
+              BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    widget.currentIndex  == 4
+                        ? 'assets/images/profile-2.svg'
+                        : 'assets/images/profile.svg',
+                  ),
+                  label: 'Profile'),
+            ]),
+      ),
         ),
       ),
-    ), onWillPop: _onWillPop);
+    );
       // WillPopScope(
       // onWillPop: () async {
       //   if (_canExit) {

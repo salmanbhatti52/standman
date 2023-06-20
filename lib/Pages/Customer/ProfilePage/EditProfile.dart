@@ -76,7 +76,6 @@ class _EditProfileState extends State<EditProfile> {
 
   sharedPrefs() async {
     // loading = true;
-    setState(() {});
     print('in LoginPage shared prefs');
     prefs = await SharedPreferences.getInstance();
     // userId = (prefs!.getString('userid'));
@@ -111,7 +110,6 @@ class _EditProfileState extends State<EditProfile> {
 
   editUserProfileWidget() async {
     progress = true;
-    setState(() {});
     // try {
     String apiUrl = updateCustomerProfileApiUrl;
     print("editUserProfileApi: $apiUrl");
@@ -142,6 +140,7 @@ class _EditProfileState extends State<EditProfile> {
       updateProfileCustomerModel =
           updateProfileCustomerModelFromJson(responseString);
       print("getUserName: ${updateProfileCustomerModel.data!}");
+      setState(() {});
       // print("getUserEmail: ${updateProfileCustomerModel.data[0].profilePic}");
       // print("getUserNumber: ${updateProfileCustomerModel.data!.phoneNumber}");
       // print("getUserProfileImage: $baseUrlImage${updateProfileCustomerModel.data!.profilePic}");
@@ -150,7 +149,6 @@ class _EditProfileState extends State<EditProfile> {
     //   print('Error in getUserProfileWidget: ${e.toString()}');
     // }
     progress = false;
-    setState(() {});
   }
 
   @override

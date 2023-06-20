@@ -37,9 +37,6 @@ class _Customer_ProfileState extends State<Customer_Profile> {
   bool loading = false;
 
   allJobRating() async {
-    setState(() {
-      loading = true;
-    });
     // prefs = await SharedPreferences.getInstance();
     // usersCustomersId = prefs!.getString('usersCustomersId');
     // print("userId in Prefs is = $usersCustomersId");
@@ -64,9 +61,6 @@ class _Customer_ProfileState extends State<Customer_Profile> {
       // print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override
@@ -83,8 +77,6 @@ class _Customer_ProfileState extends State<Customer_Profile> {
 
   chatStartUser() async {
 
-    progress = true;
-    setState(() {});
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
@@ -113,12 +105,11 @@ class _Customer_ProfileState extends State<Customer_Profile> {
       final responseString = response.body;
       print("userChatResponse: ${responseString.toString()}");
       chatStartUserModel = chatStartUserModelFromJson(responseString);
+      setState(() {});
     }
     // } catch (e) {
     //   print('Error in userChatApiUrl: ${e.toString()}');
     // }
-    progress = false;
-    setState(() {});
   }
 
   @override

@@ -36,8 +36,6 @@ class _MessagesListsState extends State<MessagesLists> {
 
   getAllChat() async {
 
-    progress = true;
-    setState(() {});
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
@@ -60,12 +58,12 @@ class _MessagesListsState extends State<MessagesLists> {
         final responseString = response.body;
         print("getAllChatResponse: ${responseString.toString()}");
         getAllChatModel = getAllCahtModelFromJson(responseString);
+        setState(() {});
       }
     // } catch (e) {
     //   print('Error in getAllChatApi: ${e.toString()}');
     // }
-    progress = false;
-    setState(() {});
+    // progress = true;
   }
 
   @override

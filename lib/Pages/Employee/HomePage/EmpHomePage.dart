@@ -49,8 +49,6 @@ class _EmpHomePageState extends State<EmpHomePage> {
   bool isInAsyncCall = false;
 
   getUserProfileWidget() async {
-    progress = true;
-    setState(() {});
 
     prefs = await SharedPreferences.getInstance();
     empUsersCustomersId = prefs!.getString('empUsersCustomersId');
@@ -75,16 +73,15 @@ class _EmpHomePageState extends State<EmpHomePage> {
         print("getUserEmail: ${usersProfileModel.data!.email}");
         print("getUserNumber: ${usersProfileModel.data!.phone}");
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
+        setState(() {
+
+        });
         print(
             "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
       }
     } catch (e) {
       print('Error in getUserProfileWidget: ${e.toString()}');
     }
-    progress = false;
-   setState(() {
-
-   });
   }
 
   EmployeeOngoingJobsModel employeeOngoingJobsModel = EmployeeOngoingJobsModel();
@@ -163,6 +160,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
       getJobsEmployeesModel = getJobsEmployeesModelFromJson(responseString);
       // setState(() {});
       // print('getJobsEmployeesModel status: "${getJobsEmployeesModel.data?[index].usersCustomersData?.first_name} ${getJobsEmployeesModel.data?[index].usersCustomersData?.last_name}",');
+      print('getJobsEmployeesModel status: ${getJobsEmployeesModel.status}');
       print('getJobsEmployeesModel Length: ${getJobsEmployeesModel.data?.length}');
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
     }
@@ -281,77 +279,80 @@ class _EmpHomePageState extends State<EmpHomePage> {
                   ],
                 ),
               ),
-              Container(
-                width: width,
-                height: height * 0.7,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Heading("Jobs ", "", context),
-                      // EmpJobs(),
-                      Container(
-                        height: 400,
-                        child: getJobsEmployeesModel.data !=null ?
-                        ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            physics: ScrollPhysics(),
-                            itemCount: getJobsEmployeesModel.data?.length,
-                            itemBuilder: (BuildContext context, i) {
-                              jobIndex = "${getJobsEmployeesModel.data?[i].jobsId}";
-                              return  EmpJobs(getJobsEmployeesModel: getJobsEmployeesModel.data![i],);
-                            })
-                            : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: const Text(
-                                "No jobs available in\nyour area.",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: "Outfit",
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 32,
-                                ),
-                                textAlign: TextAlign.left,
+                child: Container(
+                  width: width,
+                  height: height * 0.7,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Heading("Jobs ", "", context),
+                        // EmpJobs(),
+                        Container(
+                          height: 380,
+                          child:
+                           getJobsEmployeesModel.data !=null ?
+                          ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              physics: ScrollPhysics(),
+                              itemCount: getJobsEmployeesModel.data?.length,
+                              itemBuilder: (BuildContext context, i) {
+                                jobIndex = "${getJobsEmployeesModel.data?[i].jobsId}";
+                                return  EmpJobs(getJobsEmployeesModel: getJobsEmployeesModel.data?[i], jobIndex: jobIndex,);
+                              })
+                              : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: height * 0.02,
                               ),
-                            ),
-                            SizedBox(
-                              height: height * 0.08,
-                            ),
-                            SvgPicture.asset(
-                              'assets/images/cartoon.svg',
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: const Text(
+                                  "No jobs available in\nyour area.",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 32,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.08,
+                              ),
+                              SvgPicture.asset(
+                                'assets/images/cartoon.svg',
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Heading("Job in Queue ", "", context),
-                      // QueueJobs(),
-                      Container(
-                        height: 200,
-                        child: employeeOngoingJobsModel.data !=null ?
-                        ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            physics: ScrollPhysics(),
-                            itemCount: employeeOngoingJobsModel.data?.length,
-                            itemBuilder: (BuildContext context, i) {
-                              return  QueueJobs(employeeOngoingJobsModel: employeeOngoingJobsModel.data?[i],);
-                            }): Center(child: Text('No Queue Jobs')),
-                      ),
-                    ],
+                        Heading("Job in Queue ", "", context),
+                        // QueueJobs(),
+                        Container(
+                          height: 200,
+                          child: employeeOngoingJobsModel.data !=null ?
+                          ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: ScrollPhysics(),
+                              itemCount: employeeOngoingJobsModel.data?.length,
+                              itemBuilder: (BuildContext context, i) {
+                                return  QueueJobs(employeeOngoingJobsModel: employeeOngoingJobsModel.data?[i],);
+                              }): Center(child: Text('No Queue Jobs')),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )

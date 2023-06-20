@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage> {
   bool isInAsyncCall = false;
 
   getUserProfileWidget() async {
-    progress = true;
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
@@ -55,7 +54,7 @@ class _HomePageState extends State<HomePage> {
     print("longitude1: ${longitude}");
     print("lattitude1: ${lattitude}");
 
-    try {
+    // try {
       String apiUrl = usersProfileApiUrl;
       print("getUserProfileApi: $apiUrl");
       final response = await http.post(Uri.parse(apiUrl),
@@ -75,24 +74,15 @@ class _HomePageState extends State<HomePage> {
         print("getUserEmail: ${usersProfileModel.data!.email}");
         print("getUserNumber: ${usersProfileModel.data!.phone}");
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-        print(
-            "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
+        print("getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
+        setState(() {});
       }
-    } catch (e) {
-      print('Error in getUserProfileWidget: ${e.toString()}');
-    }
-    setState(() {
-      progress = false;
-    });
   }
 
 
   GetJobsModel getJobsModel = GetJobsModel();
-  bool loading = false;
+
   getJobsCustomer() async {
-    setState(() {
-      loading = true;
-    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -116,9 +106,6 @@ class _HomePageState extends State<HomePage> {
       print('getJobsModelLength: ${getJobsModel.data?.length}');
       print('getJobsModelImage123: $baseUrlImage${getJobsModel.data?[0].image}');
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override

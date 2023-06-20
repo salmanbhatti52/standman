@@ -26,10 +26,8 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
 
   bool loading = false;
 
-  MyJobs() async {
-    setState(() {
-      loading = true;
-    });
+  myJobs() async {
+   
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -51,10 +49,10 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
       // setState(() {});
       print('getJobsModelImage: $baseUrlImage${customerMyJobModel.data?[0].image}');
       print('getJobsModelLength: ${customerMyJobModel.data?.length}');
+      setState(() {
+
+      });
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override
@@ -62,7 +60,7 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
     // TODO: implement initState
     print("users_customers_id: ${usersCustomersId}");
     super.initState();
-    MyJobs();
+    myJobs();
     // getUserProfileWidget();
   }
 

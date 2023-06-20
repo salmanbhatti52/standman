@@ -36,7 +36,6 @@ class _LoginTabClassState extends State<LoginTabClass>
           child: Column(
             children: [
               Container(
-                // height: MediaQuery.of(context).size.height * 0.4,
                 width: double.infinity,
                 child: Column(
                   children: [

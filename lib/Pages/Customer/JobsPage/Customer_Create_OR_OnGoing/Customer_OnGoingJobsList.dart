@@ -27,9 +27,6 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
   bool loading = false;
 
   getJobs() async {
-    setState(() {
-      loading = true;
-    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -52,11 +49,9 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
       print('getJobsModelImage: $baseUrlImage${getJobsModel.data?[0].image}');
       print('getJobsModelLength: ${getJobsModel.data?.length}');
       print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
-      // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
+      setState(() {});
     }
-    setState(() {
-      loading = false;
-    });
+
   }
 
   @override
@@ -204,8 +199,9 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                     Get.to(Customer_JobsDetails_Completed_with_QR(
                       customerId: "${getJobsModel.data?[index].usersCustomersData?.usersCustomersId}",
                       employeeId: "${getJobsModel.data?[index].usersEmployeeData?.usersCustomersId}",
-                      image:
-                      "$baseUrlImage${getJobsModel.data?[index].image}",
+                      employee_profilePic: "$baseUrlImage${getJobsModel.data?[index].usersEmployeeData?.profilePic}",
+                      employee_name: "${getJobsModel.data?[index].usersEmployeeData?.firstName} ${getJobsModel.data?[index].usersEmployeeData?.lastName}",
+                      image: "$baseUrlImage${getJobsModel.data?[index].image}",
                       jobName: getJobsModel
                           .data?[index].name,
                       totalPrice: getJobsModel

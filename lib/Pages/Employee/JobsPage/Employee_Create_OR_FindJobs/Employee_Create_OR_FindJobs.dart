@@ -31,9 +31,6 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
   bool loading = false;
 
   GetJobsEmployees() async {
-    setState(() {
-      loading = true;
-    });
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
@@ -66,11 +63,11 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
       print('getJobsEmployeesModel status: ${getJobsEmployeesModel.status}');
       print(
           'getJobsEmployeesModel Length: ${getJobsEmployeesModel.data?.length}');
+      setState(() {
+        loading = false;
+      });
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   // sharedPref() async {

@@ -19,9 +19,6 @@ class _TermsandConditionsState extends State<TermsandConditions> {
 
   systemSettingApi() async {
     // try {
-    setState(() {
-      loading = true;
-    });
     String apiUrl = system_settingsModelApiUrl;
     print("api: $apiUrl");
     final response = await http.get(
@@ -40,10 +37,9 @@ class _TermsandConditionsState extends State<TermsandConditions> {
       print('systemSettingsModel status: ${systemSettingsModel.status}');
       print(
           'getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
+      setState(() {});
     }
-    setState(() {
-      loading = false;
-    });
+
   }
 
   @override

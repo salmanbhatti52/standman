@@ -41,7 +41,6 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isInAsyncCall = false;
 
   getUserProfileWidget() async {
-    progress = true;
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("usersCustomersId = $usersCustomersId");
@@ -67,12 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
         print("getUserNumber: ${usersProfileModel.data!.phone}");
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
         print("getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
+        setState(() {});
       }
     // } catch (e) {
     //   print('Error in getUserProfileWidget: ${e.toString()}');
     // }
-    progress = false;
-    setState(() {});
   }
 
   @override

@@ -3,8 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../Models/customer_forgot_password_model.dart';
-import '../../../Models/customer_forgot_password_model.dart';
-import '../../../Models/customer_forgot_password_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
@@ -50,7 +48,6 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: ModalProgressHUD(
@@ -66,7 +63,6 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                // height: MediaQuery.of(context).size.height * 0.4,
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -81,15 +77,12 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                               onTap: () {
                                 Get.back();
                               },
-                              child:
-                                  SvgPicture.asset("assets/images/left.svg")),
-                          // SizedBox(width: width * 0.3,),
+                              child: SvgPicture.asset("assets/images/left.svg")),
                           SvgPicture.asset("assets/images/logo.svg"),
                           Text("        "),
                         ],
                       ),
                     ),
-                    // SvgPicture.asset("assets/images/logo.svg"),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                       child: Authheadingtext("Lost your password?", context),
@@ -180,18 +173,11 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                               });
                               await ForgotPassword();
 
-                              // if(forgotPasswordModel.data == "Customer"){
-                              //   Get.to(OTPPage(data: forgotPasswordModel.data!.otp, email:  emailController.text.toString()
-                              //     ,));
-                              // } else {
-                              //   toastFailedMessage("Invalid email", Colors.red);
-                              // }
 
                               if(forgotPasswordModel.status == "success"){
                                 Future.delayed(const Duration(seconds: 3), () {
-  Get.to(OTPPage(data: forgotPasswordModel.data!.otp, email:  emailController.text.toString()
+                               Get.to(OTPPage(data: forgotPasswordModel.data!.otp, email:  emailController.text.toString()
                                       ,));
-                                  // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
                                   setState(() {
                                     isInAsyncCall = false;
                                   });
@@ -206,7 +192,6 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                               }
                             }
                           }
-                          // Get.to(OTPPage());
                         },
                         child: mainButton("Send OTP",
                             Color.fromRGBO(43, 101, 236, 1), context)),

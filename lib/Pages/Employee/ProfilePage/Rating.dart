@@ -18,9 +18,6 @@ class _RatingProfileState extends State<RatingProfile> {
   bool loading = false;
 
   allJobRating() async {
-    setState(() {
-      loading = true;
-    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("userId = $usersCustomersId");
@@ -39,15 +36,15 @@ class _RatingProfileState extends State<RatingProfile> {
     print("in 200 allJobRatingModel");
     if (response.statusCode == 200) {
       allRatingsModel = allRatingsModelFromJson(responseString);
+      setState(() {
+      });
+
       // setState(() {});
       // print('getJobsModelImage: $baseUrlImage${al.data?[0].image}');
       // print('getJobsModelLength: ${getJobsModel.data?.length}');
       // print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override
