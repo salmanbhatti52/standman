@@ -55,7 +55,7 @@ class _Customer_ProfileState extends State<Customer_Profile> {
     print("in 200 allJobRatingModel");
     if (response.statusCode == 200) {
       allRatingsModel = allRatingsModelFromJson(responseString);
-      // setState(() {});
+      setState(() {});
       // print('getJobsModelImage: $baseUrlImage${al.data?[0].image}');
       // print('getJobsModelLength: ${getJobsModel.data?.length}');
       // print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
@@ -92,7 +92,7 @@ class _Customer_ProfileState extends State<Customer_Profile> {
       body: {
         "requestType": "startChat",
         "users_customers_id": usersCustomersId,
-        "other_users_customers_id": widget.customerId,
+        "other_users_customers_id": widget.employeeId,
       },
       headers: {'Accept': 'application/json'},
     );

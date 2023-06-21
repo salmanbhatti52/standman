@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../Models/customer_forgot_password_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
@@ -18,10 +17,10 @@ class CustomerForgotPassword extends StatefulWidget {
 }
 
 class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
-  final emailController = TextEditingController();
+  // final emailController = TextEditingController();
   bool isInAsyncCall = false;
-  final key = GlobalKey<FormState>();
-
+  // final key = GlobalKey<FormState>();
+  //
   ForgotPasswordModel forgotPasswordModel = ForgotPasswordModel();
 
   ForgotPassword() async {
@@ -30,7 +29,7 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
       Uri.parse(apiUrl),
       headers: {"Accept": "application/json"},
       body: {
-        "email": emailController.text.toString(),
+        "email": _emailController.text.toString(),
       },
     );
     final responseString = response.body;
@@ -45,20 +44,25 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
     }
   }
 
+  TextEditingController _emailController = TextEditingController();
+  GlobalKey<FormState> form = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ModalProgressHUD(
-        inAsyncCall: isInAsyncCall,
-        opacity: 0.02,
-        blur: 0.5,
-        color: Colors.transparent,
-        progressIndicator: CircularProgressIndicator(
-          color: Colors.blue,
-        ),
-        child: SafeArea(
+      body:
+      // ModalProgressHUD(
+      //   inAsyncCall: isInAsyncCall,
+      //   opacity: 0.02,
+      //   blur: 0.5,
+      //   color: Colors.transparent,
+      //   progressIndicator: CircularProgressIndicator(
+      //     color: Colors.blue,
+      //   ),
+      //   child:
+        SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -115,9 +119,9 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                             height: 10,
                           ),
                           Form(
-                            key: key,
+                            key: form,
                             child: TextFormField(
-                            controller: emailController,
+                            controller: _emailController,
                             textAlign: TextAlign.left,
                             style: const TextStyle(
                               color: Color.fromRGBO(167, 169, 183, 1),
@@ -160,12 +164,16 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                       ),
                     ),
                     SizedBox(height: height * 0.05),
-                    GestureDetector(
+                    Obx(() => GestureDetector(
                         onTap: () async {
-                          print("myEmail ${emailController.text}");
-                          print("myOTP ${forgotPasswordModel.data?.otp}");
-                          if(key.currentState!.validate()){
-                            if (emailController.text.isEmpty) {
+                          print("myEmail ${_emailController.text}");
+                          // if (form.currentState!.validate()) {
+                          //   authController.forgot_password(
+                          //     email: _emailController.text,
+                          //   );
+                          // }
+                          if(form.currentState!.validate()){
+                            if (_emailController.text.isEmpty) {
                               toastFailedMessage('email required', Colors.red);
                             } else {
                               setState(() {
@@ -176,7 +184,7 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
 
                               if(forgotPasswordModel.status == "success"){
                                 Future.delayed(const Duration(seconds: 3), () {
-                               Get.to(OTPPage(data: forgotPasswordModel.data!.otp, email:  emailController.text.toString()
+                               Get.to(OTPPage(data: forgotPasswordModel.data!.otp, email:  _emailController.text.toString()
                                       ,));
                                   setState(() {
                                     isInAsyncCall = false;
@@ -194,14 +202,15 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                           }
                         },
                         child: mainButton("Send OTP",
-                            Color.fromRGBO(43, 101, 236, 1), context)),
+                            Color.fromRGBO(43, 101, 236, 1), context)),)
+
                   ],
                 ),
               ),
             ],
           ),
         ),
-      ),
+      // ),
     );
   }
 }

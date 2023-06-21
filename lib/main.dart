@@ -9,6 +9,8 @@ import 'Pages/SplashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
+import 'Utils/remove_scroll_glow.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -49,6 +51,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'StandMan',
       theme: ThemeData(primarySwatch: Colors.blue),
+      scrollBehavior: MyBehavior(),
       home: SplashScreen(),
     ),);
   }
