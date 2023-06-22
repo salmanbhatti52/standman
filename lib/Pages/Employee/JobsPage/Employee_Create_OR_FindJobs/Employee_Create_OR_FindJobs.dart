@@ -235,7 +235,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                   jobName: getJobsEmployeesModel
                                       .data?[index].name,
                                   totalPrice: getJobsEmployeesModel
-                                      .data?[index].totalPrice,
+                                      .data?[index].price,
                                   address: getJobsEmployeesModel
                                       .data?[index].location,
                                   completeJobTime: getJobsEmployeesModel
@@ -343,7 +343,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                     ],
                                   ),
                                   Text(
-                                    "\$${getJobsEmployeesModel.data?[index].totalPrice}",
+                                    "\$${getJobsEmployeesModel.data?[index].price}",
                                     // "\$22",
                                     style: TextStyle(
                                       color: Color(0xff2B65EC),
@@ -380,7 +380,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                                   totalPrice:
                                                   getJobsEmployeesModel
                                                       .data?[index]
-                                                      .totalPrice,
+                                                      .price,
                                                   address:
                                                   getJobsEmployeesModel
                                                       .data?[index]

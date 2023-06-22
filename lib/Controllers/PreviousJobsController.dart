@@ -25,7 +25,7 @@ class PreviousJobsController extends GetxController {
         var result = jsonDecode(response.body);
         print("response.statusCode ${response.statusCode}");
         print("response.statusCode ${response.body}");
-        getPreviousJobsModel = getPreviousJobsModelFromJson(result);
+        // getPreviousJobsModel = getPreviousJobsModelFromJson(result);
       } else{
         print("Error Fetching Data");
       }

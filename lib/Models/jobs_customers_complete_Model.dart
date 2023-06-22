@@ -71,12 +71,13 @@ class Customer {
   String? socialAccType;
   String? googleAccessToken;
   dynamic verifyCode;
+  String? countryCode;
   String? verifiedBadge;
   dynamic dateExpiry;
   String? walletAmount;
   String? rating;
   DateTime? dateAdded;
-  String? status;
+  String?  status;
 
   Customer({
     this.usersCustomersId,
@@ -96,6 +97,7 @@ class Customer {
     this.socialAccType,
     this.googleAccessToken,
     this.verifyCode,
+    this.countryCode,
     this.verifiedBadge,
     this.dateExpiry,
     this.walletAmount,
@@ -122,6 +124,7 @@ class Customer {
     socialAccType: json["social_acc_type"],
     googleAccessToken: json["google_access_token"],
     verifyCode: json["verify_code"],
+    countryCode: json["country_code"],
     verifiedBadge: json["verified_badge"],
     dateExpiry: json["date_expiry"],
     walletAmount: json["wallet_amount"],
@@ -148,6 +151,7 @@ class Customer {
     "social_acc_type": socialAccType,
     "google_access_token": googleAccessToken,
     "verify_code": verifyCode,
+    "country_code": countryCode,
     "verified_badge": verifiedBadge,
     "date_expiry": dateExpiry,
     "wallet_amount": walletAmount,
@@ -169,10 +173,10 @@ class Job {
   String? startTime;
   String? endTime;
   String? description;
-  int? price;
+  String? price;
   String? serviceCharges;
   String? tax;
-  String? totalPrice;
+  int? totalPrice;
   String? paymentGatewaysName;
   dynamic extraTimePrice;
   dynamic extraTimeTax;

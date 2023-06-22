@@ -131,7 +131,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                   myJobId: "${widget.getJobsEmployeesModel?.jobsId}",
                                   image: "$baseUrlImage${widget.getJobsEmployeesModel?.image}",
                                   jobName: widget.getJobsEmployeesModel?.name,
-                                  totalPrice: widget.getJobsEmployeesModel?.totalPrice,
+                                  totalPrice: widget.getJobsEmployeesModel?.price,
                                   address: widget.getJobsEmployeesModel?.location,
                                   completeJobTime: widget.getJobsEmployeesModel?.dateAdded.toString(),
                                   description: widget.getJobsEmployeesModel?.description,
@@ -245,7 +245,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                     ],
                                   ),
                                   Text(
-                                    "\$${widget.getJobsEmployeesModel?.totalPrice}",
+                                    "\$${widget.getJobsEmployeesModel?.price}",
                                     // "\$22",
                                     style: TextStyle(
                                       color: Color(0xff2B65EC),
@@ -270,7 +270,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                                   myJobId: "${widget.getJobsEmployeesModel?.jobsId}",
                                                   image: "$baseUrlImage${widget.getJobsEmployeesModel?.image}",
                                                   jobName: widget.getJobsEmployeesModel?.name,
-                                                  totalPrice: widget.getJobsEmployeesModel?.totalPrice,
+                                                  totalPrice: widget.getJobsEmployeesModel?.price,
                                                   address: widget.getJobsEmployeesModel?.location,
                                                   completeJobTime: widget.getJobsEmployeesModel?.dateAdded.toString(),
                                                   description: widget.getJobsEmployeesModel?.description,

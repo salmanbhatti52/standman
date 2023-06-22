@@ -118,7 +118,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                       myJobId: "${getPreviousJobsEmployeeModel.data?[index].jobsId}",
                       image:"$baseUrlImage${getPreviousJobsEmployeeModel.data?[index].image}",
                       jobName: getPreviousJobsEmployeeModel.data?[index].name,
-                      totalPrice: getPreviousJobsEmployeeModel.data?[index].totalPrice,
+                      totalPrice: getPreviousJobsEmployeeModel.data?[index].price,
                       address: getPreviousJobsEmployeeModel.data?[index].location,
                       completeJobTime: getPreviousJobsEmployeeModel.data?[index].dateAdded.toString(),
                       description: getPreviousJobsEmployeeModel.data?[index].description,
@@ -226,7 +226,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                                   ],
                                 ),
                                  Text(
-                                   "\$${getPreviousJobsEmployeeModel.data?[index].totalPrice}",
+                                   "\$${getPreviousJobsEmployeeModel.data?[index].price}",
                                   style: TextStyle(
                                     color: Color(0xff2B65EC),
                                     fontFamily: "Outfit",

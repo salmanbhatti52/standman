@@ -662,6 +662,12 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                     SizedBox(width: 05),
                     FloatingActionButton(
                       onPressed: () async {
+                        final currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus &&
+                            currentFocus.focusedChild != null) {
+                          FocusManager.instance.primaryFocus
+                              ?.unfocus();
+                        }
                         if (sendMessageFormKey.currentState!.validate()) {
                           if (sendMessageController.text.isEmpty)  {
                             toastFailedMessage(
@@ -1050,7 +1056,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 //               style: TextStyle(
 //                 color: Colors.black,
 //                 fontFamily: "Outfit",
-//                 fontWeight: FontWeight.w500,
+//                 fontWeight: FontWeight.w500, 
 //                 fontSize: 14,
 //               ),
 //             ),

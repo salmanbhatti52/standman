@@ -114,7 +114,7 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
                       myJobId: "${employeeOngoingJobsModel.data?[index].jobsId}",
                       image:"$baseUrlImage${employeeOngoingJobsModel.data?[index].image}",
                       jobName: employeeOngoingJobsModel.data?[index].name,
-                      totalPrice: employeeOngoingJobsModel.data?[index].totalPrice,
+                      totalPrice: employeeOngoingJobsModel.data?[index].price,
                       address: employeeOngoingJobsModel.data?[index].location,
                       completeJobTime: employeeOngoingJobsModel.data?[index].dateAdded.toString(),
                       description: employeeOngoingJobsModel.data?[index].description,
@@ -222,7 +222,7 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
                                   ],
                                 ),
                                 Text(
-                                  "\$${employeeOngoingJobsModel.data?[index].totalPrice}",
+                                  "\$${employeeOngoingJobsModel.data?[index].price}",
                                   // "\$22",
                                   style: TextStyle(
                                     color: Color(0xff2B65EC),

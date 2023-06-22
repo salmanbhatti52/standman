@@ -157,7 +157,7 @@ class _QueueJobsState extends State<QueueJobs> {
                                 ],
                               ),
                               Text(
-                                "\$${widget.employeeOngoingJobsModel?.totalPrice}",
+                                "\$${widget.employeeOngoingJobsModel?.price}",
                                 // "\$22",
                                 style: TextStyle(
                                   color: Color(0xff2B65EC),

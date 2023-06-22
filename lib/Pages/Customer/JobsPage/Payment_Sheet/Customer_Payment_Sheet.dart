@@ -74,7 +74,7 @@ Payment({
   Map<String, dynamic>? paymentIntent;
 
   calculateAmount(String amount) {
-    amount = "${jobsCustomersCompleteModel.data?.job?.price}";
+    amount = "${jobsCustomersCompleteModel.data?.job?.totalPrice}";
     final a = (int.parse(amount)) * 100;
     print("amount ${a}");
     final calculatedAmout = a;
@@ -194,7 +194,7 @@ Payment({
                                       textAlign: TextAlign.left,
                                     ),
                                     Text(
-                                      jobsCustomersCompleteModel.data!.job!.price.toString(),
+                                      jobsCustomersCompleteModel.data!.job!.totalPrice.toString(),
                                       // ' 22.00',
                                       style: TextStyle(
                                         color: Color(0xff2B65EC),

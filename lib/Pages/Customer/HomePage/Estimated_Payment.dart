@@ -69,7 +69,7 @@ Estimated_PaymentMethod({
         "start_time": time,
         "end_time": endtime,
         "description": describe,
-        "price": price,
+        "price": amount,
         "service_charges": chargers,
         "tax": tax,
         "payment_gateways_name": "GPay",

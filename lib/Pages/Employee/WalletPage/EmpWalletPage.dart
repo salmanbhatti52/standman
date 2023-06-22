@@ -260,7 +260,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                                       ctx: context,
                                       name: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].userData?.firstName} ${empolyeeWalletTxnModel.data?.transactionHistory?[index].userData?.lastName}",
                                       date: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.date}",
-                                      price: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.totalPrice}",
+                                      price: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.previousPrice}",
                                       previousAmount: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.previousPrice != null
                                           ? "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.previousPrice}" : "0"}",
                                       extraAmount: "${empolyeeWalletTxnModel.data?.transactionHistory?[index].txnDetail?.extraPrice}",

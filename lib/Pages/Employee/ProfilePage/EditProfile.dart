@@ -175,7 +175,7 @@ class _EmpEditProfileState extends State<EmpEditProfile> {
         //       color: Colors.blueAccent),
         //   child:
           SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
+            // physics: NeverScrollableScrollPhysics(),
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
