@@ -1,5 +1,3 @@
-import 'package:StandMan/Models/jobs_action_employees_Model.dart';
-import 'package:StandMan/Pages/Customer/MessagePage/NotificationPage.dart';
 import 'package:StandMan/Pages/NotificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,12 +6,10 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../Models/get_OnGoing_jobs_Model.dart';
-import '../../../Models/jobs_action_employees_Model.dart';
 import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../Drawer.dart';
-import '../../Employee/HomePage/EmpHomePage.dart';
 import 'FindPlace.dart';
 import 'HeadRow.dart';
 import 'RecentJobs.dart';

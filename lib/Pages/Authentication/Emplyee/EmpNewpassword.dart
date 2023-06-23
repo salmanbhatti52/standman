@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
@@ -10,6 +8,7 @@ import '../../../widgets/ToastMessage.dart';
 import '../Customer/AuthTextWidget.dart';
 import '../Login_tab_class.dart';
 import 'package:http/http.dart' as http;
+
 class EmployeeNewPassword extends StatefulWidget {
 
   final int? data;
@@ -23,6 +22,7 @@ class EmployeeNewPassword extends StatefulWidget {
 
 class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
     with TickerProviderStateMixin {
+
   final confirmpasswordController = TextEditingController();
   final passwordController = TextEditingController();
   final key = GlobalKey<FormState>();
@@ -38,7 +38,6 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
   }
 
   modifypasswordr() async {
-    // try {
     String apiUrl = ModifyPasswordApiUrl;
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -75,7 +74,6 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
           child: Column(
             children: [
               Container(
-                // height: MediaQuery.of(context).size.height * 0.4,
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -91,13 +89,11 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                                 Get.back();
                               },
                               child: SvgPicture.asset("assets/images/left.svg")),
-                          // SizedBox(width: width * 0.3,),
                           SvgPicture.asset("assets/images/logo.svg"),
                           Text("        "),
                         ],
                       ),
                     ),
-                    // SvgPicture.asset("assets/images/logo.svg"),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                       child: Authheadingtext("Create your new password", context),
@@ -118,7 +114,6 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                                 fontFamily: "Outfit",
                                 fontSize: 16,
                                 fontWeight: FontWeight.w300,
-                                // letterSpacing: -0.3,
                               ),
                               textAlign: TextAlign.left,
                             ),
@@ -138,7 +133,6 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 hintText: "Enter password",
-                                // contentPadding: const EdgeInsets.only(top: 12.0),
                                 hintStyle: const TextStyle(
                                   color: Color.fromRGBO(167, 169, 183, 1),
                                   fontFamily: "Outfit",
@@ -221,7 +215,6 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 hintText: "Confirm password",
-                                // contentPadding: const EdgeInsets.only(top: 12.0),
                                 hintStyle: const TextStyle(
                                   color: Color.fromRGBO(167, 169, 183, 1),
                                   fontFamily: "Outfit",
@@ -296,14 +289,13 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                             setState(() {
                               isInAsyncCall = true;
                             });
+
                             await modifypasswordr();
 
                             Future.delayed(const Duration(seconds: 1),
                                     () {
                                   toastSuccessMessage(
                                       "success", Colors.green);
-                                  // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
-                                  // Get.to(bottom_bar());
                                   Get.to(LoginTabClass(login: 1,));
                                   setState(() {
                                     isInAsyncCall = false;
@@ -312,7 +304,6 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                                 });
                           }
                         }
-                        // Get.to(LoginTabClass());
                       },
                         child: mainButton("Confirm", Color.fromRGBO(43, 101, 236, 1), context)),
                     SizedBox(height: height * 0.05),

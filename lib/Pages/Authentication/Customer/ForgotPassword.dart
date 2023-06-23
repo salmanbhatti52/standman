@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../Models/customer_forgot_password_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
@@ -17,11 +18,11 @@ class CustomerForgotPassword extends StatefulWidget {
 }
 
 class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
-  // final emailController = TextEditingController();
+
   bool isInAsyncCall = false;
-  // final key = GlobalKey<FormState>();
-  //
   ForgotPasswordModel forgotPasswordModel = ForgotPasswordModel();
+  TextEditingController _emailController = TextEditingController();
+  GlobalKey<FormState> form = GlobalKey();
 
   ForgotPassword() async {
     String apiUrl = ForgotPasswordApiUrl;
@@ -44,24 +45,21 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
     }
   }
 
-  TextEditingController _emailController = TextEditingController();
-  GlobalKey<FormState> form = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body:
-      // ModalProgressHUD(
-      //   inAsyncCall: isInAsyncCall,
-      //   opacity: 0.02,
-      //   blur: 0.5,
-      //   color: Colors.transparent,
-      //   progressIndicator: CircularProgressIndicator(
-      //     color: Colors.blue,
-      //   ),
-      //   child:
+      ModalProgressHUD(
+        inAsyncCall: isInAsyncCall,
+        opacity: 0.02,
+        blur: 0.5,
+        color: Colors.transparent,
+        progressIndicator: CircularProgressIndicator(
+          color: Colors.blue,
+        ),
+        child:
         SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,11 +165,6 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                     Obx(() => GestureDetector(
                         onTap: () async {
                           print("myEmail ${_emailController.text}");
-                          // if (form.currentState!.validate()) {
-                          //   authController.forgot_password(
-                          //     email: _emailController.text,
-                          //   );
-                          // }
                           if(form.currentState!.validate()){
                             if (_emailController.text.isEmpty) {
                               toastFailedMessage('email required', Colors.red);
@@ -179,8 +172,8 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                               setState(() {
                                 isInAsyncCall = true;
                               });
-                              await ForgotPassword();
 
+                              await ForgotPassword();
 
                               if(forgotPasswordModel.status == "success"){
                                 Future.delayed(const Duration(seconds: 3), () {
@@ -210,7 +203,7 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
             ],
           ),
         ),
-      // ),
+      ),
     );
   }
 }

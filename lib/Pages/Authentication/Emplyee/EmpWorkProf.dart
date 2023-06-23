@@ -1,27 +1,16 @@
 import 'dart:convert';
-
-// import 'dart:html';
-import 'dart:typed_data';
 import 'dart:io';
 import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../Models/employee_signup_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/TopBar.dart';
-import '../../Bottombar.dart';
-import '../../EmpBottombar.dart';
 import 'package:http/http.dart' as http;
 
 class WorkProof extends StatefulWidget {
@@ -33,8 +22,6 @@ class WorkProof extends StatefulWidget {
   final String? email;
   final String? phonenumber;
   final String? password;
-
-  // final String? confirmpassword;
 
   const WorkProof(
       {Key? key,
@@ -58,7 +45,6 @@ class _WorkProofState extends State<WorkProof> {
   bool isInAsyncCall = false;
 
   employeeRegisterUser() async {
-    // try {
     String apiUrl = employeeSignupApiUrl;
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -98,7 +84,6 @@ class _WorkProofState extends State<WorkProof> {
     print("email: ${widget.email}");
     print("number: ${widget.phonenumber}");
     print("pass: ${widget.password}");
-    // print("confpass: ${widget.confirmpassword}");
     // TODO: implement initState
     super.initState();
   }
@@ -127,18 +112,7 @@ class _WorkProofState extends State<WorkProof> {
         titlecolor: Colors.black,
         iconcolor: Colors.black,
       ),
-      // drawer: MyDrawer(),
-      // backgroundColor: Colors.white,
       body:
-          // ModalProgressHUD(
-          //   inAsyncCall: isInAsyncCall,
-          //   opacity: 0.02,
-          //   blur: 0.5,
-          //   color: Colors.transparent,
-          //   progressIndicator: CircularProgressIndicator(
-          //     color: Colors.blue,
-          //   ),
-          //   child:
           SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20),
@@ -148,10 +122,6 @@ class _WorkProofState extends State<WorkProof> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Container(
-                //   height: height * 0.3,
-                //     child: Markdown(data: _markDownData),
-                // ),
                 Text(
                   "You can upload",
                   style: TextStyle(
@@ -535,10 +505,6 @@ class _WorkProofState extends State<WorkProof> {
                         if (uploadProofID == null) {
                           toastFailedMessage('ProofID required', Colors.red);
                         } else {
-                          // print("otp: ${widget.data}");
-                          // print("otp: ${OTpCode}");
-                          // print("otp: ${widget.email}");
-
                           setState(() {
                             isInAsyncCall = true;
                           });
@@ -554,29 +520,7 @@ class _WorkProofState extends State<WorkProof> {
 
                           await employeeRegisterUser();
 
-                          // if (widget.email.toString() != null ) {
-                          //
-                          //   Future.delayed(const Duration(seconds: 3), () {
-                          //     toastSuccessMessage("success", Colors.green);
-                          //     Get.to(Empbottom_bar());
-                          //     setState(() {
-                          //       isInAsyncCall = false;
-                          //     });
-                          //     print("false: $isInAsyncCall");
-                          //   });
-                          // }
                           if (employeeSignupModel.status == "success") {
-                            // SharedPreferences sharedPref =
-                            //     await SharedPreferences.getInstance();
-                            // await sharedPref.setString('empUser_email',
-                            //     "${employeeSignupModel.data?.email.toString()}");
-                            // await sharedPref.setString('empPhoneNumber',
-                            //     "${employeeSignupModel.data?.phone.toString()}");
-                            // await sharedPref.setString('empFullName', "${employeeSignupModel.data?.firstName.toString()} ${employeeSignupModel.data?.lastName.toString()}");
-                            // await sharedPref.setString('empProfilePic',
-                            //     "${employeeSignupModel.data?.profilePic.toString()}");
-                            // await sharedPref.setString('empUsersCustomersId',
-                            //     "${employeeSignupModel.data?.usersCustomersId.toString()}");
 
                             Future.delayed(const Duration(seconds: 3), () {
                               toastSuccessMessage(
@@ -596,13 +540,6 @@ class _WorkProofState extends State<WorkProof> {
                               isInAsyncCall = false;
                             });
                           }
-                          // if (employeeSignupModel.status != "success") {
-                          //   toastFailedMessage(
-                          //       employeeSignupModel.data, Colors.red);
-                          //   setState(() {
-                          //     isInAsyncCall = false;
-                          //   });
-                          // }
                         }
                       }
                     },

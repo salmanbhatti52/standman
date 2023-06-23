@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:get/state_manager.dart';
 import '../Models/get_previous_jobs_Model.dart';
 import 'package:http/http.dart' as http;
-
 import '../Pages/Customer/HomePage/HomePage.dart';
 import '../Utils/api_urls.dart';
 
@@ -35,27 +33,4 @@ class PreviousJobsController extends GetxController {
       isLoading.value = false;
     }
   }
-  //  try{
-  //    isLoading.value = true;
-  //    String apiUrl = getPreviousJobsModelApiUrl;
-  //    print("working");
-  //    final response = await http.post(
-  //      Uri.parse(apiUrl),
-  //      headers: {"Accept": "application/json"},
-  //      body: {
-  //        "users_customers_id": usersCustomersId,
-  //      },
-  //    );
-  //    final responseString = response.body;
-  //    print("getPreviousJobsModelApi: ${response.body}");
-  //    if (response.statusCode == 200) {
-  //      getPreviousJobsModel = getPreviousJobsModelFromJson(responseString);
-  //      print('getPreviousJobsModel status: ${getPreviousJobsModel.status}');
-  //      print('getPreviousJobsModelLength: ${getPreviousJobsModel.data?.length}');
-  //      isLoading.value = false;
-  //    }
-  //  }catch(e){
-  //    print("Error $e");
-  //  }
-  // }
 }

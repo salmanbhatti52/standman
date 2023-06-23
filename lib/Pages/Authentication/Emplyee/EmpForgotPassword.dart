@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../Models/customer_forgot_password_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../Customer/AuthTextWidget.dart';
-import '../Customer/OTPPage.dart';
 import 'EmpOTPPage.dart';
 import 'package:http/http.dart' as http;
 
@@ -47,10 +45,10 @@ class _EmployeeForgotPasswordState extends State<EmployeeForgotPassword> {
       print('ForgotPasswordModel status: ${forgotPasswordModel.status}');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: ModalProgressHUD(
@@ -65,7 +63,6 @@ class _EmployeeForgotPasswordState extends State<EmployeeForgotPassword> {
         child: Column(
           children: [
             Container(
-              // height: MediaQuery.of(context).size.height * 0.4,
               width: double.infinity,
               child: Column(
                 children: [
@@ -87,7 +84,6 @@ class _EmployeeForgotPasswordState extends State<EmployeeForgotPassword> {
                       ],
                     ),
                   ),
-                  // SvgPicture.asset("assets/images/logo.svg"),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                     child: Authheadingtext("Lost your password?", context),
@@ -172,13 +168,8 @@ class _EmployeeForgotPasswordState extends State<EmployeeForgotPassword> {
                           setState(() {
                             isInAsyncCall = true;
                           });
-                          await ForgotPassword();
 
-                          // if(forgotPasswordModel.data == "Employee"){
-                          //   Get.to(EmployeeOTPPage(data: forgotPasswordModel.data!.otp, email:  emailController.text.toString(),));
-                          // } else {
-                          //   toastFailedMessage("Invalid email", Colors.red);
-                          // }
+                          await ForgotPassword();
 
                           if(forgotPasswordModel.status == "success"){
                             Future.delayed(const Duration(seconds: 3), () {
@@ -198,7 +189,6 @@ class _EmployeeForgotPasswordState extends State<EmployeeForgotPassword> {
                           }
                         }
                       }
-                      // Get.to(EmployeeOTPPage());
                     },
                       child: mainButton("Send OTP", Color.fromRGBO(43, 101, 236, 1), context)),
                 ],

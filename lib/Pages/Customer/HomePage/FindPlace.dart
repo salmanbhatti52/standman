@@ -1,23 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
-import 'package:StandMan/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:location/location.dart';
-import 'package:uuid/uuid.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/TopBar.dart';
 import 'JobDetails.dart';
-import 'package:http/http.dart' as http;
 import 'package:places_service/places_service.dart';
 
 class FindPlace extends StatefulWidget {
@@ -30,154 +22,8 @@ class FindPlace extends StatefulWidget {
 }
 
 class _FindPlaceState extends State<FindPlace> {
-  //    var long;
-  //    var lat;
-  //  final key = GlobalKey<FormState>();
-  //  TextEditingController controller = TextEditingController();
-  //
-  //  var uuid = Uuid();
-  //  String _sessionToken = "122344";
-  //  List<Marker> _placeList = [];
-  //
-  //  final Completer<GoogleMapController> _controller =
-  //      Completer<GoogleMapController>();
-  //
-  //  static const CameraPosition _kGooglePlex = CameraPosition(
-  //    target: LatLng(30.183419, 71.427832),
-  //    zoom: 14,
-  //  );
-  //
-  //  final List<Marker> markers = [
-  //    Marker(
-  //      markerId: MarkerId("1"),
-  //      position: LatLng(30.183419, 71.427832),
-  //      infoWindow: InfoWindow(
-  //        title: "Marker",
-  //      ),
-  //    ),
-  //  ];
-  //
-  // Future<Position> _getCurrentLocation() async {
-  //   await Geolocator.requestPermission()
-  //       .then((value) {})
-  //       .onError((error, stackTrace) {
-  //     print("error" + error.toString());
-  //   });
-  //   return await Geolocator.getCurrentPosition();
-  // }
-  //
-  // loadData() {
-  //   _getCurrentLocation().then((value) async {
-  //     lng = value.longitude.toString() as double;
-  //     lat = value.latitude.toString() as double;
-  //     print(value.latitude.toString());
-  //     print(value.longitude.toString());
-  //     markers.add(
-  //       Marker(
-  //         markerId: MarkerId("1"),
-  //         position: LatLng(30.183419, 71.427832),
-  //         infoWindow: InfoWindow(
-  //           title: "Marker",
-  //         ),
-  //       ),
-  //     );
-  //
-  //     CameraPosition cameraPosition = CameraPosition(
-  //       target: LatLng(value.latitude, value.longitude),
-  //       zoom: 14,
-  //     );
-  //     final GoogleMapController controller =
-  //         (await selectedAddress) as GoogleMapController;
-  //     controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-  //     setState(() {});
-  //   });
-  // }
-
-  //
-  //  onChanged() {
-  //    if (_sessionToken == null) {
-  //      setState(() {
-  //        _sessionToken = uuid.v4();
-  //      });
-  //      getSuggestion(controller.text);
-  //    }
-  //  }
-  //
-  //  getSuggestion(String input) async {
-  //    String kPLACES_API_KEY = "AIzaSyA1kEvCbj9i4-ez8d8KEvEfUuoDzFyjvEc";
-  //    String baseURL =
-  //        'https://maps.googleapis.com/maps/api/place/autocomplete/json';
-  //    String request =
-  //        '$baseURL?input=$input&key=$kPLACES_API_KEY&sessiontoken=$_sessionToken';
-  //
-  //    var response = await http.get(Uri.parse(request));
-  //
-  //    if (response.statusCode == 200) {
-  //      setState(() {
-  //        _placeList = jsonDecode(response.body.toString())["predictions"];
-  //      });
-  //    } else {
-  //      throw Exception("Failed load Dta");
-  //    }
-  //  }
-  //
-  //
-  // String location ='Null, Press Button';
-  // String Address = 'search';
-  // Future<Position> _getGeoLocationPosition() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     // Location services are not enabled don't continue
-  //     // accessing the position and request users of the
-  //     // App to enable the location services.
-  //     await Geolocator.openLocationSettings();
-  //     return Future.error('Location services are disabled.');
-  //   }
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       // Permissions are denied, next time you could try
-  //       // requesting permissions again (this is also where
-  //       // Android's shouldShowRequestPermissionRationale
-  //       // returned true. According to Android guidelines
-  //       // your App should show an explanatory UI now.
-  //       return Future.error('Location permissions are denied');
-  //     }
-  //   }
-  //   if (permission == LocationPermission.deniedForever) {
-  //     // Permissions are denied forever, handle appropriately.
-  //     return Future.error(
-  //         'Location permissions are permanently denied, we cannot request permissions.');
-  //   }
-  //   // When we reach here, permissions are granted and we can
-  //   // continue accessing the position of the device.
-  //   return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  // }
-  // Future<void> GetAddressFromLatLong(Position position)async {
-  //   List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-  //   print(placemarks);
-  //   Placemark place = placemarks[0];
-  //   Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
-  //   setState(()  {
-  //   });
-  // }
-  //
-  //  @override
-  //  void initState() {
-  //    // TODO: implement initState
-  //    super.initState();
-  //    loadData();
-  //    controller.addListener(() {
-  //      onChanged();
-  //    });
-  //  }
 
   late TextEditingController mainText;
-
-  // mainText =TextEditingController(text: widget.location.eventAddress!.fullAddress);
   final List<Marker> markers = [];
   final Set<Marker> _markers = Set();
   PlacesService _placesService = PlacesService();
@@ -208,17 +54,8 @@ class _FindPlaceState extends State<FindPlace> {
   void initState() {
     super.initState();
 
-    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-    //   openLoadingDialog(context, "Loading...");
-    //   getDressCodes();
-    // });
-    // var startBreak = startShift.add(Duration(hours: widget.selectedEventStartTime.hour));
-    // loca = widget.event;
     _placesService.initialize(
         apiKey: "AIzaSyA1kEvCbj9i4-ez8d8KEvEfUuoDzFyjvEc");
-    // city = TextEditingController(text: widget.event.eventAddress!.city);
-    // zip = TextEditingController(text: widget.event.eventAddress!.zip);
-    // state = TextEditingController(text: widget.event.eventAddress!.state);
     mainText = TextEditingController(text: "");
     // print(startBreak);
   }
@@ -334,24 +171,7 @@ class _FindPlaceState extends State<FindPlace> {
                     markers: _markers,
                   ),
                 ),
-                // Container(
-                //   // margin: EdgeInsets.only(top: 80, right: 10),
-                //   alignment: Alignment.topRight,
-                //   child: Column(
-                //       children: <Widget>[
-                //         FloatingActionButton(
-                //             child: Icon(Icons.layers),
-                //             elevation: 5,
-                //             backgroundColor: Colors.teal[200],
-                //             onPressed: () {
-                //               _changeMapType();
-                //               print('Changing the Map Type');
-                //             }),
-                //       ]),
-                // ),
                 Container(
-                  // width: width,
-                  // height: height * 0.4,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -373,55 +193,6 @@ class _FindPlaceState extends State<FindPlace> {
                             Get.back();
                           },
                         ),
-                        // Container(
-                        //   height: 150,
-                        //   width: double.infinity,
-                        //   decoration: BoxDecoration(
-                        //     color: Colors.white,
-                        //     boxShadow: [
-                        //       BoxShadow(
-                        //         color: Colors.grey,
-                        //         blurRadius: 5,
-                        //       ),
-                        //     ],
-                        //   ),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       Container(
-                        //         padding:
-                        //         EdgeInsets.symmetric(horizontal: 15),
-                        //         child: Text(
-                        //           mainText.text,
-                        //           style: TextStyle(
-                        //             color: Colors.black.withOpacity(0.5),
-                        //             fontSize: 16,
-                        //             fontWeight: FontWeight.w300,
-                        //             height: 2.3,
-                        //           ),
-                        //         ),
-                        //         height: 40,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),i
-                        // isClicked == true
-                        //     ? Padding(
-                        //       padding: const EdgeInsets.symmetric(vertical: 18.0),
-                        //       child: Container(
-                        //   height: 60,
-                        //           decoration: BoxDecoration(
-                        //             borderRadius: BorderRadius.circular(5),
-                        //             border: Border.all(color: Colors.black.withOpacity(0.3)),
-                        //           ),
-                        //         child: Center(child: Padding(
-                        //           padding: const EdgeInsets.only(right: 70.0),
-                        //           child: Text('${_currentAddress ?? "Address"}' , maxLines: 1,),
-                        //         )) ,
-                        //         ),
-                        //     )
-                        //     :
-                        //     Text('ADDRESS: ${_currentAddress ?? ""}') ,
                         Stack(
                           children: [
                             Padding(
@@ -429,8 +200,6 @@ class _FindPlaceState extends State<FindPlace> {
                               child: Form(
                                 key: key,
                                 child: ConneventsTextField(
-                                  // hintText: "dsfd",
-                                  // hintStyleColor: Colors.black,
                                   controller: mainText.text.isNotEmpty
                                       ? mainText
                                       : _currentAddress1,
@@ -477,9 +246,6 @@ class _FindPlaceState extends State<FindPlace> {
                                           var id = _autoCompleteResult[index].placeId;
                                           final placeDetails = await _placesService.getPlaceDetails(id!);
                                           setState(() {
-                                            // zip.text = placeDetails.zip!;
-                                            // state.text = placeDetails.state!;
-                                            // city.text = placeDetails.city!;
                                             latlng = LatLng(lat, lng);
                                             widget.location = placeDetails.lat!;
                                             widget.location = placeDetails.lng!;
@@ -539,32 +305,15 @@ class _FindPlaceState extends State<FindPlace> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            // print('selectedAddressText ${_currentAddress}');
-                            // print('longitude ${_currentPosition!.longitude}');
-                            // print('latitude ${_currentPosition!.latitude}');
-                            // print("lattttt $latt");
-                            // print('lat'
-                            //     'long $lat $lng');
-                            // print("lat $_currentPosition");
-                            // print("lat");
-                            // Position position = await _getGeoLocationPosition();
-                            // location ='Lat: ${position.latitude.toString()} , Long: ${position.longitude.toString()}';
-                            // GetAddressFromLatLong(position);
-                            // if (key.currentState!.validate()) {
                             if (mainText.text.isEmpty &&
                                 _currentAddress1.text.isEmpty) {
                               toastFailedMessage(
                                   'Enter Your Address', Colors.red);
                             } else {
-                              // SharedPreferences prefs = await SharedPreferences.getInstance();
-                              // prefs.setDouble('latitude', _currentPosition!.latitude);
-                              // prefs.setDouble('longitude', _currentPosition!.longitude);
                               Get.to(
                                 JobDetails(
                                   latitude: "${_currentPosition?.latitude == null ? latt : _currentPosition?.latitude}",
                                   longitude: "${_currentPosition?.longitude == null ? long : _currentPosition?.longitude}",
-                                  // latitude1: "${latt}",
-                                  // longitude1: "${long}",
                                   currentaddress: "${mainText.text.toString()}",
                                   currentaddress1: "${_currentAddress1.text.toString()}",
                                 ),
@@ -575,152 +324,6 @@ class _FindPlaceState extends State<FindPlace> {
                           child: mainButton(
                               "Next", Color.fromRGBO(43, 101, 236, 1), context),
                         )
-                        // Container(
-                        //   width: width,
-                        //   height: height * 0.4,
-                        //   decoration: const BoxDecoration(
-                        //     color: Colors.white,
-                        //     borderRadius: BorderRadius.only(
-                        //       topLeft: Radius.circular(30),
-                        //       topRight: Radius.circular(30),
-                        //     ),
-                        //   ),
-                        //   child: SingleChildScrollView(
-                        //     child: Column(
-                        //       children: [
-                        //         // Padding(
-                        //         //   padding: const EdgeInsets.symmetric(
-                        //         //       horizontal: 30, vertical: 30),
-                        //         //   child: Column(
-                        //         //     children: [
-                        //         //       Bar(
-                        //         //         "Find Place",
-                        //         //         'assets/images/left.svg',
-                        //         //         Colors.black,
-                        //         //         Colors.black,
-                        //         //         () {
-                        //         //           Get.back();
-                        //         //         },
-                        //         //       ),
-                        //         //       SizedBox(
-                        //         //         height: height * 0.03,
-                        //         //       ),
-                        //         //       Form(
-                        //         //         key: key,
-                        //         //         child: TextFormField(
-                        //         //           controller: controller,
-                        //         //           textAlign: TextAlign.left,
-                        //         //           style: const TextStyle(
-                        //         //             color: Color.fromRGBO(167, 169, 183, 1),
-                        //         //             fontFamily: "Outfit",
-                        //         //             fontWeight: FontWeight.w300,
-                        //         //             fontSize: 14,
-                        //         //           ),
-                        //         //           keyboardType: TextInputType.emailAddress,
-                        //         //           decoration: InputDecoration(
-                        //         //             // contentPadding: const EdgeInsets.only(top: 12.0),
-                        //         //             hintText: "Find place..!",
-                        //         //             hintStyle: const TextStyle(
-                        //         //               color: Color.fromRGBO(167, 169, 183, 1),
-                        //         //               fontFamily: "Outfit",
-                        //         //               fontWeight: FontWeight.w300,
-                        //         //               fontSize: 14,
-                        //         //             ),
-                        //         //             prefixIcon: Padding(
-                        //         //               padding: const EdgeInsets.all(12.0),
-                        //         //               child: SvgPicture.asset(
-                        //         //                   "assets/images/location.svg"),
-                        //         //             ),
-                        //         //             enabledBorder: OutlineInputBorder(
-                        //         //               borderRadius: BorderRadius.circular(12),
-                        //         //               borderSide: const BorderSide(
-                        //         //                 color: Color.fromRGBO(243, 243, 243, 1),
-                        //         //                 width: 1.0,
-                        //         //               ),
-                        //         //             ),
-                        //         //             focusedBorder: OutlineInputBorder(
-                        //         //               borderRadius: BorderRadius.circular(12),
-                        //         //               borderSide: const BorderSide(
-                        //         //                 color: Color.fromRGBO(243, 243, 243, 1),
-                        //         //                 width: 1.0,
-                        //         //               ),
-                        //         //             ),
-                        //         //           ),
-                        //         //         ),
-                        //         //       ),
-                        //         //       // Expanded(
-                        //         //       //   child: ListView.builder(
-                        //         //       //     itemCount: _placeList.length,
-                        //         //       //     itemBuilder: (context,  index) {
-                        //         //       //       return ListTile(
-                        //         //       //         title: Text("${_placeList[index]}"),
-                        //         //       //       );
-                        //         //       //     },
-                        //         //       //   ),
-                        //         //       // ),
-                        //         //       Padding(
-                        //         //         padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        //         //         child: Row(
-                        //         //           children: [
-                        //         //             Text(
-                        //         //               "Choose on map  ",
-                        //         //               style: const TextStyle(
-                        //         //                 color: Color.fromRGBO(167, 169, 183, 1),
-                        //         //                 fontFamily: "Outfit",
-                        //         //                 fontWeight: FontWeight.w300,
-                        //         //                 fontSize: 14,
-                        //         //               ),
-                        //         //             ),
-                        //         //             GestureDetector(
-                        //         //               onTap: () {
-                        //         //                 loadData();
-                        //         //               },
-                        //         //               child: SvgPicture.asset(
-                        //         //                 'assets/images/gps.svg',
-                        //         //               ),
-                        //         //             ),
-                        //         //           ],
-                        //         //         ),
-                        //         //       ),
-                        //         //     ],
-                        //         //   ),
-                        //         // ),
-                        //         // GestureDetector(
-                        //         //     onTap: () async {
-                        //         //       Position position = await _getGeoLocationPosition();
-                        //         //       location ='Lat: ${position.latitude.toString()} , Long: ${position.longitude.toString()}';
-                        //         //       GetAddressFromLatLong(position);
-                        //         //       if (key.currentState!.validate()) {
-                        //         //         if (controller.text.isEmpty) {
-                        //         //           toastFailedMessage(
-                        //         //               'Enter Your Address', Colors.red);
-                        //         //         } else {
-                        //         //
-                        //         //           SharedPreferences sharedPref = await SharedPreferences.getInstance();
-                        //         //           await sharedPref.setString('longitude', long);
-                        //         //           await sharedPref.setString('lattitude', lat);
-                        //         //           print("longitude is = $long");
-                        //         //           print("lattitude is = $lat");
-                        //         //           Get.to(
-                        //         //           JobDetails(
-                        //         //             address: controller.text.toString(),
-                        //         //             latitude: lat,
-                        //         //             longitude: long,
-                        //         //             currentaddress: Address,
-                        //         //           ),
-                        //         //           );
-                        //         //         }
-                        //         //       }
-                        //         //     },
-                        //         //     child: mainButton(
-                        //         //         "Next", Color.fromRGBO(43, 101, 236, 1), context)),
-                        //         SizedBox(
-                        //           height: height * 0.02,
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

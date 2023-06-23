@@ -1,18 +1,15 @@
 import 'package:StandMan/Pages/Customer/HomePage/HomePage.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/jobs_create_Model.dart';
-import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/TopBar.dart';
 import '../../Bottombar.dart';
 import 'package:http/http.dart' as http;
-
 import 'Paymeny_details.dart';
 
 Estimated_PaymentMethod({
@@ -24,8 +21,6 @@ Estimated_PaymentMethod({
   String? time,
   String? endtime,
   String? describe,
-  // String? price,
-  // double? discountPrice,
   BuildContext? ctx,
   String? price,
   String? amount,
@@ -37,15 +32,6 @@ Estimated_PaymentMethod({
   bool isInAsyncCall = false;
 
   JobsCreateModel jobsCreateModel = JobsCreateModel();
-
-  // sharepref() async {
-  //     print('Longitude Lattitude sharePref');
-  //     prefs = await SharedPreferences.getInstance();
-  //     longitude = (prefs!.getString('longitude'));
-  //     lattitude = (prefs!.getString('lattitude'));
-  //     print("longitude = $longitude");
-  //     print("lattitude = $lattitude");
-  // }
 
   jobCreated() async {
     print("working");
@@ -86,17 +72,6 @@ Estimated_PaymentMethod({
       // setState(() {});
       print('jobsCreateModel status: ${jobsCreateModel.status}');
     }
-    // Future.delayed(const Duration(seconds: 2),
-    //         () {
-    //       Estimated_PaymentMethod(
-    //           ctx: context,
-    //           price: jobsCreateModel.data?.totalPrice,
-    //           amount: jobsCreateModel.data?.price,
-    //           chargers: jobsCreateModel.data?.serviceCharges,
-    //           tax: jobsCreateModel.data?.tax);
-    //     });
-
-    // sharepref();
   }
 
 
@@ -110,9 +85,6 @@ Estimated_PaymentMethod({
       builder: (context, controller, offset) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter stateSetterObject) {
-          // final double originalPrice = double.parse(price!);
-          // discountPrice = originalPrice - 2;
-
           var height = MediaQuery.of(context).size.height;
           var width = MediaQuery.of(context).size.width;
           return Container(
@@ -271,231 +243,6 @@ Estimated_PaymentMethod({
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.start,
-                    //   children: [
-                    //     const Text(
-                    //       "Choose payment method",
-                    //       style: TextStyle(
-                    //         color: Color.fromRGBO(0, 0, 0, 1),
-                    //         fontFamily: "Outfit",
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w500,
-                    //         // letterSpacing: -0.3,
-                    //       ),
-                    //       textAlign: TextAlign.left,
-                    //     ),
-                    //   ],
-                    // ),
-                    // SizedBox(
-                    //   height: height * 0.01,
-                    // ),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     stateSetterObject(() {
-                    //       // _saveData();
-                    //       _selected = 1;
-                    //     });
-                    //   },
-                    //   child: Container(
-                    //     width: width * 0.9, // 350,
-                    //     height: height * 0.09, // 70,
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(12),
-                    //       border: Border.all(
-                    //           color: _selected == 1
-                    //               ? Color(0xffFF9900)
-                    //               : Color(0xffF3F3F3),
-                    //           width: 1),
-                    //     ),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         children: [
-                    //           Container(
-                    //             width: 52,
-                    //             height: 52,
-                    //             decoration: BoxDecoration(
-                    //               borderRadius: BorderRadius.circular(10),
-                    //               color: Color(0xffF2F4F9),
-                    //             ),
-                    //             child: Center(
-                    //                 child: SvgPicture.asset(
-                    //               'assets/images/card.svg',
-                    //             )),
-                    //           ),
-                    //           Column(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               const Text(
-                    //                 "Mastercard",
-                    //                 style: TextStyle(
-                    //                   color: Color.fromRGBO(0, 0, 0, 1),
-                    //                   fontFamily: "Outfit",
-                    //                   fontSize: 14,
-                    //                   fontWeight: FontWeight.w500,
-                    //                   // letterSpacing: -0.3,
-                    //                 ),
-                    //                 textAlign: TextAlign.left,
-                    //               ),
-                    //               const Text(
-                    //                 "6895 3526 8456 ****",
-                    //                 style: TextStyle(
-                    //                   color: Color(0xffA7A9B7),
-                    //                   fontFamily: "Outfit",
-                    //                   fontSize: 14,
-                    //                   fontWeight: FontWeight.w300,
-                    //                   // letterSpacing: -0.3,
-                    //                 ),
-                    //                 textAlign: TextAlign.left,
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           SizedBox(
-                    //             width: width * 0.2,
-                    //           ),
-                    //           SvgPicture.asset(
-                    //             _selected == 1
-                    //                 ? "assets/images/Ring.svg"
-                    //                 : "assets/images/Ring2.svg",
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     stateSetterObject(() {
-                    //       // _saveData();
-                    //       _selected = 2;
-                    //     });
-                    //   },
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    //     child: Container(
-                    //       width: width * 0.9, // 350,
-                    //       height: height * 0.09, // 70,
-                    //       decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(12),
-                    //         border: Border.all(
-                    //             color: _selected == 2
-                    //                 ? Color(0xffFF9900)
-                    //                 : Color(0xffF3F3F3),
-                    //             width: 1),
-                    //       ),
-                    //       child: Padding(
-                    //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    //         child: Row(
-                    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //           children: [
-                    //             Container(
-                    //               width: 52,
-                    //               height: 52,
-                    //               decoration: BoxDecoration(
-                    //                 borderRadius: BorderRadius.circular(10),
-                    //                 color: Color(0xffF2F4F9),
-                    //               ),
-                    //               child: Center(
-                    //                   child: SvgPicture.asset(
-                    //                 'assets/images/visa.svg',
-                    //               )),
-                    //             ),
-                    //             Column(
-                    //               mainAxisAlignment: MainAxisAlignment.center,
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: [
-                    //                 const Text(
-                    //                   "Visa Pay",
-                    //                   style: TextStyle(
-                    //                     color: Color.fromRGBO(0, 0, 0, 1),
-                    //                     fontFamily: "Outfit",
-                    //                     fontSize: 14,
-                    //                     fontWeight: FontWeight.w500,
-                    //                     // letterSpacing: -0.3,
-                    //                   ),
-                    //                   textAlign: TextAlign.left,
-                    //                 ),
-                    //                 const Text(
-                    //                   "6895 3526 8456 ****",
-                    //                   style: TextStyle(
-                    //                     color: Color(0xffA7A9B7),
-                    //                     fontFamily: "Outfit",
-                    //                     fontSize: 14,
-                    //                     fontWeight: FontWeight.w300,
-                    //                     // letterSpacing: -0.3,
-                    //                   ),
-                    //                   textAlign: TextAlign.left,
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //             SizedBox(
-                    //               width: width * 0.2,
-                    //             ),
-                    //             SvgPicture.asset(
-                    //               _selected == 2
-                    //                   ? "assets/images/Ring.svg"
-                    //                   : "assets/images/Ring2.svg",
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // GestureDetector(
-                    //   onTap: () {},
-                    //   child: Container(
-                    //     width: width * 0.9, // 350,
-                    //     height: height * 0.05, // 70,
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(12),
-                    //       border: Border.all(color: Color(0xffF3F3F3), width: 1),
-                    //     ),
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.start,
-                    //       crossAxisAlignment: CrossAxisAlignment.center,
-                    //       children: [
-                    //         // SvgPicture.asset(
-                    //         //   'assets/images/Addc.svg',
-                    //         // ),
-                    //         Padding(
-                    //           padding:
-                    //               const EdgeInsets.symmetric(horizontal: 10.0),
-                    //           child: Container(
-                    //             width: 20,
-                    //             height: 20,
-                    //             decoration: BoxDecoration(
-                    //               shape: BoxShape.circle,
-                    //               color: Color.fromRGBO(0, 53, 136, 1),
-                    //             ),
-                    //             child: Center(
-                    //               child: Icon(
-                    //                 Icons.add,
-                    //                 color: Colors.white,
-                    //                 size: 15,
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         Text(
-                    //           "Add New Payment Method",
-                    //           style: TextStyle(
-                    //             color: Color.fromRGBO(0, 0, 0, 1),
-                    //             fontFamily: "Outfit",
-                    //             fontSize: 14,
-                    //             fontWeight: FontWeight.w500,
-                    //             // letterSpacing: -0.3,
-                    //           ),
-                    //           textAlign: TextAlign.left,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(height: Get.height * 0.02,),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -523,11 +270,6 @@ Estimated_PaymentMethod({
 
                             await jobCreated();
 
-                            // SharedPreferences sharedPref = await SharedPreferences.getInstance();
-                            // await sharedPref.setString('longitude', "${long}");
-                            // await sharedPref.setString('lattitude', "${lat}");
-
-                            // await getUserProfileWidget();
 
                             if(jobsCreateModel.status == "success"){
                             Future.delayed(const Duration(seconds: 2), () {
@@ -611,13 +353,6 @@ Estimated_PaymentMethod({
                                 isInAsyncCall = false;
                               });
                             }
-
-                            // if(jobsCreateModel.status != "success"){
-                            //   toastFailedMessage(jobsCreateModel.message, Colors.red);
-                            //   stateSetterObject(() {
-                            //     isInAsyncCall = false;
-                            //   });
-                            // }
                           },
                           child: isInAsyncCall
                               ? loadingBar(context)

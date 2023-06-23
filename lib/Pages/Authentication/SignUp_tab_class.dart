@@ -33,7 +33,6 @@ class _SignUpTabClassState extends State<SignUpTabClass>
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    // TabController _tabController = TabController(length: 2, vsync: this);
     return DefaultTabController(
       initialIndex: widget.signup,
       length: 2,
@@ -44,7 +43,6 @@ class _SignUpTabClassState extends State<SignUpTabClass>
             children: [
               SizedBox(height: height * 0.04),
               Container(
-                // height: MediaQuery.of(context).size.height * 0.4,
                 width: double.infinity,
                 child: Column(
                   children: [

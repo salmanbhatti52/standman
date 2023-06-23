@@ -1,20 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/TopBar.dart';
-import '../../Bottombar.dart';
-import '../../EmpBottombar.dart';
 import 'EmpWorkProf.dart';
 
 class EMp_UploadPhoto extends StatefulWidget {
@@ -25,7 +18,6 @@ class EMp_UploadPhoto extends StatefulWidget {
   final String? phonenumber;
   final String? selectedCountryCode;
   final String? password;
-  // final String? confirmpassword;
 
    EMp_UploadPhoto(
       {Key? key,
@@ -53,7 +45,6 @@ class _EMp_UploadPhotoState extends State<EMp_UploadPhoto> {
     print("email: ${widget.email}");
     print("number: ${widget.phonenumber}");
     print("pass: ${widget.password}");
-    // print("confpass: ${widget.confirmpassword}");
     // TODO: implement initState
     super.initState();
   }
@@ -70,40 +61,10 @@ class _EMp_UploadPhotoState extends State<EMp_UploadPhoto> {
         titlecolor: Colors.black,
         iconcolor: Colors.black,
       ),
-      // drawer: MyDrawer(),
-      // backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20),
           child: Column(children: [
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 0.0),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       GestureDetector(
-            //           onTap: () {
-            //             Get.back();
-            //           },
-            //           child: SvgPicture.asset("assets/images/left.svg")),
-            //       // SizedBox(width: width * 0.3,),
-            //       Text(
-            //         "Upload Photo ID",
-            //         style: TextStyle(
-            //           fontFamily: "Outfit",
-            //           fontWeight: FontWeight.w500,
-            //           fontSize: 18,
-            //         ),
-            //         textAlign: TextAlign.center,
-            //       ),
-            //       Text("        "),
-            //     ],
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: height * 0.04,
-            // ),
             SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,7 +231,7 @@ class _EMp_UploadPhotoState extends State<EMp_UploadPhoto> {
                                 "assets/images/upload.svg",
                                 width: 75,
                                 height: 52,
-                              )))
+                              ),),)
                           : Image.file(uploadID!,
                               width: 75, height: 52, fit: BoxFit.fill),
                     ),
@@ -284,16 +245,9 @@ class _EMp_UploadPhotoState extends State<EMp_UploadPhoto> {
                           if (uploadID == null) {
                             toastFailedMessage('Image required', Colors.red);
                           } else {
-                            // print("otp: ${widget.data}");
-                            // print("otp: ${OTpCode}");
                             print("email: ${widget.email}");
 
-                            // setState(() {
-                            //   isInAsyncCall = true;
-                            // });
                             if (uploadID != null) {
-                              // Future.delayed(const Duration(seconds: 3), () {
-                              //   toastSuccessMessage("success", Colors.green);
                                 Get.to(WorkProof(
                                   profileimg: widget.profileimg,
                                   firstname: widget.firstname,
@@ -304,11 +258,6 @@ class _EMp_UploadPhotoState extends State<EMp_UploadPhoto> {
                                   password: widget.password,
                                   uploadID: base64ID,
                                 ));
-                                // setState(() {
-                                //   isInAsyncCall = false;
-                                // });
-                                // print("false: $isInAsyncCall");
-                              // });
                             }
                           }
                         }

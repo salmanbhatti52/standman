@@ -1,21 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/employee_signin_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/social_button.dart';
-import '../../Customer/HomePage/HomePage.dart';
 import '../../EmpBottombar.dart';
 import '../../Employee/HomePage/EmpHomePage.dart';
-import '../../session_maintain.dart';
 import '../SignUp_tab_class.dart';
 import 'EmpForgotPassword.dart';
 import 'package:http/http.dart' as http;
@@ -34,6 +30,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
   final key = GlobalKey<FormState>();
   bool isPasswordObscure = true;
   bool isInAsyncCall = false;
+  bool loading = true;
 
   EmployeeSigninModel employeeSigninModel = EmployeeSigninModel();
 
@@ -59,8 +56,6 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
     }
   }
 
-  bool loading = true;
-  // String? userFirstName, userLastName, userImage;
   sharedPrefs() async {
     loading = true;
     setState(() {});
@@ -84,13 +79,6 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
     //   print("userId value is = $usersCustomersId");
     // }
   }
-
-  // void getLocation() async {
-  //   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-  //   print("Current Latitude ==  ${position.latitude}");
-  //   print("Current Longitude == ${position.longitude}");
-  // }
-
 
   String? _currentAddress;
   TextEditingController _currentAddress1 = TextEditingController();
@@ -154,19 +142,11 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
     });
   }
 
-  // bool isLoggedIn = false;
-  // void checkLoginStatus() async {
-  //   bool loggedIn = await SessionManager.isLoggedIn();
-  //   setState(() {
-  //     isLoggedIn = loggedIn;
-  //   });
-  // }
 
   @override
   void initState() {
     super.initState();
     sharedPrefs();
-    // checkLoginStatus();
   }
 
   DateTime currentBackPressTime = DateTime.now();
@@ -183,26 +163,13 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
         backgroundColor: Colors.white,
         body:
-        // ModalProgressHUD(
-        //   inAsyncCall: isInAsyncCall,
-        //   opacity: 0.02,
-        //   blur: 0.5,
-        //   color: Colors.transparent,
-        //   progressIndicator: CircularProgressIndicator(
-        //     color: Colors.blue,
-        //   ),
-        //   child:
           SingleChildScrollView(
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Form(
                   key: key,
@@ -453,14 +420,6 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                           }
                         }
                       }
-                      // if (isLoggedIn) {
-                      //   SessionManager.setLoggedIn(false);
-                      // } else {
-                      //   SessionManager.setLoggedIn(true);
-                      // }
-                      // setState(() {
-                      //   isLoggedIn = !isLoggedIn;
-                      // });
                     },
                     child: isInAsyncCall
                         ?  loadingBar(context)
@@ -494,16 +453,8 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          //   Navigator.pushReplacementNamed(context, '/registerType');
                           Get.to(SignUpTabClass(signup: 1,));
                         },
-                        // onPressed: () {
-                        //   _navKey.currentState!.push(
-                        //     MaterialPageRoute(
-                        //       builder: (_) => SignUpTabClass(),
-                        //     ),
-                        //   );
-                        // },
                         child: const Text(
                           'Register Your Account',
                           style: TextStyle(

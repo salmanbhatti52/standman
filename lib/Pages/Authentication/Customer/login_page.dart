@@ -76,8 +76,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     DateTime now = DateTime.now();
     if (now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
-      Fluttertoast.showToast(
-          msg: 'Tap Again to Exit'); // you can use snackbar too here
+      Fluttertoast.showToast(msg: 'Tap Again to Exit');
       return Future.value(false);
     }
     return Future.value(true);

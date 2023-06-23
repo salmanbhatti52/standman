@@ -37,7 +37,6 @@ class _NewPasswordState extends State<NewPassword> {
   }
 
   modifypasswordr() async {
-    // try {
     String apiUrl = ModifyPasswordApiUrl;
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -58,7 +57,6 @@ class _NewPasswordState extends State<NewPassword> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: ModalProgressHUD(

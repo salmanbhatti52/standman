@@ -8,17 +8,12 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../../../Models/employee_signup_model.dart';
-import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/social_button.dart';
 import '../../TermConditions.dart';
 import '../Login_tab_class.dart';
 import 'Emp_UploadPhoto.dart';
-import 'package:http/http.dart' as http;
-
 class EmployeeSignUpPage extends StatefulWidget {
   const EmployeeSignUpPage({Key? key}) : super(key: key);
 
@@ -46,43 +41,8 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
     });
   }
 
-
-
   final GlobalKey<FlutterPwValidatorState> validatorKey = GlobalKey<FlutterPwValidatorState>();
   bool required = false;
-
-  // EmployeeSignupModel employeeSignupModel = EmployeeSignupModel();
-
-  // employeeRegisterUser() async {
-  //   // try {
-  //   String apiUrl = employeeSignupApiUrl;
-  //   final response = await http.post(
-  //     Uri.parse(apiUrl),
-  //     headers: {"Accept": "application/json"},
-  //     body: {
-  //       "one_signal_id": "123456",
-  //       "users_customers_type": "Employee",
-  //       "full_name": nameController.text,
-  //       "phone": phoneController.text,
-  //       "email": emailController.text,
-  //       "password": passwordController.text,
-  //       "account_type": "SignupWithApp",
-  //       "profile_pic": "$imagePath",
-  //       "company_name": "test Employee",
-  //       "proof_document": "iVBORw",
-  //       // "valid_document": "iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAYAAAB/
-  //     },
-  //   );
-  //   final responseString = response.body;
-  //   print("responseSignUpApi: $responseString");
-  //   print("status Code SignUp: ${response.statusCode}");
-  //   print("in 200 signUp");
-  //   if (response.statusCode == 200) {
-  //     employeeSignupModel = employeeSignupModelFromJson(responseString);
-  //     setState(() {});
-  //     print('signUpModel status: ${employeeSignupModel.status}');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,24 +51,12 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body:
-          // ModalProgressHUD(
-          //   inAsyncCall: isInAsyncCall,
-          //   opacity: 0.02,
-          //   blur: 0.5,
-          //   color: Colors.transparent,
-          //   progressIndicator: CircularProgressIndicator(
-          //     color: Colors.blue,
-          //   ),
-          //   child:
           Form(
             key: key,
             child: Container(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Fixed Container
-
-              // Scrollable Container
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
@@ -176,23 +124,6 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                               ),
                                             ),
                                           ),
-                                          // Positioned(
-                                          //     top: -48,
-                                          //     child: Container(
-                                          //       width: width * 0.2,
-                                          //       //106,
-                                          //       height: height * 0.13,
-                                          //       //106,
-                                          //       decoration: BoxDecoration(
-                                          //         shape: BoxShape.circle,
-                                          //         color: Color(0xffFF9900),
-                                          //       ),
-                                          //       child: Icon(
-                                          //         Icons.image,
-                                          //         size: 60,
-                                          //         color: Colors.white,
-                                          //       ),
-                                          //     ))
                                         ],
                                       ),
                                     ),
@@ -229,16 +160,6 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                 SizedBox(
                                   height: height * 0.04,
                                 ),
-                                // Text(
-                                //   "We will verify your account within 1-3 business days. Please note that this timeframe is an average and not a guarantee. Depending on the current volume, the verification process could be faster or slower.",
-                                //   style: TextStyle(
-                                //     color: Color(0xffC70000),
-                                //     fontFamily: "Outfit",
-                                //     fontSize: 12,
-                                //     fontWeight: FontWeight.w300,
-                                //   ),
-                                //   textAlign: TextAlign.left,
-                                // ),
                                 SizedBox(
                                   height: height * 0.02,
                                 ),
@@ -680,8 +601,6 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                     height: 160,
                                     onSuccess: () {
                                       print("MATCHED");
-                                      // ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                                      //     content: new Text("Password is matched")));
                                     },
                                     onFail: () {
                                       print("NOT MATCHED");
@@ -717,6 +636,7 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                       return 'Please enter confirm password';
                                     if(val != passwordController.text)
                                       return "Password don't match";
+                                    return null;
                                   },
                                   obscureText: isPasswordConfirmObscure,
                                   obscuringCharacter: '*',
@@ -797,48 +717,6 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        // Padding(
-                        //   padding:
-                        //       const EdgeInsets.only(left: 25.0, bottom: 15),
-                        //   child: Row(
-                        //     children: [
-                        //       const Text(
-                        //         "Upload ID",
-                        //         style: TextStyle(
-                        //           color: Color.fromRGBO(0, 0, 0, 1),
-                        //           fontFamily: "Outfit",
-                        //           fontSize: 16,
-                        //           fontWeight: FontWeight.w400,
-                        //           // letterSpacing: -0.3,
-                        //         ),
-                        //         textAlign: TextAlign.left,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Container(
-                        //   width: width * 0.9,
-                        //   height: height * 0.2,
-                        //   // width: 330,
-                        //   // height: 139,
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(12),
-                        //     color: Color(0xffF3F3F3),
-                        //   ),
-                        //   child: uploadID == null
-                        //       ? GestureDetector(
-                        //           onTap: () {
-                        //             pickUploadId();
-                        //           },
-                        //           child: Center(
-                        //               child: SvgPicture.asset(
-                        //             "assets/images/upload.svg",
-                        //             width: 75,
-                        //             height: 52,
-                        //           )))
-                        //       : Image.file(uploadID!,
-                        //           width: 75, height: 52, fit: BoxFit.fill),
-                        // ),
                         Padding(
                           padding: EdgeInsets.only(right: width * 0.15, top: 10),
                           child: GestureDetector(
@@ -903,14 +781,6 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                   toastFailedMessage(
                                       'Please provide a photo of yourself.', Colors.red);
                                 } else {
-                                  // setState(() {
-                                  //   isInAsyncCall = true;
-                                  // });
-                                  // await employeeRegisterUser();
-
-                                  // Get.to(EMp_UploadPhoto());
-
-                                  // if (employeeSignupModel.status == "success") {
                                     Get.to(EMp_UploadPhoto(
                                       profileimg: base64img,
                                       firstname: firstNameController.text.toString(),
@@ -919,20 +789,8 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                       phonenumber: phoneController.text.toString(),
                                       selectedCountryCode: countryCode.toString(),
                                       password: passwordController.text.toString(),
-                                      // confirmpassword: passwordController.text.toString(),
                                     ),
                                     );
-                                    // setState(() {
-                                    //   isInAsyncCall = false;
-                                    // });
-                                    // if (employeeSignupModel.status == "error") {
-                                    //   toastFailedMessage(
-                                    //       employeeSignupModel.message, Colors.red);
-                                    //   setState(() {
-                                    //     isInAsyncCall = false;
-                                    //   });
-                                    // }
-                                  // }
                                 }
                               }
                               //
@@ -970,8 +828,6 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  //   Navigator.pushReplacementNamed(context, '/registerType');
-                                  // Get.to(SignUpTabClass());
                                   Get.to(LoginTabClass(login: 1,));
                                 },
                                 child: const Text(
@@ -1000,7 +856,6 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
         ),
       ),
           ),
-      // ),
     );
   }
 
@@ -1049,28 +904,4 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
       print('Failed to pick image: ${e.toString()}');
     }
   }
-
-// File? uploadID;
-// String? base64ID;
-//
-// Future pickUploadId() async {
-//   try {
-//     final ImagePicker _picker = ImagePicker();
-//     final XFile? xFile = await _picker.pickImage(source: ImageSource.gallery);
-//     if (xFile == null) return;
-//
-//     Uint8List imageByte = await xFile.readAsBytes();
-//     base64ID = base64.encode(imageByte);
-//     print("base64ID $base64ID");
-//
-//     final imageTemporary = File(xFile.path);
-//
-//     setState(() {
-//       uploadID = imageTemporary;
-//       print("newImage $uploadID");
-//     });
-//   } on PlatformException catch (e) {
-//     print('Failed to pick uploadID: ${e.toString()}');
-//   }
-// }
 }

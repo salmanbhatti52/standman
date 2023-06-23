@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../Customer/AuthTextWidget.dart';
-import '../Customer/Newpassword.dart';
 import 'EmpNewpassword.dart';
 
 class EmployeeOTPPage extends StatefulWidget {
@@ -43,7 +41,6 @@ class _EmployeeOTPPageState extends State<EmployeeOTPPage> {
         child: Column(
           children: [
             Container(
-              // height: MediaQuery.of(context).size.height * 0.4,
               width: double.infinity,
               child: Column(
                 children: [
@@ -65,7 +62,6 @@ class _EmployeeOTPPageState extends State<EmployeeOTPPage> {
                       ],
                     ),
                   ),
-                  // SvgPicture.asset("assets/images/logo.svg"),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                     child: Authheadingtext("Enter 4-digit OTP code", context),
@@ -129,6 +125,7 @@ class _EmployeeOTPPageState extends State<EmployeeOTPPage> {
                             setState(() {
                               isInAsyncCall = true;
                             });
+
                             if (widget.data.toString() == OTpCode.text) {
                               Future.delayed(const Duration(seconds: 3), () {
                                 toastSuccessMessage("success", Colors.green);
@@ -151,7 +148,6 @@ class _EmployeeOTPPageState extends State<EmployeeOTPPage> {
                             }
                           }
                         }
-                        // Get.to(EmployeeNewPassword());
                       },
                       child: mainButton(
                           "Confirm", Color.fromRGBO(43, 101, 236, 1), context)),
