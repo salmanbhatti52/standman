@@ -33,7 +33,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
     setState(() {
       IsLoading = true;
     });
-    await Future.delayed(Duration(seconds: 2));
+    // await Future.delayed(Duration(seconds: 2));
     http.Response response = await http.post(
       Uri.parse(getPreviousJobsModelApiUrl),
       headers: {"Accept": "application/json"},
@@ -71,7 +71,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
           ? Center(
               child: Lottie.asset(
                 "assets/images/loading.json",
-                height: 100,
+                height: 50,
               ),
             )
           : Padding(

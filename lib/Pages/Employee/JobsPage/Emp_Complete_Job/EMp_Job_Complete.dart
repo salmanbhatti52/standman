@@ -90,6 +90,13 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("ID ${widget.customerId}");
+
+  }
+  @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;

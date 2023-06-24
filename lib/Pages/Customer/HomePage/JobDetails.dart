@@ -42,6 +42,7 @@ class _JobDetailsState extends State<JobDetails> {
   TextEditingController price = TextEditingController();
   TextEditingController describeJob = TextEditingController();
   bool isInAsyncCall = false;
+  bool isLoading = false;
 
   // late TimeOfDay _time;
   // String valueTime = "Select";
@@ -191,6 +192,9 @@ class _JobDetailsState extends State<JobDetails> {
   JobsPriceModel jobsPriceModel = JobsPriceModel();
 
   JobsPrice() async {
+    // setState(() {
+    //   isLoading = true;
+    // });
     print("working");
     String apiUrl = jobsPriceModelApiUrl;
     final response = await http.post(
@@ -209,27 +213,10 @@ class _JobDetailsState extends State<JobDetails> {
       jobsPriceModel = jobsPriceModelFromJson(responseString);
       // setState(() {});
       print('jobsCreateModel status: ${jobsPriceModel.status}');
+      // setState(() {
+      //   isLoading = false;
+      // });
     }
-    Future.delayed(const Duration(seconds: 2), () {
-      Estimated_PaymentMethod(
-        ctx: context,
-        price: jobsPriceModel.data?.totalPrice,
-        amount: jobsPriceModel.data?.price,
-        chargers: jobsPriceModel.data?.serviceCharges,
-        tax: jobsPriceModel.data?.tax,
-        img: base64ID,
-        jobName: jobName.text.toString(),
-        date: selectedDate.toString(),
-        time: startTime?.format(context),
-        endtime: endTime?.format(context),
-        describe: describeJob.text.toString(),
-        address: widget.currentaddress.toString() == ""
-            ? widget.currentaddress1.toString()
-            : widget.currentaddress.toString(),
-        long: widget.longitude,
-        lat: widget.latitude,
-      );
-    });
   }
 
   @override
@@ -760,11 +747,48 @@ class _JobDetailsState extends State<JobDetails> {
                                       // await sharedPref.setString('longitude', "${widget.longitude}");
                                       // await sharedPref.setString('lattitude', "${widget.latitude}");
 
-                                      JobsPrice();
+                                      setState(() {
+                                        isInAsyncCall = true;
+                                      });
+                                     await  JobsPrice();
+
+                                      if(jobsPriceModel.status == "success"){
+                                        Future.delayed(const Duration(seconds: 1), () {
+                                          Estimated_PaymentMethod(
+                                            ctx: context,
+                                            price: jobsPriceModel.data?.totalPrice,
+                                            amount: jobsPriceModel.data?.price,
+                                            chargers: jobsPriceModel.data?.serviceCharges,
+                                            tax: jobsPriceModel.data?.tax,
+                                            img: base64ID,
+                                            jobName: jobName.text.toString(),
+                                            date: selectedDate.toString(),
+                                            time: startTime?.format(context),
+                                            endtime: endTime?.format(context),
+                                            describe: describeJob.text.toString(),
+                                            address: widget.currentaddress.toString() == ""
+                                                ? widget.currentaddress1.toString()
+                                                : widget.currentaddress.toString(),
+                                            long: widget.longitude,
+                                            lat: widget.latitude,
+                                          );
+                                        });
+                                        setState(() {
+                                          isInAsyncCall = false;
+                                        });
+                                      } if (jobsPriceModel.status !=
+                                          "success") {
+                                        toastFailedMessage(
+                                            jobsPriceModel.message,
+                                            Colors.red);
+                                        setState(() {
+                                          isInAsyncCall = false;
+                                        });
+                                      }
                                     }
                                   }
                                 },
-                                child: mainButton("Next",
+                                child: isInAsyncCall ? mainButton("Please wait", Colors.grey, context): mainButton("Next",
                                     Color.fromRGBO(43, 101, 236, 1), context)),
                             SizedBox(
                               height: height * 0.03,

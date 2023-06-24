@@ -45,16 +45,16 @@ class Datum {
   String? serviceCharges;
   String? tax;
   String? totalPrice;
-  String? paymentGatewaysName;
+  PaymentGatewaysName? paymentGatewaysName;
   String? extraTimePrice;
   String? extraTimeTax;
   String? extraTimeServiceCharges;
   String? extraTime;
-  String? paymentStatus;
+  PaymentStatus? paymentStatus;
   dynamic hiredUsersCustomersId;
   dynamic dateStartJob;
   DateTime? dateEndJob;
-  String? status;
+  DatumStatus? status;
   String? dateAdded;
   DateTime? dateModified;
   dynamic rating;
@@ -114,16 +114,16 @@ class Datum {
     serviceCharges: json["service_charges"],
     tax: json["tax"],
     totalPrice: json["total_price"],
-    paymentGatewaysName: json["payment_gateways_name"],
+    paymentGatewaysName: paymentGatewaysNameValues.map[json["payment_gateways_name"]]!,
     extraTimePrice: json["extra_time_price"],
     extraTimeTax: json["extra_time_tax"],
     extraTimeServiceCharges: json["extra_time_service_charges"],
     extraTime: json["extra_time"],
-    paymentStatus: json["payment_status"],
+    paymentStatus: paymentStatusValues.map[json["payment_status"]]!,
     hiredUsersCustomersId: json["hired_users_customers_id"],
     dateStartJob: json["date_start_job"],
-    dateEndJob: DateTime.parse(json["date_end_job"]),
-    status: json["status"],
+    dateEndJob: json["date_end_job"] == null ? null : DateTime.parse(json["date_end_job"]),
+    status: datumStatusValues.map[json["status"]]!,
     dateAdded: json["date_added"],
     dateModified: DateTime.parse(json["date_modified"]),
     rating: json["rating"],
@@ -149,16 +149,16 @@ class Datum {
     "service_charges": serviceCharges,
     "tax": tax,
     "total_price": totalPrice,
-    "payment_gateways_name": paymentGatewaysName,
+    "payment_gateways_name": paymentGatewaysNameValues.reverse[paymentGatewaysName],
     "extra_time_price": extraTimePrice,
     "extra_time_tax": extraTimeTax,
     "extra_time_service_charges": extraTimeServiceCharges,
     "extra_time": extraTime,
-    "payment_status": paymentStatus,
+    "payment_status": paymentStatusValues.reverse[paymentStatus],
     "hired_users_customers_id": hiredUsersCustomersId,
     "date_start_job": dateStartJob,
-    "date_end_job": dateEndJob!.toIso8601String(),
-    "status": status,
+    "date_end_job": dateEndJob?.toIso8601String(),
+    "status": datumStatusValues.reverse[status],
     "date_added": dateAdded,
     "date_modified": dateModified!.toIso8601String(),
     "rating": rating,
@@ -177,7 +177,7 @@ class JobsRatings {
   String? rating;
   String? comment;
   DateTime? dateAdded;
-  String? status;
+  JobsRatingsStatus? status;
 
   JobsRatings({
     this.jobsRatingsId,
@@ -198,7 +198,7 @@ class JobsRatings {
     rating: json["rating"],
     comment: json["comment"],
     dateAdded: DateTime.parse(json["date_added"]),
-    status: json["status"],
+    status: jobsRatingsStatusValues.map[json["status"]]!,
   );
 
   Map<String, dynamic> toJson() => {
@@ -209,110 +209,215 @@ class JobsRatings {
     "rating": rating,
     "comment": comment,
     "date_added": dateAdded!.toIso8601String(),
-    "status": status,
+    "status": jobsRatingsStatusValues.reverse[status],
   };
 }
+
+enum JobsRatingsStatus { ACTIVE }
+
+final jobsRatingsStatusValues = EnumValues({
+  "Active": JobsRatingsStatus.ACTIVE
+});
+
+enum PaymentGatewaysName { G_PAY }
+
+final paymentGatewaysNameValues = EnumValues({
+  "GPay": PaymentGatewaysName.G_PAY
+});
+
+enum PaymentStatus { PAID }
+
+final paymentStatusValues = EnumValues({
+  "Paid": PaymentStatus.PAID
+});
+
+enum DatumStatus { COMPLETED }
+
+final datumStatusValues = EnumValues({
+  "Completed": DatumStatus.COMPLETED
+});
 
 class UsersCustomersData {
   int? usersCustomersId;
   String? oneSignalId;
-  String? usersCustomersType;
-  String? firstName;
-  String? lastName;
-  String? phone;
-  String? email;
-  String? password;
-  String? profilePic;
+  FirstName usersCustomersType;
+  FirstName firstName;
+  LastName lastName;
+  String phone;
+  Email email;
+  Password password;
+  ProfilePic profilePic;
   dynamic proofDocument;
   dynamic validDocument;
-  String? messages;
-  String? notifications;
-  String? accountType;
-  String? socialAccType;
-  String? googleAccessToken;
+  Messages messages;
+  Messages notifications;
+  AccountType accountType;
+  SocialAccType socialAccType;
+  String googleAccessToken;
   dynamic verifyCode;
-  String? verifiedBadge;
+  CountryCode countryCode;
+  VerifiedBadge verifiedBadge;
   dynamic dateExpiry;
-  String? walletAmount;
-  String? rating;
-  DateTime? dateAdded;
-  String? status;
+  String walletAmount;
+  String rating;
+  DateTime dateAdded;
+  JobsRatingsStatus status;
 
   UsersCustomersData({
-    this.usersCustomersId,
-    this.oneSignalId,
-    this.usersCustomersType,
-    this.firstName,
-    this.lastName,
-    this.phone,
-    this.email,
-    this.password,
-    this.profilePic,
+    required this.usersCustomersId,
+    required this.oneSignalId,
+    required this.usersCustomersType,
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+    required this.email,
+    required this.password,
+    required this.profilePic,
     this.proofDocument,
     this.validDocument,
-    this.messages,
-    this.notifications,
-    this.accountType,
-    this.socialAccType,
-    this.googleAccessToken,
+    required this.messages,
+    required this.notifications,
+    required this.accountType,
+    required this.socialAccType,
+    required this.googleAccessToken,
     this.verifyCode,
-    this.verifiedBadge,
+    required this.countryCode,
+    required this.verifiedBadge,
     this.dateExpiry,
-    this.walletAmount,
-    this.rating,
-    this.dateAdded,
-    this.status,
+    required this.walletAmount,
+    required this.rating,
+    required this.dateAdded,
+    required this.status,
   });
 
   factory UsersCustomersData.fromJson(Map<String, dynamic> json) => UsersCustomersData(
     usersCustomersId: json["users_customers_id"],
     oneSignalId: json["one_signal_id"],
-    usersCustomersType: json["users_customers_type"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
+    usersCustomersType: firstNameValues.map[json["users_customers_type"]]!,
+    firstName: firstNameValues.map[json["first_name"]]!,
+    lastName: lastNameValues.map[json["last_name"]]!,
     phone: json["phone"],
-    email: json["email"],
-    password: json["password"],
-    profilePic: json["profile_pic"],
+    email: emailValues.map[json["email"]]!,
+    password: passwordValues.map[json["password"]]!,
+    profilePic: profilePicValues.map[json["profile_pic"]]!,
     proofDocument: json["proof_document"],
     validDocument: json["valid_document"],
-    messages: json["messages"],
-    notifications: json["notifications"],
-    accountType: json["account_type"],
-    socialAccType: json["social_acc_type"],
+    messages: messagesValues.map[json["messages"]]!,
+    notifications: messagesValues.map[json["notifications"]]!,
+    accountType: accountTypeValues.map[json["account_type"]]!,
+    socialAccType: socialAccTypeValues.map[json["social_acc_type"]]!,
     googleAccessToken: json["google_access_token"],
     verifyCode: json["verify_code"],
-    verifiedBadge: json["verified_badge"],
+    countryCode: countryCodeValues.map[json["country_code"]]!,
+    verifiedBadge: verifiedBadgeValues.map[json["verified_badge"]]!,
     dateExpiry: json["date_expiry"],
     walletAmount: json["wallet_amount"],
     rating: json["rating"],
     dateAdded: DateTime.parse(json["date_added"]),
-    status: json["status"],
+    status: jobsRatingsStatusValues.map[json["status"]]!,
   );
 
   Map<String, dynamic> toJson() => {
     "users_customers_id": usersCustomersId,
     "one_signal_id": oneSignalId,
-    "users_customers_type": usersCustomersType,
-    "first_name": firstName,
-    "last_name": lastName,
+    "users_customers_type": firstNameValues.reverse[usersCustomersType],
+    "first_name": firstNameValues.reverse[firstName],
+    "last_name": lastNameValues.reverse[lastName],
     "phone": phone,
-    "email": email,
-    "password": password,
-    "profile_pic": profilePic,
+    "email": emailValues.reverse[email],
+    "password": passwordValues.reverse[password],
+    "profile_pic": profilePicValues.reverse[profilePic],
     "proof_document": proofDocument,
     "valid_document": validDocument,
-    "messages": messages,
-    "notifications": notifications,
-    "account_type": accountType,
-    "social_acc_type": socialAccType,
+    "messages": messagesValues.reverse[messages],
+    "notifications": messagesValues.reverse[notifications],
+    "account_type": accountTypeValues.reverse[accountType],
+    "social_acc_type": socialAccTypeValues.reverse[socialAccType],
     "google_access_token": googleAccessToken,
     "verify_code": verifyCode,
-    "verified_badge": verifiedBadge,
+    "country_code": countryCodeValues.reverse[countryCode],
+    "verified_badge": verifiedBadgeValues.reverse[verifiedBadge],
     "date_expiry": dateExpiry,
     "wallet_amount": walletAmount,
     "rating": rating,
-    "date_added": dateAdded!.toIso8601String(),
-    "status": status,
+    "date_added": dateAdded.toIso8601String(),
+    "status": jobsRatingsStatusValues.reverse[status],
   };
+}
+
+enum AccountType { SIGNUP_WITH_APP }
+
+final accountTypeValues = EnumValues({
+  "SignupWithApp": AccountType.SIGNUP_WITH_APP
+});
+
+enum CountryCode { PK }
+
+final countryCodeValues = EnumValues({
+  "PK": CountryCode.PK
+});
+
+enum Email { CUSTOMER_GMAIL_COM, MUGHEESMALIK101_GMAIL_COM }
+
+final emailValues = EnumValues({
+  "customer@gmail.com": Email.CUSTOMER_GMAIL_COM,
+  "mugheesmalik101@gmail.com": Email.MUGHEESMALIK101_GMAIL_COM
+});
+
+enum FirstName { CUSTOMER, MUGHEES }
+
+final firstNameValues = EnumValues({
+  "Customer": FirstName.CUSTOMER,
+  "Mughees": FirstName.MUGHEES
+});
+
+enum LastName { SIDE, MALIK }
+
+final lastNameValues = EnumValues({
+  "Malik": LastName.MALIK,
+  "Side": LastName.SIDE
+});
+
+enum Messages { YES }
+
+final messagesValues = EnumValues({
+  "Yes": Messages.YES
+});
+
+enum Password { EBC2_D1_B00_BA2_D4687_EC8_D8_DBF0_E0_C3_AB, C0_A18_C5_A5_A29_A31_A6_BA178_F430_C24_A2_A }
+
+final passwordValues = EnumValues({
+  "c0a18c5a5a29a31a6ba178f430c24a2a": Password.C0_A18_C5_A5_A29_A31_A6_BA178_F430_C24_A2_A,
+  "ebc2d1b00ba2d4687ec8d8dbf0e0c3ab": Password.EBC2_D1_B00_BA2_D4687_EC8_D8_DBF0_E0_C3_AB
+});
+
+enum ProfilePic { UPLOADS_USERS_CUSTOMERS_1686375344_JPEG, UPLOADS_USERS_CUSTOMERS_1686566787_JPEG }
+
+final profilePicValues = EnumValues({
+  "uploads/users_customers/1686375344.jpeg": ProfilePic.UPLOADS_USERS_CUSTOMERS_1686375344_JPEG,
+  "uploads/users_customers/1686566787.jpeg": ProfilePic.UPLOADS_USERS_CUSTOMERS_1686566787_JPEG
+});
+
+enum SocialAccType { NONE }
+
+final socialAccTypeValues = EnumValues({
+  "None": SocialAccType.NONE
+});
+
+enum VerifiedBadge { NO }
+
+final verifiedBadgeValues = EnumValues({
+  "No": VerifiedBadge.NO
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

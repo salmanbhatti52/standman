@@ -6,15 +6,18 @@ String jobsPriceModelToJson(JobsPriceModel data) => json.encode(data.toJson());
 
 class JobsPriceModel {
   String? status;
+  String? message;
   Data? data;
 
   JobsPriceModel({
     this.status,
+    this.message,
     this.data,
   });
 
   factory JobsPriceModel.fromJson(Map<String, dynamic> json) => JobsPriceModel(
     status: json["status"],
+    message : json["message"] != null ? json["message"] : null,
     data: Data.fromJson(json["data"]),
   );
 

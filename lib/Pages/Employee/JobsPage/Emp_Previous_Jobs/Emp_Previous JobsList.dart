@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../Models/Get_Previous_Jobs_Employee_Model.dart';
@@ -20,60 +23,116 @@ class EmpPreviousJobList extends StatefulWidget {
 
 class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
 
-  GetPreviousJobsEmployeeModel getPreviousJobsEmployeeModel = GetPreviousJobsEmployeeModel();
+  // GetPreviousJobsEmployeeModel getPreviousJobsEmployeeModel = GetPreviousJobsEmployeeModel();
+  //
+  // bool loading = false;
+  //
+  // GetPreviousJobsEmployees() async {
+  //
+  //   setState(() {
+  //     loading = true;
+  //   });
+  //   prefs = await SharedPreferences.getInstance();
+  //   usersCustomersId = prefs!.getString('empUsersCustomersId');
+  //   longitude =  prefs!.getString('longitude1');
+  //   lattitude =  prefs!.getString('lattitude1');
+  //   print("usersCustomersId = $usersCustomersId");
+  //   print("longitude1111: ${longitude}");
+  //   print("lattitude1111: ${lattitude}");
+  //
+  //   String apiUrl = getPreviousJobsEmployeeModelApiUrl;
+  //   print("working");
+  //   final response = await http.post(
+  //     Uri.parse(apiUrl),
+  //     headers: {"Accept": "application/json"},
+  //     body: {
+  //       "users_customers_id": usersCustomersId,
+  //       "employee_longitude": longitude,
+  //       "employee_lattitude": lattitude,
+  //     },
+  //   );
+  //   final responseString = response.body;
+  //   print("getPreviousJobsEmployeeModelApiUrl: ${response.body}");
+  //   print("status Code getPreviousJobsEmployeeModel: ${response.statusCode}");
+  //   print("in 200 getPreviousJobsEmployee");
+  //   if (response.statusCode == 200) {
+  //     getPreviousJobsEmployeeModel = getPreviousJobsEmployeeModelFromJson(responseString);
+  //     // setState(() {});
+  //     print('getPreviousJobsEmployeeModel status: ${getPreviousJobsEmployeeModel.status}');
+  //     setState(() {
+  //       loading = false;
+  //     });
+  //
+  //     print('getPreviousJobsEmployeeModel Length: ${getPreviousJobsEmployeeModel.data?.length}');
+  //     // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
+  //   }
+  // }
+  //
+  //
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   GetPreviousJobsEmployees();
+  // }
 
-  bool loading = false;
+  bool IsLoading = false;
+  List previousData = [];
 
-  GetPreviousJobsEmployees() async {
-
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('empUsersCustomersId');
-    longitude =  prefs!.getString('longitude1');
-    lattitude =  prefs!.getString('lattitude1');
-    print("usersCustomersId = $usersCustomersId");
-    print("longitude1111: ${longitude}");
-    print("lattitude1111: ${lattitude}");
-
-    String apiUrl = getPreviousJobsEmployeeModelApiUrl;
-    print("working");
-    final response = await http.post(
-      Uri.parse(apiUrl),
+  getEmployeePreviousJobs() async {
+    setState(() {
+      IsLoading = true;
+    });
+      prefs = await SharedPreferences.getInstance();
+      usersCustomersId = prefs!.getString('empUsersCustomersId');
+      longitude =  prefs!.getString('longitude1');
+      lattitude =  prefs!.getString('lattitude1');
+      print("usersCustomersId = $usersCustomersId");
+      print("longitude1111: ${longitude}");
+      print("lattitude1111: ${lattitude}");
+    // await Future.delayed(Duration(seconds: 2));
+    http.Response response = await http.post(
+      Uri.parse(getPreviousJobsEmployeeModelApiUrl),
       headers: {"Accept": "application/json"},
       body: {
         "users_customers_id": usersCustomersId,
-        "employee_longitude": longitude,
-        "employee_lattitude": lattitude,
+              "employee_longitude": longitude,
+              "employee_lattitude": lattitude,
       },
     );
-    final responseString = response.body;
-    print("getPreviousJobsEmployeeModelApiUrl: ${response.body}");
-    print("status Code getPreviousJobsEmployeeModel: ${response.statusCode}");
-    print("in 200 getPreviousJobsEmployee");
-    if (response.statusCode == 200) {
-      getPreviousJobsEmployeeModel = getPreviousJobsEmployeeModelFromJson(responseString);
-      // setState(() {});
-      print('getPreviousJobsEmployeeModel status: ${getPreviousJobsEmployeeModel.status}');
+    if (mounted) {
       setState(() {
-      });
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
 
-      print('getPreviousJobsEmployeeModel Length: ${getPreviousJobsEmployeeModel.data?.length}');
-      // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
+          previousData = jsonResponse['data'];
+
+          print("Employee: $previousData");
+          IsLoading = false;
+        } else {
+          print("Response Body :: ${response.body}");
+        }
+      });
     }
   }
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    GetPreviousJobsEmployees();
+    getEmployeePreviousJobs();
   }
 
   @override
   Widget build(BuildContext context) {
-    return loading? Center(child: CircularProgressIndicator()):
+    return IsLoading? Center(
+      child: Lottie.asset(
+        "assets/images/loading.json",
+        height: 50,
+      ),
+    ):
 
-    getPreviousJobsEmployeeModel.data?.length == null ?
+    previousData.length == null ?
     Center(child:  Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -107,25 +166,25 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
             physics: BouncingScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
-            itemCount: getPreviousJobsEmployeeModel.data?.length,
-            itemBuilder: (BuildContext context, int index) {
+            itemCount: previousData.length,
+            itemBuilder: (BuildContext context, int i) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                 child: GestureDetector(
                   onTap: (){
                     Get.to(EMp_Job_Completed(
-                      ratings: "${getPreviousJobsEmployeeModel.data?[index].jobsRatings?.rating == null ? 0.0: getPreviousJobsEmployeeModel.data?[index].jobsRatings?.rating}",
-                      myJobId: "${getPreviousJobsEmployeeModel.data?[index].jobsId}",
-                      image:"$baseUrlImage${getPreviousJobsEmployeeModel.data?[index].image}",
-                      jobName: getPreviousJobsEmployeeModel.data?[index].name,
-                      totalPrice: getPreviousJobsEmployeeModel.data?[index].price,
-                      address: getPreviousJobsEmployeeModel.data?[index].location,
-                      completeJobTime: getPreviousJobsEmployeeModel.data?[index].dateAdded.toString(),
-                      description: getPreviousJobsEmployeeModel.data?[index].description,
-                      name: "${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.firstName} ${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.lastName}",
-                      profilePic: "$baseUrlImage${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.profilePic}",
-                      customerId: "${getPreviousJobsEmployeeModel.data?[index].usersCustomersData?.usersCustomersId}",
-                      status: "${getPreviousJobsEmployeeModel.data?[index].status}",
+                      ratings: "${previousData[i]['jobs_ratings'] != null && previousData[i]['jobs_ratings']['rating'] != null ? previousData[i]['jobs_ratings']['rating'] : '--'}",
+                      myJobId: "${previousData[i]['jobs_id']}",
+                      image:"$baseUrlImage${previousData[i]['image']}",
+                      jobName: "${previousData[i]['name']}",
+                      totalPrice: "${previousData[i]['total_price']}",
+                      address: "${previousData[i]['location']}",
+                      completeJobTime: "${previousData[i]['date_added']}",
+                      description: "${previousData[i]['description']}",
+                      name: previousData[i]['users_customers_data'] != null && previousData[i]['users_customers_data']['first_name'] != null ? "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}" : "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}",
+                      profilePic: "$baseUrlImage${previousData[i]['users_customers_data'] != null && previousData[i]['users_customers_data']['profile_pic'] != null ? previousData[i]['users_customers_data']['profile_pic'] : previousData[i]['users_customers_data']['profile_pic']}",
+                      customerId: "${previousData[i]['users_customers_data']['users_customers_id']}",
+                      status: "${previousData[i]['status']}",
                     ));
                   },
                   child: Container(
@@ -156,7 +215,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                               width: 140,
                               height: 96,
                               image: NetworkImage(
-                                  "$baseUrlImage${getPreviousJobsEmployeeModel.data?[index].image}"),
+                                  "$baseUrlImage${previousData[i]['image']}"),
                             ),
                           ),
                           Padding(
@@ -166,7 +225,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${getPreviousJobsEmployeeModel.data?[index].name.toString()}",
+                                  previousData[i]['name'],
                                   style: TextStyle(
                                     color: Color(0xff000000),
                                     fontFamily: "Outfit",
@@ -179,7 +238,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 0.0),
                                   child: Text(
-                                    "${getPreviousJobsEmployeeModel.data?[index].dateAdded}",
+                                    previousData[i]['date_added'],
                                     style: TextStyle(
                                       color: Color(0xff9D9FAD),
                                       fontFamily: "Outfit",
@@ -207,7 +266,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                                     Container(
                                       width: Get.width * 0.37,
                                       child: AutoSizeText(
-                                        "${getPreviousJobsEmployeeModel.data?[index].location}",
+                                        previousData[i]['location'],
                                         style: TextStyle(
                                           color: Color(0xff9D9FAD),
                                           fontFamily: "Outfit",
@@ -226,7 +285,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                                   ],
                                 ),
                                  Text(
-                                   "\$${getPreviousJobsEmployeeModel.data?[index].price}",
+                                   "\$${previousData[i]['price']}",
                                   style: TextStyle(
                                     color: Color(0xff2B65EC),
                                     fontFamily: "Outfit",
@@ -244,7 +303,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "${getPreviousJobsEmployeeModel.data?[index].status}",
+                                      previousData[i]['status'],
                                       style: TextStyle(
                                         color:Color(0xff10C900),
                                         fontFamily: "Outfit",

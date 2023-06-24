@@ -50,6 +50,9 @@ class _EmpHomePageState extends State<EmpHomePage> {
 
   getUserProfileWidget() async {
 
+    setState(() {
+      progress = true;
+    });
     prefs = await SharedPreferences.getInstance();
     empUsersCustomersId = prefs!.getString('empUsersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -74,7 +77,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
         print("getUserNumber: ${usersProfileModel.data!.phone}");
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
         setState(() {
-
+          progress = false;
         });
         print(
             "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
@@ -229,8 +232,8 @@ class _EmpHomePageState extends State<EmpHomePage> {
                             ? CircleAvatar(
                           radius: 35,
                           child: Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade100,
+                            baseColor: Colors.grey.shade500,
+                            highlightColor: Colors.grey.shade200,
                             child: Text('',),),)
                             : usersProfileModel.status != "success"
                             ? Center(

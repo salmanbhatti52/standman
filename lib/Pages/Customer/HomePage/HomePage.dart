@@ -42,6 +42,9 @@ class _HomePageState extends State<HomePage> {
 
   getUserProfileWidget() async {
 
+    setState(() {
+      progress = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     // longitude =  prefs!.getDouble('longitude');
@@ -71,7 +74,9 @@ class _HomePageState extends State<HomePage> {
         print("getUserNumber: ${usersProfileModel.data!.phone}");
         print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
         print("getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
-        setState(() {});
+        setState(() {
+          progress = false;
+        });
       }
   }
 
@@ -435,7 +440,7 @@ class _HomePageState extends State<HomePage> {
                                   ? CircleAvatar(
                                 radius: 35,
                                 child: Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade300,
+                                  baseColor: Colors.grey.shade500,
                                   highlightColor: Colors.grey.shade100,
                                   child: Text('',),),)
                                     : usersProfileModel.status != "success"

@@ -217,7 +217,7 @@ class _CustomerMyJobsDetailsState extends State<CustomerMyJobsDetails> {
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
                                   width: 50,
@@ -229,109 +229,24 @@ class _CustomerMyJobsDetailsState extends State<CustomerMyJobsDetails> {
                                 SizedBox(
                                   width: 5,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${widget.name}",
-                                        style: TextStyle(
-                                          color: Color(0xff000000),
-                                          fontFamily: "Outfit",
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
+                                Text(
+                                  "${widget.name}",
+                                  style: TextStyle(
+                                    color: Color(0xff000000),
+                                    fontFamily: "Outfit",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
 // letterSpacing: -0.3,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      Row(
-                                        children: [
-                                          // Icon(
-                                          //   Icons.star,
-                                          //   color: Color(0xffFFDF00),
-                                          //   size: 15,
-                                          // ),
-                                          Text(
-                                            '--',
-                                            style: TextStyle(
-                                              color: Color(0xff000000),
-                                              fontFamily: "Outfit",
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-// letterSpacing: -0.3,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      )
-                                    ],
                                   ),
+                                  textAlign: TextAlign.left,
                                 )
                               ],
                             ),
-                            // GestureDetector(
-                            //     onTap: () async {
-                            //       await chatStartUser();
-                            //       Get.to(MessagesDetails(
-                            //         usersCustomersId: usersCustomersId,
-                            //         other_users_customers_id: widget.employeeId,
-                            //         img: widget.profilePic.toString(),
-                            //         name: widget.name.toString(),
-                            //       ),
-                            //       );
-                            //     },
-                            //     child: smallButton(
-                            //         "Chat", Color(0xff2B65EC), context)),
                           ],
                         ),
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        // GestureDetector(
-                        //     onTap: () {
-                        //       Get.to(CustomerQRCodeScanner());
-                        //     },
-                        //     child: mainButton("Complete Job using QR",
-                        //         Color(0xff2B65EC), context)),
-                        // SizedBox(
-                        //   height: height * 0.02,
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(
-                        //       horizontal: 25, vertical: 20),
-                        //   child: Container(
-                        //     height: MediaQuery.of(context).size.height * 0.07,
-                        //     // height: 48,
-                        //     width: MediaQuery.of(context).size.width,
-                        //     decoration: BoxDecoration(
-                        //       // color: Color(0xff4DA0E6),
-                        //       //   color: Colors.white,
-                        //         borderRadius: BorderRadius.circular(12),
-                        //         border: Border.all(
-                        //             color: Color(0xffC70000), width: 1),
-                        //         boxShadow: [
-                        //           BoxShadow(
-                        //               spreadRadius: 0,
-                        //               blurRadius: 15,
-                        //               offset: Offset(1, 10),
-                        //               color: Color.fromRGBO(7, 1, 87, 0.1)),
-                        //         ]),
-                        //     child: Center(
-                        //       child: Text(
-                        //         "Cancel Job",
-                        //         style: TextStyle(
-                        //             fontFamily: "Outfit",
-                        //             fontSize: 14,
-                        //             color: Color(0xffC70000),
-                        //             fontWeight: FontWeight.w500),
-                        //         textAlign: TextAlign.center,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // )
                       ],
                     ),
                   ),

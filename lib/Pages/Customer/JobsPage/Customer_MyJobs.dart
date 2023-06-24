@@ -4,6 +4,7 @@ import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../Models/get_OnGoing_jobs_Model.dart';
@@ -27,7 +28,10 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
   bool loading = false;
 
   myJobs() async {
-   
+
+    setState(() {
+      loading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -50,7 +54,7 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
       print('getJobsModelImage: $baseUrlImage${customerMyJobModel.data?[0].image}');
       print('getJobsModelLength: ${customerMyJobModel.data?.length}');
       setState(() {
-
+        loading = false;
       });
     }
   }
@@ -119,8 +123,12 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
       //   separatorBuilder: (context, index) =>
       //   const SizedBox(height: defaultPadding),
       // )
-      Center(child: CircularProgressIndicator(color: Colors.blueAccent,),)
-          : customerMyJobModel.data?.length == null ?
+      Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      ): customerMyJobModel.data?.length == null ?
 
       Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

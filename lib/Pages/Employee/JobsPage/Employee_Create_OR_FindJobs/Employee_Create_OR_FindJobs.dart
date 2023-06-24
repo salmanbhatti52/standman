@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../Models/get_jobs_employees_Model.dart';
@@ -31,7 +32,9 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
   bool loading = false;
 
   GetJobsEmployees() async {
-
+    setState(() {
+      loading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     longitude =  prefs!.getString('longitude1');
@@ -161,8 +164,12 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
       backgroundColor: Colors.white,
       body:
       loading
-          ? Center(child: CircularProgressIndicator())
-          : getJobsEmployeesModel.data?.length == null
+          ? Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      ) : getJobsEmployeesModel.data?.length == null
           ? Column(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,

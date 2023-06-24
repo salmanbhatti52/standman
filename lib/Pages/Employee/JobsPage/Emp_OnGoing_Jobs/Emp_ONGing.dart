@@ -3,6 +3,7 @@ import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Models/Employee_OngoingJobs_Model.dart';
 import '../../../../Utils/api_urls.dart';
@@ -25,6 +26,9 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
 
   getOngoingJobsEmployees() async {
 
+    setState(() {
+      loading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     longitude =  prefs!.getString('longitude1');
@@ -69,8 +73,12 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: loading? Center(child: CircularProgressIndicator()):
-
+      body: loading? Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      ):
       employeeOngoingJobsModel.data?.length == null ?
       Center(child:  Column(
         mainAxisAlignment: MainAxisAlignment.center,
