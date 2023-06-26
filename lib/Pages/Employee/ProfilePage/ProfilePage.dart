@@ -6,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../Customer/HomePage/HomePage.dart';
@@ -100,13 +101,6 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
       // drawer: MyDrawer(),
       backgroundColor: Colors.white,
       body:
-        progress
-        ? Center(child: CircularProgressIndicator(color: Colors.blueAccent))
-        : usersProfileModel.status != "success"
-    ? Center(
-    child: Text('no data found...',
-    style: TextStyle(fontWeight: FontWeight.bold)))
-        :
     ModalProgressHUD(
     inAsyncCall: isInAsyncCall,
     opacity: 0.02,
@@ -136,15 +130,38 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                       width: width * 0.07,
                     ),
                     // Image.asset("assets/images/person2.png", width: 99, height: 99,),
-                    CircleAvatar(
-                      // radius: (screenWidth > 600) ? 90 : 70,
+                    // CircleAvatar(
+                    //   // radius: (screenWidth > 600) ? 90 : 70,
+                    //     radius: 50,
+                    //     backgroundColor: Colors.transparent,
+                    //     backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
+                    //         ? Image.asset("assets/images/person2.png").image
+                    //         : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
+                    //   // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
+                    //
+                    // ),
+                    Container(
+                      child: progress
+                          ? CircleAvatar(
                         radius: 50,
-                        backgroundColor: Colors.transparent,
-                        backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
-                            ? Image.asset("assets/images/person2.png").image
-                            : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
-                      // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: Text('',),),)
+                          : usersProfileModel.status != "success"
+                          ? Center(
+                          child: Text('',
+                              style: TextStyle(fontWeight: FontWeight.bold)))
+                          : CircleAvatar(
+                        // radius: (screenWidth > 600) ? 90 : 70,
+                          radius: 50,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
+                              ? Image.asset("assets/images/person2.png").image
+                              : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
+                        // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
+                      ),
                     ),
                     SizedBox(
                       width: width * 0.05,
@@ -157,94 +174,121 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                          mainAxisAlignment: MainAxisAlignment.center,
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
-                            Text(
-                              "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
-                             // "Marvis Ighedosa",
-                             style: TextStyle(
-                               color: Colors.white,
-                               fontFamily: "Outfit",
-                               fontWeight: FontWeight.w400,
-                               fontSize: 18,
+                           Container(
+                             child:usersProfileModel.status != "success" ? Text(""): Text(
+                               "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
+                               style: TextStyle(
+                                 color: Colors.white,
+                                 fontFamily: "Outfit",
+                                 fontWeight: FontWeight.w400,
+                                 fontSize: 18,
+                               ),
                              ),
-                             textAlign: TextAlign.center,
                            ),
-                           Padding(
-                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                             child: Row(
-                               // mainAxisAlignment: MainAxisAlignment.center,
-                               // crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                 SvgPicture.asset("assets/images/sms-tracking.svg", color: Colors.white,),
-                                 ConstrainedBox(
-                                   constraints: BoxConstraints(
-                                       maxWidth: MediaQuery.of(context).size.width * 0.4),
-                                   child: Padding(
-                                     padding: const EdgeInsets.only(left: 8.0),
-                                     child: AutoSizeText(
-                                       "${usersProfileModel.data!.email}",
-                                       style: TextStyle(fontSize: 16.0, color: Colors.white),
-                                       maxLines: 1,
-                                       overflow: TextOverflow.ellipsis,
+                           Container(
+                             child: usersProfileModel.status != "success" ? Text(""): Padding(
+                               padding: const EdgeInsets.symmetric(
+                                   vertical: 8.0),
+                               child: Row(
+                                 // mainAxisAlignment:
+                                 // MainAxisAlignment.center,
+                                 crossAxisAlignment:
+                                 CrossAxisAlignment.center,
+                                 children: [
+                                   SvgPicture.asset(
+                                     "assets/images/sms-tracking.svg",
+                                     color: Colors.white,
+                                   ),
+                                   usersProfileModel.status != "success" ? Text(""): ConstrainedBox(
+                                     constraints: BoxConstraints(
+                                         maxWidth: MediaQuery.of(context).size.width * 0.45),
+                                     child: Padding(
+                                       padding: const EdgeInsets.only(left: 8.0),
+                                       child: AutoSizeText(
+                                         "${usersProfileModel.data!.email}",
+                                         style: TextStyle(fontSize: 16.0, color: Colors.white),
+                                         maxLines: 1,
+                                         overflow: TextOverflow.ellipsis,
+
+                                       ),
                                      ),
+                                   ),
+                                   // Text(
+                                   //     "  ${usersProfileModel.data!.email}",
+                                   //     style: TextStyle(
+                                   //       color: Color(0xffffffff),
+                                   //       fontFamily: "Outfit",
+                                   //       fontWeight: FontWeight.w300,
+                                   //       fontSize: 14,
+                                   //     ),
+                                   //   ),
+                                 ],
+                               ),
+                             ),
+                           ),
+                           Container(
+                             child:  usersProfileModel.status != "success" ? Text(""):Row(
+                               // mainAxisAlignment: MainAxisAlignment.center,
+                               crossAxisAlignment:
+                               CrossAxisAlignment.center,
+                               children: [
+                                 SvgPicture.asset(
+                                   "assets/images/call.svg",
+                                   color: Colors.white,
+                                   width: 16,
+                                   height: 16,
+                                 ),
+                                 Text(
+                                   "  ${usersProfileModel.data!.phone.toString()}",
+                                   style: TextStyle(
+                                     color: Color(0xffffffff),
+                                     fontFamily: "Outfit",
+                                     fontWeight: FontWeight.w300,
+                                     fontSize: 14,
                                    ),
                                  ),
                                ],
                              ),
                            ),
-                           Row(
-                             // mainAxisAlignment: MainAxisAlignment.center,
-                             // crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               SvgPicture.asset("assets/images/call.svg", color: Colors.white, width: 16, height: 16,),
-                                Text(
-                                  "  ${usersProfileModel.data!.phone}",
-                                 // "   +234 9011039271",
-                                 style: TextStyle(
-                                   color: Color(0xffffffff),
-                                   fontFamily: "Outfit",
-                                   fontWeight: FontWeight.w300,
-                                   fontSize: 14,
-                                 ),
-                               ),
-                             ],
-                           ),
                            SizedBox(height: height * 0.01,),
-                           Row(
-                             // mainAxisAlignment: MainAxisAlignment.center,
-                             // crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               RatingBar(
-                                 initialRating: double.parse(usersProfileModel.data!.rating.toString()),
-                                 direction: Axis.horizontal,
-                                 allowHalfRating: true,
-                                 itemSize: 20,
-                                 itemCount: 5,
-                                 ratingWidget: RatingWidget(
-                                     full: const Icon(Icons.star, color: Color(0xffFFDF00),),
-                                     half: const Icon(
-                                       Icons.star_half,
-                                       color: Color(0xffFFDF00),
-                                     ),
-                                     empty: const Icon(
-                                       Icons.star_outline,
-                                       color: Color(0xffA7A9B7),
-                                     )), onRatingUpdate: (double value) { },
-                                 // onRatingUpdate: (value) {
-                                 //   setState(() {
-                                 //     _ratingValue = value;
-                                 //   });
-                                 // }
-                               ),
-                                Text(
-                                  "${usersProfileModel.data!.rating.toString() == 0.0 ? '0.0' : usersProfileModel.data!.rating.toString()}",
-                                 style: TextStyle(
-                                   color: Color(0xffffffff),
-                                   fontFamily: "Outfit",
-                                   fontWeight: FontWeight.w300,
-                                   fontSize: 14,
+                           Container(
+                             child: usersProfileModel.status != "success" ? Text(""): Row(
+                               // mainAxisAlignment: MainAxisAlignment.center,
+                               // crossAxisAlignment: CrossAxisAlignment.center,
+                               children: [
+                                 RatingBar(
+                                   initialRating: double.parse(usersProfileModel.data!.rating.toString()),
+                                   direction: Axis.horizontal,
+                                   allowHalfRating: true,
+                                   itemSize: 20,
+                                   itemCount: 5,
+                                   ratingWidget: RatingWidget(
+                                       full: const Icon(Icons.star, color: Color(0xffFFDF00),),
+                                       half: const Icon(
+                                         Icons.star_half,
+                                         color: Color(0xffFFDF00),
+                                       ),
+                                       empty: const Icon(
+                                         Icons.star_outline,
+                                         color: Color(0xffA7A9B7),
+                                       )), onRatingUpdate: (double value) { },
+                                   // onRatingUpdate: (value) {
+                                   //   setState(() {
+                                   //     _ratingValue = value;
+                                   //   });
+                                   // }
                                  ),
-                               ),
-                             ],
+                                  Text(
+                                    "${usersProfileModel.data!.rating.toString() == 0.0 ? '0.0' : usersProfileModel.data!.rating.toString()}",
+                                   style: TextStyle(
+                                     color: Color(0xffffffff),
+                                     fontFamily: "Outfit",
+                                     fontWeight: FontWeight.w300,
+                                     fontSize: 14,
+                                   ),
+                                 ),
+                               ],
+                             ),
                            ),
                          ],
                        ),

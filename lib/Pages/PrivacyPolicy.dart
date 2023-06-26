@@ -1,5 +1,6 @@
 import 'package:StandMan/Pages/Drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../Models/system_settings_Model.dart';
 import '../Utils/api_urls.dart';
@@ -20,7 +21,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   bool loading = false;
 
   systemSettingApi() async {
-    // try {
+    setState(() {
+      loading = true;
+    });
     String apiUrl = system_settingsModelApiUrl;
     print("api: $apiUrl");
     final response = await http.get(
@@ -32,14 +35,13 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
     final responseString = response.body;
     print("responsesystemSettingApi $responseString");
     print("status Code systemSettingApi: ${response.statusCode}");
-    print("in 200 systemSettingApi");
     if (response.statusCode == 200) {
       systemSettingsModel = systemSettingsModelFromJson(responseString);
-      setState(() {});
       print('systemSettingsModel status: ${systemSettingsModel.status}');
-      print(
-          'getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
-      setState(() {});
+      print('getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
+      setState(() {
+        loading = false;
+      });
     }
     // } catch (e) {
     //   print('Something went wrong = ${e.toString()}');
@@ -86,10 +88,13 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       ),
       body: loading
           ? Center(
-              child: CircularProgressIndicator(color: Colors.blueAccent),
-            )
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      )
           // ? Container(color: Colors.white, width: double.infinity, height: double.infinity, child: Center(child: CircularProgressIndicator(color: Colors.blueAccent)))
-          : systemSettingsModel.data?[20].type != "privacy_text"
+          : systemSettingsModel.data == null
               ? Center(child: Text("No history"))
               : ModalProgressHUD(
                   inAsyncCall: loading,
@@ -98,7 +103,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                   color: Colors.transparent,
                   progressIndicator:
                       CircularProgressIndicator(color: Colors.blue),
-                  child: SafeArea(
+                  child:
+                  SafeArea(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: SingleChildScrollView(
@@ -106,7 +112,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                         child: Column(
                           children: [
                             Text(
-                              "${systemSettingsModel.data?[20].description}",
+                              "${systemSettingsModel.data?[23].description}",
                               //   "Pellentesque suscipit fringilla libero eu ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus."
                               //
                               //   "Pellentesque suscipit fringilla lib\n\nPellentesque suscipit fringilla libero eu ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus."

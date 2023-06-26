@@ -184,6 +184,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
                       name: previousData[i]['users_customers_data'] != null && previousData[i]['users_customers_data']['first_name'] != null ? "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}" : "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}",
                       profilePic: "$baseUrlImage${previousData[i]['users_customers_data'] != null && previousData[i]['users_customers_data']['profile_pic'] != null ? previousData[i]['users_customers_data']['profile_pic'] : previousData[i]['users_customers_data']['profile_pic']}",
                       customerId: "${previousData[i]['users_customers_data']['users_customers_id']}",
+                      // employeeID: "${previousData[i]['employee_data']['users_customers_id']}",
                       status: "${previousData[i]['status']}",
                     ));
                   },

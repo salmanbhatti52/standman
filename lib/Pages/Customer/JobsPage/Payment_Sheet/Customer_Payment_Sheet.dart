@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Models/jobs_customers_complete_Model.dart';
 import '../../../../Utils/api_urls.dart';
+import '../../../../widgets/ToastMessage.dart';
 import '../../../../widgets/TopBar.dart';
 import '../../HomePage/HomePage.dart';
 import '../../HomePage/Paymeny_details.dart';
@@ -29,15 +30,14 @@ Payment({
 }) {
   int _selected = 0;
 
-
-  JobsCustomersCompleteModel jobsCustomersCompleteModel = JobsCustomersCompleteModel();
+  JobsCustomersCompleteModel jobsCustomersCompleteModel =
+      JobsCustomersCompleteModel();
 
   bool progress = false;
 
   jobsCustomersCompleteWidget() async {
     progress = true;
     // setState(() {});
-
 
     print("userCustomerId = ${userCustomerId}");
     print("userEmployeeId ${userEmployeeId}");
@@ -46,20 +46,20 @@ Payment({
     // try {
     String apiUrl = jobsCustomersCompleteModelApiUrl;
     print("jobsCustomersCompleteApi: $apiUrl");
-    final response = await http.post(Uri.parse(apiUrl),
-        body: {
-          "users_customers_id": userCustomerId.toString(),
-          "employee_users_customers_id":userEmployeeId.toString(),
-          "jobs_id":jobId
-        }, headers: {
-          'Accept': 'application/json'
-        });
+    final response = await http.post(Uri.parse(apiUrl), body: {
+      "users_customers_id": userCustomerId.toString(),
+      "employee_users_customers_id": userEmployeeId.toString(),
+      "jobs_id": jobId
+    }, headers: {
+      'Accept': 'application/json'
+    });
     print('${response.statusCode}');
     print(response);
     if (response.statusCode == 200) {
       final responseString = response.body;
       print("jobsCustomersCompleteResponse: ${responseString.toString()}");
-      jobsCustomersCompleteModel = jobsCustomersCompleteModelFromJson(responseString);
+      jobsCustomersCompleteModel =
+          jobsCustomersCompleteModelFromJson(responseString);
       // print("uusersCustomersId ${jobsExtraAmount.message?.usersCustomersId}");
       // print("employeeUsersCustomersId ${jobsExtraAmount.message?.employeeUsersCustomersId}");
       // print("jobsId ${jobsExtraAmount.message?.jobsId}");
@@ -93,7 +93,8 @@ Payment({
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization': 'Bearer sk_test_51MV6RqJ1o3iGht9r8pNwA1f92pJOs9vweMCsMA6HJuTQtCiy0HTlPIAXFiI57ffEiu7EmmmfU0IHbjBGw4k5IliP0017I4MuHw',
+          'Authorization':
+              'Bearer sk_test_51MV6RqJ1o3iGht9r8pNwA1f92pJOs9vweMCsMA6HJuTQtCiy0HTlPIAXFiI57ffEiu7EmmmfU0IHbjBGw4k5IliP0017I4MuHw',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: body,
@@ -108,10 +109,8 @@ Payment({
   }
 
   displayPaymentSheet() async {
-
     try {
-      await Stripe.instance.presentPaymentSheet(
-      ).then((value){
+      await Stripe.instance.presentPaymentSheet().then((value) {
         // showDialog(
         //     context: ctx!,
         //     builder: (_) => AlertDialog(
@@ -139,8 +138,8 @@ Payment({
               alignment: Alignment.topCenter,
               children: [
                 Container(
-                  width: Get.width,//350,
-                  height:  537,
+                  width: Get.width, //350,
+                  height: 537,
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFFF),
                     borderRadius: BorderRadius.circular(32),
@@ -149,7 +148,9 @@ Payment({
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: Get.height * 0.02,),
+                      SizedBox(
+                        height: Get.height * 0.02,
+                      ),
                       const Text(
                         "Job Completed, Amount Paid",
                         style: TextStyle(
@@ -162,18 +163,21 @@ Payment({
                         textAlign: TextAlign.center,
                       ),
                       Container(
-                        width: Get.width * 0.6 , //241,
+                        width: Get.width * 0.6, //241,
                         height: Get.height * 0.095, // 70,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: Color(0xffF3F3F3),
-                          border: Border.all(color: Color(0xffF3F3F3), width: 1),
+                          border:
+                              Border.all(color: Color(0xffF3F3F3), width: 1),
                         ),
-                        child:  Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(width: 5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -194,7 +198,9 @@ Payment({
                                       textAlign: TextAlign.left,
                                     ),
                                     Text(
-                                      jobsCustomersCompleteModel.data!.job!.totalPrice.toString(),
+                                      jobsCustomersCompleteModel
+                                          .data!.job!.totalPrice
+                                          .toString(),
                                       // ' 22.00',
                                       style: TextStyle(
                                         color: Color(0xff2B65EC),
@@ -239,7 +245,7 @@ Payment({
                               ),
                               textAlign: TextAlign.left,
                             ),
-                             Text(
+                            Text(
                               "${jobsCustomersCompleteModel.data!.customer!.firstName} ${jobsCustomersCompleteModel.data!.customer!.lastName}",
                               // "Beby Jovanca",
                               style: TextStyle(
@@ -277,8 +283,8 @@ Payment({
                               ),
                               textAlign: TextAlign.left,
                             ),
-                             Text(
-                               "${jobsCustomersCompleteModel.data!.employee!.firstName} ${jobsCustomersCompleteModel.data!.employee!.lastName}",
+                            Text(
+                              "${jobsCustomersCompleteModel.data!.employee!.firstName} ${jobsCustomersCompleteModel.data!.employee!.lastName}",
                               // "Annette Black",
                               style: TextStyle(
                                 color: Color.fromRGBO(0, 0, 0, 1),
@@ -319,8 +325,8 @@ Payment({
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                 Text(
-                                   "${jobsCustomersCompleteModel.data?.job?.dateAdded}",
+                                Text(
+                                  "${jobsCustomersCompleteModel.data?.job?.dateAdded}",
                                   // "24 Jul 2020",
                                   style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 1),
@@ -348,27 +354,41 @@ Payment({
                           ],
                         ),
                       ),
-                      SizedBox(height: Get.height * 0.02,),
-                      GestureDetector(onTap: (){
-                        Get.to(Customer_Rating(
-                          jobName: "${jobsCustomersCompleteModel.data?.job?.name}",
-                          totalPrice:  "${jobsCustomersCompleteModel.data?.job?.totalPrice}",
-                          address:  "${jobsCustomersCompleteModel.data?.job?.location}",
-                          jobId:  "${jobsCustomersCompleteModel.data?.job?.jobsId}",
-                          completeJobTime:  "${jobsCustomersCompleteModel.data?.job?.dateAdded}",
-                          description:  "${jobsCustomersCompleteModel.data?.job?.description}",
-                          status:  "${jobsCustomersCompleteModel.data?.job?.status}",
-                          customerId: "${jobsCustomersCompleteModel.data?.customer?.usersCustomersId}",
-                          employeeId: "${jobsCustomersCompleteModel.data?.employee?.usersCustomersId}",
-                        ));
-                      },child: mainButton("Add Ratings", Color(0xff2B65EC), context)),
+                      SizedBox(
+                        height: Get.height * 0.02,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Get.to(Customer_Rating(
+                              jobName:
+                                  "${jobsCustomersCompleteModel.data?.job?.name}",
+                              totalPrice:
+                                  "${jobsCustomersCompleteModel.data?.job?.totalPrice}",
+                              address:
+                                  "${jobsCustomersCompleteModel.data?.job?.location}",
+                              jobId:
+                                  "${jobsCustomersCompleteModel.data?.job?.jobsId}",
+                              completeJobTime:
+                                  "${jobsCustomersCompleteModel.data?.job?.dateAdded}",
+                              description:
+                                  "${jobsCustomersCompleteModel.data?.job?.description}",
+                              status:
+                                  "${jobsCustomersCompleteModel.data?.job?.status}",
+                              customerId:
+                                  "${jobsCustomersCompleteModel.data?.customer?.usersCustomersId}",
+                              employeeId:
+                                  "${jobsCustomersCompleteModel.data?.employee?.usersCustomersId}",
+                            ));
+                          },
+                          child: mainButton(
+                              "Add Ratings", Color(0xff2B65EC), context)),
                     ],
                   ),
                 ),
                 Positioned(
                     top: -48,
                     child: Container(
-                      width: Get.width , //106,
+                      width: Get.width, //106,
                       height: Get.height * 0.13, //106,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
@@ -387,19 +407,16 @@ Payment({
         // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("paid successfully")));
 
         paymentIntent = null;
-
-      }).onError((error, stackTrace){
+      }).onError((error, stackTrace) {
         print('Error is:--->$error $stackTrace');
       });
-
-
     } on StripeException catch (e) {
       print('Error is:---> $e');
       showDialog(
           context: ctx!,
           builder: (_) => const AlertDialog(
-            content: Text("Cancelled "),
-          ));
+                content: Text("Cancelled "),
+              ));
     } catch (e) {
       print('$e');
     }
@@ -409,15 +426,15 @@ Payment({
     try {
       paymentIntent = await createPaymentIntent('20', 'USD');
       //Payment Sheet
-      await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-              paymentIntentClientSecret: paymentIntent?['client_secret'],
-              // applePay: const PaymentSheetApplePay(merchantCountryCode: '+92',),
-              // googlePay: const PaymentSheetGooglePay(testEnv: true, currencyCode: "US", merchantCountryCode: "+92"),
-              style: ThemeMode.dark,
-              merchantDisplayName: 'Hammad')).then((value){
-      });
-
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent?['client_secret'],
+                  // applePay: const PaymentSheetApplePay(merchantCountryCode: '+92',),
+                  // googlePay: const PaymentSheetGooglePay(testEnv: true, currencyCode: "US", merchantCountryCode: "+92"),
+                  style: ThemeMode.dark,
+                  merchantDisplayName: 'Hammad'))
+          .then((value) {});
 
       ///now finally display payment sheeet
       displayPaymentSheet();
@@ -425,7 +442,6 @@ Payment({
       print('exception:$e$s');
     }
   }
-
 
   return showFlexibleBottomSheet(
       isExpand: false,
@@ -438,104 +454,285 @@ Payment({
       builder: (context, controller, offset) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter stateSetterObject) {
-              var height = MediaQuery.of(context).size.height;
-              var width = MediaQuery.of(context).size.width;
-              return Container(
-                width: width, //390,
-                height: height * 0.88, // 547,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    topLeft: Radius.circular(30),
+          var height = MediaQuery.of(context).size.height;
+          var width = MediaQuery.of(context).size.width;
+          return Container(
+            width: width, //390,
+            height: height * 0.88, // 547,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+              ),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              child: Column(
+                children: [
+                  paymentBar(
+                    "assets/images/left.svg",
+                    Colors.black,
+                    "Payment",
+                    Colors.black,
+                    "assets/images/info.svg",
+                    () {
+                      Get.back();
+                    },
+                    () {
+                      Payment_Details(ctx: context);
+                    },
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-                  child: Column(
+                  SizedBox(
+                    height: Get.height * 0.035,
+                  ),
+                  Text(
+                    // "\$${price}",
+                    // "\$47.11",
+                    "\$$Price",
+                    style: TextStyle(
+                      color: Color(0xff2B65EC),
+                      fontFamily: "Outfit",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 32,
+                    ),
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.01,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      paymentBar(
-                        "assets/images/left.svg",
-                        Colors.black,
-                        "Payment",
-                        Colors.black,
-                        "assets/images/info.svg",
-                            () {
-                          Get.back();
-                        },
-                            () {
-                          Payment_Details(ctx: context);
-                        },
-                      ),
-                      SizedBox(
-                        height: Get.height * 0.035,
-                      ),
                       Text(
-                        // "\$${price}",
-                        // "\$47.11",
-                        "\$$Price",
+                        "Previous Amount",
                         style: TextStyle(
-                          color: Color(0xff2B65EC),
+                          color: Color(0xff000000),
                           fontFamily: "Outfit",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 32,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
                         ),
                       ),
                       SizedBox(
-                        height: Get.height * 0.01,
+                        width: Get.width * 0.12,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Previous Amount",
-                            style: TextStyle(
-                              color: Color(0xff000000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
+                      Text(
+                        "\$$PreviousAmount",
+                        style: TextStyle(
+                          color: Color(0xff000000),
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 1,
+                    child: "$ExtraAmount" == 0
+                        ? Container(
+                            height: 1,
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Extra Amount",
+                                  style: TextStyle(
+                                    color: Color(0xff000000),
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: Get.width * 0.12,
+                                ),
+                                Text(
+                                  "\$$ExtraAmount",
+                                  style: TextStyle(
+                                    color: Color(0xff000000),
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(
-                            width: Get.width * 0.12,
-                          ),
-                          Text(
-                            "\$$PreviousAmount",
-                            style: TextStyle(
-                              color: Color(0xff000000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 2.0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Text(
+                  //         "Extra Amount",
+                  //         style: TextStyle(
+                  //           color: Color(0xff000000),
+                  //           fontFamily: "Outfit",
+                  //           fontWeight: FontWeight.w300,
+                  //           fontSize: 14,
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         width: Get.width * 0.12,
+                  //       ),
+                  //       Text(
+                  //         "\$$ExtraAmount",
+                  //         style: TextStyle(
+                  //           color: Color(0xff000000),
+                  //           fontFamily: "Outfit",
+                  //           fontWeight: FontWeight.w300,
+                  //           fontSize: 14,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Service Charges",
+                        style: TextStyle(
+                          color: Color(0xff000000),
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
+                        ),
                       ),
-                      Container(
-                        height: 1,
-                        child: "$ExtraAmount" == 0 ? Container(
-                          height: 1,
-                        ) : Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2.0),
-                          child: Row(
+                      SizedBox(
+                        width: Get.width * 0.10,
+                      ),
+                      Text(
+                        "\$$ServiceCharges",
+                        style: TextStyle(
+                          color: Color(0xff000000),
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0, bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Tax",
+                          style: TextStyle(
+                            color: Color(0xff000000),
+                            fontFamily: "Outfit",
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(
+                          width: Get.width * 0.3,
+                        ),
+                        Text(
+                          "\$$Tax",
+                          style: TextStyle(
+                            color: Color(0xff000000),
+                            fontFamily: "Outfit",
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Booked time",
+                        style: TextStyle(
+                          color: Color(0xffC70000),
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
+                        ),
+                      ),
+                      SizedBox(
+                        width: Get.width * 0.15,
+                      ),
+                      Text(
+                        // "12:00-13:00",
+                        "$BookedTime",
+                        style: TextStyle(
+                          color: Color(0xffC70000),
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Booked Closed",
+                        style: TextStyle(
+                          color: Color(0xffC70000),
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
+                        ),
+                      ),
+                      SizedBox(
+                        width: Get.width * 0.23,
+                      ),
+                      Text(
+                        // "13:45",
+                        "$BookedClosed",
+                        style: TextStyle(
+                          color: Color(0xffC70000),
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 1,
+                    child: "$ExtraTime" == 0
+                        ? Container(
+                            height: 1,
+                          )
+                        : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Extra Amount",
+                                "Extra time",
                                 style: TextStyle(
-                                  color: Color(0xff000000),
+                                  color: Color(0xffC70000),
                                   fontFamily: "Outfit",
                                   fontWeight: FontWeight.w300,
                                   fontSize: 14,
                                 ),
                               ),
                               SizedBox(
-                                width: Get.width * 0.12,
+                                width: Get.width * 0.34,
                               ),
                               Text(
-                                "\$$ExtraAmount",
+                                // "45",
+                                "$ExtraTime",
                                 style: TextStyle(
-                                  color: Color(0xff000000),
+                                  color: Color(0xffC70000),
                                   fontFamily: "Outfit",
                                   fontWeight: FontWeight.w300,
                                   fontSize: 14,
@@ -543,461 +740,309 @@ Payment({
                               ),
                             ],
                           ),
-                        ),
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.012,
+                  ),
+                  Text(
+                    "Base rate - \$21/hour (0.35¢/minute)",
+                    style: TextStyle(
+                      color: Color(0xff000000),
+                      fontFamily: "Outfit",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3.0),
+                    child: Text(
+                      'Service fee - 10% from the "Customer" and "StandMan"',
+                      style: TextStyle(
+                        color: Color(0xff000000),
+                        fontFamily: "Outfit",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       Text(
-                      //         "Extra Amount",
-                      //         style: TextStyle(
-                      //           color: Color(0xff000000),
-                      //           fontFamily: "Outfit",
-                      //           fontWeight: FontWeight.w300,
-                      //           fontSize: 14,
-                      //         ),
-                      //       ),
-                      //       SizedBox(
-                      //         width: Get.width * 0.12,
-                      //       ),
-                      //       Text(
-                      //         "\$$ExtraAmount",
-                      //         style: TextStyle(
-                      //           color: Color(0xff000000),
-                      //           fontFamily: "Outfit",
-                      //           fontWeight: FontWeight.w300,
-                      //           fontSize: 14,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Service Charges",
-                            style: TextStyle(
-                              color: Color(0xff000000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(
-                            width: Get.width * 0.10,
-                          ),
-                          Text(
-                            "\$$ServiceCharges",
-                            style: TextStyle(
-                              color: Color(0xff000000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2.0, bottom: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Tax",
-                              style: TextStyle(
-                                color: Color(0xff000000),
-                                fontFamily: "Outfit",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(
-                              width: Get.width * 0.3,
-                            ),
-                            Text(
-                              "\$$Tax",
-                              style: TextStyle(
-                                color: Color(0xff000000),
-                                fontFamily: "Outfit",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Booked time",
-                            style: TextStyle(
-                              color: Color(0xffC70000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(
-                            width: Get.width * 0.15,
-                          ),
-                          Text(
-                            // "12:00-13:00",
-                            "$BookedTime",
-                            style: TextStyle(
-                              color: Color(0xffC70000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Booked Closed",
-                            style: TextStyle(
-                              color: Color(0xffC70000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(
-                            width: Get.width * 0.23,
-                          ),
-                          Text(
-                            // "13:45",
-                            "$BookedClosed",
-                            style: TextStyle(
-                              color: Color(0xffC70000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 1,
-                        child: "$ExtraTime" == 0 ?
-                            Container(height: 1,): Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Extra time",
-                              style: TextStyle(
-                                color: Color(0xffC70000),
-                                fontFamily: "Outfit",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(
-                              width: Get.width * 0.34,
-                            ),
-                            Text(
-                              // "45",
-                              "$ExtraTime",
-                              style: TextStyle(
-                                color: Color(0xffC70000),
-                                fontFamily: "Outfit",
-                                fontWeight: FontWeight.w300,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: Get.height * 0.012,
-                      ),
-                      Text(
-                        "Base rate - \$21/hour (0.35¢/minute)",
+                    ),
+                  ),
+                  Text(
+                    "Tax - 13%",
+                    style: TextStyle(
+                      color: Color(0xff000000),
+                      fontFamily: "Outfit",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.023,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Choose payment method",
                         style: TextStyle(
-                          color: Color(0xff000000),
+                          color: Color.fromRGBO(0, 0, 0, 1),
                           fontFamily: "Outfit",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          // letterSpacing: -0.3,
                         ),
+                        textAlign: TextAlign.left,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3.0),
-                        child: Text(
-                          'Service fee - 10% from the "Customer" and "StandMan"',
-                          style: TextStyle(
-                            color: Color(0xff000000),
-                            fontFamily: "Outfit",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Tax - 13%",
-                        style: TextStyle(
-                          color: Color(0xff000000),
-                          fontFamily: "Outfit",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      SizedBox(
-                        height: Get.height * 0.023,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Choose payment method",
-                            style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontFamily: "Outfit",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              // letterSpacing: -0.3,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: height * 0.015,
-                      ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     stateSetterObject(() {
-                      //       // _saveData();
-                      //       _selected = 1;
-                      //     });
-                      //   },
-                      //   child: Container(
-                      //     width: width * 0.9, // 350,
-                      //     height: height * 0.09, // 70,
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(12),
-                      //       border: Border.all(
-                      //           color: _selected == 1
-                      //               ? Color(0xffFF9900)
-                      //               : Color(0xffF3F3F3),
-                      //           width: 1),
-                      //     ),
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      //       child: Row(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         children: [
-                      //           Container(
-                      //             width: 52,
-                      //             height: 52,
-                      //             decoration: BoxDecoration(
-                      //               borderRadius: BorderRadius.circular(10),
-                      //               color: Color(0xffF2F4F9),
-                      //             ),
-                      //             child: Center(
-                      //                 child: SvgPicture.asset(
-                      //               'assets/images/card.svg',
-                      //             )),
-                      //           ),
-                      //           Column(
-                      //             mainAxisAlignment: MainAxisAlignment.center,
-                      //             crossAxisAlignment: CrossAxisAlignment.start,
-                      //             children: [
-                      //               const Text(
-                      //                 "Mastercard",
-                      //                 style: TextStyle(
-                      //                   color: Color.fromRGBO(0, 0, 0, 1),
-                      //                   fontFamily: "Outfit",
-                      //                   fontSize: 14,
-                      //                   fontWeight: FontWeight.w500,
-                      //                   // letterSpacing: -0.3,
-                      //                 ),
-                      //                 textAlign: TextAlign.left,
-                      //               ),
-                      //               const Text(
-                      //                 "6895 3526 8456 ****",
-                      //                 style: TextStyle(
-                      //                   color: Color(0xffA7A9B7),
-                      //                   fontFamily: "Outfit",
-                      //                   fontSize: 14,
-                      //                   fontWeight: FontWeight.w300,
-                      //                   // letterSpacing: -0.3,
-                      //                 ),
-                      //                 textAlign: TextAlign.left,
-                      //               ),
-                      //             ],
-                      //           ),
-                      //           SizedBox(
-                      //             width: width * 0.2,
-                      //           ),
-                      //           SvgPicture.asset(
-                      //             _selected == 1
-                      //                 ? "assets/images/Ring.svg"
-                      //                 : "assets/images/Ring2.svg",
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     stateSetterObject(() {
-                      //       // _saveData();
-                      //       _selected = 2;
-                      //     });
-                      //   },
-                      //   child: Padding(
-                      //     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      //     child: Container(
-                      //       width: width * 0.9, // 350,
-                      //       height: height * 0.09, // 70,
-                      //       decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(12),
-                      //         border: Border.all(
-                      //             color: _selected == 2
-                      //                 ? Color(0xffFF9900)
-                      //                 : Color(0xffF3F3F3),
-                      //             width: 1),
-                      //       ),
-                      //       child: Padding(
-                      //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      //         child: Row(
-                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //           children: [
-                      //             Container(
-                      //               width: 52,
-                      //               height: 52,
-                      //               decoration: BoxDecoration(
-                      //                 borderRadius: BorderRadius.circular(10),
-                      //                 color: Color(0xffF2F4F9),
-                      //               ),
-                      //               child: Center(
-                      //                   child: SvgPicture.asset(
-                      //                 'assets/images/visa.svg',
-                      //               )),
-                      //             ),
-                      //             Column(
-                      //               mainAxisAlignment: MainAxisAlignment.center,
-                      //               crossAxisAlignment: CrossAxisAlignment.start,
-                      //               children: [
-                      //                 const Text(
-                      //                   "Visa Pay",
-                      //                   style: TextStyle(
-                      //                     color: Color.fromRGBO(0, 0, 0, 1),
-                      //                     fontFamily: "Outfit",
-                      //                     fontSize: 14,
-                      //                     fontWeight: FontWeight.w500,
-                      //                     // letterSpacing: -0.3,
-                      //                   ),
-                      //                   textAlign: TextAlign.left,
-                      //                 ),
-                      //                 const Text(
-                      //                   "6895 3526 8456 ****",
-                      //                   style: TextStyle(
-                      //                     color: Color(0xffA7A9B7),
-                      //                     fontFamily: "Outfit",
-                      //                     fontSize: 14,
-                      //                     fontWeight: FontWeight.w300,
-                      //                     // letterSpacing: -0.3,
-                      //                   ),
-                      //                   textAlign: TextAlign.left,
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //             SizedBox(
-                      //               width: width * 0.2,
-                      //             ),
-                      //             SvgPicture.asset(
-                      //               _selected == 2
-                      //                   ? "assets/images/Ring.svg"
-                      //                   : "assets/images/Ring2.svg",
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // GestureDetector(
-                      //   onTap: () {},
-                      //   child: Container(
-                      //     width: width * 0.9, // 350,
-                      //     height: height * 0.06, // 70,
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(12),
-                      //       border: Border.all(color: Color(0xffF3F3F3), width: 1),
-                      //     ),
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.start,
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: [
-                      //         // SvgPicture.asset(
-                      //         //   'assets/images/Addc.svg',
-                      //         // ),
-                      //         Padding(
-                      //           padding:
-                      //               const EdgeInsets.symmetric(horizontal: 10.0),
-                      //           child: Container(
-                      //             width: 20,
-                      //             height: 20,
-                      //             decoration: BoxDecoration(
-                      //               shape: BoxShape.circle,
-                      //               color: Color.fromRGBO(0, 53, 136, 1),
-                      //             ),
-                      //             child: Center(
-                      //               child: Icon(
-                      //                 Icons.add,
-                      //                 color: Colors.white,
-                      //                 size: 15,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Text(
-                      //           "Add New Payment Method",
-                      //           style: TextStyle(
-                      //             color: Color.fromRGBO(0, 0, 0, 1),
-                      //             fontFamily: "Outfit",
-                      //             fontSize: 14,
-                      //             fontWeight: FontWeight.w500,
-                      //             // letterSpacing: -0.3,
-                      //           ),
-                      //           textAlign: TextAlign.left,
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                      // GestureDetector(onTap: ()async {
-                      //   // final paymentMethod = await Stripe.instance.createPaymentMethod(
-                      //   //     params: const PaymentMethodParams.card(
-                      //   //         paymentMethodData: PaymentMethodData()));
-                      //   await makePayment();
-                      // },child: mainButton("Pay With Stripe", Colors.blueAccent, context)),
-                      SizedBox(
-                        height: height * 0.04,
-                      ),
-                      GestureDetector(
-                          onTap: () async {
-                         await   jobsCustomersCompleteWidget();
-                            await makePayment();
-                      }
-                          ,child: mainButton("Pay", Color(0xff2B65EC), context),),
                     ],
                   ),
-                ),
-              );
-            });
+                  SizedBox(
+                    height: height * 0.015,
+                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     stateSetterObject(() {
+                  //       // _saveData();
+                  //       _selected = 1;
+                  //     });
+                  //   },
+                  //   child: Container(
+                  //     width: width * 0.9, // 350,
+                  //     height: height * 0.09, // 70,
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //       border: Border.all(
+                  //           color: _selected == 1
+                  //               ? Color(0xffFF9900)
+                  //               : Color(0xffF3F3F3),
+                  //           width: 1),
+                  //     ),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         children: [
+                  //           Container(
+                  //             width: 52,
+                  //             height: 52,
+                  //             decoration: BoxDecoration(
+                  //               borderRadius: BorderRadius.circular(10),
+                  //               color: Color(0xffF2F4F9),
+                  //             ),
+                  //             child: Center(
+                  //                 child: SvgPicture.asset(
+                  //               'assets/images/card.svg',
+                  //             )),
+                  //           ),
+                  //           Column(
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             children: [
+                  //               const Text(
+                  //                 "Mastercard",
+                  //                 style: TextStyle(
+                  //                   color: Color.fromRGBO(0, 0, 0, 1),
+                  //                   fontFamily: "Outfit",
+                  //                   fontSize: 14,
+                  //                   fontWeight: FontWeight.w500,
+                  //                   // letterSpacing: -0.3,
+                  //                 ),
+                  //                 textAlign: TextAlign.left,
+                  //               ),
+                  //               const Text(
+                  //                 "6895 3526 8456 ****",
+                  //                 style: TextStyle(
+                  //                   color: Color(0xffA7A9B7),
+                  //                   fontFamily: "Outfit",
+                  //                   fontSize: 14,
+                  //                   fontWeight: FontWeight.w300,
+                  //                   // letterSpacing: -0.3,
+                  //                 ),
+                  //                 textAlign: TextAlign.left,
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           SizedBox(
+                  //             width: width * 0.2,
+                  //           ),
+                  //           SvgPicture.asset(
+                  //             _selected == 1
+                  //                 ? "assets/images/Ring.svg"
+                  //                 : "assets/images/Ring2.svg",
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     stateSetterObject(() {
+                  //       // _saveData();
+                  //       _selected = 2;
+                  //     });
+                  //   },
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  //     child: Container(
+                  //       width: width * 0.9, // 350,
+                  //       height: height * 0.09, // 70,
+                  //       decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(12),
+                  //         border: Border.all(
+                  //             color: _selected == 2
+                  //                 ? Color(0xffFF9900)
+                  //                 : Color(0xffF3F3F3),
+                  //             width: 1),
+                  //       ),
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Container(
+                  //               width: 52,
+                  //               height: 52,
+                  //               decoration: BoxDecoration(
+                  //                 borderRadius: BorderRadius.circular(10),
+                  //                 color: Color(0xffF2F4F9),
+                  //               ),
+                  //               child: Center(
+                  //                   child: SvgPicture.asset(
+                  //                 'assets/images/visa.svg',
+                  //               )),
+                  //             ),
+                  //             Column(
+                  //               mainAxisAlignment: MainAxisAlignment.center,
+                  //               crossAxisAlignment: CrossAxisAlignment.start,
+                  //               children: [
+                  //                 const Text(
+                  //                   "Visa Pay",
+                  //                   style: TextStyle(
+                  //                     color: Color.fromRGBO(0, 0, 0, 1),
+                  //                     fontFamily: "Outfit",
+                  //                     fontSize: 14,
+                  //                     fontWeight: FontWeight.w500,
+                  //                     // letterSpacing: -0.3,
+                  //                   ),
+                  //                   textAlign: TextAlign.left,
+                  //                 ),
+                  //                 const Text(
+                  //                   "6895 3526 8456 ****",
+                  //                   style: TextStyle(
+                  //                     color: Color(0xffA7A9B7),
+                  //                     fontFamily: "Outfit",
+                  //                     fontSize: 14,
+                  //                     fontWeight: FontWeight.w300,
+                  //                     // letterSpacing: -0.3,
+                  //                   ),
+                  //                   textAlign: TextAlign.left,
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             SizedBox(
+                  //               width: width * 0.2,
+                  //             ),
+                  //             SvgPicture.asset(
+                  //               _selected == 2
+                  //                   ? "assets/images/Ring.svg"
+                  //                   : "assets/images/Ring2.svg",
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {},
+                  //   child: Container(
+                  //     width: width * 0.9, // 350,
+                  //     height: height * 0.06, // 70,
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //       border: Border.all(color: Color(0xffF3F3F3), width: 1),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.start,
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         // SvgPicture.asset(
+                  //         //   'assets/images/Addc.svg',
+                  //         // ),
+                  //         Padding(
+                  //           padding:
+                  //               const EdgeInsets.symmetric(horizontal: 10.0),
+                  //           child: Container(
+                  //             width: 20,
+                  //             height: 20,
+                  //             decoration: BoxDecoration(
+                  //               shape: BoxShape.circle,
+                  //               color: Color.fromRGBO(0, 53, 136, 1),
+                  //             ),
+                  //             child: Center(
+                  //               child: Icon(
+                  //                 Icons.add,
+                  //                 color: Colors.white,
+                  //                 size: 15,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         Text(
+                  //           "Add New Payment Method",
+                  //           style: TextStyle(
+                  //             color: Color.fromRGBO(0, 0, 0, 1),
+                  //             fontFamily: "Outfit",
+                  //             fontSize: 14,
+                  //             fontWeight: FontWeight.w500,
+                  //             // letterSpacing: -0.3,
+                  //           ),
+                  //           textAlign: TextAlign.left,
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // GestureDetector(onTap: ()async {
+                  //   // final paymentMethod = await Stripe.instance.createPaymentMethod(
+                  //   //     params: const PaymentMethodParams.card(
+                  //   //         paymentMethodData: PaymentMethodData()));
+                  //   await makePayment();
+                  // },child: mainButton("Pay With Stripe", Colors.blueAccent, context)),
+                  SizedBox(
+                    height: height * 0.04,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+
+                      stateSetterObject(() {
+                        progress = true;
+                      });
+
+                      await jobsCustomersCompleteWidget();
+                      await makePayment();
+
+                      if (jobsCustomersCompleteModel.status == "success") {
+                        Future.delayed(const Duration(seconds: 0), () {
+                          stateSetterObject(() {
+                            progress = false;
+                          });
+                          print("false: $progress");
+                        });
+                      } else {
+                        toastFailedMessage(
+                            jobsCustomersCompleteModel.message, Colors.red);
+                        stateSetterObject(() {
+                          progress = false;
+                        });
+                      }
+                    },
+                    child: progress
+                        ? loadingBar(context)
+                        : mainButton("Pay", Color(0xff2B65EC), context),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
       });
 }

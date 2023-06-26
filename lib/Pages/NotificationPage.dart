@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../widgets/TopBar.dart';
@@ -17,35 +20,71 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
 
-  NotificationsModel notificationsModel = NotificationsModel();
-  bool loading = false;
+  // NotificationsModel notificationsModel = NotificationsModel();
+  // bool loading = false;
+
+  // notificationApi() async {
+  //   prefs = await SharedPreferences.getInstance();
+  //   usersCustomersId = prefs!.getString('usersCustomersId');
+  //   print("usersCustomersId = $usersCustomersId");
+  //   String apiUrl = notificationsModelApiUrl;
+  //   print("working");
+  //   final response = await http.post(
+  //     Uri.parse(apiUrl),
+  //     headers: {"Accept": "application/json"},
+  //     body: {
+  //       "users_customers_id": usersCustomersId,
+  //     },
+  //   );
+  //   final responseString = response.body;
+  //   print("notificationsModelApiUrl: ${response.body}");
+  //   print("status Code notificationsModel: ${response.statusCode}");
+  //   print("in 200 notificationsModel");
+  //   if (response.statusCode == 200) {
+  //     notificationsModel = notificationsModelFromJson(responseString);
+  //     // setState(() {});
+  //     print('notificationsModel status: ${notificationsModel.status}');
+  //     setState(() {});
+  //     // print('notificationsModel message: ${notificationsModel.data?[0].message}');
+  //   }
+  //
+  // }
+
+  bool isLoading = false;
+  List customerNotifications = [];
 
   notificationApi() async {
+    setState(() {
+      isLoading = true;
+    });
     prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('usersCustomersId');
-    print("usersCustomersId = $usersCustomersId");
-    String apiUrl = notificationsModelApiUrl;
-    print("working");
-    final response = await http.post(
-      Uri.parse(apiUrl),
+      usersCustomersId = prefs!.getString('usersCustomersId');
+      print("usersCustomersId = $usersCustomersId");
+
+    http.Response response = await http.post(
+      Uri.parse(notificationsModelApiUrl),
       headers: {"Accept": "application/json"},
       body: {
         "users_customers_id": usersCustomersId,
       },
     );
-    final responseString = response.body;
-    print("notificationsModelApiUrl: ${response.body}");
-    print("status Code notificationsModel: ${response.statusCode}");
-    print("in 200 notificationsModel");
-    if (response.statusCode == 200) {
-      notificationsModel = notificationsModelFromJson(responseString);
-      // setState(() {});
-      print('notificationsModel status: ${notificationsModel.status}');
-      setState(() {});
-      // print('notificationsModel message: ${notificationsModel.data?[0].message}');
-    }
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
 
+          customerNotifications = jsonResponse['data'];
+
+          print("Employee: $customerNotifications");
+
+          isLoading = false;
+        } else {
+          print("Response Body :: ${response.body}");
+        }
+      });
+    }
   }
+
 
 
   @override
@@ -68,12 +107,17 @@ class _NotificationPageState extends State<NotificationPage> {
         iconcolor: Colors.black,
       ),
       backgroundColor: Colors.white,
-      body: loading
-          ? Center(child: CircularProgressIndicator(color: Colors.blueAccent))
-          : notificationsModel.data?.length == null
+      body: isLoading
+          ? Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      )
+          : customerNotifications.length == null
               ? Center(child: Text("No history"))
               : ModalProgressHUD(
-                  inAsyncCall: loading,
+                  inAsyncCall: isLoading,
                   opacity: 0.02,
                   blur: 0.5,
                   color: Colors.transparent,
@@ -90,18 +134,18 @@ class _NotificationPageState extends State<NotificationPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "Today",
-                                  style: TextStyle(
-                                    fontFamily: "Outfit",
-                                    color: Color(0xffA7A9B7),
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 8.0),
+                              //   child: Text(
+                              //     "Today",
+                              //     style: TextStyle(
+                              //       fontFamily: "Outfit",
+                              //       color: Color(0xffA7A9B7),
+                              //       fontWeight: FontWeight.w300,
+                              //       fontSize: 12,
+                              //     ),
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 0, vertical: 15),
@@ -112,7 +156,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                       physics: ScrollPhysics(),
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
-                                      itemCount: notificationsModel.data?.length,
+                                      itemCount: customerNotifications.length,
                                       // itemCount: _separateData(),
                                       // messagesList.length,
                                       itemBuilder:
@@ -135,29 +179,13 @@ class _NotificationPageState extends State<NotificationPage> {
                                                       children: [
                                                         CircleAvatar(
                                                           // radius: (screenWidth > 600) ? 90 : 70,
-                                                          //   radius: 50,
-                                                            backgroundColor:
-                                                            Colors.transparent,
-                                                            backgroundImage: notificationsModel
-                                                                .data?[
-                                                            index]
-                                                                .notificationSender
-                                                                .toString() ==
-                                                                null
-                                                                ? Image.asset(
-                                                                "assets/images/person2.png")
-                                                                .image
-                                                                : NetworkImage(baseUrlImage +
-                                                                notificationsModel
-                                                                    .data![
-                                                                index]
-                                                                    .notificationSender!
-                                                                    .profilePic
-                                                                    .toString())
-                                                          // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
-
-                                                        ),
-                                                        SizedBox(
+                                                          // radius: 50,
+                                                          backgroundColor: Colors.transparent,
+                                                          backgroundImage: (customerNotifications[index]['notification_sender'] != null &&
+                                                              customerNotifications[index]['notification_sender']['profile_pic'] != null)
+                                                              ? NetworkImage(baseUrlImage+customerNotifications[index]['notification_sender']['profile_pic'])
+                                                              : AssetImage("assets/images/person2.png") as ImageProvider<Object>,
+                                                        ),                                                        SizedBox(
                                                           width: 10,
                                                         ),
                                                         Column(
@@ -167,7 +195,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                           children: [
                                                             Text(
                                                               // messagesList[index].title,
-                                                              "${notificationsModel.data?[index].notificationSender?.firstName} ${notificationsModel.data?[index].notificationSender?.lastName}",
+                                                              "${customerNotifications[index]['notification_sender']['first_name']} ${customerNotifications[index]['notification_sender']['last_name']}",
                                                               style:
                                                               const TextStyle(
                                                                 color:
@@ -190,7 +218,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                                   5.0),
                                                               child: Text(
                                                                 // messagesList[index].subTitle,
-                                                                "${notificationsModel.data?[index].message}",
+                                                                "${customerNotifications[index]['message']}",
                                                                 style:
                                                                 const TextStyle(
                                                                   color: Color
@@ -215,7 +243,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                   Container(
                                                     width: 110,
                                                     child: AutoSizeText(
-                                                      "${notificationsModel.data?[index].dateAdded}",
+                                                      "${customerNotifications[index]['date_added']}",
                                                       // '3:74 Pm',
                                                       style: TextStyle(
                                                         color: Color(

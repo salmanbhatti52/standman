@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/empolyee_wallet_txn_Model.dart';
 import '../../../Utils/api_urls.dart';
@@ -25,6 +26,9 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
   bool loading = false;
 
   employeeWalletTxn() async {
+    setState(() {
+      loading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("userId = $usersCustomersId");
@@ -216,7 +220,12 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                     ),
                     Container(
                       child: loading
-                          ? Center(child: CircularProgressIndicator())
+                          ? Center(
+                        child: Lottie.asset(
+                          "assets/images/loading.json",
+                          height: 50,
+                        ),
+                      )
                           : empolyeeWalletTxnModel
                           .data?.transactionHistory?.length ==
                           null

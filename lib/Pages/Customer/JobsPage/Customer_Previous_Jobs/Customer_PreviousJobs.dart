@@ -197,14 +197,14 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                                         //   radius: 50,
                                         backgroundColor: Colors.transparent,
                                         backgroundImage: previousData[i]
-                                                        ['users_customers_data']
+                                                        ['users_employee_data']
                                                     ['profile_pic'] ==
                                                 null
                                             ? Image.asset(
                                                     "assets/images/person2.png")
                                                 .image
                                             : NetworkImage(baseUrlImage +
-                                                previousData[i]['users_customers_data']
+                                                previousData[i]['users_employee_data']
                                                     ['profile_pic'])
                                         // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
@@ -222,7 +222,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                                         children: [
                                           Text(
                                             // 'Wade Warren',
-                                            "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}",
+                                            "${previousData[i]['users_employee_data']['first_name']} ${previousData[i]['users_employee_data']['last_name']}",
                                             // "${previousJobsController.getPreviousJobsModel.data?[index].usersCustomersData?.firstName} ${previousJobsController.getPreviousJobsModel.data?[index].usersCustomersData?.lastName}",
                                             // "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
                                             style: TextStyle(

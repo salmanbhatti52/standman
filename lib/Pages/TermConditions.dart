@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../Models/system_settings_Model.dart';
 import '../Utils/api_urls.dart';
@@ -19,6 +20,9 @@ class _TermsandConditionsState extends State<TermsandConditions> {
 
   systemSettingApi() async {
     // try {
+    setState(() {
+      loading = true;
+    });
     String apiUrl = system_settingsModelApiUrl;
     print("api: $apiUrl");
     final response = await http.get(
@@ -37,7 +41,9 @@ class _TermsandConditionsState extends State<TermsandConditions> {
       print('systemSettingsModel status: ${systemSettingsModel.status}');
       print(
           'getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
-      setState(() {});
+      setState(() {
+        loading = false;
+      });
     }
 
   }
@@ -80,8 +86,13 @@ class _TermsandConditionsState extends State<TermsandConditions> {
         ),
       ),
       body: loading
-          ? Center(child: CircularProgressIndicator(color: Colors.blueAccent))
-          : systemSettingsModel.data?[17].type != "terms_text"
+          ? Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      )
+          : systemSettingsModel.data == null
               ? Center(
                   child: Text("No history"),
                 )

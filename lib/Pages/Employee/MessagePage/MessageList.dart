@@ -2,6 +2,7 @@ import 'package:StandMan/Pages/Employee/HomePage/EmpHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/get_allCaht_Model.dart';
@@ -31,7 +32,9 @@ class _EmpMessagesListsState extends State<EmpMessagesLists> {
 
   getAllChat() async {
 
-
+setState(() {
+  progress = true;
+});
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -54,6 +57,7 @@ class _EmpMessagesListsState extends State<EmpMessagesLists> {
       print("getAllChatResponse: ${responseString.toString()}");
       getAllChatModel = getAllCahtModelFromJson(responseString);
       setState(() {
+        progress = false;
       });
 
     }
@@ -85,8 +89,11 @@ class _EmpMessagesListsState extends State<EmpMessagesLists> {
               height: height * 0.80, //88,
               child: progress
                   ? Center(
-                      child:
-                          CircularProgressIndicator(color: Colors.blueAccent))
+                child: Lottie.asset(
+                  "assets/images/loading.json",
+                  height: 50,
+                ),
+              )
                   : getAllChatModel.status != "success"
                       ? Center(
                           child: Text('no Chat available...',

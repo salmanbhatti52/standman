@@ -198,7 +198,7 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                       children: [
                         Stack(
                           children: [
-                            Image.network("${widget.image}"),
+                            ClipRRect(borderRadius: BorderRadius.circular(10),child: Image.network("${widget.image}")),
                             Positioned(
                                 bottom: 10,
                                 left: 10,

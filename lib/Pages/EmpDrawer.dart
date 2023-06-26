@@ -109,7 +109,7 @@ class _EmpDrawerState extends State<EmpDrawer> {
       )
         : usersProfileModel.status != "success"
         ? Center(
-        child: Text('no data found...',
+        child: Text('',
             style: TextStyle(fontWeight: FontWeight.bold)))
         :
     Drawer(
@@ -257,8 +257,28 @@ class _EmpDrawerState extends State<EmpDrawer> {
                 ),
               ),
             ),
+            GestureDetector(
+              onTap: (){
+                // Get.to(TermsandConditions());
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: ListTile(
+                  leading: Image.asset("assets/images/customer.png", color: Colors.grey, width: 30,),
+                  title: Text(
+                    "Customer Services",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Outfit",
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
-              height: height * 0.2,
+              height: height * 0.18,
             ),
             GestureDetector(
               onTap: (){

@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../../../widgets/AppBar.dart';
 import '../../Drawer.dart';
 import '../../EmpDrawer.dart';
+import '../../Emp_notification.dart';
 import 'MessageList.dart';
 
 class EmpMessagePage extends StatefulWidget {
@@ -41,10 +44,15 @@ class _EmpMessagePageState extends State<EmpMessagePage> {
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0, top: 0.0),
-            child: SvgPicture.asset(
-              'assets/images/notificationalert.svg',
+          GestureDetector(
+            onTap: (){
+              Get.to(EmpNotificationPage());
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0, top: 0.0),
+              child: SvgPicture.asset(
+                'assets/images/notificationalert.svg',
+              ),
             ),
           ),
         ],

@@ -25,7 +25,7 @@ class _SearchScreenState extends State<SearchScreen> {
   bool loading = false;
 
   searchJobsWidget() async {
-    // try {
+
     String apiUrl = searchJobsCustomersApiUrl;
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');

@@ -1,6 +1,7 @@
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/all_ratings_Model.dart';
 import '../../../Utils/api_urls.dart';
@@ -18,6 +19,9 @@ class _RatingProfileState extends State<RatingProfile> {
   bool loading = false;
 
   allJobRating() async {
+    setState(() {
+      loading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("userId = $usersCustomersId");
@@ -37,6 +41,7 @@ class _RatingProfileState extends State<RatingProfile> {
     if (response.statusCode == 200) {
       allRatingsModel = allRatingsModelFromJson(responseString);
       setState(() {
+        loading = false;
       });
 
       // setState(() {});
@@ -59,7 +64,12 @@ class _RatingProfileState extends State<RatingProfile> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Container(
-      child: loading ? Center(child: CircularProgressIndicator()) :
+      child: loading ?Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      ):
 
       allRatingsModel.data?.length == null?
         Center(child:  Text("No Ratings"))

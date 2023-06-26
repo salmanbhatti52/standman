@@ -44,6 +44,9 @@ class _Customer_RatingState extends State<Customer_Rating> {
 
   bool loading = false;
   addJobRating() async {
+    setState(() {
+      loading = true;
+    });
     String apiUrl = addJobRatingModelApiUrl;
     print("working");
     final response = await http.post(
@@ -70,21 +73,6 @@ class _Customer_RatingState extends State<Customer_Rating> {
         loading = false;
       });
     }
-    Future.delayed(const Duration(seconds: 1),
-            () {
-          if(addJobRatingModel.status == "success"){
-            toastSuccessMessage("Add Rating Successfully", Colors.green);
-            Get.to(Customer_Profile(
-              customerId: widget.customerId.toString(),
-              employeeId: widget.employeeId.toString(),
-             rating: "${addJobRatingModel.data?.jobRated?.rating}",
-              profilePic: "$baseUrlImage${addJobRatingModel.data?.userData?.profilePic}",
-              name: "${addJobRatingModel.data?.userData?.firstName} ${addJobRatingModel.data?.userData?.lastName}",
-            ));
-          } else{
-            toastFailedMessage("Something Went Wrong", Colors.red);
-          }
-        });
     // Get.to(Customer_Profile());
   }
 
@@ -356,7 +344,7 @@ class _Customer_RatingState extends State<Customer_Rating> {
                         height: height * 0.03,
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () async {
                           if (key.currentState!.validate()) {
                             if (  _ratingValue == null) {
                               toastFailedMessage(
@@ -365,14 +353,33 @@ class _Customer_RatingState extends State<Customer_Rating> {
                               toastFailedMessage(
                                   'Please Add Comment', Colors.red);
                             } else {
-                              addJobRating();
+                             await  addJobRating();
+
+
+                             if(addJobRatingModel.status == "success"){
+                               Future.delayed(const Duration(seconds: 1),
+                                       () {
+                                     if(addJobRatingModel.status == "success"){
+                                       toastSuccessMessage("Add Rating Successfully", Colors.green);
+                                       Get.to(Customer_Profile(
+                                         customerId: widget.customerId.toString(),
+                                         employeeId: widget.employeeId.toString(),
+                                         rating: "${addJobRatingModel.data?.jobRated?.rating}",
+                                         profilePic: "$baseUrlImage${addJobRatingModel.data?.userData?.profilePic}",
+                                         name: "${addJobRatingModel.data?.userData?.firstName} ${addJobRatingModel.data?.userData?.lastName}",
+                                       ));
+                                     } else{
+                                       toastFailedMessage("Something Went Wrong", Colors.red);
+                                     }
+                                   });
+                             }
                               // print("hello");
                               // addJobRating();
                             }
                           }
                           // Get.to(Customer_Profile());
                         },
-                          child: mainButton("Submit", Color.fromRGBO(43, 101, 236, 1), context))
+                          child: loading ? mainButton("Submit", Colors.grey, context): mainButton("Submit", Color.fromRGBO(43, 101, 236, 1), context))
                     ],
                   ),
                 ),

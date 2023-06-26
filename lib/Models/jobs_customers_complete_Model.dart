@@ -10,15 +10,18 @@ String jobsCustomersCompleteModelToJson(JobsCustomersCompleteModel data) => json
 
 class JobsCustomersCompleteModel {
   String? status;
+  String? message;
   Data? data;
 
   JobsCustomersCompleteModel({
     this.status,
+    this.message,
     this.data,
   });
 
   factory JobsCustomersCompleteModel.fromJson(Map<String, dynamic> json) => JobsCustomersCompleteModel(
     status: json["status"],
+    message : json["message"] != null ? json["message"] : null,
     data : json["data"] != null ? Data.fromJson(json["data"]) : null,
     // data: Data.fromJson(json["data"]),
   );

@@ -1,6 +1,9 @@
+import 'package:StandMan/Pages/Emp_notification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -195,10 +198,15 @@ class _EmpHomePageState extends State<EmpHomePage> {
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0, top: 0.0),
-            child: SvgPicture.asset(
-              'assets/images/notification.svg',
+          GestureDetector(
+            onTap: (){
+              Get.to(EmpNotificationPage());
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20.0, top: 0.0),
+              child: SvgPicture.asset(
+                'assets/images/notification.svg',
+              ),
             ),
           ),
         ],

@@ -78,7 +78,8 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                         children: [
                           Stack(
                             children: [
-                              Image.network("${widget.image}"),
+                              CircleAvatar(
+                                  child: Image.network("${widget.image}")),
                               Positioned(
                                 bottom: 10,
                                   left: 10,

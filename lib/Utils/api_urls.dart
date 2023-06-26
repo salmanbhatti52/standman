@@ -81,3 +81,11 @@ String addJobRatingModelApiUrl = "${baseUrl}add_job_rating";
 String allJobRatingModelApiUrl = "${baseUrl}all_ratings";
 
 String unreadedMessagesModelApiUrl = "${baseUrl}unreaded_messages";
+
+String getAdminApiUrl = "${baseUrl}get_admin_list";
+
+String userChatLiveApiUrl = "${baseUrl}user_chat_live";
+
+String sendMessageLiveApiUrl = "${baseUrl}user_chat_live";
+
+String getMessageLiveApiUrl = "${baseUrl}user_chat_live";

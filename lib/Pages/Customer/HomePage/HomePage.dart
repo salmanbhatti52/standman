@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:StandMan/Pages/NotificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,6 +23,7 @@ String? fullName;
 String? phoneNumber;
 String? profilePic1;
 String? usersCustomersId;
+String? get_admin;
 String? longitude;
 String? lattitude;
 SharedPreferences? prefs;
@@ -109,12 +112,48 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  List getAdmin = [];
+  bool _initialized = false;
+
+  getAdminList() async {
+    http.Response response = await http.get(
+      Uri.parse(getAdminApiUrl),
+      headers: {"Accept": "application/json"},
+    );
+    if (mounted) {
+      setState(() async {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+
+          getAdmin = jsonResponse['data'];
+
+          print("GetAdmin: $getAdmin");
+          print("adminID ${getAdmin[0]['users_system_id']}");
+          print("adminID ${getAdmin[0]['users_system_id']}");
+          SharedPreferences sharedPref = await SharedPreferences.getInstance();
+          await sharedPref.setString('adminID', "${getAdmin[0]['users_system_id']}");
+          prefs = await SharedPreferences.getInstance();
+          get_admin = prefs!.getString('adminID');
+          print("get_admin = $get_admin");
+
+        } else {
+          print("Response Body::${response.body}");
+        }
+      },
+      );
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUserProfileWidget();
     getJobsCustomer();
+    if (!_initialized) {
+      getAdminList();
+      _initialized = true;
+    }
   }
 
   DateTime currentBackPressTime = DateTime.now();

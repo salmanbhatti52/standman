@@ -1,3 +1,4 @@
+import 'package:StandMan/Pages/EmpDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -106,7 +107,7 @@ class _ProfileTabBarState extends State<ProfileTabBar>
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-        drawer: MyDrawer(),
+        drawer: EmpDrawer(),
         appBar: AppBar(
           toolbarHeight: height * 0.10,
           backgroundColor: Color(0xffffffff),

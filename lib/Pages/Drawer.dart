@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:StandMan/Pages/Authentication/Customer/login_page.dart';
 import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Models/ChatStartwithAdminModel.dart';
+import '../Models/chat_start_user_Model.dart';
 import '../Models/users_profilet_model.dart';
 import '../Utils/api_urls.dart';
 import '../widgets/MyButton.dart';
 import 'Bottombar.dart';
+import 'Customer/Customer_Services/Chat_with_Admin.dart';
 import 'Customer/HomePage/HomePage.dart';
 import 'NotificationPage.dart';
 import 'PrivacyPolicy.dart';
@@ -35,31 +40,15 @@ class _MyDrawerState extends State<MyDrawer> {
     // TODO: implement initState
     super.initState();
     getUserProfileWidget();
-
+    sharedPrefs();
   }
 
 
-  // sharedPrefs() async {
-  //   // loading = true;
-  //   setState(() {});
-  //   print('in LoginPage shared prefs');
-  //   prefs = await SharedPreferences.getInstance();
-  //   // userId = (prefs!.getString('userid'));
-  //   userEmail = (prefs!.getString('user_email'));
-  //   phoneNumber = (prefs!.getString('phoneNumber'));
-  //   fullName = (prefs!.getString('fullName'));
-  //   profilePic1 = (prefs!.getString('profilePic'));
-  //   password = (prefs!.getString('password'));
-  //   usersCustomersId = prefs!.getString('usersCustomersId');
-  //   print("userId in Prefs is = $usersCustomersId");
-  //   print("oldpass = $password");
-  //   // userFirstName = (prefs!.getString('user_first_name'));
-  //   // userLastName = (prefs!.getString('user_last_name'));
-  //   // print("userId in LoginPrefs is = $userId");
-  //   print("userEmail in Profile is = $userEmail");
-  //   print("userprofilePic in Profile is = $profilePic1");
-  //   // print("userFirstName in LoginPrefs is = $userFirstName $userLastName");
-  // }
+  sharedPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    get_admin = prefs!.getString('adminID');
+    print("get_admin = $get_admin");
+  }
 
   UsersProfileModel usersProfileModel = UsersProfileModel();
 
@@ -95,6 +84,39 @@ class _MyDrawerState extends State<MyDrawer> {
     // } catch (e) {
     //   print('Error in getUserProfileWidget: ${e.toString()}');
     // }
+  }
+
+  ChatStartwithAdminModel chatStartwithAdminModel = ChatStartwithAdminModel();
+
+  chatStartUser() async {
+    prefs = await SharedPreferences.getInstance();
+    get_admin = prefs!.getString('adminID');
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("usersCustomersId = $usersCustomersId");
+    print("getAdmin = $get_admin");
+
+    // try {
+    String apiUrl = userChatLiveApiUrl;
+    print("userChatLiveApiUrl: $apiUrl");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "requestType": "startChat",
+        "users_customers_id": usersCustomersId,
+        "other_users_customers_id": get_admin,
+      },
+      headers: {'Accept': 'application/json'},
+    );
+    print('${response.statusCode}');
+    print(response);
+    print("userChatLive: $response");
+    print("status Code chat: ${response.statusCode}");
+    if (response.statusCode == 200) {
+      final responseString = response.body;
+      print("userChatResponse: ${responseString.toString()}");
+      chatStartwithAdminModel = chatStartwithAdminModelFromJson(responseString);
+      setState(() {});
+    };
   }
 
   @override
@@ -317,8 +339,29 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
               ),
             ),
+            GestureDetector(
+              onTap: () async {
+                await chatStartUser();
+                Get.to(ChatWithAdmin());
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: ListTile(
+                  leading: Image.asset("assets/images/customer.png", color: Colors.grey, width: 30,),
+                  title: Text(
+                    "Customer Services",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Outfit",
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
-              height: height * 0.2,
+              height: height * 0.18,
             ),
             GestureDetector(
               onTap: (){

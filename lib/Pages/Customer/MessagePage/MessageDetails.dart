@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -39,7 +40,6 @@ class _MessagesDetailsState extends State<MessagesDetails> {
   var sendMessageController = TextEditingController();
   final GlobalKey<FormState> sendMessageFormKey = GlobalKey<FormState>();
   List<UpdateMessgeModel> updateMessageModelObject = [];
-  SendMessgeCustomerModel sendMessageCustomerModel = SendMessgeCustomerModel();
   bool loading = true;
   bool progress = false;
   GetMessgeModel getMessageModel = GetMessgeModel();
@@ -73,13 +73,12 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     print("in 200 getMessgeModel");
     if (response.statusCode == 200) {
       getMessageModel = getMessgeModelFromJson(responseString);
-      // setState(() {});
       print('getMessgemodel status: ${getMessageModel.status}');
       print('getMessgemodel message: ${getMessageModel.data?[0].message}');
+      setState(() {
+        loading = false;
+      });
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   updateChatApiWidget() async {
@@ -377,8 +376,11 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                 ? Container(
                     height: height * 0.78,
                     child: Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.blueAccent)))
+                      child: Lottie.asset(
+                        "assets/images/loading.json",
+                        height: 50,
+                      ),
+                    ))
                 : ModalProgressHUD(
               inAsyncCall: progress,
               opacity: 0.02,
@@ -752,9 +754,9 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 //                   );
 //                 if(base64img == null )
 //                 sendImageApiWidget();
-//                   setState(() {
+                  setState(() {
                     pickImageGallery();
-//                   });
+                  });
             Future.delayed(const Duration(seconds: 5), () {
               if(base64img != null){
                 sendImageApiWidget();

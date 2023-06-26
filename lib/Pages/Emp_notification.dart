@@ -1,8 +1,8 @@
+import 'dart:convert';
+
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../widgets/TopBar.dart';
@@ -19,61 +19,71 @@ class EmpNotificationPage extends StatefulWidget {
 }
 
 class _EmpNotificationPageState extends State<EmpNotificationPage> {
-  List<NotificationsModel> todayDataList = [];
-  List<NotificationsModel> yesterdayDataList = [];
-  NotificationsModel notificationsModel = NotificationsModel();
-  bool loading = false;
+  // NotificationsModel notificationsModel = NotificationsModel();
+  // bool loading = false;
+  //
+  // notificationApi() async {
+  //   prefs = await SharedPreferences.getInstance();
+  //   usersCustomersId = prefs!.getString('empUsersCustomersId');
+  //   print("usersCustomersId = $usersCustomersId");
+  //
+  //
+  //   String apiUrl = notificationsModelApiUrl;
+  //   print("working");
+  //   final response = await http.post(
+  //     Uri.parse(apiUrl),
+  //     headers: {"Accept": "application/json"},
+  //     body: {
+  //       "users_customers_id": usersCustomersId,
+  //     },
+  //   );
+  //   final responseString = response.body;
+  //   print("notificationsModelApiUrl: ${response.body}");
+  //   print("status Code notificationsModel: ${response.statusCode}");
+  //   print("in 200 notificationsModel");
+  //   if (response.statusCode == 200) {
+  //     notificationsModel = notificationsModelFromJson(responseString);
+  //     // setState(() {});
+  //     print('notificationsModel status: ${notificationsModel.status}');
+  //     setState(() {
+  //     });
+  //     // print('notificationsModel message: ${notificationsModel.data?[0].message}');
+  //   }
+  // }
+
+  bool isLoading = false;
+  List empNotifications = [];
 
   notificationApi() async {
+    setState(() {
+      isLoading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("usersCustomersId = $usersCustomersId");
 
-
-    String apiUrl = notificationsModelApiUrl;
-    print("working");
-    final response = await http.post(
-      Uri.parse(apiUrl),
+    http.Response response = await http.post(
+      Uri.parse(notificationsModelApiUrl),
       headers: {"Accept": "application/json"},
       body: {
         "users_customers_id": usersCustomersId,
       },
     );
-    final responseString = response.body;
-    print("notificationsModelApiUrl: ${response.body}");
-    print("status Code notificationsModel: ${response.statusCode}");
-    print("in 200 notificationsModel");
-    if (response.statusCode == 200) {
-      notificationsModel = notificationsModelFromJson(responseString);
-      // setState(() {});
-      print('notificationsModel status: ${notificationsModel.status}');
+    if (mounted) {
       setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+
+          empNotifications = jsonResponse['data'];
+
+          print("Employee: $empNotifications");
+
+          isLoading = false;
+        } else {
+          print("Response Body :: ${response.body}");
+        }
       });
-      // print('notificationsModel message: ${notificationsModel.data?[0].message}');
     }
-  }
-
-
-  void separateNotificationsByDate(List<Notification> apiNotificationsList) {
-    DateTime now = DateTime.now();
-    DateTime today = DateTime(now.year, now.month, now.day);
-    DateTime yesterday = today.subtract(Duration(days: 1));
-
-    for (var notification in apiNotificationsList) {
-      DateTime notificationDate = DateTime.now();
-
-      if (isSameDate(notificationDate, today)) {
-        todayDataList.add(NotificationsModel());
-      } else if (isSameDate(notificationDate, yesterday)) {
-        yesterdayDataList.add(NotificationsModel());
-      }
-    }
-  }
-
-  bool isSameDate(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-        date1.month == date2.month &&
-        date1.day == date2.day;
   }
 
   @override
@@ -81,7 +91,6 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
     // TODO: implement initState
     super.initState();
     notificationApi();
-    separateNotificationsByDate(todayDataList.cast<Notification>());
   }
 
 
@@ -97,12 +106,17 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
         iconcolor: Colors.black,
       ),
       backgroundColor: Colors.white,
-      body: loading
-          ? Center(child: CircularProgressIndicator(color: Colors.blueAccent))
-          : notificationsModel.data?.length == null
+      body: isLoading
+          ? Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      )
+          : empNotifications.length == null
           ? Center(child: Text("No history"))
           : ModalProgressHUD(
-        inAsyncCall: loading,
+        inAsyncCall: isLoading,
         opacity: 0.02,
         blur: 0.5,
         color: Colors.transparent,
@@ -143,34 +157,34 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        "Today",
-                        style: TextStyle(
-                          fontFamily: "Outfit",
-                          color: Color(0xffA7A9B7),
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 8.0),
+                    //   child: Text(
+                    //     "Today",
+                    //     style: TextStyle(
+                    //       fontFamily: "Outfit",
+                    //       color: Color(0xffA7A9B7),
+                    //       fontWeight: FontWeight.w300,
+                    //       fontSize: 12,
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 15),
                       child: Container(
                         // height: MediaQuery.of(context).size.height * 0.16,
                         width: width,
-                        height: height * 0.8, //88,
+                        height: height * 0.85, //88,
                         child: ListView.builder(
                             physics: BouncingScrollPhysics(),
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: notificationsModel.data?.length,
+                            itemCount: empNotifications.length,
                             // itemCount: _separateData(),
                             // messagesList.length,
                             itemBuilder:
-                                (BuildContext context, int index) {
+                                (BuildContext context, int i) {
                               return Column(
                                 children: [
                                   GestureDetector(
@@ -189,27 +203,12 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
                                            children: [
                                              CircleAvatar(
                                                // radius: (screenWidth > 600) ? 90 : 70,
-                                               //   radius: 50,
-                                                 backgroundColor:
-                                                 Colors.transparent,
-                                                 backgroundImage: notificationsModel
-                                                     .data?[
-                                                 index]
-                                                     .notificationSender
-                                                     .toString() ==
-                                                     null
-                                                     ? Image.asset(
-                                                     "assets/images/person2.png")
-                                                     .image
-                                                     : NetworkImage(baseUrlImage +
-                                                     notificationsModel
-                                                         .data![
-                                                     index]
-                                                         .notificationSender!
-                                                         .profilePic
-                                                         .toString())
-                                               // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
-
+                                               // radius: 50,
+                                               backgroundColor: Colors.transparent,
+                                               backgroundImage: (empNotifications[i]['notification_sender'] != null &&
+                                                   empNotifications[i]['notification_sender']['profile_pic'] != null)
+                                                   ? NetworkImage(baseUrlImage + empNotifications[i]['notification_sender']['profile_pic'])
+                                                   : AssetImage("assets/images/person2.png") as ImageProvider<Object>,
                                              ),
                                              SizedBox(
                                                width: 10,
@@ -221,8 +220,11 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
                                                children: [
                                                  Text(
                                                    // messagesList[index].title,
-                                                   "${notificationsModel.data?[index].notificationSender?.firstName} ${notificationsModel.data?[index].notificationSender?.lastName}",
-                                                   style:
+                                                   (empNotifications[i]['notification_sender'] != null &&
+                                                       empNotifications[i]['notification_sender']['first_name'] != null &&
+                                                       empNotifications[i]['notification_sender']['last_name'] != null)
+                                                       ? "${empNotifications[i]['notification_sender']['first_name']} ${empNotifications[i]['notification_sender']['last_name']}"
+                                                       : '', style:
                                                    const TextStyle(
                                                      color:
                                                      Color.fromRGBO(
@@ -244,7 +246,7 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
                                                        5.0),
                                                    child: Text(
                                                      // messagesList[index].subTitle,
-                                                     "${notificationsModel.data?[index].message}",
+                                                     "${empNotifications[i]['message']}",
                                                      style:
                                                      const TextStyle(
                                                        color: Color
@@ -272,7 +274,7 @@ class _EmpNotificationPageState extends State<EmpNotificationPage> {
                                         Container(
                                           width: 100,
                                           child: AutoSizeText(
-                                            "${notificationsModel.data?[index].dateAdded}",
+                                            "${empNotifications[i]['date_added']}",
                                             // '3:74 Pm',
                                             style: TextStyle(
                                               color: Color(

@@ -31,7 +31,7 @@ class Datum {
   int? sendersId;
   int? receiversId;
   String? message;
-  DateTime? dateAdded;
+  String? dateAdded;
   DateTime? dateModified;
   String? status;
   NotificationSender? notificationSender;
@@ -54,7 +54,7 @@ class Datum {
     sendersId: json["senders_id"],
     receiversId: json["receivers_id"],
     message: json["message"],
-    dateAdded: DateTime.parse(json["date_added"]),
+    dateAdded: json["date_added"],
     dateModified: DateTime.parse(json["date_modified"]),
     status: json["status"],
     notificationSender: NotificationSender.fromJson(json["notification_sender"]),
@@ -66,7 +66,7 @@ class Datum {
     "senders_id": sendersId,
     "receivers_id": receiversId,
     "message": message,
-    "date_added": dateAdded!.toIso8601String(),
+    "date_added": dateAdded,
     "date_modified": dateModified!.toIso8601String(),
     "status": status,
     "notification_sender": notificationSender!.toJson(),

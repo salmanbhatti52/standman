@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -380,8 +381,11 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                 ? Container(
                 height: height * 0.78,
                 child: Center(
-                    child: CircularProgressIndicator(
-                        color: Colors.blueAccent)))
+                  child: Lottie.asset(
+                    "assets/images/loading.json",
+                    height: 50,
+                  ),
+                ))
                 : ModalProgressHUD(
               inAsyncCall: progress,
               opacity: 0.02,

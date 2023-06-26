@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../Models/get_OnGoing_jobs_Model.dart';
@@ -27,6 +28,9 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
   bool loading = false;
 
   getJobs() async {
+    setState(() {
+      loading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -49,7 +53,9 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
       print('getJobsModelImage: $baseUrlImage${getJobsModel.data?[0].image}');
       print('getJobsModelLength: ${getJobsModel.data?.length}');
       print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
-      setState(() {});
+      setState(() {
+        loading = false;
+      });
     }
 
   }
@@ -111,7 +117,12 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: loading ? Center(child: CircularProgressIndicator()) :
+      body: loading ? Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      ) :
 
       getJobsModel.data?.length == null ?
 
@@ -214,8 +225,8 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                       jobId: "${getJobsModel.data?[index].jobsId}",
                       description: getJobsModel
                           .data?[index].description,
-                      name: "${getJobsModel.data?[index].usersCustomersData?.firstName} ${getJobsModel.data?[index].usersCustomersData?.lastName}",
-                      profilePic: "$baseUrlImage${getJobsModel.data?[index].usersCustomersData?.profilePic}",
+                      name: "${getJobsModel.data?[index].usersEmployeeData?.firstName} ${getJobsModel.data?[index].usersEmployeeData?.lastName}",
+                      profilePic: "$baseUrlImage${getJobsModel.data?[index].usersEmployeeData?.profilePic}",
                       status: getJobsModel.data![index].status,
                     ));
                   },
@@ -316,7 +327,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                                       backgroundColor: Colors.transparent,
                                       backgroundImage: getJobsModel.data![index].usersCustomersData!.profilePic == null
                                           ? Image.asset("assets/images/person2.png").image
-                                          : NetworkImage(baseUrlImage+getJobsModel.data![index].usersCustomersData!.profilePic.toString())
+                                          : NetworkImage(baseUrlImage+getJobsModel.data![index].usersEmployeeData!.profilePic.toString())
                                     // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
                                   ),
@@ -343,7 +354,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                                       children: [
                                         Text(
                                           // 'Wade Warren',
-                                          "${getJobsModel.data?[index].usersCustomersData?.firstName} ${getJobsModel.data?[index].usersCustomersData?.lastName}",
+                                          "${getJobsModel.data?[index].usersEmployeeData?.firstName} ${getJobsModel.data?[index].usersEmployeeData?.lastName}",
                                           // "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
                                           style: TextStyle(
                                             color: Color(0xff000000),

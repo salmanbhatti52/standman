@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 
 class EMp_Job_Completed extends StatefulWidget {
   final String? customerId;
+  final String? employeeID;
   String? image;
   String? jobName;
   String? totalPrice;
@@ -34,6 +35,7 @@ class EMp_Job_Completed extends StatefulWidget {
      this.jobName,
      this.totalPrice,
      this.ratings,
+     this.employeeID,
      this.status,
      this.address,
      this.completeJobTime,
@@ -55,10 +57,9 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
   chatStartUserEmp() async {
 
     prefs = await SharedPreferences.getInstance();
-    // usersCustomersId = prefs!.getString('usersCustomersId');
-    empUsersCustomersId = empPrefs?.getString('empUsersCustomersId');
-    print("empUsersCustomersId = $empUsersCustomersId");
-    print("usersCustomersId = ${widget.customerId}");
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
+    print("empUsersCustomersId = $usersCustomersId");
+    print("customerId = ${widget.customerId}");
 
     // try {
     String apiUrl = userChatApiUrl;
@@ -67,7 +68,7 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
       Uri.parse(apiUrl),
       body: {
         "requestType": "startChat",
-        "users_customers_id": empUsersCustomersId,
+        "users_customers_id": usersCustomersId,
         "other_users_customers_id": widget.customerId,
       },
       headers: {'Accept': 'application/json'},
@@ -84,16 +85,14 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
       progress = false;
       setState(() {});
     }
-    // } catch (e) {
-    //   print('Error in userChatApiUrl: ${e.toString()}');
-    // }
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("ID ${widget.customerId}");
+    print("customerID ${widget.customerId}");
+    print("employeeID ${widget.employeeID}");
 
   }
   @override
@@ -143,7 +142,7 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
                       children: [
                         Stack(
                           children: [
-                            Image.network("${widget.image}"),
+                            ClipRRect(borderRadius: BorderRadius.circular(10),child: Image.network("${widget.image}")),
                             // Image.asset("assets/images/areaa.png"),
                             Positioned(
                                 bottom: 10,

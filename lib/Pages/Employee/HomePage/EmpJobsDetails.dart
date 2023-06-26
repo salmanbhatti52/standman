@@ -163,7 +163,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Image.network("${widget.image}" ),
+                        ClipRRect(borderRadius: BorderRadius.circular(10),child: Image.network("${widget.image}" )),
                         SizedBox(
                           height: height * 0.02,
                         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/customer_wallet_txn_Model.dart';
 import '../../../Utils/api_urls.dart';
@@ -27,6 +28,9 @@ class _WalletPageState extends State<WalletPage> {
   bool loading = false;
 
   customerWalletTxn() async {
+    setState(() {
+      loading = true;
+    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId = $usersCustomersId");
@@ -45,7 +49,7 @@ class _WalletPageState extends State<WalletPage> {
     print("in 200 customerWalletTxnModel");
     if (response.statusCode == 200) {
       customerWalletTxnModel = customerWalletTxnModelFromJson(responseString);
-      setState(() {});
+      setState(() {loading = false;});
       // setState(() {});
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data?[0].image}');
       // print('getJobsModelLength: ${getJobsModel.data?.length}');
@@ -263,9 +267,14 @@ class _WalletPageState extends State<WalletPage> {
                       ),
                     ),
                     Container(
-                      height: height * 0.535,
+                      height: height * 0.531,
                       child: loading
-                          ? Center(child: CircularProgressIndicator())
+                          ? Center(
+                        child: Lottie.asset(
+                          "assets/images/loading.json",
+                          height: 50,
+                        ),
+                      )
                           : customerWalletTxnModel.data?.transactionHistory?.length == null
                               ? Center(
                                 child: Column(
