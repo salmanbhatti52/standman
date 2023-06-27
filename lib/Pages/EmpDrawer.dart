@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/users_profilet_model.dart';
 import '../Utils/api_urls.dart';
 import 'Emp_notification.dart';
+import 'Employee/Admin_Services/Chat_With_Admin.dart';
 import 'Employee/HomePage/EmpHomePage.dart';
 import 'PrivacyPolicy.dart';
 import 'TermConditions.dart';
@@ -259,7 +260,7 @@ class _EmpDrawerState extends State<EmpDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                // Get.to(TermsandConditions());
+                Get.to(ChatWithAdmin_Employee());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),

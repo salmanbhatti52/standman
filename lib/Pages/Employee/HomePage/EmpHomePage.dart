@@ -1,19 +1,16 @@
+import 'dart:convert';
 import 'package:StandMan/Pages/Emp_notification.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../../Models/Employee_OngoingJobs_Model.dart';
 import '../../../Models/get_jobs_employees_Model.dart';
 import '../../../Models/users_profilet_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../Customer/HomePage/HeadRow.dart';
 import '../../Customer/HomePage/HomePage.dart';
-import '../../Drawer.dart';
 import '../../EmpDrawer.dart';
 import 'EmpJobs.dart';
 import 'package:http/http.dart' as http;
@@ -44,6 +41,47 @@ class _EmpHomePageState extends State<EmpHomePage> {
     sharePref();
     getOngoingJobsEmployees();
     GetJobsEmployees();
+    if (!_initialized) {
+      getAdminList();
+      _initialized = true;
+    }
+  }
+
+  List getAdmin = [];
+  bool _initialized = false;
+
+  getAdminList() async {
+    http.Response response = await http.get(
+      Uri.parse(getAdminApiUrl),
+      headers: {"Accept": "application/json"},
+    );
+    if (mounted) {
+      setState(() async {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          var adminData = jsonResponse['data'][0];
+
+          var userImage = adminData['user_image'];
+          var adminID = adminData['users_system_id'];
+          var firstName = adminData['first_name'];
+
+          SharedPreferences sharedPref = await SharedPreferences.getInstance();
+          await sharedPref.setString('adminID', "$adminID");
+          await sharedPref.setString('adminName', "$firstName");
+          await sharedPref.setString('adminImage', "${baseUrlImage+userImage}");
+          prefs = await SharedPreferences.getInstance();
+          adminID = prefs!.getString('adminID');
+          adminName = prefs!.getString('adminName');
+          adminImage = prefs!.getString('adminImage');
+          print("User Image: $adminImage");
+          print("Admin ID: $adminID");
+          print("First Name: $adminName");
+
+        } else {
+          print("Response Body: ${response.body}");
+        }
+      });
+    }
   }
 
   UsersProfileModel usersProfileModel = UsersProfileModel();

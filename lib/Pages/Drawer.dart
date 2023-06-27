@@ -46,8 +46,8 @@ class _MyDrawerState extends State<MyDrawer> {
 
   sharedPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    get_admin = prefs!.getString('adminID');
-    print("get_admin = $get_admin");
+    adminID = prefs!.getString('adminID');
+    print("get_admin = $adminID");
   }
 
   UsersProfileModel usersProfileModel = UsersProfileModel();
@@ -90,10 +90,10 @@ class _MyDrawerState extends State<MyDrawer> {
 
   chatStartUser() async {
     prefs = await SharedPreferences.getInstance();
-    get_admin = prefs!.getString('adminID');
+    adminID = prefs!.getString('adminID');
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("usersCustomersId = $usersCustomersId");
-    print("getAdmin = $get_admin");
+    print("getAdmin = $adminID");
 
     // try {
     String apiUrl = userChatLiveApiUrl;
@@ -103,7 +103,7 @@ class _MyDrawerState extends State<MyDrawer> {
       body: {
         "requestType": "startChat",
         "users_customers_id": usersCustomersId,
-        "other_users_customers_id": get_admin,
+        "other_users_customers_id": adminID,
       },
       headers: {'Accept': 'application/json'},
     );

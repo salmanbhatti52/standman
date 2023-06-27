@@ -9,17 +9,17 @@ import '../../../Models/getMessageLiveModel.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../Bottombar.dart';
-import '../HomePage/HomePage.dart';
+import '../../Customer/HomePage/HomePage.dart';
 import 'package:http/http.dart' as http;
 
-class ChatWithAdmin extends StatefulWidget {
-  const ChatWithAdmin({Key? key}) : super(key: key);
+class ChatWithAdmin_Employee extends StatefulWidget {
+  const ChatWithAdmin_Employee({Key? key}) : super(key: key);
 
   @override
-  State<ChatWithAdmin> createState() => _ChatWithAdminState();
+  State<ChatWithAdmin_Employee> createState() => _ChatWithAdmin_EmployeeState();
 }
 
-class _ChatWithAdminState extends State<ChatWithAdmin> {
+class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
 
   bool loading = true;
   var sendMessageController = TextEditingController();
@@ -34,7 +34,7 @@ class _ChatWithAdminState extends State<ChatWithAdmin> {
 
     prefs = await SharedPreferences.getInstance();
     adminID = prefs!.getString('adminID');
-    usersCustomersId = prefs!.getString('usersCustomersId');
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("usersCustomersId = $usersCustomersId");
     print("getAdmin = $adminID");
 
@@ -71,7 +71,7 @@ class _ChatWithAdminState extends State<ChatWithAdmin> {
     });
     prefs = await SharedPreferences.getInstance();
     adminID = prefs!.getString('adminID');
-    usersCustomersId = prefs!.getString('usersCustomersId');
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
     print("usersCustomersId = $usersCustomersId");
     print("getAdmin = $adminID");
 

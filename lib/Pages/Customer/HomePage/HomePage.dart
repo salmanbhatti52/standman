@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:StandMan/Pages/NotificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,7 +22,9 @@ String? fullName;
 String? phoneNumber;
 String? profilePic1;
 String? usersCustomersId;
-String? get_admin;
+String? adminID;
+String? adminName;
+String? adminImage;
 String? longitude;
 String? lattitude;
 SharedPreferences? prefs;
@@ -83,7 +84,6 @@ class _HomePageState extends State<HomePage> {
       }
   }
 
-
   GetJobsModel getJobsModel = GetJobsModel();
 
   getJobsCustomer() async {
@@ -124,23 +124,28 @@ class _HomePageState extends State<HomePage> {
       setState(() async {
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body);
+          var adminData = jsonResponse['data'][0];
 
-          getAdmin = jsonResponse['data'];
+          var userImage = adminData['user_image'];
+          var adminID = adminData['users_system_id'];
+          var firstName = adminData['first_name'];
 
-          print("GetAdmin: $getAdmin");
-          print("adminID ${getAdmin[0]['users_system_id']}");
-          print("adminID ${getAdmin[0]['users_system_id']}");
           SharedPreferences sharedPref = await SharedPreferences.getInstance();
-          await sharedPref.setString('adminID', "${getAdmin[0]['users_system_id']}");
+          await sharedPref.setString('adminID', "$adminID");
+          await sharedPref.setString('adminName', "$firstName");
+          await sharedPref.setString('adminImage', "${baseUrlImage+userImage}");
           prefs = await SharedPreferences.getInstance();
-          get_admin = prefs!.getString('adminID');
-          print("get_admin = $get_admin");
+          adminID = prefs!.getString('adminID');
+          adminName = prefs!.getString('adminName');
+          adminImage = prefs!.getString('adminImage');
+          print("User Image: $adminImage");
+          print("Admin ID: $adminID");
+          print("First Name: $adminName");
 
         } else {
-          print("Response Body::${response.body}");
+          print("Response Body: ${response.body}");
         }
-      },
-      );
+      });
     }
   }
 
@@ -597,6 +602,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-
 }
