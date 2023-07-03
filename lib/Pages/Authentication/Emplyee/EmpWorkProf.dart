@@ -444,7 +444,9 @@ class _WorkProofState extends State<WorkProof> {
                   height: height * 0.01,
                 ),
                 Text(
-                  "Please submit a photo or the original document. Scanned copies are not accepted. Make sure to avoid using flash so that your information is clear and readable. If you are uploading a work permit extension letter, upload the extension letter and your work permit in the same photo if you are waiting for your renewed PR card, upload a photo of your current PR card and PR card extension letter",
+                  "If you are uploading a work permit extension letter, upload the extension letter and your work permit in the same photo"
+                    "If you are waiting for your renewed PR card, upload a photo of your current PR card and PR card extension letter",
+                  // "Please submit a photo or the original document. Scanned copies are not accepted. Make sure to avoid using flash so that your information is clear and readable. If you are uploading a work permit extension letter, upload the extension letter and your work permit in the same photo if you are waiting for your renewed PR card, upload a photo of your current PR card and PR card extension letter",
                   style: TextStyle(
                     color: Color(0xffC70000),
                     fontFamily: "Outfit",

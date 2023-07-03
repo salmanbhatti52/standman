@@ -78,8 +78,7 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                         children: [
                           Stack(
                             children: [
-                              CircleAvatar(
-                                  child: Image.network("${widget.image}")),
+                              ClipRRect(borderRadius: BorderRadius.circular(10),child: Image.network("${widget.image}")),
                               Positioned(
                                 bottom: 10,
                                   left: 10,
@@ -224,9 +223,7 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                                   Container(
                                     width: 50,
                                     height: 50,
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Image.network("${widget.profilePic}")),
+                                    child: ClipRRect(borderRadius: BorderRadius.circular(25),child: Image.network("${widget.profilePic}", fit: BoxFit.fill,)),
                                   ),
                                   SizedBox(
                                     width: 5,

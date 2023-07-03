@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../Authentication/Login_tab_class.dart';
+import '../Authentication/SignUp_tab_class.dart';
 import 'OnboardingPageWidget.dart';
 import 'Onboarding_2.dart';
 
@@ -57,7 +58,7 @@ class Onboarding_1 extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       // Navigator.of(context).pushReplacementNamed('/home');
-                      Get.offAll( LoginTabClass(login: 0,),
+                      Get.offAll( SignUpTabClass(signup: 0),
                         transition : Transition.downToUp,
                         duration: Duration(milliseconds: 350),
                       );

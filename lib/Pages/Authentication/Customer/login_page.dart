@@ -352,39 +352,54 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                         fontWeight: FontWeight.w300),
                   ),
                 ),
-                socialButton(context),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'No account yet?',
-                        style: TextStyle(
-                          color: Color(0xffA7A9B7),
-                          fontFamily: "Outfit",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          // letterSpacing: -0.3,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                         Get.to( SignUpTabClass(signup: 0,));
-                        },
-                        child: const Text(
-                          'Register Your Account',
-                          style: TextStyle(
-                            color: Color(0xff2B65EC),
-                            fontFamily: "Outfit",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            // letterSpacing: -0.3,
-                          ),
-                        ),
-                      ),
-                    ],
+                GestureDetector(
+                  onTap: (){
+                    Get.to( SignUpTabClass(signup: 0,));
+                  },
+                  child: const Text(
+                    'Register Your Account',
+                    style: TextStyle(
+                      color: Color(0xff2B65EC),
+                      fontFamily: "Outfit",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
+                    ),
                   ),
                 ),
+                SizedBox(height: 15,),
+                socialButton(context),
+                // Container(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       const Text(
+                //         'No account yet?',
+                //         style: TextStyle(
+                //           color: Color(0xffA7A9B7),
+                //           fontFamily: "Outfit",
+                //           fontSize: 14,
+                //           fontWeight: FontWeight.w300,
+                //           // letterSpacing: -0.3,
+                //         ),
+                //       ),
+                //       TextButton(
+                //         onPressed: () {
+                //          Get.to( SignUpTabClass(signup: 0,));
+                //         },
+                //         child: const Text(
+                //           'Register Your Account',
+                //           style: TextStyle(
+                //             color: Color(0xff2B65EC),
+                //             fontFamily: "Outfit",
+                //             fontSize: 14,
+                //             fontWeight: FontWeight.w300,
+                //             // letterSpacing: -0.3,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

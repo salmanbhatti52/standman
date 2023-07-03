@@ -1,3 +1,4 @@
+import 'package:StandMan/Pages/Authentication/SignUp_tab_class.dart';
 import 'package:StandMan/Pages/EmpBottombar.dart';
 import 'package:StandMan/Pages/Employee/HomePage/EmpHomePage.dart';
 import 'package:after_layout/after_layout.dart';
@@ -36,6 +37,53 @@ class _SplashScreenState extends State<SplashScreen>{
   @override
   // void afterFirstLayout(BuildContext context) => checkFirstSeen();
 
+  // sharedPrefs() async {
+  //   print('usersCustomersId ');
+  //   prefs = await SharedPreferences.getInstance();
+  //   usersCustomersId = prefs!.getString('usersCustomersId');
+  //   empUsersCustomersId = prefs!.getString('empUsersCustomersId');
+  //   print('usersCustomersId123 $usersCustomersId');
+  //   print('empUsersCustomersId $empUsersCustomersId');
+  //
+  //   if (usersCustomersId != null) {
+  //     print("Customer");
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => bottom_bar(currentIndex: 0),
+  //       ),
+  //     );
+  //     print("Login Is usersCustomersId = $usersCustomersId");
+  //   }
+  // else  if (empUsersCustomersId != null) {
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => Empbottom_bar(currentIndex: 0),
+  //       ),
+  //     );
+  //     print("Login Is empUsersCustomersId = $usersCustomersId");
+  //   }
+  //    else  if (usersCustomersId == null && empUsersCustomersId == null) {
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => LoginTabClass(login: 0),
+  //       ),
+  //     );
+  //     print("both Id are null = $usersCustomersId");
+  //   }
+  //   else {
+  //     bool firstRun = await IsFirstRun.isFirstRun();
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (context) => firstRun ? OnboardingPageView() : LoginTabClass(login: 0),
+  //       ),
+  //     );
+  //     print("else condition running = $usersCustomersId");
+  //   }
+  // }
+
   sharedPrefs() async {
     print('usersCustomersId ');
     prefs = await SharedPreferences.getInstance();
@@ -44,42 +92,35 @@ class _SplashScreenState extends State<SplashScreen>{
     print('usersCustomersId123 $usersCustomersId');
     print('empUsersCustomersId $empUsersCustomersId');
 
-    if (usersCustomersId != null) {
-      print("dddn");
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => bottom_bar(currentIndex: 0),
-        ),
-      );
-      print("Login Is usersCustomersId = $usersCustomersId");
-    }
-  else  if (empUsersCustomersId != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Empbottom_bar(currentIndex: 0),
-        ),
-      );
-      print("Login Is usersCustomersId = $usersCustomersId");
-    }
-     else  if (usersCustomersId == null && empUsersCustomersId == null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginTabClass(login: 0),
-        ),
-      );
-      print("Login Is usersCustomersId = $usersCustomersId");
-    }
-    else {
+    if (usersCustomersId != null || empUsersCustomersId != null) {
+      // User or employee is logged in
+      if (usersCustomersId != null) {
+        print("Customer");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => bottom_bar(currentIndex: 0),
+          ),
+        );
+        print("Login Is usersCustomersId = $usersCustomersId");
+      } else if (empUsersCustomersId != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Empbottom_bar(currentIndex: 0),
+          ),
+        );
+        print("Login Is empUsersCustomersId = $empUsersCustomersId");
+      }
+    } else {
+      // No user or employee is logged in
       bool firstRun = await IsFirstRun.isFirstRun();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => firstRun ? OnboardingPageView() : LoginTabClass(login: 0),
+          builder: (context) => firstRun ? OnboardingPageView() : SignUpTabClass(signup: 0),
         ),
       );
-      print("Login not usersCustomersId = $usersCustomersId");
+      print("else condition running");
     }
   }
 

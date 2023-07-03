@@ -162,7 +162,7 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                       ),
                     ),
                     SizedBox(height: height * 0.05),
-                    Obx(() => GestureDetector(
+                    GestureDetector(
                         onTap: () async {
                           print("myEmail ${_emailController.text}");
                           if(form.currentState!.validate()){
@@ -195,7 +195,7 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                           }
                         },
                         child: mainButton("Send OTP",
-                            Color.fromRGBO(43, 101, 236, 1), context)),)
+                            Color.fromRGBO(43, 101, 236, 1), context)),
 
                   ],
                 ),

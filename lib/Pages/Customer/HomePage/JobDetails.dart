@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/jobs_create_Model.dart';
 import '../../../Models/jobs_price_Model.dart';
@@ -523,7 +524,7 @@ class _JobDetailsState extends State<JobDetails> {
                                             child: dateContainer(
                                               size,
                                               startTime != null
-                                                  ? '${startTime?.format(context)}'
+                                                  ? '${formatTimeOfDay(startTime!)}'
                                                   : 'Start Time',
                                               // valueTime.toString(),
                                               // _selectedTime.format(context),
@@ -554,7 +555,7 @@ class _JobDetailsState extends State<JobDetails> {
                                                 size,
                                                 // ' ${_endSelectedTime.format(context)}',
                                                 endTime != null
-                                                    ? '${endTime?.format(context)}'
+                                                    ? '${formatTimeOfDay(endTime!)}'
                                                     : 'End Time',
                                                 Icons.calendar_today)),
                                       ],
@@ -700,12 +701,12 @@ class _JobDetailsState extends State<JobDetails> {
                                         null) {
                                       toastFailedMessage(
                                           'Date cannot be empty', Colors.red);
-                                    } else if (startTime?.format(context) ==
+                                    } else if (formatTimeOfDay(startTime!) ==
                                         null) {
                                       toastFailedMessage(
                                           'Start Time  cannot be empty',
                                           Colors.red);
-                                    } else if (endTime?.format(context) ==
+                                    } else if (formatTimeOfDay(endTime!) ==
                                         null) {
                                       toastFailedMessage(
                                           'End Time cannot be empty',
@@ -734,9 +735,9 @@ class _JobDetailsState extends State<JobDetails> {
                                       print(
                                           "start_date: ${selectedDate.toString()}");
                                       print(
-                                          "start_time: ${startTime?.format(context)}");
+                                          "start_time: ${formatTimeOfDay(startTime!)}");
                                       print(
-                                          "end_time: ${endTime?.format(context)}");
+                                          "end_time: ${formatTimeOfDay(endTime!)}");
                                       print(
                                           "description: ${describeJob.text.toString()}");
                                       print("payment_gateways_name: gPay");
@@ -854,6 +855,7 @@ class _JobDetailsState extends State<JobDetails> {
 //     }
 //   }
 
+
   DateTime? selectedDate;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
@@ -963,6 +965,124 @@ class _JobDetailsState extends State<JobDetails> {
       }
     }
   }
+
+// Function to format the time in 12-hour clock format with AM/PM
+  String formatTimeOfDay(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    final dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    final formattedTime = DateFormat.jm().format(dateTime);
+    return formattedTime;
+  }
+
+  // DateTime? selectedDate;
+  // TimeOfDay? startTime;
+  // TimeOfDay? endTime;
+  //
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime.now(),
+  //     lastDate: DateTime(2100),
+  //   );
+  //
+  //   if (pickedDate != null && pickedDate != selectedDate) {
+  //     setState(() {
+  //       selectedDate = pickedDate;
+  //       startTime = null;
+  //       endTime = null;
+  //     });
+  //   }
+  // }
+  //
+  // Future<void> _selectStartTime(BuildContext context) async {
+  //   final TimeOfDay? pickedTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: TimeOfDay.now(),
+  //   );
+  //
+  //   if (pickedTime != null) {
+  //     final DateTime selectedDateTime = DateTime(
+  //       selectedDate!.year,
+  //       selectedDate!.month,
+  //       selectedDate!.day,
+  //       pickedTime.hour,
+  //       pickedTime.minute,
+  //     );
+  //
+  //     if (selectedDateTime.isBefore(DateTime.now())) {
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: Text('Invalid Time'),
+  //             content: Text('Please select a future time.'),
+  //             actions: [
+  //               ElevatedButton(
+  //                 child: Text('OK'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     } else {
+  //       setState(() {
+  //         startTime = pickedTime;
+  //       });
+  //     }
+  //   }
+  // }
+  //
+  // Future<void> _selectEndTime(BuildContext context) async {
+  //   final TimeOfDay? pickedTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: TimeOfDay.now(),
+  //   );
+  //
+  //   if (pickedTime != null) {
+  //     final DateTime startDateTime = DateTime(
+  //       selectedDate!.year,
+  //       selectedDate!.month,
+  //       selectedDate!.day,
+  //       startTime!.hour,
+  //       startTime!.minute,
+  //     );
+  //     final DateTime endDateTime = DateTime(
+  //       selectedDate!.year,
+  //       selectedDate!.month,
+  //       selectedDate!.day,
+  //       pickedTime.hour,
+  //       pickedTime.minute,
+  //     );
+  //
+  //     if (endDateTime.isBefore(startDateTime)) {
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: Text('Invalid Time'),
+  //             content: Text('End time must be greater than start time.'),
+  //             actions: [
+  //               ElevatedButton(
+  //                 child: Text('OK'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     } else {
+  //       setState(() {
+  //         endTime = pickedTime;
+  //       });
+  //     }
+  //   }
+  // }
 
   Widget dateContainer(size, text, icon) {
     return Container(

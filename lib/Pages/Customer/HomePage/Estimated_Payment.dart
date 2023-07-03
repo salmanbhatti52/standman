@@ -157,34 +157,34 @@ Estimated_PaymentMethod({
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Service Charges",
-                            style: TextStyle(
-                              color: Color(0xff000000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                          SizedBox(width: Get.width * 0.1,),
-                          Text(
-                            // "\$2",
-                            "\$$chargers",
-                            style: TextStyle(
-                              color: Color(0xff000000),
-                              fontFamily: "Outfit",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 3.0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       Text(
+                    //         "Service Charges",
+                    //         style: TextStyle(
+                    //           color: Color(0xff000000),
+                    //           fontFamily: "Outfit",
+                    //           fontWeight: FontWeight.w300,
+                    //           fontSize: 14,
+                    //         ),
+                    //       ),
+                    //       SizedBox(width: Get.width * 0.1,),
+                    //       Text(
+                    //         // "\$2",
+                    //         "\$$chargers",
+                    //         style: TextStyle(
+                    //           color: Color(0xff000000),
+                    //           fontFamily: "Outfit",
+                    //           fontWeight: FontWeight.w300,
+                    //           fontSize: 14,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,

@@ -163,8 +163,8 @@ class _FindPlaceState extends State<FindPlace> {
                     // onMapCreated: _onMapCreated,
                     mapType: MapType.normal,
                     initialCameraPosition: CameraPosition(
-                      target: LatLng(widget.location ?? 30.183419,
-                          widget.location ?? 71.427832),
+                      target: LatLng(widget.location ??43.64252511567895,
+                          widget.location ?? -79.38652728016845),
                       zoom: 10.0,
                     ),
                     // markers: markers.toSet()

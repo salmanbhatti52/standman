@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Authentication/Login_tab_class.dart';
+import '../Authentication/SignUp_tab_class.dart';
 import 'OnboardingPageWidget.dart';
 import 'Onboarding_2.dart';
 
@@ -66,7 +67,7 @@ class Onboarding_3 extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.offAll( LoginTabClass(login: 0,),  transition : Transition.downToUp,
+                      Get.offAll( SignUpTabClass(signup: 0),  transition : Transition.downToUp,
                         duration: Duration(milliseconds: 350),);
                     },
                     child: const Text(
@@ -82,7 +83,7 @@ class Onboarding_3 extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: (){
-                      Get.offAll( LoginTabClass(login: 0,), transition : Transition.rightToLeftWithFade,
+                      Get.offAll( SignUpTabClass(signup: 0), transition : Transition.rightToLeftWithFade,
                         duration: Duration(milliseconds: 250),);
                     },
                     child: OnboardingButton(

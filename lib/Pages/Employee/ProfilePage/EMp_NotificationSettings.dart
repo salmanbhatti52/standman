@@ -15,10 +15,15 @@ import '../../../widgets/MyButton.dart';
 import '../../../widgets/TopBar.dart';
 import '../../Customer/HomePage/HomePage.dart';
 import 'package:http/http.dart' as http;
-Future EmpNotificationSettings(BuildContext context) {
+Future EmpNotificationSettings(BuildContext context) async {
 
   NotificationPermissionModel notificationPermissionModel = NotificationPermissionModel();
-  bool loading = false;
+  // bool status = false;
+  // bool status2 = false;
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool status = prefs.getBool('notificationStatus') ?? false;
+  bool status2 = prefs.getBool('messagesStatus') ?? false;
 
   notificationPermissionApiYes() async {
     // try {
@@ -47,6 +52,8 @@ Future EmpNotificationSettings(BuildContext context) {
         print("notificationPermissionResponse: ${responseString.toString()}");
         notificationPermissionModel = notificationPermissionModelFromJson(responseString);
         print("usersCustomersId: ${notificationPermissionModel.data?[0].usersCustomersId}");
+        status = true;
+        prefs.setBool('notificationStatus', status);
       }
     } catch (e) {
       print('Error in notificationPermissionModel: ${e.toString()}');
@@ -80,6 +87,8 @@ Future EmpNotificationSettings(BuildContext context) {
         print("notificationPermissionResponse: ${responseString.toString()}");
         notificationPermissionModel = notificationPermissionModelFromJson(responseString);
         print("usersCustomersId: ${notificationPermissionModel.data?[0].usersCustomersId}");
+        status = false;
+        prefs.setBool('notificationStatus', status);
       }
     } catch (e) {
       print('Error in notificationPermissionModel: ${e.toString()}');
@@ -115,6 +124,8 @@ Future EmpNotificationSettings(BuildContext context) {
         print("messagesPermissionResponse: ${responseString.toString()}");
         messagesPermissionModel = messagesPermissionModelFromJson(responseString);
         print("usersCustomersId: ${messagesPermissionModel.data?[0].usersCustomersId}");
+        status2 = true;
+        prefs.setBool('messagesStatus', status2);
       }
     } catch (e) {
       print('Error in messagesPermissionModel: ${e.toString()}');
@@ -148,14 +159,14 @@ Future EmpNotificationSettings(BuildContext context) {
         print("messagesPermissionResponse: ${responseString.toString()}");
         messagesPermissionModel = messagesPermissionModelFromJson(responseString);
         print("usersCustomersId: ${messagesPermissionModel.data?[0].usersCustomersId}");
+        status2 = false;
+        prefs.setBool('messagesStatus', status2);
       }
     } catch (e) {
       print('Error in messagesPermissionModel: ${e.toString()}');
     }
   }
 
-  bool status = false;
-  bool status2 = false;
   var height = MediaQuery.of(context).size.height;
   var width = MediaQuery.of(context).size.width;
   return showMaterialModalBottomSheet(
@@ -321,7 +332,9 @@ Future EmpNotificationSettings(BuildContext context) {
                       SizedBox(
                         height: height * 0.1,
                       ),
-                      mainButton("Save", Color(0xff2B65EC), context),
+                      GestureDetector(onTap: (){
+                        Get.back();
+                      },child: mainButton("Save", Color(0xff2B65EC), context)),
                     ],
                   ),
                 ),

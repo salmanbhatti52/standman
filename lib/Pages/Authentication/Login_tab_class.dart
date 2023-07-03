@@ -1,5 +1,8 @@
+import 'package:StandMan/Pages/Onboarding-Screen/OnboardingPageView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'Customer/AuthTextWidget.dart';
 import 'Customer/login_page.dart';
 import 'Emplyee/Emplogin_page.dart';
@@ -38,9 +41,57 @@ class _LoginTabClassState extends State<LoginTabClass>
               Container(
                 width: double.infinity,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: height * 0.03),
-                    SvgPicture.asset("assets/images/logo.svg"),
+                    SizedBox(height: height * 0.05),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(width: width * 0.37),
+                        SvgPicture.asset("assets/images/logo.svg"),
+                        // SizedBox(width: width * 0.03),
+                        GestureDetector(
+                          onTap: (){
+                            Get.to( () => OnboardingPageView());
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 70, bottom: 70),
+                            width: width * 0.22,
+                              height: height * 0.04,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Color(0xff2B65EC),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(2, 10),
+                                    spreadRadius: -5,
+                                    blurRadius: 17,
+                                    color: Color.fromRGBO(232, 231, 231, 1),),
+                                ]
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "See Intro",
+                                  style: TextStyle(
+                                    color: Color(0xffffffff),
+                                    fontFamily: "Outfit",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(width: width * 0.01),
+                                Image.asset("assets/images/i.png", width: 20, height: 20, color: Colors.white,),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
                       child: Authheadingtext("Welcome Back", context),
@@ -84,7 +135,7 @@ class _LoginTabClassState extends State<LoginTabClass>
                   ],
                 ),
               ),
-              SizedBox(height: height * 0.02),
+              SizedBox(height: height * 0.03),
               Expanded(
                 child: Container(
                   child: TabBarView(
