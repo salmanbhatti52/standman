@@ -716,11 +716,12 @@ class _JobDetailsState extends State<JobDetails> {
                                     //   toastFailedMessage(
                                     //       'Price cannot be empty', Colors.red);
                                     // }
-                                    else if (describeJob.text.isEmpty) {
-                                      toastFailedMessage(
-                                          'Description cannot be empty',
-                                          Colors.red);
-                                    } else if (base64ID == null) {
+                                    // else if (describeJob.text.isEmpty) {
+                                    //   toastFailedMessage(
+                                    //       'Description cannot be empty',
+                                    //       Colors.red);
+                                    // }
+                                  else if (base64ID == null) {
                                       toastFailedMessage(
                                           'Image required', Colors.red);
                                     } else {
@@ -877,8 +878,68 @@ class _JobDetailsState extends State<JobDetails> {
     }
   }
 
+  // Future<void> _selectStartTime(BuildContext context) async {
+  //   final TimeOfDay? pickedTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: TimeOfDay.now(),
+  //   );
+  //
+  //   if (pickedTime != null) {
+  //     final DateTime selectedDateTime = DateTime(
+  //       selectedDate!.year,
+  //       selectedDate!.month,
+  //       selectedDate!.day,
+  //       pickedTime.hour,
+  //       pickedTime.minute,
+  //     );
+  //
+  //     if (selectedDateTime.isBefore(DateTime.now())) {
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: Text('Invalid Time'),
+  //             content: Text('Please select a future time.'),
+  //             actions: [
+  //               ElevatedButton(
+  //                 child: Text('OK'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     } else {
+  //       setState(() {
+  //         startTime = pickedTime;
+  //       });
+  //     }
+  //   }
+  // }
+
+
+  Future<TimeOfDay?> showCustomTimePicker({
+    required BuildContext context,
+    required TimeOfDay initialTime,
+  }) async {
+    return await showTimePicker(
+      context: context,
+      initialTime: initialTime,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            alwaysUse24HourFormat: false,
+          ),
+          child: child!,
+        );
+      },
+    );
+  }
+
   Future<void> _selectStartTime(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
+    final TimeOfDay? pickedTime = await showCustomTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
@@ -919,7 +980,7 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   Future<void> _selectEndTime(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
+    final TimeOfDay? pickedTime = await showCustomTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );

@@ -54,7 +54,7 @@ Estimated_PaymentMethod({
         "start_date": date,
         "start_time": time,
         "end_time": endtime,
-        "description": describe,
+        "description": describe == "" ? "" : describe,
         "price": amount,
         "service_charges": chargers,
         "tax": tax,

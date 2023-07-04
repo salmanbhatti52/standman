@@ -2,34 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
+import '../Login_tab_class.dart';
 import 'AuthTextWidget.dart';
-import 'Newpassword.dart';
 
-class OTPPage extends StatefulWidget {
-  final int? data;
-  final String? email;
-  OTPPage({Key? key,   this.data, this.email}) : super(key: key);
+class EmailVerification extends StatefulWidget {
+  final int? otpVerify;
+  const EmailVerification({Key? key, this.otpVerify}) : super(key: key);
 
   @override
-  State<OTPPage> createState() => _OTPPageState();
+  State<EmailVerification> createState() => _EmailVerificationState();
 }
 
-class _OTPPageState extends State<OTPPage> {
-  final OTpCode = TextEditingController();
+class _EmailVerificationState extends State<EmailVerification> {
+
   final key = GlobalKey<FormState>();
+  final emailVerify = TextEditingController();
   bool isInAsyncCall = false;
 
   @override
   void initState() {
-    print("otp: ${widget.data}");
-    print("otp: ${widget.email}");
+    print("otpVerify :  ${widget.otpVerify}");
     // TODO: implement initState
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class _OTPPageState extends State<OTPPage> {
                     child: Authheadingtext("Enter 4-digit OTP code", context),
                   ),
                   Authparatext(
-                      "Please enter 4-digit OTP code here, after\nconfirmation you can create new password.",
+                      "Please enter 4-digit OTP code here, after\nconfirmation you can create account.",
                       context),
                   SizedBox(height: height * 0.05),
                   Column(
@@ -79,7 +79,7 @@ class _OTPPageState extends State<OTPPage> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 0.0, horizontal: 70),
                           child: PinCodeTextField(
-                            controller: OTpCode,
+                            controller: emailVerify,
                             appContext: context,
                             length: 4,
                             cursorColor: Colors.black,
@@ -115,28 +115,28 @@ class _OTPPageState extends State<OTPPage> {
                   GestureDetector(
                       onTap: () {
                         if (key.currentState!.validate()) {
-                          if (OTpCode.text.isEmpty) {
+                          if (emailVerify.text.isEmpty) {
                             toastFailedMessage('OTp required', Colors.red);
                           } else {
-                            print("otp: ${widget.data}");
-                            print("otp: ${OTpCode}");
-                            print("otp: ${widget.email}");
+                            // print("otp: ${widget.data}");
+                            // print("otp: ${OTpCode}");
+                            // print("otp: ${widget.email}");
 
                             setState(() {
                               isInAsyncCall = true;
                             });
-                            if (widget.data.toString() == OTpCode.text ) {
+                            if (widget.otpVerify.toString() == emailVerify.text ) {
 
-                              Future.delayed(const Duration(seconds: 3), () {
-                                toastSuccessMessage("success", Colors.green);
-                                Get.to(NewPassword(data: widget.data, email: widget.email,));
+                              Future.delayed(const Duration(seconds: 2), () {
+                                toastSuccessMessage("Admin will Approve you account soon.", Colors.green);
+                                Get.to(LoginTabClass(login: 0,));
                                 setState(() {
                                   isInAsyncCall = false;
                                 });
                                 print("false: $isInAsyncCall");
                               });
                             }
-                            if (widget.data.toString() != OTpCode.text) {
+                            if (widget.otpVerify.toString() != emailVerify.text) {
                               toastFailedMessage(
                                   "Enter Correct OTp", Colors.red);
                               setState(() {
@@ -149,7 +149,7 @@ class _OTPPageState extends State<OTPPage> {
                       child:  isInAsyncCall
                           ?  loadingBar(context)
                           :mainButton(
-                          "Confirm", Color.fromRGBO(43, 101, 236, 1), context),),
+                          "Confirm", Color.fromRGBO(43, 101, 236, 1), context)),
                 ],
               ),
             ),

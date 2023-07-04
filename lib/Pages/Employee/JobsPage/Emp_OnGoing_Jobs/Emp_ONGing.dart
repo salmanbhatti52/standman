@@ -125,7 +125,7 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
                       totalPrice: employeeOngoingJobsModel.data?[index].price,
                       address: employeeOngoingJobsModel.data?[index].location,
                       completeJobTime: employeeOngoingJobsModel.data?[index].dateAdded.toString(),
-                      description: employeeOngoingJobsModel.data?[index].description,
+                      description: employeeOngoingJobsModel.data?[index].description == null ? "" : employeeOngoingJobsModel.data?[index].description,
                       name: "${employeeOngoingJobsModel.data?[index].usersCustomersData?.firstName} ${employeeOngoingJobsModel.data?[index].usersCustomersData?.lastName}",
                       profilePic: "$baseUrlImage${employeeOngoingJobsModel.data?[index].usersCustomersData?.profilePic}",
                       customerId: "${employeeOngoingJobsModel.data?[index].usersCustomersData?.usersCustomersId}",

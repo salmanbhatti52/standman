@@ -95,7 +95,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                             totalPrice: "${previousData[i]['total_price']}",
                             address: "${previousData[i]['location']}",
                             completeJobTime: "${previousData[i]['date_added']}",
-                            description: "${previousData[i]['description']}",
+                            description: "${previousData[i]['description']}" == null ? "" : "${previousData[i]['description']}",
                             name: previousData[i]['users_employee_data'] != null && previousData[i]['users_employee_data']['first_name'] != null ? "${previousData[i]['users_employee_data']['first_name']} ${previousData[i]['users_employee_data']['last_name']}" : "${previousData[i]['users_employee_data']['first_name']} ${previousData[i]['users_employee_data']['last_name']}",
                             profilePic: "$baseUrlImage${previousData[i]['users_employee_data'] != null && previousData[i]['users_employee_data']['profile_pic'] != null ? previousData[i]['users_employee_data']['profile_pic'] : previousData[i]['users_employee_data']['profile_pic']}",
                             status: "${previousData[i]['status']}",

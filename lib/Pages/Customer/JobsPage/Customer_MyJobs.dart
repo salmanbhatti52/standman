@@ -216,7 +216,7 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
                       totalPrice: customerMyJobModel.data?[index].totalPrice,
                       address: customerMyJobModel.data?[index].location,
                       completeJobTime: customerMyJobModel.data?[index].dateAdded.toString(),
-                      description: customerMyJobModel.data?[index].description,
+                      description: customerMyJobModel.data?[index].description == null ? "" : customerMyJobModel.data?[index].description,
                       name: "${customerMyJobModel.data?[index].usersCustomersData?.firstName} ${customerMyJobModel.data?[index].usersCustomersData?.lastName}",
                       profilePic: "$baseUrlImage${customerMyJobModel.data?[index].usersCustomersData?.profilePic}",
                       status: customerMyJobModel.data![index].status,

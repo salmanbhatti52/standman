@@ -8,6 +8,8 @@ import 'Pages/Authentication/Customer/google_signin.dart';
 import 'Pages/SplashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Utils/remove_scroll_glow.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +29,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    super.initState();
+    configOneSignel();
+  }
+
+  void configOneSignel()
+  {
+    OneSignal.shared.setAppId('69bf3ad1-f4be-4a42-a6ee-f4ce186b9914');
+  }
 
   @override
   Widget build(BuildContext context) {

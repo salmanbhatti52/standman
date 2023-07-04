@@ -134,7 +134,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                   totalPrice: widget.getJobsEmployeesModel?.price,
                                   address: widget.getJobsEmployeesModel?.location,
                                   completeJobTime: widget.getJobsEmployeesModel?.dateAdded.toString(),
-                                  description: widget.getJobsEmployeesModel?.description,
+                                  description: widget.getJobsEmployeesModel?.description == null ? "" : widget.getJobsEmployeesModel?.description,
                                   name: "${widget.getJobsEmployeesModel?.usersCustomersData?.firstName} ${widget.getJobsEmployeesModel?.usersCustomersData?.lastName}",
                                   profilePic: "$baseUrlImage${widget.getJobsEmployeesModel?.usersCustomersData?.profilePic}",
                                 ));
@@ -273,7 +273,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                                   totalPrice: widget.getJobsEmployeesModel?.price,
                                                   address: widget.getJobsEmployeesModel?.location,
                                                   completeJobTime: widget.getJobsEmployeesModel?.dateAdded.toString(),
-                                                  description: widget.getJobsEmployeesModel?.description,
+                                                  description: widget.getJobsEmployeesModel?.description == null ? "" : widget.getJobsEmployeesModel?.description,
                                                   name: "${widget.getJobsEmployeesModel?.usersCustomersData?.firstName} ${widget.getJobsEmployeesModel?.usersCustomersData?.lastName}",
                                                   profilePic: "$baseUrlImage${widget.getJobsEmployeesModel?.usersCustomersData?.profilePic}",
                                                   customerId: widget.getJobsEmployeesModel?.usersCustomersId.toString(),

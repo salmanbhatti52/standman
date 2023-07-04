@@ -249,6 +249,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                       .data?[index].dateAdded
                                       .toString(),
                                   description: getJobsEmployeesModel
+                                      .data?[index].description == null ? "" : getJobsEmployeesModel
                                       .data?[index].description,
                                   name: "${getJobsEmployeesModel.data?[index].usersCustomersData?.firstName} ${getJobsEmployeesModel.data?[index].usersCustomersData?.lastName}",
                                   profilePic: "$baseUrlImage${getJobsEmployeesModel.data?[index].usersCustomersData?.profilePic}",
@@ -399,6 +400,8 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                                       .toString(),
                                                   description:
                                                   getJobsEmployeesModel
+                                                      .data?[index]
+                                                      .description == null ? "" : getJobsEmployeesModel
                                                       .data?[index]
                                                       .description,
                                                 ),

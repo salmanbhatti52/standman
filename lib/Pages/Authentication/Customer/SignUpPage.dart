@@ -16,6 +16,7 @@ import '../../../widgets/social_button.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../../TermConditions.dart';
+import 'Email_Verification.dart';
 
 class CustomerSignUpPage extends StatefulWidget {
   const CustomerSignUpPage({Key? key}) : super(key: key);
@@ -822,15 +823,16 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                       // await sharedPref.setString('password', "${customerSignupModel.data?.password.toString()}");
 
                                       Future.delayed(const Duration(seconds: 3), () {
-                                        toastSuccessMessage(customerSignupModel.data, Colors.green);
-                                        Get.to(LoginTabClass(login: 0,));
+                                        // Get.to(LoginTabClass(login: 0,));
+                                        Get.to(EmailVerification(otpVerify:  customerSignupModel.data?.otpdetails?.otp,));
+                                        toastSuccessMessage("OTP sent in the email.", Colors.green);
                                         setState(() {
                                           isInAsyncCall = false;
                                         });
                                         print("false: $isInAsyncCall");
                                       });
                                     } else {
-                                      toastFailedMessage(customerSignupModel.message, Colors.red);
+                                      toastFailedMessage("Failed to send OTP", Colors.red);
                                       setState(() {
                                         isInAsyncCall = false;
                                       });

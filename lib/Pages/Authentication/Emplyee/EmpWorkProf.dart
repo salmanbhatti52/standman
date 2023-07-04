@@ -13,6 +13,8 @@ import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/TopBar.dart';
 import 'package:http/http.dart' as http;
 
+import 'Emp_Email_Verify.dart';
+
 class WorkProof extends StatefulWidget {
   final String? profileimg;
   final String? uploadID;
@@ -526,10 +528,8 @@ class _WorkProofState extends State<WorkProof> {
 
                             Future.delayed(const Duration(seconds: 3), () {
                               toastSuccessMessage(
-                                  employeeSignupModel.data, Colors.green);
-                              Get.to(LoginTabClass(
-                                login: 1,
-                              ));
+                                  "OTP sent in the email.", Colors.green);
+                              Get.to(Emp_EmailVerification(otpVerify: employeeSignupModel.data?.otpdetails?.otp,));
                               setState(() {
                                 isInAsyncCall = false;
                               });
@@ -537,7 +537,7 @@ class _WorkProofState extends State<WorkProof> {
                             });
                           } else {
                             toastFailedMessage(
-                                employeeSignupModel.message, Colors.red);
+                                "Failed to send OTP", Colors.red);
                             setState(() {
                               isInAsyncCall = false;
                             });

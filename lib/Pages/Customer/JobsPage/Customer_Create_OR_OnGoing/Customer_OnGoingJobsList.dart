@@ -224,6 +224,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                           .toString(),
                       jobId: "${getJobsModel.data?[index].jobsId}",
                       description: getJobsModel
+                          .data?[index].description == null ? "" : getJobsModel
                           .data?[index].description,
                       name: "${getJobsModel.data?[index].usersEmployeeData?.firstName} ${getJobsModel.data?[index].usersEmployeeData?.lastName}",
                       profilePic: "$baseUrlImage${getJobsModel.data?[index].usersEmployeeData?.profilePic}",
