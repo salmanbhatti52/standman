@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../../../Models/customer_signup_model.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
@@ -50,6 +51,15 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
 
   customerRegisterUser() async {
     // try {
+
+    // var status = await OneSignal.shared.getPermissionSubscriptionState();
+    // String tokenId = status.subscriptionStatus.userId;
+
+    var status = await OneSignal.shared.getDeviceState();
+    String tokenId = status!.userId!;
+    print("OneSignal User ID: $tokenId");
+
+
       String apiUrl = customerSignupApiUrl;
       final response = await http.post(Uri.parse(apiUrl), headers: {
         "Accept": "application/json"
@@ -58,6 +68,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
         "users_customers_type":"Customer",
         "first_name":firstNameController.text,
         "last_name":lastNameController.text,
+        // "token": tokenId,
         "phone":phoneController.text,
         "country_code":"${countryCode.toString()}",
         "email":emailController.text,

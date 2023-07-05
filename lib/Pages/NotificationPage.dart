@@ -151,7 +151,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     horizontal: 0, vertical: 15),
                                 child: Container(
                                   width: width,
-                                  height: height * 0.8, //88,
+                                  height: height * 0.85, //88,
                                   child: ListView.builder(
                                       physics: ScrollPhysics(),
                                       shrinkWrap: true,

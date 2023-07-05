@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/messages_permission_Model.dart';
 import '../../../Models/notification_permission_Model.dart';
 import '../../../Utils/api_urls.dart';
+import '../../../main.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/TopBar.dart';
 import 'package:http/http.dart' as http;
@@ -18,10 +19,23 @@ import '../HomePage/HomePage.dart';
 Future NotificationSettings(BuildContext context) async {
 
   NotificationPermissionModel notificationPermissionModel = NotificationPermissionModel();
-  bool loading = false;
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool status = prefs.getBool('notificationStatus') ?? false;
-  bool status2 = prefs.getBool('messagesStatus') ?? false;
+
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // bool status = prefs.getBool('notificationStatus') ?? false;
+  // bool status2 = prefs.getBool('messagesStatus') ?? false;
+
+  // Future<void> initializeStatusValues() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   status = prefs.getBool('notificationStatus') ?? false;
+  //   status2 = prefs.getBool('messagesStatus') ?? false;
+  // }
+
+  // Load status and status2 from SharedPreferences during app initialization
+  // void initializeStatusValues() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   status = prefs.getBool('notificationStatus') ?? false;
+  //   status2 = prefs.getBool('messagesStatus') ?? false;
+  // }
 
   notificationPermissionApiYes() async {
     // try {
@@ -51,7 +65,7 @@ Future NotificationSettings(BuildContext context) async {
         notificationPermissionModel = notificationPermissionModelFromJson(responseString);
         print("usersCustomersId: ${notificationPermissionModel.data?[0].usersCustomersId}");
         status = true;
-        prefs.setBool('notificationStatus', status);
+        prefs?.setBool('notificationStatus', status);
       }
     } catch (e) {
       print('Error in notificationPermissionModel: ${e.toString()}');
@@ -86,7 +100,7 @@ Future NotificationSettings(BuildContext context) async {
         notificationPermissionModel = notificationPermissionModelFromJson(responseString);
         print("usersCustomersId: ${notificationPermissionModel.data?[0].usersCustomersId}");
         status = false;
-        prefs.setBool('notificationStatus', status);
+        prefs?.setBool('notificationStatus', status);
       }
     } catch (e) {
       print('Error in notificationPermissionModel: ${e.toString()}');
@@ -123,7 +137,7 @@ Future NotificationSettings(BuildContext context) async {
         messagesPermissionModel = messagesPermissionModelFromJson(responseString);
         print("usersCustomersId: ${messagesPermissionModel.data?[0].usersCustomersId}");
         status2 = true;
-        prefs.setBool('messagesStatus', status2);
+        prefs?.setBool('messagesStatus', status2);
       }
     } catch (e) {
       print('Error in messagesPermissionModel: ${e.toString()}');
@@ -158,7 +172,7 @@ Future NotificationSettings(BuildContext context) async {
       messagesPermissionModel = messagesPermissionModelFromJson(responseString);
       print("usersCustomersId: ${messagesPermissionModel.data?[0].usersCustomersId}");
       status2 = false;
-      prefs.setBool('messagesStatus', status2);
+      prefs?.setBool('messagesStatus', status2);
     }
   } catch (e) {
     print('Error in messagesPermissionModel: ${e.toString()}');

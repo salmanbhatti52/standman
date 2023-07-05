@@ -43,7 +43,6 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
   List<UpdateMessgeModel> updateMessageModelObject = [];
   SendMessgeEmployeeModel sendMessgeEmployeeModel = SendMessgeEmployeeModel();
   bool loading = true;
-  bool progress = false;
   ScrollController _scrollController = ScrollController();
   String? Image;
   GetMessgeModel getMessgeModel = GetMessgeModel();
@@ -387,7 +386,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                   ),
                 ))
                 : ModalProgressHUD(
-              inAsyncCall: progress,
+              inAsyncCall: loading,
               opacity: 0.02,
               blur: 0.5,
               color: Colors.transparent,
@@ -677,16 +676,16 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                                 'please type a message', Colors.red);
                           } else {
                             setState(() {
-                              progress = true;
+                              loading = true;
                             });
                             await sendMessageApiWidget();
                             Future.delayed(Duration(seconds: 3), () {
                               print("sendMessage Success");
                               setState(() {
-                                progress = false;
+                                loading = false;
                                 sendMessageController.clear();
                               });
-                              print("false: $progress");
+                              print("false: $loading");
                             });
                           }
                         }

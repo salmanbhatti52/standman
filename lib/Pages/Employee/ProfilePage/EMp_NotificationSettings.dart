@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/messages_permission_Model.dart';
 import '../../../Models/notification_permission_Model.dart';
 import '../../../Utils/api_urls.dart';
+import '../../../main.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/TopBar.dart';
 import '../../Customer/HomePage/HomePage.dart';
@@ -21,9 +22,9 @@ Future EmpNotificationSettings(BuildContext context) async {
   // bool status = false;
   // bool status2 = false;
 
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool status = prefs.getBool('notificationStatus') ?? false;
-  bool status2 = prefs.getBool('messagesStatus') ?? false;
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // bool statuss = prefs.getBool('notificationStatus') ?? false;
+  // bool statuss2 = prefs.getBool('messagesStatus') ?? false;
 
   notificationPermissionApiYes() async {
     // try {
@@ -52,8 +53,8 @@ Future EmpNotificationSettings(BuildContext context) async {
         print("notificationPermissionResponse: ${responseString.toString()}");
         notificationPermissionModel = notificationPermissionModelFromJson(responseString);
         print("usersCustomersId: ${notificationPermissionModel.data?[0].usersCustomersId}");
-        status = true;
-        prefs.setBool('notificationStatus', status);
+        statuss = true;
+        prefs?.setBool('notificationStatus', statuss);
       }
     } catch (e) {
       print('Error in notificationPermissionModel: ${e.toString()}');
@@ -87,8 +88,8 @@ Future EmpNotificationSettings(BuildContext context) async {
         print("notificationPermissionResponse: ${responseString.toString()}");
         notificationPermissionModel = notificationPermissionModelFromJson(responseString);
         print("usersCustomersId: ${notificationPermissionModel.data?[0].usersCustomersId}");
-        status = false;
-        prefs.setBool('notificationStatus', status);
+        statuss = false;
+        prefs?.setBool('notificationStatus', statuss);
       }
     } catch (e) {
       print('Error in notificationPermissionModel: ${e.toString()}');
@@ -124,8 +125,8 @@ Future EmpNotificationSettings(BuildContext context) async {
         print("messagesPermissionResponse: ${responseString.toString()}");
         messagesPermissionModel = messagesPermissionModelFromJson(responseString);
         print("usersCustomersId: ${messagesPermissionModel.data?[0].usersCustomersId}");
-        status2 = true;
-        prefs.setBool('messagesStatus', status2);
+        statuss2 = true;
+        prefs?.setBool('messagesStatus', statuss2);
       }
     } catch (e) {
       print('Error in messagesPermissionModel: ${e.toString()}');
@@ -159,8 +160,8 @@ Future EmpNotificationSettings(BuildContext context) async {
         print("messagesPermissionResponse: ${responseString.toString()}");
         messagesPermissionModel = messagesPermissionModelFromJson(responseString);
         print("usersCustomersId: ${messagesPermissionModel.data?[0].usersCustomersId}");
-        status2 = false;
-        prefs.setBool('messagesStatus', status2);
+        statuss2 = false;
+        prefs?.setBool('messagesStatus', statuss2);
       }
     } catch (e) {
       print('Error in messagesPermissionModel: ${e.toString()}');
@@ -241,13 +242,13 @@ Future EmpNotificationSettings(BuildContext context) async {
                                   height: 20.0,
                                   // valueFontSize: 25.0,
                                   toggleSize: 14.0,
-                                  value: status,
+                                  value: statuss,
                                   borderRadius: 30.0,
                                   // padding: 8.0,
                                   showOnOff: false,
                                   onToggle: (val) {
                                     stateSetterObject(() {
-                                      status = val;
+                                      statuss = val;
                                       print("val $val");
                                     });
                                     if(val == true){
@@ -306,13 +307,13 @@ Future EmpNotificationSettings(BuildContext context) async {
                                   height: 20.0,
                                   // valueFontSize: 25.0,
                                   toggleSize: 14.0,
-                                  value: status2,
+                                  value: statuss2,
                                   borderRadius: 30.0,
                                   // padding: 8.0,
                                   showOnOff: false,
                                   onToggle: (val2) {
                                     stateSetterObject(() {
-                                      status2 = val2;
+                                      statuss2 = val2;
                                       print("val2 $val2");
                                     });
                                     if(val2 == true){

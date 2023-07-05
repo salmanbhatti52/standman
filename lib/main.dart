@@ -4,16 +4,38 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Pages/Authentication/Customer/google_signin.dart';
 import 'Pages/SplashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Utils/api_urls.dart';
 import 'Utils/remove_scroll_glow.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+
+
+// Define the function in the same file
+bool status = false;
+bool status2 = false;
+bool statuss = false;
+bool statuss2 = false;
+
+Future<void> initializeStatusValuesCustomer() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  status = prefs.getBool('notificationStatus') ?? false;
+  status2 = prefs.getBool('messagesStatus') ?? false;
+}
+Future<void> initializeStatusValuesEmployee() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  statuss = prefs.getBool('notificationStatus') ?? false;
+  statuss2 = prefs.getBool('messagesStatus') ?? false;
+}
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeStatusValuesCustomer();
+  await initializeStatusValuesEmployee();
   Stripe.publishableKey =
   'pk_test_51MV6RqJ1o3iGht9r3wtt4ZaiaiDqA0hcF03p9Kj0FhU3qgPnZI03BKzFxTniYSGjGklLrRqIhEcM5O67OWiJBEyS00xupHP2IW';
   runApp(MyApp());
@@ -38,7 +60,10 @@ class _MyAppState extends State<MyApp> {
 
   void configOneSignel()
   {
-    OneSignal.shared.setAppId('69bf3ad1-f4be-4a42-a6ee-f4ce186b9914');
+    OneSignal.shared.setAppId(appID);
+    OneSignal.shared.setNotificationWillShowInForegroundHandler((event) {
+      OSNotificationDisplayType.notification;
+    });
   }
 
   @override

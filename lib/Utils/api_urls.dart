@@ -1,6 +1,8 @@
-String baseUrl = "https://standman.eigix.net/api/";
+const appID = "69bf3ad1-f4be-4a42-a6ee-f4ce186b9914";
 
-String baseUrlImage = 'https://StandMan.eigix.net/public/';
+String baseUrl = "https://admin.standman.ca/api/";
+
+String baseUrlImage = 'https://admin.standman.ca/public/';
 
 String customerSignupApiUrl = "${baseUrl}signup";
 
