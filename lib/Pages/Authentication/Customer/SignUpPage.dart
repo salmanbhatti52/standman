@@ -64,11 +64,10 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
       final response = await http.post(Uri.parse(apiUrl), headers: {
         "Accept": "application/json"
       }, body: {
-        "one_signal_id":"123456",
+        "one_signal_id": tokenId.toString(),
         "users_customers_type":"Customer",
         "first_name":firstNameController.text,
         "last_name":lastNameController.text,
-        // "token": tokenId,
         "phone":phoneController.text,
         "country_code":"${countryCode.toString()}",
         "email":emailController.text,

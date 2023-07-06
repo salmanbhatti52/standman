@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,42 +56,43 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
     // print("userFirstName in LoginPrefs is = $userFirstName $userLastName");
   }
 
-  UsersProfileModel usersProfileModel = UsersProfileModel();
-  bool progress = false;
-  bool isInAsyncCall = false;
+  bool isLoading = false;
+  dynamic usersProfileData;
 
   getUserProfileWidget() async {
+    setState(() {
+      isLoading = true;
+    });
+
     empPrefs = await SharedPreferences.getInstance();
     empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
     print("userId in empPrefs is = $empUsersCustomersId");
-    try {
-      String apiUrl = usersProfileApiUrl;
-      print("getUserProfileApi: $apiUrl");
-      final response = await http.post(Uri.parse(apiUrl),
-          body: {
-            "users_customers_id": empUsersCustomersId,
-          }, headers: {
-            'Accept': 'application/json'
-          });
-      print('${response.statusCode}');
-      print(response);
-      if (response.statusCode == 200) {
-        final responseString = response.body;
-        print("getUserProfileResponse: ${responseString.toString()}");
-        usersProfileModel = usersProfileModelFromJson(responseString);
-        print("getUserName: ${usersProfileModel.data!.lastName}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserNumber: ${usersProfileModel.data!.phone}");
-        print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-        print(
-            "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
-        setState(() {
-        });
 
-      }
-    } catch (e) {
-      print('Error in getUserProfileWidget: ${e.toString()}');
+    String apiUrl = usersProfileApiUrl;
+    print("getUserProfileApi: $apiUrl");
+
+    http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "users_customers_id": empUsersCustomersId.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          usersProfileData = jsonResponse['data'];
+          print("usersProfileData: $usersProfileData");
+          print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+          isLoading = false;
+        } else {
+          print("Response Body: ${response.body}");
+        }
+      });
     }
   }
 
@@ -101,15 +104,15 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
       // drawer: MyDrawer(),
       backgroundColor: Colors.white,
       body:
-    ModalProgressHUD(
-    inAsyncCall: isInAsyncCall,
-    opacity: 0.02,
-    blur: 0.5,
-    color: Colors.transparent,
-    progressIndicator: CircularProgressIndicator(
-    color: Colors.blue,
-    ),
-    child:
+    // ModalProgressHUD(
+    // inAsyncCall: isLoading,
+    // opacity: 0.02,
+    // blur: 0.5,
+    // color: Colors.transparent,
+    // progressIndicator: CircularProgressIndicator(
+    // color: Colors.blue,
+    // ),
+    // child:
     SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0.0),
@@ -140,29 +143,29 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                     //   // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
                     //
                     // ),
-                    Container(
-                      child: progress
-                          ? CircleAvatar(
-                        radius: 50,
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.grey.shade300,
-                          highlightColor: Colors.grey.shade100,
-                          child: Text('',),),)
-                          : usersProfileModel.status != "success"
-                          ? Center(
-                          child: Text('',
-                              style: TextStyle(fontWeight: FontWeight.bold)))
-                          : CircleAvatar(
-                        // radius: (screenWidth > 600) ? 90 : 70,
-                          radius: 50,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
-                              ? Image.asset("assets/images/person2.png").image
-                              : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
-                        // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
+                Container(
+                  child: isLoading
+                      ? CircleAvatar(
+                    radius: 50,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Text('',),),)
+                      : usersProfileData == null
+                      ? Center(
+                      child: Text('',
+                          style: TextStyle(fontWeight: FontWeight.bold)))
+                      : CircleAvatar(
+                    // radius: (screenWidth > 600) ? 90 : 70,
+                      radius: 50,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: baseUrlImage+usersProfileData['profile_pic'].toString() == null
+                          ? Image.asset("assets/images/person2.png").image
+                          : NetworkImage(baseUrlImage+usersProfileData['profile_pic'].toString())
+                    // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
-                      ),
-                    ),
+                  ),
+                ),
                     SizedBox(
                       width: width * 0.05,
                     ),
@@ -175,8 +178,8 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
                            Container(
-                             child:usersProfileModel.status != "success" ? Text(""): Text(
-                               "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
+                             child:usersProfileData == null ? Text(""): Text(
+                               "${usersProfileData['first_name']} ${usersProfileData['last_name']}",
                                style: TextStyle(
                                  color: Colors.white,
                                  fontFamily: "Outfit",
@@ -186,7 +189,7 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                              ),
                            ),
                            Container(
-                             child: usersProfileModel.status != "success" ? Text(""): Padding(
+                             child: usersProfileData == null ? Text(""): Padding(
                                padding: const EdgeInsets.symmetric(
                                    vertical: 8.0),
                                child: Row(
@@ -199,13 +202,13 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                                      "assets/images/sms-tracking.svg",
                                      color: Colors.white,
                                    ),
-                                   usersProfileModel.status != "success" ? Text(""): ConstrainedBox(
+                                   usersProfileData == null ? Text(""): ConstrainedBox(
                                      constraints: BoxConstraints(
                                          maxWidth: MediaQuery.of(context).size.width * 0.45),
                                      child: Padding(
                                        padding: const EdgeInsets.only(left: 8.0),
                                        child: AutoSizeText(
-                                         "${usersProfileModel.data!.email}",
+                                         "${usersProfileData['email']}",
                                          style: TextStyle(fontSize: 16.0, color: Colors.white),
                                          maxLines: 1,
                                          overflow: TextOverflow.ellipsis,
@@ -227,7 +230,7 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                              ),
                            ),
                            Container(
-                             child:  usersProfileModel.status != "success" ? Text(""):Row(
+                             child:  usersProfileData == null ? Text(""):Row(
                                // mainAxisAlignment: MainAxisAlignment.center,
                                crossAxisAlignment:
                                CrossAxisAlignment.center,
@@ -239,7 +242,7 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                                    height: 16,
                                  ),
                                  Text(
-                                   "  ${usersProfileModel.data!.phone.toString()}",
+                                   "${usersProfileData['phone']}",
                                    style: TextStyle(
                                      color: Color(0xffffffff),
                                      fontFamily: "Outfit",
@@ -252,12 +255,12 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                            ),
                            SizedBox(height: height * 0.01,),
                            Container(
-                             child: usersProfileModel.status != "success" ? Text(""): Row(
+                             child: usersProfileData == null ? Text(""): Row(
                                // mainAxisAlignment: MainAxisAlignment.center,
                                // crossAxisAlignment: CrossAxisAlignment.center,
                                children: [
                                  RatingBar(
-                                   initialRating: double.parse(usersProfileModel.data!.rating.toString()),
+                                   initialRating: double.parse(usersProfileData['rating'].toString()),
                                    direction: Axis.horizontal,
                                    allowHalfRating: true,
                                    itemSize: 20,
@@ -279,7 +282,7 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                                    // }
                                  ),
                                   Text(
-                                    "${usersProfileModel.data!.rating.toString() == 0.0 ? '0.0' : usersProfileModel.data!.rating.toString()}",
+                                    "${usersProfileData['rating'].toString() == 0.0 ? '0.0' : usersProfileData['rating'].toString()}",
                                    style: TextStyle(
                                      color: Color(0xffffffff),
                                      fontFamily: "Outfit",
@@ -504,7 +507,7 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
           ),
         ),
       ),
-    ),
+    // ),
     );
   }
 

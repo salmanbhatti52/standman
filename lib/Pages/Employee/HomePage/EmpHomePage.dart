@@ -84,47 +84,43 @@ class _EmpHomePageState extends State<EmpHomePage> {
     }
   }
 
-  UsersProfileModel usersProfileModel = UsersProfileModel();
-
-  bool progress = false;
-  bool isInAsyncCall = false;
+  bool isLoading = false;
+  dynamic usersProfileData;
 
   getUserProfileWidget() async {
-
     setState(() {
-      progress = true;
+      isLoading = true;
     });
-    prefs = await SharedPreferences.getInstance();
-    empUsersCustomersId = prefs!.getString('empUsersCustomersId');
-    print("userId in Prefs is = $usersCustomersId");
-    try {
-      String apiUrl = usersProfileApiUrl;
-      print("getUserProfileApi: $apiUrl");
-      final response = await http.post(Uri.parse(apiUrl),
-          body: {
-            "users_customers_id": empUsersCustomersId.toString(),
-          }, headers: {
-            'Accept': 'application/json'
-          });
-      print('${response.statusCode}');
-      print(response);
-      if (response.statusCode == 200) {
-        final responseString = response.body;
-        print("getUserProfileResponse: ${responseString.toString()}");
-        usersProfileModel = usersProfileModelFromJson(responseString);
-        print("getUserName: ${usersProfileModel.data!.lastName}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserNumber: ${usersProfileModel.data!.phone}");
-        print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-        setState(() {
-          progress = false;
-        });
-        print(
-            "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
-      }
-    } catch (e) {
-      print('Error in getUserProfileWidget: ${e.toString()}');
+
+    empPrefs = await SharedPreferences.getInstance();
+    empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+    print("userId in empPrefs is = $empUsersCustomersId");
+
+    String apiUrl = usersProfileApiUrl;
+    print("getUserProfileApi: $apiUrl");
+
+    http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "users_customers_id": empUsersCustomersId.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          usersProfileData = jsonResponse['data'];
+          print("usersProfileData: $usersProfileData");
+          print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+          isLoading = false;
+        } else {
+          print("Response Body: ${response.body}");
+        }
+      });
     }
   }
 
@@ -274,23 +270,23 @@ class _EmpHomePageState extends State<EmpHomePage> {
                       child:
                       // Image.asset("assets/images/person.png"),
                       Container(
-                        child: progress
+                        child: isLoading
                             ? CircleAvatar(
                           radius: 35,
                           child: Shimmer.fromColors(
                             baseColor: Colors.grey.shade500,
                             highlightColor: Colors.grey.shade200,
                             child: Text('',),),)
-                            : usersProfileModel.status != "success"
+                            : usersProfileData == null
                             ? Center(
                             child: Text('',
                                 style: TextStyle(fontWeight: FontWeight.bold)))
                             : CircleAvatar(
                             radius: 35,
                             backgroundColor: Colors.transparent,
-                            backgroundImage:  usersProfileModel.data!.usersCustomersId.toString() == null
+                            backgroundImage:  baseUrlImage+usersProfileData['profile_pic'].toString() == null
                                 ? Image.asset("assets/images/person2.png").image
-                                : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
+                                : NetworkImage(baseUrlImage+usersProfileData['profile_pic'].toString())
 
                         ),
                       ),
@@ -310,8 +306,8 @@ class _EmpHomePageState extends State<EmpHomePage> {
                           textAlign: TextAlign.left,
                         ),
                         Container(
-                          child: usersProfileModel.status != "success" ? Text("") : Text(
-                            "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
+                          child: usersProfileData == null ? Text("") : Text(
+                            "${usersProfileData['first_name']} ${usersProfileData['last_name']}",
                             // "${usersProfileModel.data!.firstName "$+" usersProfileModel.data.lastName}",
                             // "Marvis Ighedosa",
                             style: TextStyle(

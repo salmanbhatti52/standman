@@ -46,12 +46,18 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body);
 
-          previousData = jsonResponse['data'];
-
-          print("Customer: $previousData");
-          IsLoading = false;
+          if (jsonResponse['data'] != null && jsonResponse['data'] is List<dynamic>) {
+            previousData = jsonResponse['data'];
+            print("ongoingData: $previousData");
+            IsLoading = false;
+          } else {
+            // Handle the case when 'data' is null or not of type List<dynamic>
+            print("Invalid 'data' value");
+            IsLoading = false;
+          }
         } else {
           print("Response Bode::${response.body}");
+          IsLoading = false;
         }
       });
     }

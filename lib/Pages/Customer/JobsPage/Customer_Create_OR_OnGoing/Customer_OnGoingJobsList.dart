@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:StandMan/Pages/Customer/HomePage/HomePage.dart';
 import 'package:StandMan/widgets/MyButton.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
@@ -24,40 +26,42 @@ class CustomerOnGoingJobList extends StatefulWidget {
 
 class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
 
-  GetJobsModel getJobsModel = GetJobsModel();
-  bool loading = false;
 
-  getJobs() async {
+  bool isLoading = false;
+  List ongoingData = [];
+
+  getJobsCustomer() async {
     setState(() {
-      loading = true;
+      isLoading = true;
     });
-    prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('usersCustomersId');
-    print("userId in Prefs is = $usersCustomersId");
-    String apiUrl = getOngoingJobsModelApiUrl;
-    print("working");
-    final response = await http.post(
-      Uri.parse(apiUrl),
+    // await Future.delayed(Duration(seconds: 2));
+    http.Response response = await http.post(
+      Uri.parse(getOngoingJobsModelApiUrl),
       headers: {"Accept": "application/json"},
       body: {
         "users_customers_id": usersCustomersId,
       },
     );
-    final responseString = response.body;
-    print("getJobsModelApi: ${response.body}");
-    print("status Code getJobsModel: ${response.statusCode}");
-    print("in 200 getJobs");
-    if (response.statusCode == 200) {
-      getJobsModel = getJobsModelFromJson(responseString);
-      // setState(() {});
-      print('getJobsModelImage: $baseUrlImage${getJobsModel.data?[0].image}');
-      print('getJobsModelLength: ${getJobsModel.data?.length}');
-      print('getJobsModelemployeeusersCustomersType: ${ getJobsModel.data?[0].usersEmployeeData?.usersCustomersId}');
+    if (mounted) {
       setState(() {
-        loading = false;
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+
+          if (jsonResponse['data'] != null && jsonResponse['data'] is List<dynamic>) {
+            ongoingData = jsonResponse['data'];
+            print("ongoingData: $ongoingData");
+            isLoading = false;
+          } else {
+            // Handle the case when 'data' is null or not of type List<dynamic>
+            print("Invalid 'data' value");
+            isLoading = false;
+          }
+        } else {
+          print("Response Body ::${response.body}");
+          isLoading = false;
+        }
       });
     }
-
   }
 
   @override
@@ -65,66 +69,22 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
     // TODO: implement initState
     print("users_customers_id: ${usersCustomersId}");
     super.initState();
-    getJobs();
-    // getUserProfileWidget();
+    getJobsCustomer();
   }
-
-  UsersProfileModel usersProfileModel = UsersProfileModel();
-  bool progress = false;
-  bool isInAsyncCall = false;
-
-  // getUserProfileWidget() async {
-  //   progress = true;
-  //   setState(() {});
-  //
-  //   prefs = await SharedPreferences.getInstance();
-  //   usersCustomersId = prefs!.getString('usersCustomersId');
-  //   print("userId in Prefs is = $usersCustomersId");
-  //
-  //   try {
-  //     String apiUrl = usersProfileApiUrl;
-  //     print("getUserProfileApi: $apiUrl");
-  //     final response = await http.post(Uri.parse(apiUrl),
-  //         body: {
-  //           "users_customers_id": usersCustomersId.toString(),
-  //         }, headers: {
-  //           'Accept': 'application/json'
-  //         });
-  //     print('${response.statusCode}');
-  //     print(response);
-  //     if (response.statusCode == 200) {
-  //       final responseString = response.body;
-  //       print("getUserProfileResponse: ${responseString.toString()}");
-  //       usersProfileModel = usersProfileModelFromJson(responseString);
-  //       progress = false;
-  //       setState(() {});
-  //       print("getUserName: ${usersProfileModel.data!.fullName}");
-  //       print("getUserEmail: ${usersProfileModel.data!.email}");
-  //       print("getUserNumber: ${usersProfileModel.data!.phone}");
-  //       print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-  //       print(
-  //           "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
-  //     }
-  //   } catch (e) {
-  //     print('Error in getUserProfileWidget: ${e.toString()}');
-  //   }
-  //   progress = false;
-  //   setState(() {});
-  // }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: loading ? Center(
+      body: isLoading ? Center(
         child: Lottie.asset(
           "assets/images/loading.json",
           height: 50,
         ),
       ) :
 
-      getJobsModel.data?.length == null ?
+      ongoingData.isEmpty  ?
 
 
       // Column(
@@ -203,32 +163,25 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: getJobsModel.data?.length,
-              itemBuilder: (BuildContext context, int index) {
+              itemCount: ongoingData.length,
+              itemBuilder: (BuildContext context, int i) {
                 return GestureDetector(
                   onTap: () {
                     Get.to(Customer_JobsDetails_Completed_with_QR(
-                      customerId: "${getJobsModel.data?[index].usersCustomersData?.usersCustomersId}",
-                      employeeId: "${getJobsModel.data?[index].usersEmployeeData?.usersCustomersId}",
-                      employee_profilePic: "$baseUrlImage${getJobsModel.data?[index].usersEmployeeData?.profilePic}",
-                      employee_name: "${getJobsModel.data?[index].usersEmployeeData?.firstName} ${getJobsModel.data?[index].usersEmployeeData?.lastName}",
-                      image: "$baseUrlImage${getJobsModel.data?[index].image}",
-                      jobName: getJobsModel
-                          .data?[index].name,
-                      totalPrice: getJobsModel
-                          .data?[index].totalPrice,
-                      address: getJobsModel
-                          .data?[index].location,
-                      completeJobTime: getJobsModel
-                          .data?[index].dateAdded
-                          .toString(),
-                      jobId: "${getJobsModel.data?[index].jobsId}",
-                      description: getJobsModel
-                          .data?[index].description == null ? "" : getJobsModel
-                          .data?[index].description,
-                      name: "${getJobsModel.data?[index].usersEmployeeData?.firstName} ${getJobsModel.data?[index].usersEmployeeData?.lastName}",
-                      profilePic: "$baseUrlImage${getJobsModel.data?[index].usersEmployeeData?.profilePic}",
-                      status: getJobsModel.data![index].status,
+                      customerId: "${ongoingData[i]["users_customers_data"]["users_customers_id"]}",
+                      employeeId: "${ongoingData[i]["users_employee_data"]["users_customers_id"]}",
+                      employee_profilePic: "$baseUrlImage${ongoingData[i]['users_employee_data']['profile_pic']}",
+                      employee_name:  "${ongoingData[i]['users_employee_data']['first_name']} ${ongoingData[i]['users_employee_data']['last_name']}",
+                      image: "$baseUrlImage${ongoingData[i]['image']}",
+                      jobName: ongoingData[i]['name'],
+                      totalPrice: ongoingData[i]['total_price'],
+                      address: ongoingData[i]['location'],
+                      completeJobTime: ongoingData[i]['date_added'].toString(),
+                      jobId: ongoingData[i]['jobs_id'].toString(),
+                      description: ongoingData[i]['description'] == null ? "" :  ongoingData[i]['description'],
+                      name: "${ongoingData[i]['users_employee_data']['first_name']} ${ongoingData[i]['users_employee_data']['last_name']}",
+                      profilePic: "$baseUrlImage${ongoingData[i]['users_employee_data']['profile_pic']}",
+                      status: ongoingData[i]['status'],
                     ));
                   },
                   child: Container(
@@ -260,7 +213,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                               fit: BoxFit.fill,
                               width: 115,
                               height: 96,
-                              image: NetworkImage("$baseUrlImage${getJobsModel.data?[index].image}"),
+                              image: NetworkImage("$baseUrlImage${ongoingData[i]['image']}"),
                             ),
                           ),
                           SizedBox(width: Get.width * 0.02,),
@@ -272,7 +225,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                                 width: Get.width * 0.32,
                                 child: AutoSizeText(
                                   // 'Eleanor Pena',
-                                  "${getJobsModel.data?[index].name.toString()}",
+                                  "${ongoingData[i]['name']}",
                                   style: TextStyle(
                                     color: Color(0xff000000),
                                     fontFamily: "Outfit",
@@ -292,7 +245,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                                     vertical: 5.0),
                                 child: Text(
                                   // 'Mar 03, 2023',
-                                  "${getJobsModel.data?[index].dateAdded}",
+                                  "${ongoingData[i]['date_added']}",
                                   style: TextStyle(
                                     color: Color(0xff9D9FAD),
                                     fontFamily: "Outfit",
@@ -326,9 +279,9 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                                     // radius: (screenWidth > 600) ? 90 : 70,
                                     //   radius: 50,
                                       backgroundColor: Colors.transparent,
-                                      backgroundImage: getJobsModel.data![index].usersCustomersData!.profilePic == null
+                                      backgroundImage: ongoingData[i]['users_employee_data']['profile_pic'] == null
                                           ? Image.asset("assets/images/person2.png").image
-                                          : NetworkImage(baseUrlImage+getJobsModel.data![index].usersEmployeeData!.profilePic.toString())
+                                          : NetworkImage(baseUrlImage+ongoingData[i]['users_employee_data']['profile_pic'].toString())
                                     // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
                                   ),
@@ -355,7 +308,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                                       children: [
                                         Text(
                                           // 'Wade Warren',
-                                          "${getJobsModel.data?[index].usersEmployeeData?.firstName} ${getJobsModel.data?[index].usersEmployeeData?.lastName}",
+                                          "${ongoingData[i]['users_employee_data']['first_name']} ${ongoingData[i]['users_employee_data']['last_name']}",
                                           // "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
                                           style: TextStyle(
                                             color: Color(0xff000000),
@@ -402,7 +355,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                             child: Center(
                               child: Text(
                                 // customerongoingjobstList[index].subTitle,
-                               "${ getJobsModel.data?[index].status.toString()}",
+                               "${ongoingData[i]['status']}",
                                 style: TextStyle(
                                   color: Color(0xffFF4700),
                                   fontFamily: "Outfit",

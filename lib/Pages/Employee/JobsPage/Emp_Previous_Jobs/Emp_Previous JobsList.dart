@@ -105,12 +105,18 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(response.body);
 
-          previousData = jsonResponse['data'];
-
-          print("Employee: $previousData");
-          IsLoading = false;
+          if (jsonResponse['data'] != null && jsonResponse['data'] is List<dynamic>) {
+            previousData = jsonResponse['data'];
+            print("ongoingData: $previousData");
+            IsLoading = false;
+          } else {
+            // Handle the case when 'data' is null or not of type List<dynamic>
+            print("Invalid 'data' value");
+            IsLoading = false;
+          }
         } else {
           print("Response Body :: ${response.body}");
+          IsLoading = false;
         }
       });
     }
@@ -132,7 +138,7 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
       ),
     ):
 
-    previousData.length == null ?
+    previousData.isEmpty ?
     Center(child:  Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

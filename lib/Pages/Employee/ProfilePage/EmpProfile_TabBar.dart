@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:StandMan/Pages/EmpDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,44 +57,44 @@ class _ProfileTabBarState extends State<ProfileTabBar>
     // print("userFirstName in LoginPrefs is = $userFirstName $userLastName");
   }
 
-  UsersProfileModel usersProfileModel = UsersProfileModel();
-  bool progress = false;
-  bool isInAsyncCall = false;
+  bool isLoading = false;
+  dynamic usersProfileData;
 
   getUserProfileWidget() async {
-    progress = true;
-    setState(() {});
+    setState(() {
+      isLoading = true;
+    });
+
     empPrefs = await SharedPreferences.getInstance();
     empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
     print("userId in empPrefs is = $empUsersCustomersId");
-    try {
-      String apiUrl = usersProfileApiUrl;
-      print("getUserProfileApi: $apiUrl");
-      final response = await http.post(Uri.parse(apiUrl),
-          body: {
-            "users_customers_id": empUsersCustomersId,
-          }, headers: {
-            'Accept': 'application/json'
-          });
-      print('${response.statusCode}');
-      print(response);
-      if (response.statusCode == 200) {
-        final responseString = response.body;
-        print("getUserProfileResponse: ${responseString.toString()}");
-        usersProfileModel = usersProfileModelFromJson(responseString);
-        print("getUserName: ${usersProfileModel.data!.lastName}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserNumber: ${usersProfileModel.data!.phone}");
-        print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-        print(
-            "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
-      }
-    } catch (e) {
-      print('Error in getUserProfileWidget: ${e.toString()}');
+
+    String apiUrl = usersProfileApiUrl;
+    print("getUserProfileApi: $apiUrl");
+
+    http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "users_customers_id": empUsersCustomersId.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          usersProfileData = jsonResponse['data'];
+          print("usersProfileData: $usersProfileData");
+          print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+          isLoading = false;
+        } else {
+          print("Response Body: ${response.body}");
+        }
+      });
     }
-    progress = false;
-    setState(() {});
   }
 
   @override
@@ -144,12 +146,12 @@ class _ProfileTabBarState extends State<ProfileTabBar>
             GestureDetector(
               onTap: () {
                 Get.to(EmpEditProfile(
-                  email: usersProfileModel.data!.email.toString(),
-                  countryCode: usersProfileModel.data?.countryCode.toString(),
-                  phone: usersProfileModel.data!.phone.toString(),
-                  firstname: "${usersProfileModel.data!.firstName}",
-                   lastname :   "${usersProfileModel.data!.lastName}",
-                  profilePic: "$baseUrlImage${usersProfileModel.data!.profilePic.toString()}",));
+                  email: "${usersProfileData['email']}",
+                  countryCode: "${usersProfileData['country_code']}",
+                  phone: "${usersProfileData['phone']}",
+                  firstname:  "${usersProfileData['first_name']}",
+                  lastname: " ${usersProfileData['last_name']}",
+                  profilePic: "${baseUrlImage+usersProfileData['profile_pic'].toString()}",));
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 20.0, top: 0.0),

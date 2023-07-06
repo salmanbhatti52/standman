@@ -9,6 +9,7 @@ import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../Customer/HomePage/HomePage.dart';
 import '../../Drawer.dart';
+import '../../EmpDrawer.dart';
 import 'Emp_user_transaction_details.dart';
 import 'package:http/http.dart' as http;
 
@@ -73,7 +74,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       // drawer: MyDrawer(),
-      drawer: MyDrawer(),
+      drawer: EmpDrawer(),
       appBar: AppBar(
         toolbarHeight: height * 0.10,
         backgroundColor: Color(0xff2B65EC),

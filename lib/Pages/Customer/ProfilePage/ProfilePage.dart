@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
@@ -36,42 +38,85 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
 
-  UsersProfileModel usersProfileModel = UsersProfileModel();
-  bool progress = false;
-  bool isInAsyncCall = false;
+  bool isLoading = false;
+  dynamic usersProfileData;
 
   getUserProfileWidget() async {
+    setState(() {
+      isLoading = true;
+    });
+
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("usersCustomersId = $usersCustomersId");
-    setState(() {});
-    // try {
-      String apiUrl = usersProfileApiUrl;
-      print("getUserProfileApi: $apiUrl");
-      final response = await http.post(Uri.parse(apiUrl),
-          body: {
+    print("longitude1: $longitude");
+    print("latitude1: $lattitude");
+
+    String apiUrl = usersProfileApiUrl;
+    print("getUserProfileApi: $apiUrl");
+
+    http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
         "users_customers_id": usersCustomersId.toString(),
-      }, headers: {
-        'Accept': 'application/json'
+      },
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          usersProfileData = jsonResponse['data'];
+          print("usersProfileData: $usersProfileData");
+          print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+          isLoading = false;
+        } else {
+          print("Response Body: ${response.body}");
+        }
       });
-      print('${response.statusCode}');
-      print(response);
-      if (response.statusCode == 200) {
-        final responseString = response.body;
-        print("getUserProfileResponse: ${responseString.toString()}");
-        usersProfileModel = usersProfileModelFromJson(responseString);
-        print("getUserName: ${usersProfileModel.data!.lastName}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserNumber: ${usersProfileModel.data!.phone}");
-        print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-        print("getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
-        setState(() {});
-      }
-    // } catch (e) {
-    //   print('Error in getUserProfileWidget: ${e.toString()}');
-    // }
+    }
   }
+
+
+  // UsersProfileModel usersProfileModel = UsersProfileModel();
+  // bool progress = false;
+  // bool isInAsyncCall = false;
+  //
+  // getUserProfileWidget() async {
+  //   prefs = await SharedPreferences.getInstance();
+  //   usersCustomersId = prefs!.getString('usersCustomersId');
+  //   print("usersCustomersId = $usersCustomersId");
+  //   setState(() {});
+  //   // try {
+  //     String apiUrl = usersProfileApiUrl;
+  //     print("getUserProfileApi: $apiUrl");
+  //     final response = await http.post(Uri.parse(apiUrl),
+  //         body: {
+  //       "users_customers_id": usersCustomersId.toString(),
+  //     }, headers: {
+  //       'Accept': 'application/json'
+  //     });
+  //     print('${response.statusCode}');
+  //     print(response);
+  //     if (response.statusCode == 200) {
+  //       final responseString = response.body;
+  //       print("getUserProfileResponse: ${responseString.toString()}");
+  //       usersProfileModel = usersProfileModelFromJson(responseString);
+  //       print("getUserName: ${usersProfileModel.data!.lastName}");
+  //       print("getUserEmail: ${usersProfileModel.data!.email}");
+  //       print("getUserEmail: ${usersProfileModel.data!.email}");
+  //       print("getUserNumber: ${usersProfileModel.data!.phone}");
+  //       print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
+  //       print("getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
+  //       setState(() {});
+  //     }
+  //   // } catch (e) {
+  //   //   print('Error in getUserProfileWidget: ${e.toString()}');
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +159,12 @@ class _ProfilePageState extends State<ProfilePage> {
             child: GestureDetector(
               onTap: () {
                 Get.to(EditProfile(
-                  email: usersProfileModel.data?.email.toString(),
-                  countryCode: usersProfileModel.data?.countryCode.toString(),
-                  phone: usersProfileModel.data?.phone.toString(),
-                  firstname: "${usersProfileModel.data?.firstName}",
-                  lastname: "${usersProfileModel.data?.lastName}",
-                  profilePic: "$baseUrlImage${usersProfileModel.data?.profilePic.toString()}",
+                  email: "${usersProfileData['email']}",
+                  countryCode: "${usersProfileData['country_code']}",
+                  phone: "${usersProfileData['phone']}",
+                  firstname:  "${usersProfileData['first_name']}",
+                  lastname: " ${usersProfileData['last_name']}",
+                  profilePic: "${baseUrlImage+usersProfileData['profile_pic'].toString()}",
                 ),
                 );
               },
@@ -143,15 +188,15 @@ class _ProfilePageState extends State<ProfilePage> {
       //             child: Text('no data found...',
       //                 style: TextStyle(fontWeight: FontWeight.bold)))
       //         :
-      ModalProgressHUD(
-        inAsyncCall: isInAsyncCall,
-        opacity: 0.02,
-        blur: 0.5,
-        color: Colors.transparent,
-        progressIndicator: CircularProgressIndicator(
-          color: Colors.blue,
-        ),
-        child:
+      // ModalProgressHUD(
+      //   inAsyncCall: isLoading,
+      //   opacity: 0.02,
+      //   blur: 0.5,
+      //   color: Colors.transparent,
+      //   progressIndicator: CircularProgressIndicator(
+      //     color: Colors.blue,
+      //   ),
+      //   child:
       SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -182,14 +227,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               // ),
 
                               Container(
-                                child: progress
+                                child: isLoading
                                     ? CircleAvatar(
                                   radius: 50,
                                   child: Shimmer.fromColors(
                                     baseColor: Colors.grey.shade300,
                                     highlightColor: Colors.grey.shade100,
                                     child: Text('',),),)
-                                    : usersProfileModel.status != "success"
+                                    : usersProfileData == null
                                     ? Center(
                                     child: Text('',
                                         style: TextStyle(fontWeight: FontWeight.bold)))
@@ -197,9 +242,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                     // radius: (screenWidth > 600) ? 90 : 70,
                                     radius: 50,
                                     backgroundColor: Colors.transparent,
-                                    backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
+                                    backgroundImage: baseUrlImage+usersProfileData['profile_pic'].toString() == null
                                         ? Image.asset("assets/images/person2.png").image
-                                        : NetworkImage(baseUrlImage+usersProfileModel.data!.profilePic.toString())
+                                        : NetworkImage(baseUrlImage+usersProfileData['profile_pic'].toString())
                                     // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
                                     ),
@@ -212,8 +257,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    child:usersProfileModel.status != "success" ? Text(""): Text(
-                                      "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
+                                    child:usersProfileData == null ? Text(""): Text(
+                                      "${usersProfileData['first_name']} ${usersProfileData['last_name']}",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: "Outfit",
@@ -223,7 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                   Container(
-                                    child: usersProfileModel.status != "success" ? Text(""): Padding(
+                                    child: usersProfileData == null ? Text(""): Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8.0),
                                       child: Row(
@@ -236,13 +281,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                             "assets/images/sms-tracking.svg",
                                             color: Colors.white,
                                           ),
-                                          usersProfileModel.status != "success" ? Text(""): ConstrainedBox(
+                                          usersProfileData == null ? Text(""): ConstrainedBox(
                                             constraints: BoxConstraints(
                                                 maxWidth: MediaQuery.of(context).size.width * 0.45),
                                             child: Padding(
                                               padding: const EdgeInsets.only(left: 8.0),
                                               child: AutoSizeText(
-                                                "${usersProfileModel.data!.email}",
+                                                  "${usersProfileData['email']}",
                                                 style: TextStyle(fontSize: 16.0, color: Colors.white),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
@@ -264,7 +309,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                   Container(
-                                    child:  usersProfileModel.status != "success" ? Text(""):Row(
+                                    child:  usersProfileData == null ? Text(""):Row(
                                       // mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -276,7 +321,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           height: 16,
                                         ),
                                         Text(
-                                          "  ${usersProfileModel.data!.phone.toString()}",
+                                          "${usersProfileData['phone']}",
                                           style: TextStyle(
                                             color: Color(0xffffffff),
                                             fontFamily: "Outfit",
@@ -521,7 +566,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-      ),
+      // ),
     );
   }
 

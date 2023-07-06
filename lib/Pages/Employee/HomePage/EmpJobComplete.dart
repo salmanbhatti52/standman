@@ -59,9 +59,8 @@ class _EmpJobCompleteState extends State<EmpJobComplete> {
 
   }
 
-  UsersProfileModel usersProfileModel = UsersProfileModel();
-  bool progress = false;
-  bool isInAsyncCall = false;
+  // UsersProfileModel usersProfileModel = UsersProfileModel();
+  // bool isInAsyncCall = false;
 
   // getUserProfileWidget() async {
   //   progress = true;
@@ -96,6 +95,7 @@ class _EmpJobCompleteState extends State<EmpJobComplete> {
   JobsActionEmployeesModel jobsActionEmployeesModel =
       JobsActionEmployeesModel();
 
+  bool progress = false;
   JobsActionEmployeesCanceled() async {
     setState(() {
       progress = true;

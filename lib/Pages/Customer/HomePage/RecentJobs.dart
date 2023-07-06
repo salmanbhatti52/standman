@@ -10,14 +10,13 @@ import 'package:http/http.dart' as http;
 import 'HomePage.dart';
 
 class RecentJobs extends StatefulWidget {
-  Datum1? getJobModel;
+  dynamic getJobModel;
   RecentJobs({Key? key, this.getJobModel}) : super(key: key);
   @override
   _RecentJobsState createState() => _RecentJobsState();
 }
 
 class _RecentJobsState extends State<RecentJobs> {
-
   @override
   Widget build(BuildContext context) {
     return
@@ -55,7 +54,7 @@ class _RecentJobsState extends State<RecentJobs> {
                       fit: BoxFit.fill,
                       width: 115,
                       height: 96,
-                      image: NetworkImage(baseUrlImage+"${widget.getJobModel?.image}"),
+                      image: NetworkImage(baseUrlImage+"${widget.getJobModel['image']}"),
                     ),
                   ),
                   SizedBox(width: Get.width * 0.02,),
@@ -67,7 +66,7 @@ class _RecentJobsState extends State<RecentJobs> {
                         width: Get.width * 0.32,
                         child: AutoSizeText(
                           // 'Eleanor Pena',
-                          "${widget.getJobModel?.name.toString()}",
+                          "${widget.getJobModel['name'].toString()}",
                           style: TextStyle(
                             color: Color(0xff000000),
                             fontFamily: "Outfit",
@@ -87,7 +86,7 @@ class _RecentJobsState extends State<RecentJobs> {
                             vertical: 5.0),
                         child: Text(
                           // 'Mar 03, 2023',
-                          "${widget.getJobModel?.dateAdded}",
+                          "${widget.getJobModel['date_added']}",
                           style: TextStyle(
                             color: Color(0xff9D9FAD),
                             fontFamily: "Outfit",
@@ -121,9 +120,9 @@ class _RecentJobsState extends State<RecentJobs> {
                             // radius: (screenWidth > 600) ? 90 : 70,
                             //   radius: 50,
                               backgroundColor: Colors.transparent,
-                              backgroundImage: widget.getJobModel?.usersCustomersData!.profilePic == null
+                              backgroundImage: widget.getJobModel['users_employee_data']['profile_pic'] == null
                                   ? Image.asset("assets/images/person2.png").image
-                                  : NetworkImage(baseUrlImage+"${widget.getJobModel?.usersCustomersData?.profilePic.toString()}")
+                                  : NetworkImage(baseUrlImage+"${widget.getJobModel['users_employee_data']['profile_pic'].toString()}")
                             // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
                           ),
@@ -150,7 +149,7 @@ class _RecentJobsState extends State<RecentJobs> {
                               children: [
                                 Text(
                                   // 'Wade Warren',
-                                  "${widget.getJobModel?.usersCustomersData?.firstName} ${widget.getJobModel?.usersCustomersData?.lastName}",
+                                  "${widget.getJobModel['users_employee_data']['first_name']} ${widget.getJobModel['users_employee_data']['last_name']}",
                                   // "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
                                   style: TextStyle(
                                     color: Color(0xff000000),

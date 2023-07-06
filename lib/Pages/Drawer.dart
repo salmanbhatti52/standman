@@ -50,40 +50,80 @@ class _MyDrawerState extends State<MyDrawer> {
     print("get_admin = $adminID");
   }
 
-  UsersProfileModel usersProfileModel = UsersProfileModel();
+  // UsersProfileModel usersProfileModel = UsersProfileModel();
+  //
+  // bool progress = false;
+  // bool isInAsyncCall = false;
+  //
+  // getUserProfileWidget() async {
+  //   // try {
+  //     String apiUrl = usersProfileApiUrl;
+  //     print("getUserProfileApi: $apiUrl");
+  //     final response = await http.post(Uri.parse(apiUrl),
+  //         body: {
+  //           "users_customers_id": usersCustomersId.toString(),
+  //         }, headers: {
+  //           'Accept': 'application/json'
+  //         });
+  //     print('${response.statusCode}');
+  //     print(response);
+  //     if (response.statusCode == 200) {
+  //       final responseString = response.body;
+  //       print("getUserProfileResponse: ${responseString.toString()}");
+  //       usersProfileModel = usersProfileModelFromJson(responseString);
+  //       print("getUserName: ${usersProfileModel.data!.lastName}");
+  //       print("getUserEmail: ${usersProfileModel.data!.email}");
+  //       print("getUserEmail: ${usersProfileModel.data!.email}");
+  //       print("getUserNumber: ${usersProfileModel.data!.phone}");
+  //       print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
+  //       print(
+  //           "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
+  //       progress = false;
+  //       setState(() {});
+  //     }
+  //   // } catch (e) {
+  //   //   print('Error in getUserProfileWidget: ${e.toString()}');
+  //   // }
+  // }
 
-  bool progress = false;
-  bool isInAsyncCall = false;
+
+  bool isLoading = false;
+  dynamic usersProfileData;
 
   getUserProfileWidget() async {
-    // try {
-      String apiUrl = usersProfileApiUrl;
-      print("getUserProfileApi: $apiUrl");
-      final response = await http.post(Uri.parse(apiUrl),
-          body: {
-            "users_customers_id": usersCustomersId.toString(),
-          }, headers: {
-            'Accept': 'application/json'
-          });
-      print('${response.statusCode}');
-      print(response);
-      if (response.statusCode == 200) {
-        final responseString = response.body;
-        print("getUserProfileResponse: ${responseString.toString()}");
-        usersProfileModel = usersProfileModelFromJson(responseString);
-        print("getUserName: ${usersProfileModel.data!.lastName}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserEmail: ${usersProfileModel.data!.email}");
-        print("getUserNumber: ${usersProfileModel.data!.phone}");
-        print("usersCustomersId: ${usersProfileModel.data!.usersCustomersId}");
-        print(
-            "getUserProfileImage: $baseUrlImage${usersProfileModel.data!.profilePic}");
-        progress = false;
-        setState(() {});
-      }
-    // } catch (e) {
-    //   print('Error in getUserProfileWidget: ${e.toString()}');
-    // }
+    setState(() {
+      isLoading = true;
+    });
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("usersCustomersId = $usersCustomersId");
+
+    String apiUrl = usersProfileApiUrl;
+    print("getUserProfileApi: $apiUrl");
+
+    http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "users_customers_id": usersCustomersId.toString(),
+      },
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          usersProfileData = jsonResponse['data'];
+          print("usersProfileData: $usersProfileData");
+          isLoading = false;
+        } else {
+          print("Response Body: ${response.body}");
+        }
+      });
+    }
   }
 
   ChatStartwithAdminModel chatStartwithAdminModel = ChatStartwithAdminModel();
@@ -124,44 +164,45 @@ class _MyDrawerState extends State<MyDrawer> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return
-      progress
-          ? Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              height: MediaQuery.of(context).size.height*0.06,
-              // height: 48,
-              width: MediaQuery.of(context).size.width*0.5,
-              decoration: BoxDecoration(
-                // color: Color(0xff4DA0E6),
-                  color: Color.fromRGBO(43, 101, 236, 1),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 0,
-                        blurRadius: 15,
-                        offset: Offset(1 , 10),
-                        color: Color.fromRGBO(7, 1, 87, 0.1)
-                    ),
-                  ]
-              ),
-              child: Center(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(color: Colors.white,),
-                  SizedBox(width: 10,),
-                  Text(
-                    "loading",
-                    style: TextStyle(
-                        fontFamily: "Outfit",
-                        fontSize: 14,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400), textAlign: TextAlign.center,),
-                ],
-              )),
-            ),
-          )
-          : usersProfileModel.status != "success"
+      isLoading
+          ?  Center(child: SizedBox())
+      // Center(
+      //       child: Container(
+      //         padding: EdgeInsets.symmetric(vertical: 10),
+      //         height: MediaQuery.of(context).size.height*0.06,
+      //         // height: 48,
+      //         width: MediaQuery.of(context).size.width*0.5,
+      //         decoration: BoxDecoration(
+      //           // color: Color(0xff4DA0E6),
+      //             color: Color.fromRGBO(43, 101, 236, 1),
+      //             borderRadius: BorderRadius.circular(12),
+      //             boxShadow: [
+      //               BoxShadow(
+      //                   spreadRadius: 0,
+      //                   blurRadius: 15,
+      //                   offset: Offset(1 , 10),
+      //                   color: Color.fromRGBO(7, 1, 87, 0.1)
+      //               ),
+      //             ]
+      //         ),
+      //         child: Center(
+      //             child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           children: [
+      //             CircularProgressIndicator(color: Colors.white,),
+      //             SizedBox(width: 10,),
+      //             Text(
+      //               "loading",
+      //               style: TextStyle(
+      //                   fontFamily: "Outfit",
+      //                   fontSize: 14,
+      //                   color: Colors.white,
+      //                   fontWeight: FontWeight.w400), textAlign: TextAlign.center,),
+      //           ],
+      //         )),
+      //       ),
+      //     )
+          : usersProfileData == null
           ? Center(
           child: Text('',
               style: TextStyle(fontWeight: FontWeight.bold),),)
@@ -208,20 +249,12 @@ class _MyDrawerState extends State<MyDrawer> {
                   //
                   // ),
                   CircleAvatar(
-                      // progress
-                      //     ? Center(child: CircularProgressIndicator(color: Colors.transparent))
-                      //     : usersProfileModel.status != "success"
-                      //     ? Center(
-                      //     child: Text('no data found...',
-                      //         style: TextStyle(fontWeight: FontWeight.bold)))
-                      //     :
-                    // radius: (screenWidth > 600) ? 90 : 70,
                       radius: 50,
                       backgroundColor: Colors.transparent,
-                      backgroundImage: usersProfileModel.data!.usersCustomersId.toString() == null
+                      backgroundImage: baseUrlImage+usersProfileData['profile_pic'].toString() == null
                           ? Image.asset("assets/images/person2.png").image
                           : NetworkImage(
-                          baseUrlImage+usersProfileModel.data!.profilePic.toString())
+                          baseUrlImage+usersProfileData['profile_pic'].toString())
                     // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
 
                   ),
@@ -229,7 +262,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 SizedBox(height: 10,),
                 Center(
                   child:  Text(
-                    "${usersProfileModel.data!.firstName} ${usersProfileModel.data!.lastName}",
+                    "${usersProfileData['first_name']} ${usersProfileData['last_name']}",
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: "Outfit",
@@ -243,7 +276,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   children: [
                     SvgPicture.asset("assets/images/sms-tracking.svg"),
                      Text(
-                       "${usersProfileModel.data!.email}",
+                       "${usersProfileData['email']}",
                       style: TextStyle(
                         color: Color(0xffA7A9B7),
                         fontFamily: "Outfit",
