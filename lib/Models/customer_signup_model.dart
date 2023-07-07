@@ -22,7 +22,7 @@ class CustomerSignupModel {
   factory CustomerSignupModel.fromJson(Map<String, dynamic> json) => CustomerSignupModel(
     status: json["status"],
     message : json["message"] != null ? json["message"] : null,
-    data: Data.fromJson(json["data"]),
+    data : json["data"] != null ? Data.fromJson(json["data"]) : null,
   );
 
   Map<String, dynamic> toJson() => {

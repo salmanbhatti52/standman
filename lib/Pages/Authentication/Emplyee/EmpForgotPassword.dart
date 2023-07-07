@@ -51,15 +51,17 @@ class _EmployeeForgotPasswordState extends State<EmployeeForgotPassword> {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ModalProgressHUD(
-        inAsyncCall: isInAsyncCall,
-        opacity: 0.02,
-        blur: 0.5,
-        color: Colors.transparent,
-        progressIndicator: CircularProgressIndicator(
-        color: Colors.blue,
-    ),
-    child: SafeArea(
+      body:
+    //   ModalProgressHUD(
+    //     inAsyncCall: isInAsyncCall,
+    //     opacity: 0.02,
+    //     blur: 0.5,
+    //     color: Colors.transparent,
+    //     progressIndicator: CircularProgressIndicator(
+    //     color: Colors.blue,
+    // ),
+    // child:
+    SafeArea(
         child: Column(
           children: [
             Container(
@@ -190,14 +192,14 @@ class _EmployeeForgotPasswordState extends State<EmployeeForgotPassword> {
                         }
                       }
                     },
-                      child: mainButton("Send OTP", Color.fromRGBO(43, 101, 236, 1), context)),
+                      child: isInAsyncCall ? loadingBar(context) :  mainButton("Send OTP", Color.fromRGBO(43, 101, 236, 1), context)),
                 ],
               ),
             ),
           ],
         ),
       ),
-      ),
+      // ),
     );
   }
 }

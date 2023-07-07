@@ -75,7 +75,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
           customerNotifications = jsonResponse['data'];
 
-          print("Employee: $customerNotifications");
+          print("Cust0mer Notifications: $customerNotifications");
 
           isLoading = false;
         } else {
@@ -114,7 +114,7 @@ class _NotificationPageState extends State<NotificationPage> {
           height: 50,
         ),
       )
-          : customerNotifications.length == null
+          : customerNotifications.length == 0
               ? Center(child: Text("No history"))
               : ModalProgressHUD(
                   inAsyncCall: isLoading,

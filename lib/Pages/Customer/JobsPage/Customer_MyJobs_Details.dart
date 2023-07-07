@@ -222,9 +222,7 @@ class _CustomerMyJobsDetailsState extends State<CustomerMyJobsDetails> {
                                 Container(
                                   width: 50,
                                   height: 50,
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network("${widget.profilePic}")),
+                                  child: ClipRRect(borderRadius: BorderRadius.circular(25),child: Image.network("${widget.profilePic}", fit: BoxFit.fill,)),
                                 ),
                                 SizedBox(
                                   width: 5,

@@ -10,16 +10,19 @@ String employeeSignupModelToJson(EmployeeSignupModel data) => json.encode(data.t
 
 class EmployeeSignupModel {
   String? status;
+  String? message;
   Data? data;
 
   EmployeeSignupModel({
     this.status,
+    this.message,
     this.data,
   });
 
   factory EmployeeSignupModel.fromJson(Map<String, dynamic> json) => EmployeeSignupModel(
     status: json["status"],
-    data: Data.fromJson(json["data"]),
+    message : json["message"] != null ? json["message"] : null,
+    data : json["data"] != null ? Data.fromJson(json["data"]) : null,
   );
 
   Map<String, dynamic> toJson() => {

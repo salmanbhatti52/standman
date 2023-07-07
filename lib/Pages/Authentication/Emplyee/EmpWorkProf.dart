@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../../../Models/employee_signup_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
@@ -47,12 +48,17 @@ class _WorkProofState extends State<WorkProof> {
   bool isInAsyncCall = false;
 
   employeeRegisterUser() async {
+
+    var status = await OneSignal.shared.getDeviceState();
+    String tokenId = status!.userId!;
+    print("OneSignal User ID: $tokenId");
+
     String apiUrl = employeeSignupApiUrl;
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {"Accept": "application/json"},
       body: {
-        "one_signal_id": "123456",
+        "one_signal_id": tokenId,
         "users_customers_type": "Employee",
         "first_name": widget.firstname,
         "last_name": widget.lastname,
@@ -524,23 +530,33 @@ class _WorkProofState extends State<WorkProof> {
 
                           await employeeRegisterUser();
 
-                          if (employeeSignupModel.status == "success") {
+                          if(employeeSignupModel.status == "success"){
 
-                            Future.delayed(const Duration(seconds: 3), () {
-                              toastSuccessMessage(
-                                  "OTP sent in the email.", Colors.green);
-                              Get.to(Emp_EmailVerification(otpVerify: employeeSignupModel.data?.otpdetails?.otp,));
+                            // SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                            // await sharedPref.setString('user_email', "${customerSignupModel.data?.email.toString()}");
+                            // await sharedPref.setString('phoneNumber', "${customerSignupModel.data?.phone.toString()}");
+                            // await sharedPref.setString('firstName', "${customerSignupModel.data?.firstName.toString()}");
+                            // await sharedPref.setString('lastName', "${customerSignupModel.data?.lastName.toString()}");
+                            // await sharedPref.setString('profilePic', "${customerSignupModel.data?.profilePic.toString()}");
+                            // await sharedPref.setString('usersCustomersId', "${customerSignupModel.data?.usersCustomersId.toString()}");
+                            // await sharedPref.setString('password', "${customerSignupModel.data?.password.toString()}");
+
+                            Future.delayed(const Duration(seconds: 2), () {
+                              // Get.to(LoginTabClass(login: 0,));
+                              Get.to(Emp_EmailVerification(otpVerify:  employeeSignupModel.data?.otpdetails?.otp,));
+                              toastSuccessMessage("${employeeSignupModel.message}", Colors.green);
                               setState(() {
                                 isInAsyncCall = false;
                               });
                               print("false: $isInAsyncCall");
                             });
-                          } else {
-                            toastFailedMessage(
-                                "Failed to send OTP", Colors.red);
+                          } else if  (employeeSignupModel.status != "success"){
+                            toastFailedMessage("${employeeSignupModel.message}", Colors.red);
                             setState(() {
                               isInAsyncCall = false;
                             });
+                          } else{
+                            toastFailedMessage("${employeeSignupModel.message}",  Colors.red);
                           }
                         }
                       }

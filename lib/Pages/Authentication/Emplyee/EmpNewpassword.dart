@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import '../../../Models/modifyPassworsd_model.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
@@ -25,6 +26,7 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
 
   final confirmpasswordController = TextEditingController();
   final passwordController = TextEditingController();
+  ModifyPasswordModel modifyPasswordModel = ModifyPasswordModel();
   final key = GlobalKey<FormState>();
   bool isPasswordObscure = true;
   bool isPassworconfirmdObscure = true;
@@ -37,7 +39,11 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
     super.initState();
   }
 
-  modifypasswordr() async {
+  modifyPassword() async {
+
+    setState(() {
+      isInAsyncCall = true;
+    });
     String apiUrl = ModifyPasswordApiUrl;
     final response = await http.post(
       Uri.parse(apiUrl),
@@ -50,9 +56,16 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
       },
     );
     final responseString = response.body;
-    print("responseModify_PasswordApi: $responseString");
-    print("status Code modify_password: ${response.statusCode}");
-    print("in 200 modify_password");
+    print("responseForgotPasswordApi: $responseString");
+    if (response.statusCode == 200) {
+      modifyPasswordModel =
+          modifyPasswordModelFromJson(responseString);
+      print('ForgotPasswordModel status: ${modifyPasswordModel.status}');
+      print("in 200 ForgotPassword");
+      setState(() {
+        isInAsyncCall = false;
+      });
+    }
   }
 
   @override
@@ -61,15 +74,17 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ModalProgressHUD(
-        inAsyncCall: isInAsyncCall,
-        opacity: 0.02,
-        blur: 0.5,
-        color: Colors.transparent,
-        progressIndicator: CircularProgressIndicator(
-        color: Colors.blue,
-    ),
-    child: SafeArea(
+      body:
+    //   ModalProgressHUD(
+    //     inAsyncCall: isInAsyncCall,
+    //     opacity: 0.02,
+    //     blur: 0.5,
+    //     color: Colors.transparent,
+    //     progressIndicator: CircularProgressIndicator(
+    //     color: Colors.blue,
+    // ),
+    // child:
+    SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -290,7 +305,7 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                               isInAsyncCall = true;
                             });
 
-                            await modifypasswordr();
+                            await modifyPassword();
 
                             Future.delayed(const Duration(seconds: 1),
                                     () {
@@ -305,7 +320,7 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                           }
                         }
                       },
-                        child: mainButton("Confirm", Color.fromRGBO(43, 101, 236, 1), context)),
+                        child: isInAsyncCall ? loadingBar(context) : mainButton("Confirm", Color.fromRGBO(43, 101, 236, 1), context)),
                     SizedBox(height: height * 0.05),
                   ],
                 ),
@@ -314,7 +329,7 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
           ),
         ),
       ),
-      ),
+      // ),
     );
   }
 }

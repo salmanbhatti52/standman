@@ -10,7 +10,7 @@ String customerSignInApiUrl = "${baseUrl}signin";
 
 String ForgotPasswordApiUrl = "${baseUrl}forgot_password";
 
-String ModifyPasswordApiUrl = "${baseUrl}modify_password";
+String ModifyPasswordApiUrl = "${baseUrl}modify_my_password";
 
 String employeeSignupApiUrl = "${baseUrl}signup";
 

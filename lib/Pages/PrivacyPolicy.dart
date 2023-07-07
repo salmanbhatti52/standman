@@ -6,6 +6,8 @@ import '../Models/system_settings_Model.dart';
 import '../Utils/api_urls.dart';
 import 'package:http/http.dart' as http;
 
+import '../widgets/TopBar.dart';
+
 class PrivacyPolicy extends StatefulWidget {
   PrivacyPolicy({
     Key? key,
@@ -61,31 +63,33 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      drawer: MyDrawer(),
-      appBar: AppBar(
-        toolbarHeight: height * 0.10,
-        backgroundColor: Color(0xfffffff),
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 0.0),
-          child: Text(
-            "Privacy Policy",
-            // "${systemSettingsModel.data?[20].type}",
-            style: TextStyle(
-              color: Color(0xff000000),
-              fontFamily: "Outfit",
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              // letterSpacing: -0.3,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+      backgroundColor: Colors.white,
+      // drawer: MyDrawer(),
+      // appBar: AppBar(
+      //   toolbarHeight: height * 0.10,
+      //   backgroundColor: Color(0xfffffff),
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   iconTheme: IconThemeData(
+      //     color: Colors.black,
+      //   ),
+      //   title: Padding(
+      //     padding: const EdgeInsets.only(top: 0.0),
+      //     child: Text(
+      //       "Privacy Policy",
+      //       // "${systemSettingsModel.data?[20].type}",
+      //       style: TextStyle(
+      //         color: Color(0xff000000),
+      //         fontFamily: "Outfit",
+      //         fontSize: 18,
+      //         fontWeight: FontWeight.w500,
+      //         // letterSpacing: -0.3,
+      //       ),
+      //       textAlign: TextAlign.center,
+      //     ),
+      //   ),
+      // ),
+      appBar: StandManAppBar1(title: "Privacy Policy",bgcolor: Colors.white, titlecolor: Colors.black, iconcolor: Colors.black,),
       body: loading
           ? Center(
         child: Lottie.asset(

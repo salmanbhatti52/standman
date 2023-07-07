@@ -118,6 +118,7 @@ class _LoginTabClassState extends State<LoginTabClass>
                           fontSize: 14,
                         ),
                         indicatorColor: Colors.pink,
+
                         indicator: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           color: Color.fromRGBO(255, 255, 255, 1),

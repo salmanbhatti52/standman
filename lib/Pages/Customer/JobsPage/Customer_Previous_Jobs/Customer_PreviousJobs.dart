@@ -73,14 +73,15 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IsLoading == true
-          ? Center(
-              child: Lottie.asset(
-                "assets/images/loading.json",
-                height: 50,
-              ),
-            )
-          : Padding(
+      body: IsLoading ? Center(
+        child: Lottie.asset(
+          "assets/images/loading.json",
+          height: 50,
+        ),
+      ) :
+
+      previousData.isNotEmpty
+          ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               child: ListView.builder(
                 physics: BouncingScrollPhysics(),
@@ -101,7 +102,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                             totalPrice: "${previousData[i]['total_price']}",
                             address: "${previousData[i]['location']}",
                             completeJobTime: "${previousData[i]['date_added']}",
-                            description: "${previousData[i]['description']}" == null ? "" : "${previousData[i]['description']}",
+                            description: "${previousData[i]['description'] != null ? {previousData[i]['description']} : ""}",
                             name: previousData[i]['users_employee_data'] != null && previousData[i]['users_employee_data']['first_name'] != null ? "${previousData[i]['users_employee_data']['first_name']} ${previousData[i]['users_employee_data']['last_name']}" : "${previousData[i]['users_employee_data']['first_name']} ${previousData[i]['users_employee_data']['last_name']}",
                             profilePic: "$baseUrlImage${previousData[i]['users_employee_data'] != null && previousData[i]['users_employee_data']['profile_pic'] != null ? previousData[i]['users_employee_data']['profile_pic'] : previousData[i]['users_employee_data']['profile_pic']}",
                             status: "${previousData[i]['status']}",
@@ -295,7 +296,29 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                   );
                 },
               ),
+            )
+          : Center(child:  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            "No Previous Jobs Are Found",
+            style: TextStyle(
+              color: Color(0xff2B65EC),
+              fontFamily: "Outfit",
+              fontWeight: FontWeight.w500,
+              fontSize: 32,
             ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: Get.height * 0.1,
+          ),
+          SvgPicture.asset(
+            'assets/images/cartoon.svg',
+          ),
+        ],
+      )),
     );
   }
 }

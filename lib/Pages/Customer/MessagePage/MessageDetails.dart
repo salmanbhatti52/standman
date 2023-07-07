@@ -864,6 +864,14 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                   Future.delayed(const Duration(seconds: 5), () {
                     if (base64img != null) {
                       sendImageApiWidget();
+                      for (int i = 0;
+                      i < getMessageModel.data!.length;
+                      i++) {
+                        sendNotification([
+                          "${getMessageModel.data?[i].usersData?.oneSignalId}"],
+                            "${getMessageModel.data?[i].usersData?.firstName} ${getMessageModel.data?[i].usersData?.lastName}",
+                            "${getMessageModel.data?[i].message}");
+                      }
                     } else {
                       toastFailedMessage("failed", Colors.red);
                     }

@@ -370,8 +370,7 @@ Payment({
                                   "${jobsCustomersCompleteModel.data?.job?.jobsId}",
                               completeJobTime:
                                   "${jobsCustomersCompleteModel.data?.job?.dateAdded}",
-                              description:
-                                  "${jobsCustomersCompleteModel.data?.job?.description}",
+                              description: "${jobsCustomersCompleteModel.data?.job?.description != null ? {jobsCustomersCompleteModel.data?.job?.description} : ""}",
                               status:
                                   "${jobsCustomersCompleteModel.data?.job?.status}",
                               customerId:

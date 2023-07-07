@@ -292,13 +292,10 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
                               crossAxisAlignment:
                               CrossAxisAlignment.start,
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "${widget.profilePic}",
-                                    width: 50,
-                                    height: 50,
-                                  ),
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  child: ClipRRect(borderRadius: BorderRadius.circular(25),child: Image.network("${widget.profilePic}", fit: BoxFit.fill,)),
                                 ),
                                 // Image.asset("assets/images/g2.png",),
                                 SizedBox(

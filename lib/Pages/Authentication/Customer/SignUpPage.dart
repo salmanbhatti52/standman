@@ -832,20 +832,22 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                       // await sharedPref.setString('usersCustomersId', "${customerSignupModel.data?.usersCustomersId.toString()}");
                                       // await sharedPref.setString('password', "${customerSignupModel.data?.password.toString()}");
 
-                                      Future.delayed(const Duration(seconds: 3), () {
+                                      Future.delayed(const Duration(seconds: 2), () {
                                         // Get.to(LoginTabClass(login: 0,));
                                         Get.to(EmailVerification(otpVerify:  customerSignupModel.data?.otpdetails?.otp,));
-                                        toastSuccessMessage("OTP sent in the email.", Colors.green);
+                                        toastSuccessMessage("${customerSignupModel.message}", Colors.green);
                                         setState(() {
                                           isInAsyncCall = false;
                                         });
                                         print("false: $isInAsyncCall");
                                       });
-                                    } else {
-                                      toastFailedMessage("Failed to send OTP", Colors.red);
+                                    } else if  (customerSignupModel.status != "success"){
+                                      toastFailedMessage("${customerSignupModel.message}", Colors.red);
                                       setState(() {
                                         isInAsyncCall = false;
                                       });
+                                    } else{
+                                      toastFailedMessage("${customerSignupModel.message}",  Colors.red);
                                     }
                                   }
                                 }

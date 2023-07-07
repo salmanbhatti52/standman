@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../Models/system_settings_Model.dart';
 import '../Utils/api_urls.dart';
+import '../widgets/TopBar.dart';
 import 'Drawer.dart';
 import 'package:http/http.dart' as http;
 
@@ -60,31 +61,33 @@ class _TermsandConditionsState extends State<TermsandConditions> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      drawer: MyDrawer(),
-      appBar: AppBar(
-        toolbarHeight: height * 0.10,
-        backgroundColor: Color(0xfffffff),
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 0.0),
-          child: Text(
-            // "${systemSettingsModel.data?[17].type}",
-            "Terms & Conditions",
-            style: TextStyle(
-              color: Color(0xff000000),
-              fontFamily: "Outfit",
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              // letterSpacing: -0.3,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+      appBar: StandManAppBar1(title: "Term & Conditions",bgcolor: Colors.white, titlecolor: Colors.black, iconcolor: Colors.black,),
+      backgroundColor: Colors.white,
+      // drawer: MyDrawer(),
+      // appBar: AppBar(
+      //   toolbarHeight: height * 0.10,
+      //   backgroundColor: Color(0xfffffff),
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   iconTheme: IconThemeData(
+      //     color: Colors.black,
+      //   ),
+      //   title: Padding(
+      //     padding: const EdgeInsets.only(top: 0.0),
+      //     child: Text(
+      //       // "${systemSettingsModel.data?[17].type}",
+      //       "Terms & Conditions",
+      //       style: TextStyle(
+      //         color: Color(0xff000000),
+      //         fontFamily: "Outfit",
+      //         fontSize: 18,
+      //         fontWeight: FontWeight.w500,
+      //         // letterSpacing: -0.3,
+      //       ),
+      //       textAlign: TextAlign.center,
+      //     ),
+      //   ),
+      // ),
       body: loading
           ? Center(
         child: Lottie.asset(

@@ -344,13 +344,10 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                                   onTap : (){
                                     // Get.to(Emp_Profile_details());
               },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        "${widget.profilePic}",
-                                        width: 50,
-                                        height: 50,
-                                      ),
+                                    child: Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: ClipRRect(borderRadius: BorderRadius.circular(25),child: Image.network("${widget.profilePic}", fit: BoxFit.fill,)),
                                     ),),
                                 SizedBox(
                                   width: width * 0.02,

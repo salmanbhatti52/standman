@@ -123,7 +123,7 @@ class _WalletPageState extends State<WalletPage> {
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        customerWalletTxnModel.data?.transactionHistory?.length != null
+                        customerWalletTxnModel.data?.transactionHistory?.length != 0
                             ? "\$${customerWalletTxnModel.data?.expenses}"
                         : "\$0.00",
                         // "\$4,875.00",
@@ -275,20 +275,22 @@ class _WalletPageState extends State<WalletPage> {
                           height: 50,
                         ),
                       )
-                          : customerWalletTxnModel.data?.transactionHistory?.length == null
+                          : customerWalletTxnModel.data?.transactionHistory?.length == 0
                               ? Center(
                                 child: Column(
                                   children: [
                                     SizedBox(height: Get.height * 0.1),
-                                    Text(
-                                      "No Transaction History",
-                                      style: TextStyle(
-                                        color: Color(0xff000000),
-                                        fontFamily: "OutFit",
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
+                                    Center(
+                                      child: Text(
+                                        "No Transaction History",
+                                        style: TextStyle(
+                                          color: Color(0xff000000),
+                                          fontFamily: "OutFit",
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),

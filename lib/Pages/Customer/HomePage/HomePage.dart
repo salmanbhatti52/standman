@@ -133,6 +133,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoading = true;
     });
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("usersCustomersId = $usersCustomersId");
+
     // await Future.delayed(Duration(seconds: 2));
     http.Response response = await http.post(
       Uri.parse(getOngoingJobsModelApiUrl),

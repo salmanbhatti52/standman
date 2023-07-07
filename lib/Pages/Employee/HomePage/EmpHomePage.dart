@@ -153,7 +153,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
     print("in 200 getOngoingJobsEmployees");
     if (response.statusCode == 200) {
       employeeOngoingJobsModel = employeeOngoingJobsModelFromJson(responseString);
-      // setState(() {});
+      setState(() {});
       print('getJobsEmployeesModel status: ${employeeOngoingJobsModel.status}');
       print('getJobsEmployeesModel Length: ${employeeOngoingJobsModel.data?.length}');
     }
@@ -198,7 +198,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
     print("in 200 getJobsEmployees");
     if (response.statusCode == 200) {
       getJobsEmployeesModel = getJobsEmployeesModelFromJson(responseString);
-      // setState(() {});
+      setState(() {});
       // print('getJobsEmployeesModel status: "${getJobsEmployeesModel.data?[index].usersCustomersData?.first_name} ${getJobsEmployeesModel.data?[index].usersCustomersData?.last_name}",');
       print('getJobsEmployeesModel status: ${getJobsEmployeesModel.status}');
       print('getJobsEmployeesModel Length: ${getJobsEmployeesModel.data?.length}');

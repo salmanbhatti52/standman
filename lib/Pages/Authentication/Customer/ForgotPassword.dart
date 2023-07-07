@@ -51,15 +51,15 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
     return Scaffold(
       backgroundColor: Colors.white,
       body:
-      ModalProgressHUD(
-        inAsyncCall: isInAsyncCall,
-        opacity: 0.02,
-        blur: 0.5,
-        color: Colors.transparent,
-        progressIndicator: CircularProgressIndicator(
-          color: Colors.blue,
-        ),
-        child:
+      // ModalProgressHUD(
+      //   inAsyncCall: isInAsyncCall,
+      //   opacity: 0.02,
+      //   blur: 0.5,
+      //   color: Colors.transparent,
+      //   progressIndicator: CircularProgressIndicator(
+      //     color: Colors.blue,
+      //   ),
+      //   child:
         SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -194,7 +194,7 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                             }
                           }
                         },
-                        child: mainButton("Send OTP",
+                        child: isInAsyncCall ? loadingBar(context) : mainButton("Send OTP",
                             Color.fromRGBO(43, 101, 236, 1), context)),
 
                   ],
@@ -203,7 +203,7 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
             ],
           ),
         ),
-      ),
+      // ),
     );
   }
 }

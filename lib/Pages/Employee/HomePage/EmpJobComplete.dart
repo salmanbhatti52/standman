@@ -351,13 +351,10 @@ class _EmpJobCompleteState extends State<EmpJobComplete> {
                                       // Image.asset(
                                       //   "assets/images/g2.png",
                                       // ),
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: Image.network(
-                                          "${widget.profilePic}",
-                                          width: 50,
-                                          height: 50,
-                                        ),
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        child: ClipRRect(borderRadius: BorderRadius.circular(25),child: Image.network("${widget.profilePic}", fit: BoxFit.fill,)),
                                       ),
                                       // CircleAvatar(
                                       //     // radius: (screenWidth > 600) ? 90 : 70,
