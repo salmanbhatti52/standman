@@ -115,6 +115,82 @@ class _bottom_barState extends State<bottom_bar> {
   }
 
 
+  // unreadedMessages() async {
+  //   // setState(() {
+  //   //   loading = true;
+  //   // });
+  //
+  //   prefs = await SharedPreferences.getInstance();
+  //   usersCustomersId = prefs!.getString('usersCustomersId');
+  //   // print("usersCustomersId = $usersCustomersId");
+  //
+  //   String apiUrl = unreadedMessagesModelApiUrl;
+  //   // print("working");
+  //
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(apiUrl),
+  //       headers: {"Accept": "application/json"},
+  //       body: {
+  //         "users_customers_id": usersCustomersId,
+  //       },
+  //     );
+  //
+  //     final responseString = response.body;
+  //     // print("unreadedMessagesModelApiUrl: ${response.body}");
+  //     // print("status Code unreadedMessagesModel: ${response.statusCode}");
+  //     // print("in 200 unreadedMessagesModel");
+  //
+  //     if (response.statusCode == 200) {
+  //       unreadedMessagesModel = unreadedMessagesModelFromJson(responseString);
+  //       // setState(() {});
+  //       // print('unreadedMessagesModel status: ${unreadedMessagesModel.status}');
+  //       // print('unreadedMessagesModel data: ${unreadedMessagesModel.data}');
+  //     } else {
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: Text('Connection Timeout'),
+  //             content: Text('The connection to the server timed out.'),
+  //             actions: <Widget>[
+  //               TextButton(
+  //                 child: Text('OK'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     }
+  //   } catch (e) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           title: Text('Connection Timeout'),
+  //           content: Text('The connection to the server timed out.'),
+  //           actions: <Widget>[
+  //             TextButton(
+  //               child: Text('OK'),
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
+  //   }
+  //
+  //   // setState(() {
+  //   //   loading = false;
+  //   // });
+  // }
+
+
   Timer? _timer;
 
   @override

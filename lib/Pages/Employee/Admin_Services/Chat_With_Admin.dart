@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:StandMan/Pages/EmpBottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -144,7 +145,7 @@ class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
-            Get.to(bottom_bar(
+            Get.to(Empbottom_bar(
               currentIndex: 0,
             ));
           },

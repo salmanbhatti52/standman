@@ -80,6 +80,68 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
     // }
   }
 
+  // String? _currentAddress;
+  // TextEditingController _currentAddress1 = TextEditingController();
+  // Position? _currentPosition;
+  //
+  // Future<bool> _handleLocationPermission() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+  //
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         content: Text(
+  //             'Location services are disabled. Please enable the services')));
+  //     return false;
+  //   }
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //           const SnackBar(content: Text('Location permissions are denied')));
+  //       return false;
+  //     }
+  //   }
+  //   if (permission == LocationPermission.deniedForever) {
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         content: Text(
+  //             'Location permissions are permanently denied, we cannot request permissions.')));
+  //     return false;
+  //   }
+  //   return true;
+  // }
+  //
+  // Future<void> _getCurrentPosition() async {
+  //   final hasPermission = await _handleLocationPermission();
+  //
+  //   if (!hasPermission) return;
+  //   await Geolocator.getCurrentPosition().then((Position position) {
+  //     setState(() => _currentPosition = position);
+  //     _getAddressFromLatLng(_currentPosition!);
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
+  //
+  // Future<void> _getAddressFromLatLng(Position position) async {
+  //   await placemarkFromCoordinates(
+  //       _currentPosition!.latitude, _currentPosition!.longitude)
+  //       .then((List<Placemark> placemarks) {
+  //     Placemark place = placemarks[0];
+  //     setState(() {
+  //       _currentAddress = '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+  //       _currentAddress1 = TextEditingController(
+  //           text: " ${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}");
+  //       print("long : ${_currentPosition!.longitude}");
+  //       print("lat : ${_currentPosition!.latitude}");
+  //     });
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
+
   String? _currentAddress;
   TextEditingController _currentAddress1 = TextEditingController();
   Position? _currentPosition;
@@ -91,56 +153,63 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
+        content: Text('Location services are disabled. Please enable the services'),
+      ));
       return false;
     }
+
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Location permissions are denied'),
+        ));
         return false;
       }
     }
+
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
+        content: Text('Location permissions are permanently denied, we cannot request permissions.'),
+      ));
       return false;
     }
+
     return true;
   }
 
-  Future<void> _getCurrentPosition() async {
+  Future<bool> _getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
 
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition().then((Position position) {
+    if (!hasPermission) return false;
+
+    try {
+      Position position = await Geolocator.getCurrentPosition();
       setState(() => _currentPosition = position);
       _getAddressFromLatLng(_currentPosition!);
-    }).catchError((e) {
-      debugPrint(e);
-    });
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
   }
 
   Future<void> _getAddressFromLatLng(Position position) async {
-    await placemarkFromCoordinates(
-        _currentPosition!.latitude, _currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _currentAddress = '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
-        _currentAddress1 = TextEditingController(
-            text: " ${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}");
-        print("long : ${_currentPosition!.longitude}");
-        print("lat : ${_currentPosition!.latitude}");
-      });
-    }).catchError((e) {
-      debugPrint(e);
+    List<Placemark> placemarks =
+    await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark place = placemarks[0];
+    setState(() {
+      _currentAddress =
+      '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      _currentAddress1 = TextEditingController(
+          text:
+          " ${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}");
+      print("long : ${_currentPosition!.longitude}");
+      print("lat : ${_currentPosition!.latitude}");
     });
   }
+
 
 
   @override
@@ -362,69 +431,72 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                     ),
                   ],
                 ),
-                GestureDetector(
-                    onTap: () async {
-                        final currentFocus = FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus &&
-                            currentFocus.focusedChild != null) {
-                          FocusManager.instance.primaryFocus
-                              ?.unfocus();
-                        }
-                      if (key.currentState!.validate()) {
-                        if (emailController.text.isEmpty) {
-                          toastFailedMessage('email cannot be empty', Colors.red);
-                        } else if (passwordController.text.length < 6) {
-                          toastFailedMessage(
-                              'password must be 6 digit', Colors.red);
-                        } else {
-                          setState(() {
-                            isInAsyncCall = true;
-                          });
-                          await employeesignin();
-                          await _getCurrentPosition();
+              GestureDetector(
+                onTap: () async {
+                  final currentFocus = FocusScope.of(context);
+                  if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  }
 
-                          if (employeeSigninModel.status == "success") {
-                            SharedPreferences sharedPref = await SharedPreferences.getInstance();
-                            await sharedPref.setString('empUser_email', "${employeeSigninModel.data?.email.toString()}");
-                            await sharedPref.setString('empPhoneNumber',
-                                "${employeeSigninModel.data?.phone.toString()}");
-                            await sharedPref.setString('empFullName',
-                                "${employeeSigninModel.data?.fullName.toString()}");
-                            await sharedPref.setString('empProfilePic',
-                                "${employeeSigninModel.data?.profilePic.toString()}");
-                            await sharedPref.setString('empUsersCustomersId',
-                                "${employeeSigninModel.data?.usersCustomersId.toString()}");
-                            await sharedPref.setString('longitude1', "${_currentPosition?.longitude}");
-                            await sharedPref.setString('lattitude1', "${_currentPosition?.latitude}");
+                  if (key.currentState!.validate()) {
+                    if (emailController.text.isEmpty) {
+                      toastFailedMessage('email cannot be empty', Colors.red);
+                    } else if (passwordController.text.length < 6) {
+                      toastFailedMessage('password must be 6 digit', Colors.red);
+                    } else {
+                      setState(() {
+                        isInAsyncCall = true;
+                      });
 
-                            Future.delayed(const Duration(seconds: 3), () {
-                              if (employeeSigninModel.data!.usersCustomersType ==
-                                  "Employee") {
-                                Get.offAll(Empbottom_bar(currentIndex: 0,));
-                                toastSuccessMessage("Login Successfully", Colors.green);
-                              } else {
-                                toastFailedMessage("Invalid email", Colors.red);
-                              }
-                              setState(() {
-                                isInAsyncCall = false;
-                              });
-                              print("false: $isInAsyncCall");
-                            });
-                          }
-                          if (employeeSigninModel.status != "success") {
-                            toastFailedMessage(
-                                employeeSigninModel.message, Colors.red);
-                            setState(() {
-                              isInAsyncCall = false;
-                            });
-                          }
-                        }
+                      final locationPermissionGranted = await _getCurrentPosition();
+
+                      if (!locationPermissionGranted) {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Failed to retrieve location'),
+                        ));
+                        setState(() {
+                          isInAsyncCall = false;
+                        });
+                        return;
                       }
-                    },
-                    child: isInAsyncCall
-                        ?  loadingBar(context)
-                    : mainButton(
-                        "Sign In", Color.fromRGBO(43, 101, 236, 1), context)),
+
+                      await employeesignin();
+
+                      if (employeeSigninModel.status == "success") {
+                        SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                        await sharedPref.setString('empUser_email', "${employeeSigninModel.data?.email.toString()}");
+                        await sharedPref.setString('empPhoneNumber', "${employeeSigninModel.data?.phone.toString()}");
+                        await sharedPref.setString('empFullName', "${employeeSigninModel.data?.fullName.toString()}");
+                        await sharedPref.setString('empProfilePic', "${employeeSigninModel.data?.profilePic.toString()}");
+                        await sharedPref.setString('empUsersCustomersId', "${employeeSigninModel.data?.usersCustomersId.toString()}");
+                        await sharedPref.setString('longitude1', "${_currentPosition?.longitude}");
+                        await sharedPref.setString('lattitude1', "${_currentPosition?.latitude}");
+
+                        Future.delayed(const Duration(seconds: 3), () {
+                          if (employeeSigninModel.data!.usersCustomersType == "Employee") {
+                            Get.offAll(Empbottom_bar(currentIndex: 0));
+                            toastSuccessMessage("Login Successfully", Colors.green);
+                          } else {
+                            toastFailedMessage("Invalid email", Colors.red);
+                          }
+                          setState(() {
+                            isInAsyncCall = false;
+                          });
+                          print("false: $isInAsyncCall");
+                        });
+                      } else {
+                        toastFailedMessage(employeeSigninModel.message, Colors.red);
+                        setState(() {
+                          isInAsyncCall = false;
+                        });
+                      }
+                    }
+                  }
+                },
+                child: isInAsyncCall
+                    ? loadingBar(context)
+                    : mainButton("Sign In", Color.fromRGBO(43, 101, 236, 1), context),
+              ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Text(
