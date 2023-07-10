@@ -11,7 +11,6 @@ buildscript {
 }
 
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
-
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -61,7 +60,7 @@ android {
         applicationId "com.standman.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -87,7 +86,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
 }
 
 apply plugin:  'com.google.gms.google-services'
