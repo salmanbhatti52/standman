@@ -86,7 +86,10 @@ class _MyAppState extends State<MyApp> {
       },
       debugShowCheckedModeBanner: false,
       title: 'StandMan',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        // Set the background color to a different color
+        scaffoldBackgroundColor: Colors.white,
+      ),
       scrollBehavior: MyBehavior(),
       home: SplashScreen(),
     ),);

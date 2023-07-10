@@ -87,14 +87,52 @@ class _EmpHomePageState extends State<EmpHomePage> {
   bool isLoading = false;
   dynamic usersProfileData;
 
+  // getUserProfileWidget() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //
+  //   empPrefs = await SharedPreferences.getInstance();
+  //   empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+  //   print("userId in empPrefs is = $empUsersCustomersId");
+  //
+  //   String apiUrl = usersProfileApiUrl;
+  //   print("getUserProfileApi: $apiUrl");
+  //
+  //   http.Response response = await http.post(
+  //     Uri.parse(apiUrl),
+  //     body: {
+  //       "users_customers_id": empUsersCustomersId.toString(),
+  //     },
+  //     headers: {
+  //       'Accept': 'application/json',
+  //     },
+  //   );
+  //
+  //   if (mounted) {
+  //     setState(() {
+  //       if (response.statusCode == 200) {
+  //         var jsonResponse = json.decode(response.body);
+  //         usersProfileData = jsonResponse['data'];
+  //         print("usersProfileData: $usersProfileData");
+  //         print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+  //         isLoading = false;
+  //       } else {
+  //         print("Response Body: ${response.body}");
+  //       }
+  //     });
+  //   }
+  // }
+
   getUserProfileWidget() async {
     setState(() {
       isLoading = true;
     });
 
-    empPrefs = await SharedPreferences.getInstance();
-    empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
-    print("userId in empPrefs is = $empUsersCustomersId");
+      empPrefs = await SharedPreferences.getInstance();
+      empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+      print("userId in empPrefs is = $empUsersCustomersId");
+
 
     String apiUrl = usersProfileApiUrl;
     print("getUserProfileApi: $apiUrl");
@@ -110,17 +148,20 @@ class _EmpHomePageState extends State<EmpHomePage> {
     );
 
     if (mounted) {
-      setState(() {
-        if (response.statusCode == 200) {
-          var jsonResponse = json.decode(response.body);
-          usersProfileData = jsonResponse['data'];
-          print("usersProfileData: $usersProfileData");
-          print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        usersProfileData = jsonResponse['data'];
+        print("usersProfileData: $usersProfileData");
+        print("one_signal_iddd ${usersProfileData['one_signal_id'].toString()}");
+        SharedPreferences sharedPref = await SharedPreferences.getInstance();
+        await sharedPref.setString('oneSignalId', "${usersProfileData['one_signal_id'].toString()}");
+        print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+        setState(() {
           isLoading = false;
-        } else {
-          print("Response Body: ${response.body}");
-        }
-      });
+        });
+      } else {
+        print("Response Body: ${response.body}");
+      }
     }
   }
 

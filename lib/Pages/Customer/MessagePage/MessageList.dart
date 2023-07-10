@@ -29,6 +29,13 @@ class _MessagesListsState extends State<MessagesLists> {
     // TODO: implement initState
     super.initState();
     getAllChat();
+    sharePref();
+  }
+
+  sharePref() async {
+    prefs = await SharedPreferences.getInstance();
+    oneSignalID = prefs!.getString('oneSignalId');
+    print("oneSignalId = $oneSignalID");
   }
 
 

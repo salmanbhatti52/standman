@@ -23,6 +23,7 @@ import '../../Bottombar.dart';
 class MessagesDetails extends StatefulWidget {
   final String? usersCustomersId;
   final String? other_users_customers_id;
+  final String? oneSignalID;
   final String? name;
   final String? img;
 
@@ -30,6 +31,7 @@ class MessagesDetails extends StatefulWidget {
       {Key? key,
       this.usersCustomersId,
       this.other_users_customers_id,
+        this.oneSignalID,
       this.name,
       this.img})
       : super(key: key);
@@ -132,7 +134,8 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
-    // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+    oneSignalID = prefs!.getString('oneSignalId');
+    print("oneSignalId = $oneSignalID");
     print("usersCustomersId = $usersCustomersId");
     print("empUsersCustomersId = ${widget.other_users_customers_id}");
 
@@ -156,6 +159,10 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     if (jsonData['message'] == 'Message sent successfully.') {
       // toastSuccessMessage("Message sent.", Colors.green);
       print('Message sent successfully.');
+      sendNotification([
+        "${oneSignalID}"],
+          "${"Hello"} ",
+          "${"Hello world"}");
       setState(() {
         loading = false;
         getMessageApi();
@@ -164,6 +171,9 @@ class _MessagesDetailsState extends State<MessagesDetails> {
   }
 
   sharedPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    oneSignalID = prefs!.getString('oneSignalId');
+    print("oneSignalId = $oneSignalID");
     setState(() {
       getMessageApi();
     });
@@ -196,11 +206,13 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     _scrollController = ScrollController();
     // notificationGet();
     sharedPrefs();
+    print("oneSignalID ${oneSignalID}");
   }
 
   //
   Future<http.Response> sendNotification(
       List<String> tokenIdList, String contents, String heading) async {
+    print("Hello world");
     return await post(
       Uri.parse('https://onesignal.com/api/v1/notifications'),
       headers: <String, String>{
@@ -219,7 +231,8 @@ class _MessagesDetailsState extends State<MessagesDetails> {
         "small_icon": "ic_stat_onesignal_default",
 
         "large_icon":
-            "https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg",
+            "ic_stat_onesignal_default",
+      // https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg
 
         "headings": {"en": heading},
 
@@ -776,14 +789,14 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                               setState(() {
                                 loading = false;
                                 sendMessageController.clear();
-                                for (int i = 0;
-                                    i < getMessageModel.data!.length;
-                                    i++) {
-                                  sendNotification([
-                                    "${getMessageModel.data?[i].usersData?.oneSignalId}"],
-                                      "${getMessageModel.data?[i].usersData?.firstName} ${getMessageModel.data?[i].usersData?.lastName}",
-                                      "${getMessageModel.data?[i].message}");
-                                }
+                                // for (int i = 0;
+                                //     i < getMessageModel.data!.length;
+                                //     i++) {
+                                //   sendNotification([
+                                //     "${getMessageModel.data?[i].usersData?.oneSignalId}"],
+                                //       "${getMessageModel.data?[i].usersData?.firstName} ${getMessageModel.data?[i].usersData?.lastName} ",
+                                //       "${getMessageModel.data?[i].message}" 'send a message');
+                                // }
                               });
                               print("false: $loading");
                             });
@@ -864,14 +877,14 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                   Future.delayed(const Duration(seconds: 5), () {
                     if (base64img != null) {
                       sendImageApiWidget();
-                      for (int i = 0;
-                      i < getMessageModel.data!.length;
-                      i++) {
-                        sendNotification([
-                          "${getMessageModel.data?[i].usersData?.oneSignalId}"],
-                            "${getMessageModel.data?[i].usersData?.firstName} ${getMessageModel.data?[i].usersData?.lastName}",
-                            "${getMessageModel.data?[i].message}");
-                      }
+                      // for (int i = 0;
+                      // i < getMessageModel.data!.length;
+                      // i++) {
+                      //   sendNotification([
+                      //     "${getMessageModel.data?[i].usersData?.oneSignalId}"],
+                      //       "${getMessageModel.data?[i].usersData?.firstName} ${getMessageModel.data?[i].usersData?.lastName}",
+                      //       "${getMessageModel.data?[i].message}");
+                      // }
                     } else {
                       toastFailedMessage("failed", Colors.red);
                     }

@@ -312,6 +312,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                             await sharedPref.setString('profilePic', "${baseUrlImage+customerSigninModel.data!.profilePic.toString()}");
                             await sharedPref.setString('usersCustomersId', "${customerSigninModel.data?.usersCustomersId.toString()}");
                             await sharedPref.setString('password', "${customerSigninModel.data?.password.toString()}");
+                            await sharedPref.setString('oneSignalId', "${customerSigninModel.data?.oneSignalId}");
 
                             Future.delayed(const Duration(seconds: 3), () {
                               if(customerSigninModel.data!.usersCustomersType == "Customer"){

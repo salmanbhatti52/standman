@@ -45,20 +45,22 @@ class _LoginTabClassState extends State<LoginTabClass>
                   children: [
                     SizedBox(height: height * 0.05),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(width: width * 0.37),
+                        // SizedBox(width: width * 0.07),
+                        SizedBox(width: width * 0.12,),
                         SvgPicture.asset("assets/images/logo.svg"),
-                        // SizedBox(width: width * 0.03),
+                        // SizedBox(width: width * 0.5),
                         GestureDetector(
                           onTap: (){
                             Get.to( () => OnboardingPageView());
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 70, bottom: 70),
-                            width: width * 0.22,
-                              height: height * 0.04,
+                            margin: EdgeInsets.only(right: 15, bottom: 70),
+                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                            // width: width * 0.12,
+                            //   height: height * 0.04,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
                               color: Color(0xff2B65EC),
@@ -70,24 +72,7 @@ class _LoginTabClassState extends State<LoginTabClass>
                                     color: Color.fromRGBO(232, 231, 231, 1),),
                                 ]
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "See Intro",
-                                  style: TextStyle(
-                                    color: Color(0xffffffff),
-                                    fontFamily: "Outfit",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(width: width * 0.01),
-                                Image.asset("assets/images/i.png", width: 20, height: 20, color: Colors.white,),
-                              ],
-                            ),
+                            child: Image.asset("assets/images/i.png", width: 20, height: 20, color: Colors.white,),
                           ),
                         ),
                       ],

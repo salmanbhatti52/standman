@@ -24,11 +24,13 @@ class EmpMessagesDetails extends StatefulWidget {
   final String? other_users_customers_id;
   final String? name;
   final String? img;
+  final String? one_signal_id;
 
   EmpMessagesDetails(
       {Key? key,
         this.usersCustomersId,
         this.other_users_customers_id,
+        this.one_signal_id,
         this.name,
         this.img})
       : super(key: key);
@@ -132,9 +134,10 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
     });
 
     prefs = await SharedPreferences.getInstance();
+      oneSignalID = prefs!.getString('oneSignalId');
     usersCustomersId = prefs!.getString('empUsersCustomersId');
-    // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
     print("usersCustomersId = $usersCustomersId");
+    print("oneSignalId = $oneSignalID");
     print("empUsersCustomersId = ${widget.other_users_customers_id}");
 
     Map body = {
@@ -157,6 +160,10 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
     if (jsonData['message'] == 'Message sent successfully.') {
       // toastSuccessMessage("Message sent successfully1.", Colors.green);
       print('Message sent successfully.');
+        sendNotification([
+          "${widget.one_signal_id}"],
+            "${"Hello"} ",
+            "${"Hello world"}");
       setState(() {
         loading = false;
         getMessageApi();
@@ -165,6 +172,9 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
   }
 
   sharedPrefs() async {
+      prefs = await SharedPreferences.getInstance();
+      oneSignalID = prefs!.getString('oneSignalId');
+      print("oneSignalId = $oneSignalID");
     setState(() {
       getMessageApi();
     });
@@ -194,11 +204,14 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
     print("usersCustomersId $usersCustomersId");
     _scrollController = ScrollController();
     sharedPrefs();
+    print("oneSignalID ${oneSignalID}");
   }
 
 
   Future<http.Response> sendNotification(
       List<String> tokenIdList, String contents, String heading) async {
+    print("Hello world");
+
     return await post(
       Uri.parse('https://onesignal.com/api/v1/notifications'),
       headers: <String, String>{
@@ -710,19 +723,11 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                               loading = true;
                             });
                             await sendMessageApiWidget();
-                            Future.delayed(Duration(seconds: 3), () {
-                              print("sendMessage Success");
-                              setState(() {
+                            Future.delayed(Duration(seconds: 2), () {
+                              print("sendMessage Success Hello");
+                              setState(()  {
                                 loading = false;
                                 sendMessageController.clear();
-                                for (int i = 0;
-                                i < getMessgeModel.data!.length;
-                                i++) {
-                                  sendNotification([
-                                    "${getMessgeModel.data?[i].usersData?.oneSignalId}"],
-                                      "${getMessgeModel.data?[i].usersData?.firstName} ${getMessgeModel.data?[i].usersData?.lastName}",
-                                      "${getMessgeModel.data?[i].message}");
-                                }
                               });
                               print("false: $loading");
                             });
@@ -800,20 +805,21 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
 //                   setState(() {
                   pickImageGallery();
 //                   });
-                  Future.delayed(const Duration(seconds: 5), () {
-                    if (base64img != null) {
-                      sendImageApiWidget();
-                      for (int i = 0;
-                      i < getMessgeModel.data!.length;
-                      i++) {
-                        sendNotification([
-                          "${getMessgeModel.data?[i].usersData?.oneSignalId}"],
-                          "${getMessgeModel.data?[i].message}",
-                            "${getMessgeModel.data?[i].usersData?.firstName} ${getMessgeModel.data?[i].usersData?.lastName}",);
-                      }
-                    } else {
-                      toastFailedMessage("failed", Colors.red);
-                    }
+                  Future.delayed(Duration(seconds: 2), () {
+                    print("sendMessage Success Hello");
+                    setState(() {
+                      loading = false;
+                      sendMessageController.clear();
+                      // for (int i = 0;
+                      // i < getMessgeModel.data!.length;
+                      // i++) {
+                      //   sendNotification([
+                      //     "${getMessgeModel.data?[i].usersData?.oneSignalId}"],
+                      //       "${getMessgeModel.data?[i].usersData?.firstName} ${getMessgeModel.data?[i].usersData?.lastName} ",
+                      //       "${getMessgeModel.data?[i].message}" 'send a message');
+                      // }
+                    });
+                    print("false: $loading");
                   });
                 },
                 child: Padding(

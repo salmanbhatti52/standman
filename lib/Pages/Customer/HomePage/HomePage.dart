@@ -22,6 +22,7 @@ String? fullName;
 String? phoneNumber;
 String? profilePic1;
 String? usersCustomersId;
+String? oneSignalID;
 String? adminID;
 String? adminName;
 String? adminImage;
@@ -88,6 +89,51 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = false;
   dynamic usersProfileData;
 
+  // getUserProfileWidget() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //
+  //   prefs = await SharedPreferences.getInstance();
+  //   usersCustomersId = prefs!.getString('usersCustomersId');
+  //   print("usersCustomersId = $usersCustomersId");
+  //   print("longitude1: $longitude");
+  //   print("latitude1: $lattitude");
+  //
+  //   String apiUrl = usersProfileApiUrl;
+  //   print("getUserProfileApi: $apiUrl");
+  //
+  //   http.Response response = await http.post(
+  //     Uri.parse(apiUrl),
+  //     body: {
+  //       "users_customers_id": usersCustomersId.toString(),
+  //     },
+  //     headers: {
+  //       'Accept': 'application/json',
+  //     },
+  //   );
+  //
+  //   if (mounted) {
+  //     setState(()  async {
+  //       if (response.statusCode == 200) {
+  //         var jsonResponse = json.decode(response.body);
+  //         usersProfileData = jsonResponse['data'];
+  //         print("usersProfileData: $usersProfileData");
+  //           SharedPreferences sharedPref = await SharedPreferences.getInstance();
+  //           await sharedPref.setString('oneSignalId', "${usersProfileData['one_signal_id']}");
+  //           prefs = await SharedPreferences.getInstance();
+  //           oneSignalID = prefs!.getString('oneSignalID');
+  //           print("oneSignalID = $oneSignalID");
+  //         print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+  //         isLoading = false;
+  //       } else {
+  //         print("Response Body: ${response.body}");
+  //       }
+  //     });
+  //   }
+  // }
+
+
   getUserProfileWidget() async {
     setState(() {
       isLoading = true;
@@ -113,19 +159,25 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (mounted) {
-      setState(() {
-        if (response.statusCode == 200) {
-          var jsonResponse = json.decode(response.body);
-          usersProfileData = jsonResponse['data'];
-          print("usersProfileData: $usersProfileData");
-          print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        usersProfileData = jsonResponse['data'];
+        print("usersProfileData: $usersProfileData");
+        print("one_signal_iddd ${usersProfileData['one_signal_id'].toString()}");
+        SharedPreferences sharedPref = await SharedPreferences.getInstance();
+        await sharedPref.setString('oneSignalId', "${usersProfileData['one_signal_id'].toString()}");
+        print("IDDDD ${baseUrlImage+usersProfileData['profile_pic'].toString()}");
+        setState(() {
           isLoading = false;
-        } else {
-          print("Response Body: ${response.body}");
-        }
-      });
+        });
+      } else {
+        print("Response Body: ${response.body}");
+      }
     }
   }
+
+
+
 
   List ongoingData = [];
 

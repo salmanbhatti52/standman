@@ -119,6 +119,7 @@ class _Emp_ONGoingState extends State<Emp_ONGoing> {
                 return GestureDetector(
                   onTap: (){
                     Get.to(EmpCompleteProfile(
+                      one_signal_id: "${employeeOngoingJobsModel.data?[index].usersCustomersData?.oneSignalId}",
                       myJobId: "${employeeOngoingJobsModel.data?[index].jobsId}",
                       image:"$baseUrlImage${employeeOngoingJobsModel.data?[index].image}",
                       jobName: employeeOngoingJobsModel.data?[index].name,

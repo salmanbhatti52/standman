@@ -364,6 +364,7 @@ class _Customer_RatingState extends State<Customer_Rating> {
                                        Get.to(Customer_Profile(
                                          customerId: widget.customerId.toString(),
                                          employeeId: widget.employeeId.toString(),
+                                         oneSignalId: addJobRatingModel.data?.userData?.oneSignalId,
                                          rating: "${addJobRatingModel.data?.jobRated?.rating}",
                                          profilePic: "$baseUrlImage${addJobRatingModel.data?.userData?.profilePic}",
                                          name: "${addJobRatingModel.data?.userData?.firstName} ${addJobRatingModel.data?.userData?.lastName}",

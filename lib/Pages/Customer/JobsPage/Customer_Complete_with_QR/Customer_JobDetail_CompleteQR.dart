@@ -35,10 +35,13 @@ class Customer_JobsDetails_Completed_with_QR extends StatefulWidget {
   String? customerId;
   String? employeeId;
   String? jobId;
-   Customer_JobsDetails_Completed_with_QR({Key? key, this.image,
+  String? oneSignalId;
+   Customer_JobsDetails_Completed_with_QR({Key? key, this.image, this.oneSignalId,
      this.jobName, this.totalPrice, this.address, this.jobId, this.employeeId,
      this.completeJobTime,  this.employee_name, this.employee_profilePic, this.description, this.customerId,
-     this.profilePic, this.name, this.status}) : super(key: key);
+     this.profilePic, this.name,
+     this.status
+   }) : super(key: key);
 
   @override
   State<Customer_JobsDetails_Completed_with_QR> createState() =>
@@ -336,6 +339,7 @@ class _Customer_JobsDetails_Completed_with_QRState
                                     await chatStartUser();
                                     Get.to(MessagesDetails(
                                       usersCustomersId: usersCustomersId,
+                                      oneSignalID: widget.oneSignalId,
                                       other_users_customers_id: widget.employeeId,
                                       img: widget.employee_profilePic.toString(),
                                       name: widget.employee_name.toString(),

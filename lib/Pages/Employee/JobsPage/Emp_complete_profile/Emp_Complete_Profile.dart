@@ -29,9 +29,11 @@ class EmpCompleteProfile extends StatefulWidget {
   String? status;
   String? name;
   String? myJobId;
+  String? one_signal_id;
    EmpCompleteProfile({Key? key,  this.customerId, this.image,
     this.myJobId,
     this.jobName,
+     this.one_signal_id,
     this.totalPrice,
      this.status,
     this.address,
@@ -413,6 +415,7 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                                 await chatStartUserEmp();
                                 Get.to(EmpMessagesDetails(
                                   usersCustomersId: empUsersCustomersId,
+                                  one_signal_id: widget.one_signal_id,
                                   other_users_customers_id: widget.customerId,
                                   img: widget.profilePic,
                                   name: widget.name,

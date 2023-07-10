@@ -30,9 +30,11 @@ class EMp_Job_Completed extends StatefulWidget {
   String? ratings;
   String? name;
   String? myJobId;
+  String? one_signal_id;
    EMp_Job_Completed({Key? key , this.customerId, this.image,
      this.myJobId,
      this.jobName,
+     this.one_signal_id,
      this.totalPrice,
      this.ratings,
      this.employeeID,
@@ -345,6 +347,7 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
                             GestureDetector(onTap: () async {
                               await chatStartUserEmp();
                               Get.to(EmpMessagesDetails(
+                                one_signal_id: widget.one_signal_id,
                                 usersCustomersId: empUsersCustomersId,
                                 other_users_customers_id: widget.customerId,
                                 img: widget.profilePic.toString(),

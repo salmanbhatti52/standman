@@ -21,10 +21,13 @@ import 'package:http/http.dart' as http;
 class Customer_Profile extends StatefulWidget {
   String? customerId;
   String? employeeId;
+  String? oneSignalId;
   String? name;
   String? rating;
   String? profilePic;
-   Customer_Profile({Key? key, this.customerId, this.employeeId, this.profilePic, this.name, this.rating}) : super(key: key);
+   Customer_Profile({Key? key, this.oneSignalId, this.customerId, this.employeeId, this.profilePic, this.name,
+     this.rating,
+   }) : super(key: key);
 
   @override
   State<Customer_Profile> createState() => _Customer_ProfileState();
@@ -194,6 +197,7 @@ class _Customer_ProfileState extends State<Customer_Profile> {
                     onTap: () async {
                       await chatStartUser();
                       Get.to(MessagesDetails(
+                        oneSignalID: widget.oneSignalId,
                         usersCustomersId: widget.customerId,
                         other_users_customers_id: widget.employeeId,
                         img: widget.profilePic.toString(),

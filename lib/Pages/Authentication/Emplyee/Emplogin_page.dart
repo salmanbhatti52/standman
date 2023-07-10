@@ -468,6 +468,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                         await sharedPref.setString('empPhoneNumber', "${employeeSigninModel.data?.phone.toString()}");
                         await sharedPref.setString('empFullName', "${employeeSigninModel.data?.fullName.toString()}");
                         await sharedPref.setString('empProfilePic', "${employeeSigninModel.data?.profilePic.toString()}");
+                        await sharedPref.setString('oneSignalId', "${employeeSigninModel.data?.oneSignalId}");
                         await sharedPref.setString('empUsersCustomersId', "${employeeSigninModel.data?.usersCustomersId.toString()}");
                         await sharedPref.setString('longitude1', "${_currentPosition?.longitude}");
                         await sharedPref.setString('lattitude1', "${_currentPosition?.latitude}");
