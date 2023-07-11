@@ -50,37 +50,68 @@ class _EmpHomePageState extends State<EmpHomePage> {
   List getAdmin = [];
   bool _initialized = false;
 
+  // getAdminList() async {
+  //   http.Response response = await http.get(
+  //     Uri.parse(getAdminApiUrl),
+  //     headers: {"Accept": "application/json"},
+  //   );
+  //   if (mounted) {
+  //     setState(() async {
+  //       if (response.statusCode == 200) {
+  //         var jsonResponse = json.decode(response.body);
+  //         var adminData = jsonResponse['data'][0];
+  //
+  //         var userImage = adminData['user_image'];
+  //         var adminID = adminData['users_system_id'];
+  //         var firstName = adminData['first_name'];
+  //
+  //         SharedPreferences sharedPref = await SharedPreferences.getInstance();
+  //         await sharedPref.setString('adminID', "$adminID");
+  //         await sharedPref.setString('adminName', "$firstName");
+  //         await sharedPref.setString('adminImage', "${baseUrlImage+userImage}");
+  //         prefs = await SharedPreferences.getInstance();
+  //         adminID = prefs!.getString('adminID');
+  //         adminName = prefs!.getString('adminName');
+  //         adminImage = prefs!.getString('adminImage');
+  //         print("User Image: $adminImage");
+  //         print("Admin ID: $adminID");
+  //         print("First Name: $adminName");
+  //
+  //       } else {
+  //         print("Response Body: ${response.body}");
+  //       }
+  //     });
+  //   }
+  // }
+
   getAdminList() async {
     http.Response response = await http.get(
       Uri.parse(getAdminApiUrl),
       headers: {"Accept": "application/json"},
     );
-    if (mounted) {
-      setState(() async {
-        if (response.statusCode == 200) {
-          var jsonResponse = json.decode(response.body);
-          var adminData = jsonResponse['data'][0];
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      var adminData = jsonResponse['data'][0];
 
-          var userImage = adminData['user_image'];
-          var adminID = adminData['users_system_id'];
-          var firstName = adminData['first_name'];
+      var userImage = adminData['user_image'];
+      var adminID = adminData['users_system_id'];
+      var firstName = adminData['first_name'];
 
-          SharedPreferences sharedPref = await SharedPreferences.getInstance();
-          await sharedPref.setString('adminID', "$adminID");
-          await sharedPref.setString('adminName', "$firstName");
-          await sharedPref.setString('adminImage', "${baseUrlImage+userImage}");
-          prefs = await SharedPreferences.getInstance();
-          adminID = prefs!.getString('adminID');
-          adminName = prefs!.getString('adminName');
-          adminImage = prefs!.getString('adminImage');
-          print("User Image: $adminImage");
-          print("Admin ID: $adminID");
-          print("First Name: $adminName");
+      SharedPreferences sharedPref = await SharedPreferences.getInstance();
+      await sharedPref.setString('adminID', "$adminID");
+      await sharedPref.setString('adminName', "$firstName");
+      await sharedPref.setString('adminImage', "${baseUrlImage+userImage}");
 
-        } else {
-          print("Response Body: ${response.body}");
-        }
+      setState(() {
+        adminID = sharedPref.getString('adminID');
+        adminName = sharedPref.getString('adminName');
+        adminImage = sharedPref.getString('adminImage');
+        print("User Image: $adminImage");
+        print("Admin ID: $adminID");
+        print("First Name: $adminName");
       });
+    } else {
+      print("Response Body: ${response.body}");
     }
   }
 
