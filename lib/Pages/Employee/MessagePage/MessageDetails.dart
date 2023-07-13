@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:StandMan/Models/send_messge_employee_Model.dart';
@@ -45,10 +46,37 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
   List<GetMessgeModel> newMessageObject = [];
   List<UpdateMessgeModel> updateMessageModelObject = [];
   SendMessgeEmployeeModel sendMessgeEmployeeModel = SendMessgeEmployeeModel();
-  bool loading = true;
+  bool loading = false;
   ScrollController _scrollController = ScrollController();
   String? Image;
   GetMessgeModel getMessgeModel = GetMessgeModel();
+
+  // Declare a timer variable
+  Timer? timer;
+
+  void startTimer() {
+    // Start the timer and call getMessageApi() every 1 second
+    timer = Timer.periodic(Duration(seconds: 2), (Timer t) {
+      getMessageApi();
+    });
+  }
+
+  void cancelTimer() {
+    // Cancel the timer if it's active
+    timer?.cancel();
+  }
+
+// Call this function when the user enters the page
+  void onPageEnter() {
+    // Start the timer to call getMessageApi() every 1 second
+    startTimer();
+  }
+
+// Call this function when the user leaves the page
+  void onPageExit() {
+    // Cancel the timer to stop calling getMessageApi()
+    cancelTimer();
+  }
 
   getMessageApi() async {
     prefs = await SharedPreferences.getInstance();
@@ -57,9 +85,9 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
     print("usersCustomersId = $usersCustomersId");
     print("empUsersCustomersId = ${widget.other_users_customers_id}");
 
-    setState(() {
-      loading = true;
-    });
+    // setState(() {
+    //   loading = true;
+    // });
     String apiUrl = getUserChatApiUrl;
     print("working");
     final response = await http.post(
@@ -160,12 +188,12 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
     if (jsonData['message'] == 'Message sent successfully.') {
       // toastSuccessMessage("Message sent successfully1.", Colors.green);
       print('Message sent successfully.');
+      setState(() {
+        loading = false;
         sendNotification([
           "${widget.one_signal_id}"],
             "${"Hello"} ",
             "${"Hello world"}");
-      setState(() {
-        loading = false;
         getMessageApi();
       });
     }
@@ -192,6 +220,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
 
   @override
   void dispose() {
+    onPageExit();
     _scrollController.dispose();
     super.dispose();
   }
@@ -199,6 +228,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
   @override
   void initState() {
     super.initState();
+    onPageEnter();
     usersCustomersId = widget.usersCustomersId;
     Image = widget.img;
     print("usersCustomersId $usersCustomersId");
@@ -255,6 +285,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
+            onPageExit();
             Get.to(Empbottom_bar(currentIndex: 1));
           },
           child: Center(
@@ -420,23 +451,24 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
             //  SizedBox(
             //    height: height * 0.04,
             //  ),
-            loading
-                ? Container(
-                height: height * 0.78,
-                child: Center(
-                  child: Lottie.asset(
-                    "assets/images/loading.json",
-                    height: 50,
-                  ),
-                ))
-                : ModalProgressHUD(
-              inAsyncCall: loading,
-              opacity: 0.02,
-              blur: 0.5,
-              color: Colors.transparent,
-              progressIndicator:
-              CircularProgressIndicator(color: Colors.blue),
-              child: SingleChildScrollView(
+            // loading
+            //     ? Container(
+            //     height: height * 0.78,
+            //     child: Center(
+            //       child: Lottie.asset(
+            //         "assets/images/loading.json",
+            //         height: 50,
+            //       ),
+            //     ))
+            //     : ModalProgressHUD(
+            //   inAsyncCall: loading,
+            //   opacity: 0.02,
+            //   blur: 0.5,
+            //   color: Colors.transparent,
+            //   progressIndicator:
+            //   CircularProgressIndicator(color: Colors.blue),
+            //   child:
+              SingleChildScrollView(
                 child: Column(
                   children: [
                     getMessgeModel.data != null
@@ -697,7 +729,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                   ],
                 ),
               ),
-            ),
+            // ),
             Align(
               alignment: Alignment.bottomLeft,
               child: Container(

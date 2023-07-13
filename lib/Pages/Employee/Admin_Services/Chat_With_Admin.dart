@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:StandMan/Pages/EmpBottombar.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class ChatWithAdmin_Employee extends StatefulWidget {
 
 class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
 
-  bool loading = true;
+  bool loading = false;
   var sendMessageController = TextEditingController();
   GetMessageLiveModel getMessageLiveModel = GetMessageLiveModel();
   final GlobalKey<FormState> sendMessageFormKey = GlobalKey<FormState>();
@@ -65,11 +66,38 @@ class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
     }
   }
 
+  // Declare a timer variable
+  Timer? timer;
+
+  void startTimer() {
+    // Start the timer and call getMessageApi() every 1 second
+    timer = Timer.periodic(Duration(seconds: 2), (Timer t) {
+      getMessageApi();
+    });
+  }
+
+  void cancelTimer() {
+    // Cancel the timer if it's active
+    timer?.cancel();
+  }
+
+// Call this function when the user enters the page
+  void onPageEnter() {
+    // Start the timer to call getMessageApi() every 1 second
+    startTimer();
+  }
+
+// Call this function when the user leaves the page
+  void onPageExit() {
+    // Cancel the timer to stop calling getMessageApi()
+    cancelTimer();
+  }
+
   getMessageApi() async {
 
-    setState(() {
-      loading = true;
-    });
+    // setState(() {
+    //   loading = true;
+    // });
     prefs = await SharedPreferences.getInstance();
     adminID = prefs!.getString('adminID');
     usersCustomersId = prefs!.getString('empUsersCustomersId');
@@ -125,6 +153,7 @@ class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
 
   @override
   void dispose() {
+    onPageExit();
     _scrollController.dispose();
     super.dispose();
   }
@@ -132,6 +161,7 @@ class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
   @override
   void initState() {
     super.initState();
+    onPageEnter();
     _scrollController = ScrollController();
     sharedPrefs();
   }
@@ -145,6 +175,7 @@ class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
+            onPageExit();
             Get.to(Empbottom_bar(
               currentIndex: 0,
             ));
@@ -234,23 +265,24 @@ class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(children: [
-            loading
-                ? Container(
-                height: Get.height * 0.78,
-                child: Center(
-                  child: Lottie.asset(
-                    "assets/images/loading.json",
-                    height: 50,
-                  ),
-                ))
-                : ModalProgressHUD(
-              inAsyncCall: loading,
-              opacity: 0.02,
-              blur: 0.5,
-              color: Colors.transparent,
-              progressIndicator:
-              CircularProgressIndicator(color: Colors.blue),
-              child: SingleChildScrollView(
+            // loading
+            //     ? Container(
+            //     height: Get.height * 0.78,
+            //     child: Center(
+            //       child: Lottie.asset(
+            //         "assets/images/loading.json",
+            //         height: 50,
+            //       ),
+            //     ))
+            //     : ModalProgressHUD(
+            //   inAsyncCall: loading,
+            //   opacity: 0.02,
+            //   blur: 0.5,
+            //   color: Colors.transparent,
+            //   progressIndicator:
+            //   CircularProgressIndicator(color: Colors.blue),
+            //   child:
+              SingleChildScrollView(
                 child: Column(
                   children: [
                     getMessageLiveModel.data != null
@@ -475,7 +507,7 @@ class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
                   ],
                 ),
               ),
-            ),
+            // ),
             Align(
               alignment: Alignment.bottomLeft,
               child: Container(

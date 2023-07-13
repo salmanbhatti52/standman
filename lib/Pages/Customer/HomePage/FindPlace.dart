@@ -227,9 +227,9 @@ class _FindPlaceState extends State<FindPlace> {
               children: [
                 Expanded(
                   child: GoogleMap(
-                    // zoomControlsEnabled: false,
-                    // myLocationEnabled: true,
+                    myLocationEnabled: true,
                     onMapCreated: _onMapCreated,
+                    padding: EdgeInsets.only(top: height * 0.42),
                     mapType: MapType.normal,
                       initialCameraPosition: CameraPosition(
                         target: LatLng(widget.location ?? 43.64252511567895, widget.location ?? -79.38652728016845),

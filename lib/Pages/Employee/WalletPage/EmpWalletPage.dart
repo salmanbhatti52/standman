@@ -124,7 +124,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                         textAlign: TextAlign.center,
                       ),
                        Text(
-                         empolyeeWalletTxnModel.data?.transactionHistory?.length != 0
+                         empolyeeWalletTxnModel.data?.transactionHistory != null
                         ? "\$${empolyeeWalletTxnModel.data?.earning}"
                          : "\$0.00",
                          // "\$4,875.00",
@@ -170,7 +170,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
                         textAlign: TextAlign.center,
                       ),
                        Text(
-                         empolyeeWalletTxnModel.data?.transactionHistory?.length != 0
+                         empolyeeWalletTxnModel.data?.transactionHistory  != null
                              ? "\$${empolyeeWalletTxnModel.data?.withdraw}"
                          : "\$0.00",
                         // "\$4,875.00",

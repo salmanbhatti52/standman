@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:StandMan/Pages/Customer/HomePage/HomePage.dart';
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -44,11 +45,50 @@ class _MessagesDetailsState extends State<MessagesDetails> {
   var sendMessageController = TextEditingController();
   final GlobalKey<FormState> sendMessageFormKey = GlobalKey<FormState>();
   List<UpdateMessgeModel> updateMessageModelObject = [];
-  bool loading = true;
+  bool loading = false;
   GetMessgeModel getMessageModel = GetMessgeModel();
   String? Image;
   ScrollController _scrollController = ScrollController();
   SendMessgeCustomerModel sendMessgeCustomerModel = SendMessgeCustomerModel();
+
+  // Declare a timer variable
+  Timer? timer;
+
+  void startTimer() {
+    // Start the timer and call getMessageApi() every 1 second
+    timer = Timer.periodic(Duration(seconds: 2), (Timer t) {
+      getMessageApi();
+    });
+  }
+
+  void cancelTimer() {
+    // Cancel the timer if it's active
+    timer?.cancel();
+  }
+
+// Call this function when the user enters the page
+  void onPageEnter() {
+    // Start the timer to call getMessageApi() every 1 second
+    startTimer();
+  }
+
+// Call this function when the user leaves the page
+  void onPageExit() {
+    // Cancel the timer to stop calling getMessageApi()
+    cancelTimer();
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   onPageEnter();
+  // }
+
+  // @override
+  // void dispose() {
+  //   onPageExit();
+  //   super.dispose();
+  // }
 
   getMessageApi() async {
     prefs = await SharedPreferences.getInstance();
@@ -57,9 +97,9 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     print("usersCustomersId = $usersCustomersId");
     print("empUsersCustomersId = ${widget.other_users_customers_id}");
 
-    setState(() {
-      loading = true;
-    });
+    // setState(() {
+    //   loading = true;
+    // });
     String apiUrl = getUserChatApiUrl;
     print("working");
     final response = await http.post(
@@ -159,12 +199,12 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     if (jsonData['message'] == 'Message sent successfully.') {
       // toastSuccessMessage("Message sent.", Colors.green);
       print('Message sent successfully.');
-      sendNotification([
-        "${oneSignalID}"],
-          "${"Hello"} ",
-          "${"Hello world"}");
       setState(() {
         loading = false;
+        sendNotification([
+          "${oneSignalID}"],
+            "${"Hello"} ",
+            "${"Hello world"}");
         getMessageApi();
       });
     }
@@ -190,6 +230,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 
   @override
   void dispose() {
+    onPageExit();
     _scrollController.dispose();
     super.dispose();
   }
@@ -203,6 +244,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
   @override
   void initState() {
     super.initState();
+    onPageEnter();
     _scrollController = ScrollController();
     // notificationGet();
     sharedPrefs();
@@ -255,6 +297,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
+            onPageExit();
             Get.to(bottom_bar(
               currentIndex: 1,
             ));
@@ -290,20 +333,11 @@ class _MessagesDetailsState extends State<MessagesDetails> {
             ),
             leading: Stack(
               children: [
-                // ClipRRect(
-                //   borderRadius: BorderRadius.circular(120),
-                //   child: FadeInImage(
-                //     placeholder: AssetImage("assets/images/fade_in_image.jpeg"),
-                //     image: NetworkImage("${widget.img}"),
-                //   ),
-                // ),
                 CircleAvatar(
-                  // radius: (screenWidth > 600) ? 90 : 70,
                   radius: 30,
 
                   backgroundImage: NetworkImage("${widget.img}"),
                 ),
-                // Image.network(widget.img.toString(),),
                 Positioned(
                   top: 5,
                   right: 3,
@@ -323,122 +357,31 @@ class _MessagesDetailsState extends State<MessagesDetails> {
             ),
           ),
         ),
-        // actions: [
-        //   Padding(
-        //   padding:  EdgeInsets.only(left:  width * 0.08),
-        //   child: Row(
-        //     children: [
-        //       GestureDetector(
-        //           onTap: (){
-        //             Get.back();
-        //           },
-        //           child: SvgPicture.asset("assets/images/left.svg",)),
-        //       Padding(
-        //         padding: const EdgeInsets.only(left: 20.0, right: 10),
-        //         child:
-        //       ),
-        //       Column(
-        //         mainAxisAlignment: MainAxisAlignment.start,
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //
-
-        //         ],
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // ],
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(children: [
-            //  SizedBox(
-            //    height: height * 0.04,
-            //  ),
-            // Padding(
-            //   padding:  EdgeInsets.only(left:  width * 0.08),
-            //   child: Row(
-            //     children: [
-            //       GestureDetector(
-            //         onTap: (){
-            //           Get.back();
-            // },
-            //           child: SvgPicture.asset("assets/images/left.svg",)),
-            //       Padding(
-            //         padding: const EdgeInsets.only(left: 20.0, right: 10),
-            //         child: Stack(
-            //           children: [
-            //             Image.asset("assets/images/person.png"),
-            //             Positioned(
-            //                 top: 5,
-            //                 right: 6,
-            //                 child: Container(
-            //                   height: 10,
-            //                   width: 10,
-            //                   decoration:
-            //                   BoxDecoration(
-            //                     color: Colors.green,
-            //                     shape:
-            //                     BoxShape.circle,
-            //                     border: Border.all(
-            //                         color: Theme.of(
-            //                             context)
-            //                             .scaffoldBackgroundColor,
-            //                         width: 1.5),
-            //                   ),
-            //                 ),)
-            //           ],
-            //         ),
-            //       ),
-            //       Column(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           Text(
-            //             "Maddy Lin",
-            //             style: TextStyle(
-            //               color: Colors.black,
-            //               fontFamily: "Outfit",
-            //               fontWeight: FontWeight.w500,
-            //               fontSize: 14,
-            //             ),
-            //           ),
-            //           Text(
-            //             "Online",
-            //             style: TextStyle(
-            //               color: Color(0xffA7AEC1),
-            //               fontFamily: "Outfit",
-            //               fontWeight: FontWeight.w300,
-            //               fontSize: 14,
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            //  SizedBox(
-            //    height: height * 0.04,
-            //  ),
-            loading
-                ? Container(
-                    height: height * 0.78,
-                    child: Center(
-                      child: Lottie.asset(
-                        "assets/images/loading.json",
-                        height: 50,
-                      ),
-                    ))
-                : ModalProgressHUD(
-                    inAsyncCall: loading,
-                    opacity: 0.02,
-                    blur: 0.5,
-                    color: Colors.transparent,
-                    progressIndicator:
-                        CircularProgressIndicator(color: Colors.blue),
-                    child: SingleChildScrollView(
+            // loading
+            //     ? SizedBox(height: height * 0.78,)
+            // // Container(
+            // //         height: height * 0.78,
+            // //         child: Center(
+            // //           child: Lottie.asset(
+            // //             "assets/images/loading.json",
+            // //             height: 50,
+            // //           ),
+            // //         ))
+            //
+            //     : ModalProgressHUD(
+            //         inAsyncCall: loading,
+            //         opacity: 0.02,
+            //         blur: 0.5,
+            //         color: Colors.transparent,
+            //         progressIndicator:
+            //             CircularProgressIndicator(color: Colors.blue),
+            //         child:
+                    SingleChildScrollView(
                       child: Column(
                         children: [
                           getMessageModel.data != null
@@ -614,10 +557,6 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 
                                                                     child:
                                                                         Column(
-                                                                      // mainAxisAlignment:
-                                                                      // MainAxisAlignment.end,
-                                                                      // crossAxisAlignment:
-                                                                      // CrossAxisAlignment.end,
                                                                       children: [
                                                                         Container(
                                                                           padding:
@@ -720,46 +659,10 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                               : Container(
                                   height: Get.height * 0.78,
                                 ),
-                          // Chat(
-                          //   theme: DefaultChatTheme(
-                          //     inputTextCursorColor: Color(0xff8C8C8C),
-                          //     inputTextColor: Color(0xff8C8C8C),
-                          //     inputTextStyle: TextStyle(
-                          //       color: Color(0xff8C8C8C),
-                          //       fontFamily: "Outfit",
-                          //       fontWeight: FontWeight.w300,
-                          //       fontSize: 14,
-                          //     ),
-                          //     // primaryColor: Color(Helpers.secondry),
-                          //     // secondaryColor: Colors.white,
-                          //     // backgroundColor:Colors.white,
-                          //
-                          //     inputBorderRadius: BorderRadius.circular(10),
-                          //     inputBackgroundColor: Color(0xffF9F9F9),
-                          //     inputContainerDecoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(40),
-                          //         boxShadow: [
-                          //           // BoxShadow(
-                          //           //   // color: Color(0xff4DA0E6),
-                          //           //   blurRadius: 8,
-                          //           //     offset:  Offset(0, -3),
-                          //           // ),
-                          //         ]),
-                          //   ),
-                          //   disableImageGallery: true,
-                          //   messages: _messages,
-                          //   onAttachmentPressed: _handleAttachmentPressed,
-                          //   onMessageTap: _handleMessageTap,
-                          //   onPreviewDataFetched: _handlePreviewDataFetched,
-                          //   onSendPressed: _handleSendPressed,
-                          //   showUserAvatars: true,
-                          //   showUserNames: true,
-                          //   user: _user,
-                          // ),
                         ],
                       ),
                     ),
-                  ),
+                  // ),
             Align(
               alignment: Alignment.bottomLeft,
               child: Container(
@@ -789,14 +692,6 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                               setState(() {
                                 loading = false;
                                 sendMessageController.clear();
-                                // for (int i = 0;
-                                //     i < getMessageModel.data!.length;
-                                //     i++) {
-                                //   sendNotification([
-                                //     "${getMessageModel.data?[i].usersData?.oneSignalId}"],
-                                //       "${getMessageModel.data?[i].usersData?.firstName} ${getMessageModel.data?[i].usersData?.lastName} ",
-                                //       "${getMessageModel.data?[i].message}" 'send a message');
-                                // }
                               });
                               print("false: $loading");
                             });
@@ -833,58 +728,12 @@ class _MessagesDetailsState extends State<MessagesDetails> {
             children: [
               GestureDetector(
                 onTap: () {
-//                   Get.bottomSheet(
-//                     Container(
-//                       height: 100,
-//                       child: Wrap(
-//                         children: [
-//                           ListTile(
-//                             title: Text("Pick from Gallery"),
-//                             leading: Icon(Icons.photo),
-//                             onTap: () {
-//                              pickImageGallery();
-//                              Get.back();
-//                             },
-//                           ),
-//                           // ListTile(
-//                           //   title: Text("Pick from "),
-//                           //   leading: Icon(Icons.dark_mode_rounded),
-//                           //   onTap: () {
-//                           //     Get.changeTheme(ThemeData.dark());
-//                           //   },
-//                           // ),
-//                         ],
-//                       ),
-//                     ),
-//                     // barrierColor: Colors.greenAccent,
-//                     backgroundColor: Colors.grey.shade200,
-// // isDismissible: false,
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(20),
-//                       side: BorderSide(
-//                         color: Colors.white,
-//                         style: BorderStyle.solid,
-//                         width: 2,
-//                       ),
-//                     ),
-//                     enableDrag: false,
-//                   );
-//                 if(base64img == null )
-//                 sendImageApiWidget();
                   setState(() {
                     pickImageGallery();
                   });
                   Future.delayed(const Duration(seconds: 5), () {
                     if (base64img != null) {
                       sendImageApiWidget();
-                      // for (int i = 0;
-                      // i < getMessageModel.data!.length;
-                      // i++) {
-                      //   sendNotification([
-                      //     "${getMessageModel.data?[i].usersData?.oneSignalId}"],
-                      //       "${getMessageModel.data?[i].usersData?.firstName} ${getMessageModel.data?[i].usersData?.lastName}",
-                      //       "${getMessageModel.data?[i].message}");
-                      // }
                     } else {
                       toastFailedMessage("failed", Colors.red);
                     }
@@ -900,10 +749,6 @@ class _MessagesDetailsState extends State<MessagesDetails> {
               ),
               Expanded(
                 child: Container(
-                  // padding: EdgeInsets.symmetric(horizontal: 05, vertical: 0),
-                  // decoration: BoxDecoration(
-                  //     color: Color(0xffF9F9F9),
-                  //     borderRadius: BorderRadius.circular(20)),
                   child: TextField(
                     cursorColor: Colors.blue,
                     textAlign: TextAlign.left,

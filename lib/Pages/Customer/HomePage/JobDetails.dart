@@ -693,11 +693,12 @@ class _JobDetailsState extends State<JobDetails> {
                                         ?.unfocus();
                                   }
                                   if (key.currentState!.validate()) {
-                                    if (jobName.text.isEmpty) {
-                                      toastFailedMessage(
-                                          'JobName cannot be empty',
-                                          Colors.red);
-                                    } else if (selectedDate?.toString() ==
+                                    // if (jobName.text.isEmpty) {
+                                    //   toastFailedMessage(
+                                    //       'JobName cannot be empty',
+                                    //       Colors.red);
+                                    // } else
+                                      if (selectedDate?.toString() ==
                                         null) {
                                       toastFailedMessage(
                                           'Date cannot be empty', Colors.red);
@@ -721,10 +722,11 @@ class _JobDetailsState extends State<JobDetails> {
                                     //       'Description cannot be empty',
                                     //       Colors.red);
                                     // }
-                                  else if (base64ID == null) {
-                                      toastFailedMessage(
-                                          'Image required', Colors.red);
-                                    } else {
+                                  // else if (base64ID == null) {
+                                  //     toastFailedMessage(
+                                  //         'Image required', Colors.red);
+                                  //   }
+                                  else {
                                       print(
                                           "users_customers_id: ${usersCustomersId}");
                                       print("jobName: ${jobName}");

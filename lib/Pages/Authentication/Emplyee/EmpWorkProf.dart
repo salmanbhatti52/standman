@@ -171,6 +171,50 @@ class _WorkProofState extends State<WorkProof> {
                           textAlign: TextAlign.left,
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Container(
+                                  // width: width * 0.3,
+                                  height: height * 0.36,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.close),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      Image.asset(
+                                        "assets/example/birth_certificate.jpg",
+                                        // fit: BoxFit.cover,
+                                        // width: 230,
+                                        // height: 230,
+                                      ),
+                                    ],
+                                  )
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 3.0),
+                          child: Image.asset(
+                            "assets/example/example.png",
+                            width: 30,
+                            height: 30,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -203,6 +247,50 @@ class _WorkProofState extends State<WorkProof> {
                               color: Color(0xff222222).withOpacity(0.5),
                               fontWeight: FontWeight.w300),
                           textAlign: TextAlign.left,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Container(
+                                  // width: width * 0.3,
+                                    height: height * 0.42,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        Image.asset(
+                                          "assets/example/citizenship.jpg",
+                                          // fit: BoxFit.cover,
+                                          // width: 230,
+                                          // height: 230,
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 3.0),
+                          child: Image.asset(
+                            "assets/example/example.png",
+                            width: 30,
+                            height: 30,
+                          ),
                         ),
                       ),
                     ],
@@ -239,6 +327,50 @@ class _WorkProofState extends State<WorkProof> {
                           textAlign: TextAlign.left,
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Container(
+                                  // width: width * 0.3,
+                                    height: height * 0.36,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        Image.asset(
+                                          "assets/example/passport.jpg",
+                                          // fit: BoxFit.cover,
+                                          // width: 230,
+                                          // height: 230,
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 3.0),
+                          child: Image.asset(
+                            "assets/example/example.png",
+                            width: 30,
+                            height: 30,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -271,6 +403,50 @@ class _WorkProofState extends State<WorkProof> {
                               color: Color(0xff222222).withOpacity(0.5),
                               fontWeight: FontWeight.w300),
                           textAlign: TextAlign.left,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Container(
+                                  // width: width * 0.3,
+                                    height: height * 0.33,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        Image.asset(
+                                          "assets/example/residency_card.jpg",
+                                          // fit: BoxFit.cover,
+                                          // width: 230,
+                                          // height: 230,
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 3.0),
+                          child: Image.asset(
+                            "assets/example/example.png",
+                            width: 30,
+                            height: 30,
+                          ),
                         ),
                       ),
                     ],
@@ -307,55 +483,106 @@ class _WorkProofState extends State<WorkProof> {
                           textAlign: TextAlign.left,
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Container(
+                                  // width: width * 0.3,
+                                    height: height * 0.6,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        Image.asset(
+                                          "assets/example/work_permit.jpg",
+                                          // fit: BoxFit.cover,
+                                          // width: 230,
+                                          // height: 230,
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 3.0),
+                          child: Image.asset(
+                            "assets/example/example.png",
+                            width: 30,
+                            height: 30,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
+                // SizedBox(
+                //   height: 3,
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(
+                //     horizontal: 15.0,
+                //   ),
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         width: 5,
+                //         height: 5,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(12),
+                //           color: Color(0xff222222).withOpacity(0.5),
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(
+                //           left: 8.0,
+                //         ),
+                //         child: Text(
+                //           "Social Insurance Number Card or letter",
+                //           style: TextStyle(
+                //               fontFamily: "Outfit",
+                //               fontSize: 15,
+                //               color: Color(0xff222222).withOpacity(0.5),
+                //               fontWeight: FontWeight.w300),
+                //           textAlign: TextAlign.left,
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(left: 5 , top: 3.0),
+                //         child: Image.asset("assets/example/example.png" , width: 30, height: 30,),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 SizedBox(
                   height: 3,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0,
+                    horizontal: 15.0, vertical: 3
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         width: 5,
                         height: 5,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Color(0xff222222).withOpacity(0.5),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8.0,
-                        ),
-                        child: Text(
-                          "Social Insurance Number Card or letter",
-                          style: TextStyle(
-                              fontFamily: "Outfit",
-                              fontSize: 16,
-                              color: Color(0xff222222).withOpacity(0.5),
-                              fontWeight: FontWeight.w300),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 3,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 5,
-                        height: 5,
+                        margin: EdgeInsets.only(top: 8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: Color(0xff222222).withOpacity(0.5),
@@ -373,7 +600,51 @@ class _WorkProofState extends State<WorkProof> {
                                 fontSize: 16,
                                 color: Color(0xff222222).withOpacity(0.5),
                                 fontWeight: FontWeight.w300),
-                            textAlign: TextAlign.left,
+                            // textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Container(
+                                  // width: width * 0.3,
+                                    height: height * 0.6,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        Image.asset(
+                                          "assets/example/study_permit.jpg",
+                                          // fit: BoxFit.cover,
+                                          // width: 230,
+                                          // height: 230,
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 3.0),
+                          child: Image.asset(
+                            "assets/example/example.png",
+                            width: 30,
+                            height: 30,
                           ),
                         ),
                       ),
@@ -411,6 +682,50 @@ class _WorkProofState extends State<WorkProof> {
                           textAlign: TextAlign.left,
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Container(
+                                  // width: width * 0.3,
+                                    height: height * 0.36,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        Image.asset(
+                                          "assets/example/indian_status.jpg",
+                                          // fit: BoxFit.cover,
+                                          // width: 230,
+                                          // height: 230,
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 3.0),
+                          child: Image.asset(
+                            "assets/example/example.png",
+                            width: 30,
+                            height: 30,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -443,6 +758,50 @@ class _WorkProofState extends State<WorkProof> {
                               color: Color(0xff222222).withOpacity(0.5),
                               fontWeight: FontWeight.w300),
                           textAlign: TextAlign.left,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Container(
+                                  // width: width * 0.3,
+                                    height: height * 0.36,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        Image.asset(
+                                          "assets/example/forces_id.png ",
+                                          // fit: BoxFit.cover,
+                                          // width: 230,
+                                          // height: 230,
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5, top: 3.0),
+                          child: Image.asset(
+                            "assets/example/example.png",
+                            width: 30,
+                            height: 30,
+                          ),
                         ),
                       ),
                     ],

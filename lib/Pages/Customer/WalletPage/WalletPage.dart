@@ -123,7 +123,7 @@ class _WalletPageState extends State<WalletPage> {
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        customerWalletTxnModel.data?.transactionHistory?.length != 0
+                        customerWalletTxnModel.data?.transactionHistory != null
                             ? "\$${customerWalletTxnModel.data?.expenses}"
                         : "\$0.00",
                         // "\$4,875.00",

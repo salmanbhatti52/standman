@@ -47,7 +47,7 @@ Estimated_PaymentMethod({
       headers: {"Accept": "application/json"},
       body: {
         "users_customers_id": usersCustomersId,
-        "name": jobName,
+        "name": jobName != null ? jobName : "",
         "location": address,
         "longitude": long,
         "lattitude": lat,
@@ -60,7 +60,7 @@ Estimated_PaymentMethod({
         "tax": tax,
         "payment_gateways_name": "GPay",
         "payment_status": "Paid",
-        "image": img,
+        "image": img != null ? img : "",
       },
     );
     final responseString = response.body;

@@ -509,6 +509,8 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                         fontWeight: FontWeight.w300),
                   ),
                 ),
+                socialButton(context),
+                SizedBox(height: 15,),
                 GestureDetector(
                   onTap: (){
                     Get.to( SignUpTabClass(signup: 0,));
@@ -523,8 +525,6 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15,),
-                socialButton(context),
                 // Container(
                 //   child: Row(
                 //     mainAxisAlignment: MainAxisAlignment.center,
