@@ -78,21 +78,9 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     cancelTimer();
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   onPageEnter();
-  // }
-
-  // @override
-  // void dispose() {
-  //   onPageExit();
-  //   super.dispose();
-  // }
-
   getMessageApi() async {
     prefs = await SharedPreferences.getInstance();
-    usersCustomersId = prefs!.getString('usersCustomersId');
+    usersCustomersId = prefs?.getString('usersCustomersId');
     // empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
     print("usersCustomersId = $usersCustomersId");
     print("empUsersCustomersId = ${widget.other_users_customers_id}");
@@ -201,10 +189,6 @@ class _MessagesDetailsState extends State<MessagesDetails> {
       print('Message sent successfully.');
       setState(() {
         loading = false;
-        sendNotification([
-          "${oneSignalID}"],
-            "${"Hello"} ",
-            "${"Hello world"}");
         getMessageApi();
       });
     }
@@ -254,6 +238,8 @@ class _MessagesDetailsState extends State<MessagesDetails> {
   //
   Future<http.Response> sendNotification(
       List<String> tokenIdList, String contents, String heading) async {
+    print("tokenId ${tokenIdList}");
+    print("appID ${appID}");
     print("Hello world");
     return await post(
       Uri.parse('https://onesignal.com/api/v1/notifications'),
@@ -272,9 +258,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
 
         "small_icon": "ic_stat_onesignal_default",
 
-        "large_icon":
-            "ic_stat_onesignal_default",
-      // https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg
+        "large_icon": "https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg",
 
         "headings": {"en": heading},
 
@@ -687,6 +671,12 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                               loading = true;
                             });
                             await sendMessageApiWidget();
+                            final response = await sendNotification(
+                                ["${oneSignalID}"],
+                                "Hello world",
+                                "Hello"
+                            );
+                            print("sendNotification response.body ${response.body}");
                             Future.delayed(Duration(seconds: 2), () {
                               print("sendMessage Success");
                               setState(() {

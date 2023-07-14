@@ -251,39 +251,75 @@ class _HomePageState extends State<HomePage> {
   List getAdmin = [];
   bool _initialized = false;
 
+  // getAdminList() async {
+  //   http.Response response = await http.get(
+  //     Uri.parse(getAdminApiUrl),
+  //     headers: {"Accept": "application/json"},
+  //   );
+  //   if (mounted) {
+  //     setState(() async {
+  //       if (response.statusCode == 200) {
+  //         var jsonResponse = json.decode(response.body);
+  //         var adminData = jsonResponse['data'][0];
+  //
+  //         var userImage = adminData['user_image'];
+  //         var adminID = adminData['users_system_id'];
+  //         var firstName = adminData['first_name'];
+  //
+  //         SharedPreferences sharedPref = await SharedPreferences.getInstance();
+  //         await sharedPref.setString('adminID', "$adminID");
+  //         await sharedPref.setString('adminName', "$firstName");
+  //         await sharedPref.setString('adminImage', "${baseUrlImage+userImage}");
+  //         prefs = await SharedPreferences.getInstance();
+  //         adminID = prefs!.getString('adminID');
+  //         adminName = prefs!.getString('adminName');
+  //         adminImage = prefs!.getString('adminImage');
+  //         print("User Image: $adminImage");
+  //         print("Admin ID: $adminID");
+  //         print("First Name: $adminName");
+  //
+  //       } else {
+  //         print("Response Body: ${response.body}");
+  //       }
+  //     });
+  //   }
+  // }
+
   getAdminList() async {
     http.Response response = await http.get(
       Uri.parse(getAdminApiUrl),
       headers: {"Accept": "application/json"},
     );
-    if (mounted) {
-      setState(() async {
-        if (response.statusCode == 200) {
-          var jsonResponse = json.decode(response.body);
-          var adminData = jsonResponse['data'][0];
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      var adminData = jsonResponse['data'][0];
 
-          var userImage = adminData['user_image'];
-          var adminID = adminData['users_system_id'];
-          var firstName = adminData['first_name'];
+      var userImage = adminData['user_image'];
+      var adminID = adminData['users_system_id'];
+      var firstName = adminData['first_name'];
 
-          SharedPreferences sharedPref = await SharedPreferences.getInstance();
-          await sharedPref.setString('adminID', "$adminID");
-          await sharedPref.setString('adminName', "$firstName");
-          await sharedPref.setString('adminImage', "${baseUrlImage+userImage}");
-          prefs = await SharedPreferences.getInstance();
-          adminID = prefs!.getString('adminID');
-          adminName = prefs!.getString('adminName');
-          adminImage = prefs!.getString('adminImage');
-          print("User Image: $adminImage");
-          print("Admin ID: $adminID");
-          print("First Name: $adminName");
+      SharedPreferences sharedPref = await SharedPreferences.getInstance();
+      await sharedPref.setString('adminID', "$adminID");
+      await sharedPref.setString('adminName', "$firstName");
+      await sharedPref.setString('adminImage', "${baseUrlImage + userImage}");
+      prefs = await SharedPreferences.getInstance();
+      adminID = prefs!.getString('adminID');
+      adminName = prefs!.getString('adminName');
+      adminImage = prefs!.getString('adminImage');
+      print("User Image: $adminImage");
+      print("Admin ID: $adminID");
+      print("First Name: $adminName");
 
-        } else {
-          print("Response Body: ${response.body}");
-        }
-      });
+      if (mounted) {
+        setState(() {
+          // Update the necessary state variables here
+        });
+      }
+    } else {
+      print("Response Body: ${response.body}");
     }
   }
+
 
   @override
   void initState() {
@@ -341,7 +377,7 @@ class _HomePageState extends State<HomePage> {
           actions: [
             GestureDetector(
               onTap: (){
-                Get.to(NotificationPage());
+                Get.to(() => NotificationPage());
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 20.0, top: 0.0),
@@ -706,6 +742,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       GestureDetector(
                         onTap: (){
+                          // Get.to(() => FindPlace());
                           Get.to(() => FindPlace());
                         },
                           child: mainButton("Create Job", Color.fromRGBO(43, 101, 236, 1), context)),

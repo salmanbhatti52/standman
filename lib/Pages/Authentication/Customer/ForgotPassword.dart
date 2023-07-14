@@ -177,8 +177,9 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
 
                               if(forgotPasswordModel.status == "success"){
                                 Future.delayed(const Duration(seconds: 3), () {
-                               Get.to(OTPPage(data: forgotPasswordModel.data!.otp, email:  _emailController.text.toString()
-                                      ,));
+                               // Get.to(OTPPage(data: forgotPasswordModel.data!.otp, email:  _emailController.text.toString()
+                               //        ,));
+                               Get.to(() => OTPPage(data: forgotPasswordModel.data!.otp, email:  _emailController.text.toString()));
                                   setState(() {
                                     isInAsyncCall = false;
                                   });

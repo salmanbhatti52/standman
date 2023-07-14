@@ -70,7 +70,7 @@ class Data {
   String? price;
   String? serviceCharges;
   String? tax;
-  String? totalPrice;
+  int? totalPrice;
   String? paymentGatewaysName;
   String? paymentStatus;
   dynamic hiredUsersCustomersId;

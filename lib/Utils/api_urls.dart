@@ -1,4 +1,4 @@
-const appID = "69bf3ad1-f4be-4a42-a6ee-f4ce186b9914";
+const appID = "ba085491-2136-4c51-ac44-07b4d43e9247";
 
 String baseUrl = "https://admin.standman.ca/api/";
 
@@ -91,3 +91,5 @@ String userChatLiveApiUrl = "${baseUrl}user_chat_live";
 String sendMessageLiveApiUrl = "${baseUrl}user_chat_live";
 
 String getMessageLiveApiUrl = "${baseUrl}user_chat_live";
+
+String jobCreationPaymentApiUrl = "${baseUrl}job_creation_payment";

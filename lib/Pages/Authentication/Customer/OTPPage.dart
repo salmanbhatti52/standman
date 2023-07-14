@@ -129,7 +129,8 @@ class _OTPPageState extends State<OTPPage> {
 
                               Future.delayed(const Duration(seconds: 3), () {
                                 toastSuccessMessage("success", Colors.green);
-                                Get.to(NewPassword(data: widget.data, email: widget.email,));
+                                // Get.to(NewPassword(data: widget.data, email: widget.email,));
+                                Get.to(() => NewPassword(data: widget.data, email: widget.email,));
                                 setState(() {
                                   isInAsyncCall = false;
                                 });

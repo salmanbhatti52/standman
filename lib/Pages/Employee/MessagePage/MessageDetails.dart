@@ -190,10 +190,6 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
       print('Message sent successfully.');
       setState(() {
         loading = false;
-        sendNotification([
-          "${widget.one_signal_id}"],
-            "${"Hello"} ",
-            "${"Hello world"}");
         getMessageApi();
       });
     }
@@ -259,8 +255,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
 
         "small_icon": "ic_stat_onesignal_default",
 
-        "large_icon":
-        "https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg",
+        "large_icon": "https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg",
 
         "headings": {"en": heading},
 
@@ -755,6 +750,10 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                               loading = true;
                             });
                             await sendMessageApiWidget();
+                            sendNotification([
+                              "${oneSignalID}"],
+                                "Hello world",
+                                "Hello");
                             Future.delayed(Duration(seconds: 2), () {
                               print("sendMessage Success Hello");
                               setState(()  {

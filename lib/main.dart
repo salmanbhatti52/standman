@@ -61,9 +61,7 @@ class _MyAppState extends State<MyApp> {
   void configOneSignel()
   {
     OneSignal.shared.setAppId(appID);
-    // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-    // OneSignal.shared.promptUserForPushNotificationPermission().then((accept){
-    //   print("Accepted Permission $accept");
+    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   }
 
   @override

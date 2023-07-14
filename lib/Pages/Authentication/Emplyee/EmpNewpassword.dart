@@ -311,7 +311,8 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
                                     () {
                                   toastSuccessMessage(
                                       "success", Colors.green);
-                                  Get.to(LoginTabClass(login: 1,));
+                                  // Get.to(LoginTabClass(login: 1,));
+                                  Get.to(() => LoginTabClass(login: 1,));
                                   setState(() {
                                     isInAsyncCall = false;
                                   });

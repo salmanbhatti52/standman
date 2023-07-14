@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -218,6 +219,19 @@ class _JobDetailsState extends State<JobDetails> {
       //   isLoading = false;
       // });
     }
+  }
+
+
+  String generateRandomNumbers(int count) {
+    Random random = Random();
+    String numbers = '';
+
+    for (int i = 0; i < count; i++) {
+      int randomNumber = random.nextInt(10); // Generate random number between 0 and 9
+      numbers += randomNumber.toString();
+    }
+
+    return numbers;
   }
 
   @override
@@ -755,11 +769,14 @@ class _JobDetailsState extends State<JobDetails> {
                                         isInAsyncCall = true;
                                       });
                                      await  JobsPrice();
+                                      String randomNumbers = generateRandomNumbers(5);
+                                      print("randomNumbers ${randomNumbers}");
 
                                       if(jobsPriceModel.status == "success"){
                                         Future.delayed(const Duration(seconds: 1), () {
                                           Estimated_PaymentMethod(
                                             ctx: context,
+                                            randomNumbers : randomNumbers.toString(),
                                             price: jobsPriceModel.data?.totalPrice,
                                             amount: jobsPriceModel.data?.price,
                                             chargers: jobsPriceModel.data?.serviceCharges,
