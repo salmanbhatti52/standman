@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -17,6 +19,8 @@ import 'EMp_ChangePassword.dart';
 import 'EMp_DeleteAccount.dart';
 import 'EMp_NotificationSettings.dart';
 import 'package:http/http.dart' as http;
+
+import 'Emp_ChangeJobRadius.dart';
 
 class EmpProfilePage extends StatefulWidget {
   const EmpProfilePage({Key? key}) : super(key: key);
@@ -316,193 +320,249 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: (){
-                  EMpChangePassword(context, userEmail, password);
-                },
-                child: Container(
-                  width: width, //350,
-                  height: height * 0.060, // 48,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 20,
-                        spreadRadius: 0,
-                        offset: Offset(0 , 2),
-                        color: Color.fromRGBO(67, 169, 183, 0.1),
+              Container(
+                height:  height * 0.35,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          EMpChangePassword(context, userEmail, password);
+                        },
+                        child: Container(
+                          width: width, //350,
+                          height: height * 0.060, // 48,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  spreadRadius: 0,
+                                  offset: Offset(0 , 2),
+                                  color: Color.fromRGBO(67, 169, 183, 0.1),
+                                ),
+                              ]
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SvgPicture.asset("assets/images/lock.svg", color:  Color(0xff2B65EC),),
+                                const Text(
+                                  "Change password",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.2,
+                                ),
+                                SvgPicture.asset("assets/images/chevron-left.svg",),
+                                // Svg
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ]
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SvgPicture.asset("assets/images/lock.svg", color:  Color(0xff2B65EC),),
-                        const Text(
-                          "Change password",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Outfit",
-                            fontWeight: FontWeight.w300,
-                            fontSize: 16,
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          EmpNotificationSettings(context);
+                        },
+                        child: Container(
+                          width: width, //350,
+                          height: height * 0.060, // 48,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  spreadRadius: 0,
+                                  offset: Offset(0 , 2),
+                                  color: Color.fromRGBO(67, 169, 183, 0.1),
+                                ),
+                              ]
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SvgPicture.asset("assets/images/notification.svg", color:  Color(0xff2B65EC),),
+                                const Text(
+                                  "Notifications setting",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.17,
+                                ),
+                                SvgPicture.asset("assets/images/chevron-left.svg",),
+                                // Svg
+                              ],
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          width: width * 0.2,
-                        ),
-                        SvgPicture.asset("assets/images/chevron-left.svg",),
-                        // Svg
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              GestureDetector(
-                onTap: (){
-                  EmpNotificationSettings(context);
-                },
-                child: Container(
-                  width: width, //350,
-                  height: height * 0.060, // 48,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 20,
-                          spreadRadius: 0,
-                          offset: Offset(0 , 2),
-                          color: Color.fromRGBO(67, 169, 183, 0.1),
-                        ),
-                      ]
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SvgPicture.asset("assets/images/notification.svg", color:  Color(0xff2B65EC),),
-                        const Text(
-                          "Notifications setting",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Outfit",
-                            fontWeight: FontWeight.w300,
-                            fontSize: 16,
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          EMpDeleteAccount(context);
+                        },
+                        child: Container(
+                          width: width, //350,
+                          height: height * 0.060, // 48,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  spreadRadius: 0,
+                                  offset: Offset(0 , 2),
+                                  color: Color.fromRGBO(67, 169, 183, 0.1),
+                                ),
+                              ]
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SvgPicture.asset("assets/images/trash.svg", color:  Color(0xff2B65EC),),
+                                const Text(
+                                  "Delete account",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.24,
+                                ),
+                                SvgPicture.asset("assets/images/chevron-left.svg",),
+                                // Svg
+                              ],
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          width: width * 0.17,
-                        ),
-                        SvgPicture.asset("assets/images/chevron-left.svg",),
-                        // Svg
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              GestureDetector(
-                onTap: (){
-                  EMpDeleteAccount(context);
-                },
-                child: Container(
-                  width: width, //350,
-                  height: height * 0.060, // 48,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 20,
-                          spreadRadius: 0,
-                          offset: Offset(0 , 2),
-                          color: Color.fromRGBO(67, 169, 183, 0.1),
-                        ),
-                      ]
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SvgPicture.asset("assets/images/trash.svg", color:  Color(0xff2B65EC),),
-                        const Text(
-                          "Delete account",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Outfit",
-                            fontWeight: FontWeight.w300,
-                            fontSize: 16,
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          Get.to( () => Emp_ChangeJobRadius());
+                        },
+                        child: Container(
+                          width: width, //350,
+                          height: height * 0.060, // 48,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  spreadRadius: 0,
+                                  offset: Offset(0 , 2),
+                                  color: Color.fromRGBO(67, 169, 183, 0.1),
+                                ),
+                              ]
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Image.asset("assets/images/job_radius.png", width: 25, color:  Color(0xff2B65EC),),
+                                const Text(
+                                  "Change Job Radius",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.24,
+                                ),
+                                SvgPicture.asset("assets/images/chevron-left.svg",),
+                                // Svg
+                              ],
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          width: width * 0.24,
-                        ),
-                        SvgPicture.asset("assets/images/chevron-left.svg",),
-                        // Svg
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              GestureDetector(
-                onTap: (){
-                  showLogoutAlertDialog(context);
-                  // setState(() {});
-                  // Navigator.pushReplacement(context,
-                  //     MaterialPageRoute(builder: (context) => LoginTabClass(login: 1,)));
-                  // // Get.to(LoginTabClass());
-                },
-                child: Container(
-                  width: width, //350,
-                  height: height * 0.060, // 48,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 20,
-                          spreadRadius: 0,
-                          offset: Offset(0 , 2),
-                          color: Color.fromRGBO(67, 169, 183, 0.1),
-                        ),
-                      ]
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SvgPicture.asset("assets/images/logout.svg", color:  Color(0xff2B65EC),),
-                        SizedBox(
-                          width: width * 0.055,
-                        ),
-                        const Text(
-                          "Sign Out",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Outfit",
-                            fontWeight: FontWeight.w300,
-                            fontSize: 16,
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          showLogoutAlertDialog(context);
+                          // setState(() {});
+                          // Navigator.pushReplacement(context,
+                          //     MaterialPageRoute(builder: (context) => LoginTabClass(login: 1,)));
+                          // // Get.to(LoginTabClass());
+                        },
+                        child: Container(
+                          width: width, //350,
+                          height: height * 0.060, // 48,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  spreadRadius: 0,
+                                  offset: Offset(0 , 2),
+                                  color: Color.fromRGBO(67, 169, 183, 0.1),
+                                ),
+                              ]
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SvgPicture.asset("assets/images/logout.svg", color:  Color(0xff2B65EC),),
+                                SizedBox(
+                                  width: width * 0.055,
+                                ),
+                                const Text(
+                                  "Sign Out",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Outfit",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
