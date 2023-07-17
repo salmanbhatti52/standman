@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../widgets/TopBar.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 
 class Emp_ChangeJobRadius extends StatefulWidget {
@@ -16,7 +17,7 @@ class Emp_ChangeJobRadius extends StatefulWidget {
 class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
   late GoogleMapController _mapController;
   Position? _currentPosition;
-  double _circleRadius = 5000; // Initial circle radius in meters
+  double _circleRadius = 10000; // Initial circle radius in meters
 
   @override
   void initState() {
@@ -50,6 +51,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
     return 5000 * (15 - zoom);
   }
 
+  double percent = 0.9;
 
 
   @override
@@ -104,7 +106,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
                           _currentPosition!.latitude,
                           _currentPosition!.longitude,
                         ),
-                        radius: 10000,
+                        radius: _circleRadius,
                         fillColor: Colors.blue.withOpacity(0.3),
                         strokeColor: Colors.blue,
                       ),
@@ -138,16 +140,37 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
                           },
                         ),
                         SizedBox(
-                          height: Get.height * 0.2,
+                          height: Get.height * 0.04,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Row(
+                          child: Column(
                             children: [
+                              GestureDetector(
+                              onPanUpdate: (details) {
+                        setState(() {
+                        // Adjust the percentage based on finger movement
+                        percent += details.delta.dx / 100;
+                        percent = percent.clamp(0.0, 1.0); // Ensure the value stays between 0 and 1
+                        });
+                        },
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: LinearPercentIndicator(
+                              animation: true,
+                              lineHeight: 20.0,
+                              animationDuration: 2000,
+                              percent: percent,
+                              center: Text("${(percent * 100).toStringAsFixed(1)}%"),
+                              linearStrokeCap: LinearStrokeCap.roundAll,
+                              progressColor: Colors.greenAccent,
+                            ),
+                          ),
+                        ),
                               Text(
-                                "Choose on map  ",
+                                "Choose Your Job Radius On moving Line",
                                 style: const TextStyle(
-                                  color: Color.fromRGBO(167, 169, 183, 1),
+                                  color: Colors.black,
                                   fontFamily: "Outfit",
                                   fontWeight: FontWeight.w300,
                                   fontSize: 14,
@@ -157,7 +180,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
                           ),
                         ),
                         SizedBox(
-                          height: Get.height * 0.02,
+                          height: Get.height * 0.04,
                         ),
                       ],
                     ),
