@@ -55,10 +55,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    configOneSignel();
+    configOneSignal();
   }
 
-  void configOneSignel()
+  void configOneSignal()
   {
     OneSignal.shared.setAppId(appID);
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);

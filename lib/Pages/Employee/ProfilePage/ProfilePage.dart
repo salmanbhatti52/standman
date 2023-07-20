@@ -468,7 +468,9 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                       ),
                       GestureDetector(
                         onTap: (){
-                          Get.to( () => Emp_ChangeJobRadius());
+                          Get.to( () => Emp_ChangeJobRadius(
+                           // circleRadius: usersProfileData['job_radius'].toString(),
+                          ));
                         },
                         child: Container(
                           width: width, //350,
@@ -491,13 +493,16 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Image.asset("assets/images/job_radius.png", width: 25, color:  Color(0xff2B65EC),),
-                                const Text(
-                                  "Change Job Radius",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: "Outfit",
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 16,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: const Text(
+                                    "Change Job Radius",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Outfit",
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(

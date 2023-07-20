@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../../widgets/MyButton.dart';
+import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/TopBar.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -38,20 +40,8 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
     _mapController = controller;
   }
 
-  void _onCameraMove(CameraPosition position) {
-    setState(() {
-      _circleRadius = calculateCircleRadius(position.zoom);
-    });
-  }
-
-  double calculateCircleRadius(double zoom) {
-    // Implement your own calculation logic based on the zoom level
-    // to determine the desired circle radius
-    // For demonstration purposes, let's use a simple linear calculation
-    return 5000 * (15 - zoom);
-  }
-
-  double percent = 0.9;
+  TextEditingController _currentAddress1 = TextEditingController();
+  final key = GlobalKey<FormState>();
 
 
   @override
@@ -111,7 +101,6 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
                         strokeColor: Colors.blue,
                       ),
                     },
-                    onCameraMove: _onCameraMove,
                   )
                       : Center(
                     child: CircularProgressIndicator(),
@@ -139,49 +128,91 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
                             Get.back();
                           },
                         ),
-                        SizedBox(
-                          height: Get.height * 0.04,
-                        ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                              onPanUpdate: (details) {
-                        setState(() {
-                        // Adjust the percentage based on finger movement
-                        percent += details.delta.dx / 100;
-                        percent = percent.clamp(0.0, 1.0); // Ensure the value stays between 0 and 1
-                        });
-                        },
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: LinearPercentIndicator(
-                              animation: true,
-                              lineHeight: 20.0,
-                              animationDuration: 2000,
-                              percent: percent,
-                              center: Text("${(percent * 100).toStringAsFixed(1)}%"),
-                              linearStrokeCap: LinearStrokeCap.roundAll,
-                              progressColor: Colors.greenAccent,
-                            ),
-                          ),
-                        ),
-                              Text(
-                                "Choose Your Job Radius On moving Line",
-                                style: const TextStyle(
-                                  color: Colors.black,
+                          padding: const EdgeInsets.only(top: 30.0),
+                          child: Form(
+                            key: key,
+                            child: TextFormField(
+                              controller: _currentAddress1,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                color: Color.fromRGBO(167, 169, 183, 1),
+                                fontFamily: "Outfit",
+                                fontWeight: FontWeight.w300,
+                                fontSize: 14,
+                              ),
+                              keyboardType: TextInputType.number,
+                              // validator: (val) {
+                              //   return RegExp(
+                              //       r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                              //       .hasMatch(val!)
+                              //       ? null
+                              //       : "Please enter correct Email";
+                              // },
+                              decoration: InputDecoration(
+                                // contentPadding: const EdgeInsets.only(top: 12.0),
+                                hintText: "Enter job radius",
+                                hintStyle: const TextStyle(
+                                  color: Color.fromRGBO(167, 169, 183, 1),
                                   fontFamily: "Outfit",
                                   fontWeight: FontWeight.w300,
                                   fontSize: 14,
                                 ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromRGBO(243, 243, 243, 1),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromRGBO(243, 243, 243, 1),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromRGBO(243, 243, 243, 1),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromRGBO(243, 243, 243, 1),
+                                    width: 1.0,
+                                  ),
+                                ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         SizedBox(
-                          height: Get.height * 0.04,
+                          height: Get.height * 0.02,
                         ),
+                        GestureDetector(
+                          onTap: () async {
+                            if (_currentAddress1.text.isEmpty) {
+                              toastFailedMessage(
+                                  'Enter Your job radius', Colors.red);
+                            } else {
+                              // Get.to(
+                              //   JobDetails(
+                              //     latitude: "${_currentPosition?.latitude == null ? latt : _currentPosition?.latitude}",
+                              //     longitude: "${_currentPosition?.longitude == null ? long : _currentPosition?.longitude}",
+                              //     currentaddress: "${mainText.text.toString()}",
+                              //     currentaddress1: "${_currentAddress1.text.toString()}",
+                              //   ),
+                              // );
+                            }
+                            // }
+                          },
+                          child: mainButton(
+                              "Save", Color.fromRGBO(43, 101, 236, 1), context),
+                        )
                       ],
                     ),
                   ),
