@@ -69,7 +69,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
       Uri.parse(apiUrl),
       body: {
         "users_customers_id": empUsersCustomersId.toString(),
-        "job_radius": widget.circleRadius,
+        "job_radius": _currentAddress1.text.toString(),
       },
       headers: {
         'Accept': 'application/json',
@@ -88,6 +88,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
             print("updateJobRadius: $updateJobRadius");
             print("job_radius ${updateJobRadius['job_radius'].toString()}");
             isLoading = false;
+            toastSuccessMessage('Radius Changed Successfully', Colors.green);
             Get.back();
           } else {
             // Error case
@@ -159,7 +160,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
                           _currentPosition!.latitude,
                           _currentPosition!.longitude,
                         ),
-                        radius: _circleRadius,
+                        radius: double.parse(widget.circleRadius!) * 1000, // Convert km to meters
                         fillColor: Colors.blue.withOpacity(0.3),
                         strokeColor: Colors.blue,
                       ),
