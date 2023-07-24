@@ -469,7 +469,7 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                       GestureDetector(
                         onTap: (){
                           Get.to( () => Emp_ChangeJobRadius(
-                           // circleRadius: usersProfileData['job_radius'].toString(),
+                           circleRadius: usersProfileData['job_radius'].toString(),
                           ));
                         },
                         child: Container(

@@ -12,7 +12,6 @@ import 'Utils/api_urls.dart';
 import 'Utils/remove_scroll_glow.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-
 // Define the function in the same file
 bool status = false;
 bool status2 = false;
@@ -24,12 +23,12 @@ Future<void> initializeStatusValuesCustomer() async {
   status = prefs.getBool('notificationStatus') ?? false;
   status2 = prefs.getBool('messagesStatus') ?? false;
 }
+
 Future<void> initializeStatusValuesEmployee() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   statuss = prefs.getBool('notificationStatus') ?? false;
   statuss2 = prefs.getBool('messagesStatus') ?? false;
 }
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +36,7 @@ Future<void> main() async {
   await initializeStatusValuesCustomer();
   await initializeStatusValuesEmployee();
   Stripe.publishableKey =
-  'pk_test_51MV6RqJ1o3iGht9r3wtt4ZaiaiDqA0hcF03p9Kj0FhU3qgPnZI03BKzFxTniYSGjGklLrRqIhEcM5O67OWiJBEyS00xupHP2IW';
+      'pk_test_51MV6RqJ1o3iGht9r3wtt4ZaiaiDqA0hcF03p9Kj0FhU3qgPnZI03BKzFxTniYSGjGklLrRqIhEcM5O67OWiJBEyS00xupHP2IW';
   runApp(MyApp());
 }
 
@@ -51,15 +50,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
     configOneSignal();
   }
 
-  void configOneSignal()
-  {
+  void configOneSignal() {
     OneSignal.shared.setAppId(appID);
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   }
@@ -72,24 +69,27 @@ class _MyAppState extends State<MyApp> {
           statusBarIconBrightness: Brightness.dark),
     );
     return ChangeNotifierProvider(
-        create: (_) => GoogleSignInProvider(), child: GetMaterialApp(
-      useInheritedMediaQuery: true,
-      // locale: DevicePreview.locale(context),
-      // builder: DevicePreview.appBuilder,
-      builder: (context, child) {
-        DevicePreview.appBuilder;
-        return MediaQuery(
-            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-            child: child!);
-      },
-      debugShowCheckedModeBanner: false,
-      title: 'StandMan',
-      theme: ThemeData(
-        // Set the background color to a different color
-        scaffoldBackgroundColor: Colors.white,
+      create: (_) => GoogleSignInProvider(),
+      child: GetMaterialApp(
+        useInheritedMediaQuery: true,
+        // locale: DevicePreview.locale(context),
+        // builder: DevicePreview.appBuilder,
+        builder: (context, child) {
+          DevicePreview.appBuilder;
+          return MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: child!);
+        },
+        debugShowCheckedModeBanner: false,
+        title: 'StandMan',
+        theme: ThemeData(
+          // Set the background color to a different color
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        scrollBehavior: MyBehavior(),
+        home: SplashScreen(),
       ),
-      scrollBehavior: MyBehavior(),
-      home: SplashScreen(),
-    ),);
+    );
   }
 }

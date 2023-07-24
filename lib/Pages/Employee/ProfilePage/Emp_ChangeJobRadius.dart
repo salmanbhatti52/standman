@@ -1,16 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../Utils/api_urls.dart';
 import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../../../widgets/TopBar.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:http/http.dart' as http;
+
+import '../HomePage/EmpHomePage.dart';
 
 
 class Emp_ChangeJobRadius extends StatefulWidget {
-
-  Emp_ChangeJobRadius({Key? key,}) : super(key: key);
+  String? circleRadius;
+  Emp_ChangeJobRadius({Key? key, this.circleRadius}) : super(key: key);
 
   @override
   _Emp_ChangeJobRadiusState createState() => _Emp_ChangeJobRadiusState();
@@ -25,6 +31,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
   void initState() {
     super.initState();
     _getCurrentLocation();
+    print("job_radius : ${widget.circleRadius}");
   }
 
   void _getCurrentLocation() async {
@@ -43,6 +50,62 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
   TextEditingController _currentAddress1 = TextEditingController();
   final key = GlobalKey<FormState>();
 
+  bool isLoading = false;
+  dynamic updateJobRadius;
+
+  updateJobsRadius() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    empPrefs = await SharedPreferences.getInstance();
+    empUsersCustomersId = empPrefs!.getString('empUsersCustomersId');
+    print("userId = $empUsersCustomersId");
+
+    String apiUrl = updateJobRadiusApiUrl;
+    print("getUserProfileApi: $apiUrl");
+
+    http.Response response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "users_customers_id": empUsersCustomersId.toString(),
+        "job_radius": widget.circleRadius,
+      },
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          String status = jsonResponse['status'];
+          if (status == 'success') {
+            // Success case
+            var data = jsonResponse['data'];
+            updateJobRadius = data;
+            print("updateJobRadius: $updateJobRadius");
+            print("job_radius ${updateJobRadius['job_radius'].toString()}");
+            isLoading = false;
+            Get.back();
+          } else {
+            // Error case
+            print("Response Body: ${response.body}");
+            isLoading = false;
+            // Show error message (you can implement a function to show a Toast or a dialog)
+            toastFailedMessage('Error occurred. Please try again.', Colors.red);
+          }
+        } else {
+          // Error case
+          print("Response Body: ${response.body}");
+          isLoading = false;
+          // Show error message (you can implement a function to show a Toast or a dialog)
+          toastFailedMessage('Error occurred. Please try again.', Colors.red);
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,20 +262,12 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
                               toastFailedMessage(
                                   'Enter Your job radius', Colors.red);
                             } else {
-                              // Get.to(
-                              //   JobDetails(
-                              //     latitude: "${_currentPosition?.latitude == null ? latt : _currentPosition?.latitude}",
-                              //     longitude: "${_currentPosition?.longitude == null ? long : _currentPosition?.longitude}",
-                              //     currentaddress: "${mainText.text.toString()}",
-                              //     currentaddress1: "${_currentAddress1.text.toString()}",
-                              //   ),
-                              // );
+                              updateJobsRadius();
                             }
-                            // }
                           },
-                          child: mainButton(
+                          child: isLoading ? loadingBar(context) : mainButton(
                               "Save", Color.fromRGBO(43, 101, 236, 1), context),
-                        )
+                        ),
                       ],
                     ),
                   ),

@@ -93,3 +93,5 @@ String sendMessageLiveApiUrl = "${baseUrl}user_chat_live";
 String getMessageLiveApiUrl = "${baseUrl}user_chat_live";
 
 String jobCreationPaymentApiUrl = "${baseUrl}job_creation_payment";
+
+String updateJobRadiusApiUrl = "${baseUrl}update_job_radius";
