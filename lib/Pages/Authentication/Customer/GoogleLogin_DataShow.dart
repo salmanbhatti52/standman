@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../SplashScreen.dart';
 import 'google_signin.dart';
 
 class GoogleLoginData extends StatelessWidget {
@@ -22,7 +23,7 @@ class GoogleLoginData extends StatelessWidget {
           } else if(snapshot.hasError) {
             return Center(child: Text("Something wrong"));
           } else{
-           return LoginTabClass(login: 0,);
+           return SplashScreen();
           }
         },
       ),

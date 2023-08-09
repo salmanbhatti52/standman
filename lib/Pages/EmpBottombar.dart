@@ -1,13 +1,8 @@
 // ignore: camel_case_types
 import 'dart:async';
-
-import 'package:StandMan/Pages/Authentication/Login_tab_class.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Models/unreaded_messages_Model.dart';

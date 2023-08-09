@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../widgets/TopBar.dart';
-import '../Models/notifications_Model.dart';
 import '../Utils/api_urls.dart';
 import 'Customer/HomePage/HomePage.dart';
 import 'package:http/http.dart' as http;

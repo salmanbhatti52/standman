@@ -4,7 +4,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../Models/system_settings_Model.dart';
 import '../Utils/api_urls.dart';
 import '../widgets/TopBar.dart';
-import 'Drawer.dart';
 import 'package:http/http.dart' as http;
 
 class TermsandConditions extends StatefulWidget {
@@ -58,8 +57,6 @@ class _TermsandConditionsState extends State<TermsandConditions> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: StandManAppBar1(title: "Term & Conditions",bgcolor: Colors.white, titlecolor: Colors.black, iconcolor: Colors.black,),
       backgroundColor: Colors.white,

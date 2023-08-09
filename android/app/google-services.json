@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "160962700789",
-    "project_id": "standman-df7f7",
-    "storage_bucket": "standman-df7f7.appspot.com"
+    "project_number": "302711881430",
+    "project_id": "standman-36351",
+    "storage_bucket": "standman-36351.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:160962700789:android:ffed3749561510e30f6cbc",
+        "mobilesdk_app_id": "1:302711881430:android:a27b8ab0dd1a80a9f51377",
         "android_client_info": {
           "package_name": "com.standman.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "160962700789-k5qa3dec14d1ncj3g0q7s7pd6q5mu390.apps.googleusercontent.com",
+          "client_id": "302711881430-lplagaeqat019b4q8ilmam43a8msgrv8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBSsPPW0p5nccSFoTpCSWeH6k8fnT2eUQs"
+          "current_key": "AIzaSyCws7FXDk5dMYssvHO8qbbfxy2WbXHh1t4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "160962700789-k5qa3dec14d1ncj3g0q7s7pd6q5mu390.apps.googleusercontent.com",
+              "client_id": "302711881430-lplagaeqat019b4q8ilmam43a8msgrv8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

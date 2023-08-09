@@ -832,13 +832,13 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                       // await sharedPref.setString('usersCustomersId', "${customerSignupModel.data?.usersCustomersId.toString()}");
                                       // await sharedPref.setString('password', "${customerSignupModel.data?.password.toString()}");
 
-                                      Future.delayed(const Duration(seconds: 2), () {
+                                      Future.delayed(const Duration(seconds: 1), () {
                                         // Get.to(LoginTabClass(login: 0,));
                                         Get.to(EmailVerification(otpVerify:  customerSignupModel.data?.otpdetails?.otp,));
                                         toastSuccessMessage("${customerSignupModel.message}", Colors.green);
                                         setState(() {
                                           isInAsyncCall = false;
-                                        });
+                                        });https://admin.standman.ca/
                                         print("false: $isInAsyncCall");
                                       });
                                     } else if  (customerSignupModel.status != "success"){

@@ -1,12 +1,10 @@
 import 'package:StandMan/Pages/Authentication/SignUp_tab_class.dart';
 import 'package:StandMan/Pages/EmpBottombar.dart';
 import 'package:StandMan/Pages/Employee/HomePage/EmpHomePage.dart';
-import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Authentication/Login_tab_class.dart';
 import 'Bottombar.dart';
 import 'Customer/HomePage/HomePage.dart';
 import 'Onboarding-Screen/OnboardingPageView.dart';

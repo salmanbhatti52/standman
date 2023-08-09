@@ -354,7 +354,7 @@ class _ChatWithAdminState extends State<ChatWithAdmin> {
                                             TextOverflow.ellipsis,
                                             textAlign:
                                             TextAlign.left,
-                                            style: TextStyle(
+                                             style: TextStyle(
                                                 fontSize: 10,
                                                 color: Color(0xffA7A9B7),
                                                 fontFamily: "Outfit"),
