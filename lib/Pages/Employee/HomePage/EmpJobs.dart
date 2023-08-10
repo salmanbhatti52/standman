@@ -254,8 +254,11 @@ class _EmpJobsState extends State<EmpJobs> {
                           children: [
                             (jobsActionEmployeesModel.message ==
                                     "Job Accepted successfully.")
-                                ? smallButton2("Arrived job location",
-                                    Color(0xff2B65EC), context)
+                                ? Padding(
+                                  padding: const EdgeInsets.only(left: 38.0),
+                                  child: smallButton2("Arrived job location",
+                                      Color(0xff2B65EC), context),
+                                )
                                 : GestureDetector(
                                     onTap: () async {
                                       await JobsActionEmployeesAccept();
@@ -321,40 +324,45 @@ class _EmpJobsState extends State<EmpJobs> {
                             SizedBox(
                               width: width * 0.02,
                             ),
-                            GestureDetector(
-                              onTap: () async {
-                                await JobsActionEmployeesReject();
+                            Row(
+                              children: [
+                                (jobsActionEmployeesModel.message ==
+                                    "Job Accepted successfully.") ? SizedBox() : GestureDetector(
+                                  onTap: () async {
+                                    await JobsActionEmployeesReject();
 
-                                if (jobsActionEmployeesModel.message ==
-                                    "Job Rejected successfully.") {
-                                  Future.delayed(const Duration(seconds: 1),
-                                      () {
-                                    toastSuccessMessage(
-                                        "${jobsActionEmployeesModel.message}",
-                                        Colors.green);
-                                    Get.to(
-                                      Empbottom_bar(
-                                        currentIndex: 0,
-                                      ),
-                                    );
-                                    print("false: $loading");
-                                  });
-                                }
-                                if (jobsActionEmployeesModel.status !=
-                                    "success") {
-                                  toastFailedMessage(
-                                      jobsActionEmployeesModel.message,
-                                      Colors.red);
-                                  Get.to(
-                                    Empbottom_bar(
-                                      currentIndex: 0,
-                                    ),
-                                  );
-                                }
-                              },
-                              child: smallButton2(
-                                  "Reject", Color(0xffC70000), context),
-                            ),
+                                    if (jobsActionEmployeesModel.message ==
+                                        "Job Rejected successfully.") {
+                                      Future.delayed(const Duration(seconds: 1),
+                                              () {
+                                            toastSuccessMessage(
+                                                "${jobsActionEmployeesModel.message}",
+                                                Colors.green);
+                                            Get.to(
+                                              Empbottom_bar(
+                                                currentIndex: 0,
+                                              ),
+                                            );
+                                            print("false: $loading");
+                                          });
+                                    }
+                                    if (jobsActionEmployeesModel.status !=
+                                        "success") {
+                                      toastFailedMessage(
+                                          jobsActionEmployeesModel.message,
+                                          Colors.red);
+                                      Get.to(
+                                        Empbottom_bar(
+                                          currentIndex: 0,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: smallButton2(
+                                      "Reject", Color(0xffC70000), context),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ],

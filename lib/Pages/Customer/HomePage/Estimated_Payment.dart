@@ -41,10 +41,7 @@ Estimated_PaymentMethod({
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
-
     String apiUrl = jobsCreateModelApiUrl;
-    print("working");
-
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {"Accept": "application/json"},
@@ -62,7 +59,7 @@ Estimated_PaymentMethod({
         "service_charges": chargers,
         "tax": tax,
         "payment_gateways_name": "GPay",
-        // "payment_status": "Paid",
+        "payment_status": "Paid",
         "image": img != null ? img : "",
       },
     );
@@ -93,7 +90,7 @@ Estimated_PaymentMethod({
       },
     );
     final responseString = response.body;
-    print("jobCreationPayment: ${response.body}");
+    print("jobCreationPayment: ${responseString}");
     if (response.statusCode == 200) {
       print('jobCreationPayment status: ${jobsCreateModel.status}');
     }
@@ -112,6 +109,7 @@ Estimated_PaymentMethod({
 
   createPaymentIntent(String amount, String currency) async {
     try {
+      print("hello");
       Map<String, dynamic> body = {
         'amount': calculateAmount(amount),
         'currency': currency,
@@ -719,7 +717,7 @@ Estimated_PaymentMethod({
 
 
                             if(jobsCreateModel.status == "success"){
-                            Future.delayed(const Duration(seconds: 2), () async {
+                            Future.delayed(const Duration(seconds: 1), () async {
                              await jobCreationPayment();
                                await makePayment();
                               // toastSuccessMessage("Job Created Successfully", Colors.green);

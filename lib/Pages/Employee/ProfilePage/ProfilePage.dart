@@ -468,6 +468,7 @@ class _EmpProfilePageState extends State<EmpProfilePage> {
                       ),
                       GestureDetector(
                         onTap: (){
+                          print("job_radius :: ${usersProfileData['job_radius'].toString()}");
                           Get.to( () => Emp_ChangeJobRadius(
                            circleRadius: usersProfileData['job_radius'].toString(),
                           ));

@@ -783,7 +783,7 @@ class _WorkProofState extends State<WorkProof> {
                                           },
                                         ),
                                         Image.asset(
-                                          "assets/example/forces_id.png ",
+                                          "assets/example/forces_id.png",
                                           // fit: BoxFit.cover,
                                           // width: 230,
                                           // height: 230,
@@ -903,7 +903,7 @@ class _WorkProofState extends State<WorkProof> {
                             Future.delayed(const Duration(seconds: 2), () {
                               // Get.to(LoginTabClass(login: 0,));
                               Get.to(Emp_EmailVerification(otpVerify:  employeeSignupModel.data?.otpdetails?.otp,));
-                              toastSuccessMessage("${employeeSignupModel.message}", Colors.green);
+                              toastSuccessMessage("${employeeSignupModel.data?.message}", Colors.green);
                               setState(() {
                                 isInAsyncCall = false;
                               });

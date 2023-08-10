@@ -835,7 +835,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                       Future.delayed(const Duration(seconds: 1), () {
                                         // Get.to(LoginTabClass(login: 0,));
                                         Get.to(EmailVerification(otpVerify:  customerSignupModel.data?.otpdetails?.otp,));
-                                        toastSuccessMessage("${customerSignupModel.message}", Colors.green);
+                                        toastSuccessMessage("${customerSignupModel.data?.message}", Colors.green);
                                         setState(() {
                                           isInAsyncCall = false;
                                         });https://admin.standman.ca/
