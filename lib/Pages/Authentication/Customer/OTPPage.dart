@@ -128,7 +128,7 @@ class _OTPPageState extends State<OTPPage> {
                             if (widget.data.toString() == OTpCode.text ) {
 
                               Future.delayed(const Duration(seconds: 3), () {
-                                toastSuccessMessage("success", Colors.green);
+                                // toastSuccessMessage("success", Colors.green);
                                 // Get.to(NewPassword(data: widget.data, email: widget.email,));
                                 Get.to(() => NewPassword(data: widget.data, email: widget.email,));
                                 setState(() {

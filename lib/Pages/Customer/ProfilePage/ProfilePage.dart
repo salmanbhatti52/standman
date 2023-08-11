@@ -14,6 +14,7 @@ import '../../Drawer.dart';
 import '../HomePage/HomePage.dart';
 import 'ChangePassword.dart';
 import 'DeleteAccount.dart';
+import 'EditJobList.dart';
 import 'EditProfile.dart';
 import 'NotificationSettings.dart';
 import 'package:http/http.dart' as http;
@@ -352,6 +353,59 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ],
                           ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(EditJobList());
+                          },
+                          child: Container(
+                            width: width, //350,
+                            height: height * 0.060, // 48,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 20,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 2),
+                                    color: Color.fromRGBO(67, 169, 183, 0.1),
+                                  ),
+                                ]),
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/images/edit_job.svg",
+                                    color: Color(0xff2B65EC),
+                                  ),
+                                  const Text(
+                                    "Edit Your Job",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Outfit",
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.3,
+                                  ),
+                                  SvgPicture.asset(
+                                    "assets/images/chevron-left.svg",
+                                  ),
+                                  // Svg
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
                         ),
                         GestureDetector(
                           onTap: () {

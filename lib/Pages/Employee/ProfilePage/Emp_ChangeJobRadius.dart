@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:StandMan/Pages/EmpBottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -89,7 +90,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
             print("job_radius ${updateJobRadius['job_radius'].toString()}");
             isLoading = false;
             toastSuccessMessage('Radius Changed Successfully', Colors.green);
-            Get.back();
+            Get.to(Empbottom_bar(currentIndex: 0));
           } else {
             // Error case
             print("Response Body: ${response.body}");
@@ -142,7 +143,7 @@ class _Emp_ChangeJobRadiusState extends State<Emp_ChangeJobRadius> {
                         _currentPosition!.latitude,
                         _currentPosition!.longitude,
                       ),
-                      zoom: 11.0,
+                      zoom: 10.0,
                     ),
                     markers: {
                       Marker(

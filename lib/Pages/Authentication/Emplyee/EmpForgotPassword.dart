@@ -174,10 +174,10 @@ class _EmployeeForgotPasswordState extends State<EmployeeForgotPassword> {
                           await ForgotPassword();
 
                           if(forgotPasswordModel.status == "success"){
-                            Future.delayed(const Duration(seconds: 3), () {
+                            Future.delayed(const Duration(seconds: 1), () {
                               // Get.to(EmployeeOTPPage(data: forgotPasswordModel.data!.otp, email:  emailController.text.toString(),));
                               Get.to(() => EmployeeOTPPage(data: forgotPasswordModel.data!.otp, email:  emailController.text.toString(),));
-                              // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
+                              toastSuccessMessage(forgotPasswordModel.data?.message, Colors.green);
                               setState(() {
                                 isInAsyncCall = false;
                               });

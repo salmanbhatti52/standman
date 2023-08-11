@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:StandMan/Pages/EmpBottombar.dart';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/get_jobs_employees_Model.dart';
 import '../../../Models/jobs_action_employees_Model.dart';
 import '../../../Utils/api_urls.dart';
@@ -26,10 +29,11 @@ class _EmpJobsState extends State<EmpJobs> {
   JobsActionEmployeesModel jobsActionEmployeesModel =
       JobsActionEmployeesModel();
 
-  bool loading = false;
+  bool isLoading = false;
+  bool isClicked = false;
   JobsActionEmployeesAccept() async {
     setState(() {
-      loading = true;
+      isLoading = true;
     });
 
     String apiUrl = jobsActionEmployeesApiUrl;
@@ -55,13 +59,13 @@ class _EmpJobsState extends State<EmpJobs> {
       print('jobsActionEmployees message: ${jobsActionEmployeesModel.message}');
     }
     setState(() {
-      loading = false;
+      isLoading = false;
     });
   }
 
   JobsActionEmployeesReject() async {
     setState(() {
-      loading = true;
+      isLoading = true;
     });
 
     String apiUrl = jobsActionEmployeesApiUrl;
@@ -87,8 +91,48 @@ class _EmpJobsState extends State<EmpJobs> {
       print('jobsActionEmployees message: ${jobsActionEmployeesModel.message}');
     }
     setState(() {
-      loading = false;
+      isLoading = false;
     });
+  }
+
+
+  dynamic arriveJob = [];
+
+  arrivedJob() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
+    print("empUsersCustomersId = $usersCustomersId");
+    print("jobid = ${widget.jobIndex}");
+
+    http.Response response = await http.post(
+      Uri.parse(getOngoingJobsModelApiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+        "jobs_id":  widget.jobIndex,
+      },
+    );
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          arriveJob = json.decode(response.body);
+          print("arriveJob: $arriveJob");
+          if (jsonResponse['status'] == 'success') {
+            String Message = jsonResponse['message'];
+            print("message: $Message");
+          }
+          isLoading = false;
+        } else {
+          print("Response Body ::${response.body}");
+          isLoading = false;
+        }
+      });
+    }
   }
 
   @override
@@ -123,6 +167,7 @@ class _EmpJobsState extends State<EmpJobs> {
                         myJobId: "${widget.getJobsEmployeesModel?.jobsId}",
                         image:
                             "$baseUrlImage${widget.getJobsEmployeesModel?.image}",
+                        jobStatus: '${widget.getJobsEmployeesModel?.status}',
                         jobName: widget.getJobsEmployeesModel?.name,
                         totalPrice: widget.getJobsEmployeesModel?.price,
                         address: widget.getJobsEmployeesModel?.location,
@@ -252,82 +297,99 @@ class _EmpJobsState extends State<EmpJobs> {
                         ),
                         Row(
                           children: [
-                            (jobsActionEmployeesModel.message ==
-                                    "Job Accepted successfully.")
-                                ? Padding(
-                                  padding: const EdgeInsets.only(left: 38.0),
-                                  child: smallButton2("Arrived job location",
-                                      Color(0xff2B65EC), context),
-                                )
-                                : GestureDetector(
+                            Container(
+                              child: (widget.getJobsEmployeesModel?.status == "Accepted")
+                                  ? Padding(
+                                padding: const EdgeInsets.only(left: 28.0),
+                                child: GestureDetector(
                                     onTap: () async {
-                                      await JobsActionEmployeesAccept();
-
-                                      if (jobsActionEmployeesModel.message ==
-                                          "Job Accepted successfully.") {
-                                        Future.delayed(
-                                            const Duration(seconds: 1), () {
-                                          toastSuccessMessage(
-                                              "${jobsActionEmployeesModel.message}",
-                                              Colors.green);
-                                          Get.to(
-                                            EmpJobComplete(
-                                              myJobId:
-                                                  "${widget.getJobsEmployeesModel?.jobsId}",
-                                              image:
-                                                  "$baseUrlImage${widget.getJobsEmployeesModel?.image}",
-                                              jobName: widget
-                                                  .getJobsEmployeesModel?.name,
-                                              totalPrice: widget
-                                                  .getJobsEmployeesModel?.price,
-                                              address: widget
-                                                  .getJobsEmployeesModel
-                                                  ?.location,
-                                              completeJobTime: widget
-                                                  .getJobsEmployeesModel
-                                                  ?.dateAdded
-                                                  .toString(),
-                                              description: widget
-                                                          .getJobsEmployeesModel
-                                                          ?.description ==
-                                                      null
-                                                  ? ""
-                                                  : widget.getJobsEmployeesModel
-                                                      ?.description,
-                                              name:
-                                                  "${widget.getJobsEmployeesModel?.usersCustomersData?.firstName} ${widget.getJobsEmployeesModel?.usersCustomersData?.lastName}",
-                                              profilePic:
-                                                  "$baseUrlImage${widget.getJobsEmployeesModel?.usersCustomersData?.profilePic}",
-                                              customerId: widget
-                                                  .getJobsEmployeesModel
-                                                  ?.usersCustomersId
-                                                  .toString(),
-                                            ),
-                                          );
-                                          print("false: $loading");
-                                        });
+                                      await arrivedJob();
+                                      if (arriveJob['status'] == 'success') {
+                                        toastSuccessMessage(arriveJob['message'], Colors.green);
+                                      Get.to(Empbottom_bar(currentIndex: 0));
                                       }
-                                      if (jobsActionEmployeesModel.message == "This job is already assigned to you." ||
-                                          jobsActionEmployeesModel.message ==
-                                              "This job is already assigned to someone else. Thank you for your interest." ||
-                                          jobsActionEmployeesModel.message ==
-                                              "You have already taken action on this Job.") {
-                                        toastFailedMessage(
-                                            jobsActionEmployeesModel.message,
-                                            Colors.red);
+                                      else {
+                                        toastFailedMessage(arriveJob['message'], Colors.red);
                                         Get.to(Empbottom_bar(currentIndex: 0));
                                       }
                                     },
-                                    child: smallButton2(
-                                        "Accept", Color(0xff2B65EC), context),
-                                  ),
+                                    child: smallButton2("Arrived job location", Color(0xff2B65EC), context)),
+                              )
+                                  : GestureDetector(
+                                onTap: () async {
+
+                                  await JobsActionEmployeesAccept();
+
+                                  if (jobsActionEmployeesModel.message ==
+                                      "Job Accepted successfully.") {
+                                    setState(() {
+                                      isClicked = true;
+                                    });
+                                    Future.delayed(
+                                        const Duration(seconds: 1), () {
+                                      toastSuccessMessage(
+                                          "${jobsActionEmployeesModel.message}",
+                                          Colors.green);
+                                      // Get.to(
+                                      //   EmpJobComplete(
+                                      //     myJobId:
+                                      //         "${widget.getJobsEmployeesModel?.jobsId}",
+                                      //     image:
+                                      //         "$baseUrlImage${widget.getJobsEmployeesModel?.image}",
+                                      //     jobName: widget
+                                      //         .getJobsEmployeesModel?.name,
+                                      //     totalPrice: widget
+                                      //         .getJobsEmployeesModel?.price,
+                                      //     address: widget
+                                      //         .getJobsEmployeesModel
+                                      //         ?.location,
+                                      //     completeJobTime: widget
+                                      //         .getJobsEmployeesModel
+                                      //         ?.dateAdded
+                                      //         .toString(),
+                                      //     description: widget
+                                      //                 .getJobsEmployeesModel
+                                      //                 ?.description ==
+                                      //             null
+                                      //         ? ""
+                                      //         : widget.getJobsEmployeesModel
+                                      //             ?.description,
+                                      //     name:
+                                      //         "${widget.getJobsEmployeesModel?.usersCustomersData?.firstName} ${widget.getJobsEmployeesModel?.usersCustomersData?.lastName}",
+                                      //     profilePic:
+                                      //         "$baseUrlImage${widget.getJobsEmployeesModel?.usersCustomersData?.profilePic}",
+                                      //     customerId: widget
+                                      //         .getJobsEmployeesModel
+                                      //         ?.usersCustomersId
+                                      //         .toString(),
+                                      //   ),
+                                      // );
+                                      print("false: $isLoading");
+                                    });
+                                  }
+                                  if (jobsActionEmployeesModel.message == "This job is already assigned to you." ||
+                                      jobsActionEmployeesModel.message ==
+                                          "This job is already assigned to someone else. Thank you for your interest." ||
+                                      jobsActionEmployeesModel.message ==
+                                          "You have already taken action on this Job.") {
+                                    toastFailedMessage(
+                                        jobsActionEmployeesModel.message,
+                                        Colors.red);
+                                    Get.to(Empbottom_bar(currentIndex: 0));
+                                  }
+                                },
+                                child: smallButton2(
+                                    "Accept", Color(0xff2B65EC), context),
+                              ),
+                            ),
                             SizedBox(
                               width: width * 0.02,
                             ),
-                            Row(
-                              children: [
-                                (jobsActionEmployeesModel.message ==
-                                    "Job Accepted successfully.") ? SizedBox() : GestureDetector(
+                            Container(
+                              child :
+                              (widget.getJobsEmployeesModel?.status == "Accepted")
+                                    ? SizedBox()
+                                    : GestureDetector(
                                   onTap: () async {
                                     await JobsActionEmployeesReject();
 
@@ -343,7 +405,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                                 currentIndex: 0,
                                               ),
                                             );
-                                            print("false: $loading");
+                                            print("false: $isLoading");
                                           });
                                     }
                                     if (jobsActionEmployeesModel.status !=
@@ -361,7 +423,6 @@ class _EmpJobsState extends State<EmpJobs> {
                                   child: smallButton2(
                                       "Reject", Color(0xffC70000), context),
                                 ),
-                              ],
                             )
                           ],
                         ),

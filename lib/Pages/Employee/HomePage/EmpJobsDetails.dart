@@ -27,8 +27,9 @@ class EmpJobDetaisl extends StatefulWidget {
   String? completeJobTime;
   String? description;
   String? profilePic;
+  String? jobStatus;
   String? name, myJobId;
-  EmpJobDetaisl({Key? key, this.image,  this.myJobId, this.jobName, this.totalPrice, this.address, this.completeJobTime, this.description, this.profilePic, this.name}) : super(key: key);
+  EmpJobDetaisl({Key? key, this.jobStatus, this.image,  this.myJobId, this.jobName, this.totalPrice, this.address, this.completeJobTime, this.description, this.profilePic, this.name}) : super(key: key);
 
   @override
   State<EmpJobDetaisl> createState() => _EmpJobDetaislState();
@@ -330,81 +331,119 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        GestureDetector(
-                          onTap: () async {
+                        Container(
+                          child:  (widget.jobStatus == "Accepted")
+                              ? GestureDetector(
+                            onTap: (){},
+                                child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                            child: Container(
+                                height: MediaQuery.of(context).size.height * 0.07,
+                                // height: 48,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    color: Color(0xff2B65EC),
+                                    //   color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    // border:
+                                    // Border.all(color: Color(0xffC70000), width: 1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: 0,
+                                          blurRadius: 15,
+                                          offset: Offset(1, 10),
+                                          color: Color.fromRGBO(7, 1, 87, 0.1)),
+                                    ]),
+                                child: Center(
+                                  child: Text(
+                                    "Arrived job location",
+                                    style: TextStyle(
+                                        fontFamily: "Outfit",
+                                        fontSize: 14,
+                                        color: Color(0xffffffff),
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                            ),
+                          ),
+                              )
+                              : GestureDetector(
+                               onTap: () async {
 
-                            await JobsActionEmployeesAccept();
+                              await JobsActionEmployeesAccept();
 
-                            setState(() {
-                              loading = true;
-                            });
+                              setState(() {
+                                loading = true;
+                              });
 
-                            if (jobsActionEmployeesModel.message == "Job Accepted successfully.") {
-                              Future.delayed(const Duration(seconds: 1), () {
-                                toastSuccessMessage("${jobsActionEmployeesModel.message }", Colors.green);
-                                Get.to(
-                                    Get.to(
-                                      Empbottom_bar(currentIndex: 0),
-                                      // EmpJobComplete(
-                                      //   myJobId: "${getJobsEmployeesModel.data?[index].jobsId}",
-                                      //   image:"$baseUrlImage${getJobsEmployeesModel.data?[index].image}",
-                                      //   jobName: getJobsEmployeesModel.data?[index].name,
-                                      //   totalPrice: getJobsEmployeesModel.data?[index].totalPrice,
-                                      //   address: getJobsEmployeesModel.data?[index].location,
-                                      //   completeJobTime: getJobsEmployeesModel.data?[index].dateAdded.toString(),
-                                      //   description: getJobsEmployeesModel.data?[index].description,
-                                      //   name: "${getJobsEmployeesModel.data?[index].usersCustomersData?.firstName} ${getJobsEmployeesModel.data?[index].usersCustomersData?.lastName}",
-                                      //   profilePic: "$baseUrlImage${getJobsEmployeesModel.data?[index].usersCustomersData?.profilePic}",
-                                      // ),
-                                    )
-                                );
+                              if (jobsActionEmployeesModel.message == "Job Accepted successfully.") {
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  toastSuccessMessage("${jobsActionEmployeesModel.message }", Colors.green);
+                                  Get.to(
+                                      Get.to(
+                                        Empbottom_bar(currentIndex: 0),
+                                        // EmpJobComplete(
+                                        //   myJobId: "${getJobsEmployeesModel.data?[index].jobsId}",
+                                        //   image:"$baseUrlImage${getJobsEmployeesModel.data?[index].image}",
+                                        //   jobName: getJobsEmployeesModel.data?[index].name,
+                                        //   totalPrice: getJobsEmployeesModel.data?[index].totalPrice,
+                                        //   address: getJobsEmployeesModel.data?[index].location,
+                                        //   completeJobTime: getJobsEmployeesModel.data?[index].dateAdded.toString(),
+                                        //   description: getJobsEmployeesModel.data?[index].description,
+                                        //   name: "${getJobsEmployeesModel.data?[index].usersCustomersData?.firstName} ${getJobsEmployeesModel.data?[index].usersCustomersData?.lastName}",
+                                        //   profilePic: "$baseUrlImage${getJobsEmployeesModel.data?[index].usersCustomersData?.profilePic}",
+                                        // ),
+                                      )
+                                  );
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  print("false: $loading");
+                                });
+                              }
+                              if (jobsActionEmployeesModel.message == "This job is already assigned to you." || jobsActionEmployeesModel.message == "This job is already assigned to someone else. Thank you for your interest." ||  jobsActionEmployeesModel
+                                  .message == "You have already taken action on this Job.") {
+                                toastFailedMessage(
+                                    jobsActionEmployeesModel
+                                        .message,
+                                    Colors.red);
                                 setState(() {
                                   loading = false;
                                 });
-                                print("false: $loading");
-                              });
-                            }
-                            if (jobsActionEmployeesModel.message == "This job is already assigned to you." || jobsActionEmployeesModel.message == "This job is already assigned to someone else. Thank you for your interest." ||  jobsActionEmployeesModel
-                                .message == "You have already taken action on this Job.") {
-                              toastFailedMessage(
-                                  jobsActionEmployeesModel
-                                      .message,
-                                  Colors.red);
-                              setState(() {
-                                loading = false;
-                              });
-                            }
-                          },
-                          child: loading
-                              ?  loadingBar(context)
-                              : Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              // height: 48,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Color(0xff2B65EC),
-                                //   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  // border:
-                                  // Border.all(color: Color(0xffC70000), width: 1),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        spreadRadius: 0,
-                                        blurRadius: 15,
-                                        offset: Offset(1, 10),
-                                        color: Color.fromRGBO(7, 1, 87, 0.1)),
-                                  ]),
-                              child: Center(
-                                child: Text(
-                                  "Accept",
-                                  style: TextStyle(
-                                      fontFamily: "Outfit",
-                                      fontSize: 14,
-                                      color: Color(0xffffffff),
-                                      fontWeight: FontWeight.w500),
-                                  textAlign: TextAlign.center,
+                              }
+                            },
+                            child: loading
+                                ?  loadingBar(context)
+                                : Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * 0.07,
+                                // height: 48,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Color(0xff2B65EC),
+                                  //   color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    // border:
+                                    // Border.all(color: Color(0xffC70000), width: 1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: 0,
+                                          blurRadius: 15,
+                                          offset: Offset(1, 10),
+                                          color: Color.fromRGBO(7, 1, 87, 0.1)),
+                                    ]),
+                                child: Center(
+                                  child: Text(
+                                    "Accept",
+                                    style: TextStyle(
+                                        fontFamily: "Outfit",
+                                        fontSize: 14,
+                                        color: Color(0xffffffff),
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                             ),
@@ -413,79 +452,83 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        GestureDetector(
-                          onTap: () async {
+                        Container(
+                          child:   (widget.jobStatus == "Accepted")
+                              ? SizedBox()
+                              : GestureDetector(
+                                onTap: () async {
 
-                            await JobsActionEmployeesReject();
-                            setState(() {
-                              isInAsyncCall = true;
-                            });
+                              await JobsActionEmployeesReject();
+                              setState(() {
+                                isInAsyncCall = true;
+                              });
 
-                            if (jobsActionEmployeesModel
-                                .message ==
-                                "Job Rejected successfully.") {
-                              Future.delayed(
-                                  const Duration(
-                                      seconds: 1), () {
-                                toastSuccessMessage(
-                                    "${jobsActionEmployeesModel
-                                        .message}",
-                                    Colors.green);
+                              if (jobsActionEmployeesModel
+                                  .message ==
+                                  "Job Rejected successfully.") {
+                                Future.delayed(
+                                    const Duration(
+                                        seconds: 1), () {
+                                  toastSuccessMessage(
+                                      "${jobsActionEmployeesModel
+                                          .message}",
+                                      Colors.green);
+                                  Get.to(
+                                    Empbottom_bar(
+                                      currentIndex: 0,
+                                    ),
+                                  );
+                                  print("false: $loading");
+                                });
+                              }
+                              if (jobsActionEmployeesModel
+                                  .status !=
+                                  "success") {
+                                toastFailedMessage(
+                                    jobsActionEmployeesModel
+                                        .message,
+                                    Colors.red);
                                 Get.to(
                                   Empbottom_bar(
                                     currentIndex: 0,
                                   ),
                                 );
-                                print("false: $loading");
-                              });
-                            }
-                            if (jobsActionEmployeesModel
-                                .status !=
-                                "success") {
-                              toastFailedMessage(
-                                  jobsActionEmployeesModel
-                                      .message,
-                                  Colors.red);
-                              Get.to(
-                                Empbottom_bar(
-                                  currentIndex: 0,
-                                ),
-                              );
-                              setState(() {
-                                isInAsyncCall = false;
-                              });
-                            }
-                          },
-                          child: isInAsyncCall
-                              ?  loadingBar(context)
-                              : Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25, ),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              // height: 48,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Color(0xffC70000),
-                                  //   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  // border:
-                                  // Border.all(color: Color(0xffC70000), width: 1),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        spreadRadius: 0,
-                                        blurRadius: 15,
-                                        offset: Offset(1, 10),
-                                        color: Color.fromRGBO(7, 1, 87, 0.1)),
-                                  ]),
-                              child: Center(
-                                child: Text(
-                                  "Reject",
-                                  style: TextStyle(
-                                      fontFamily: "Outfit",
-                                      fontSize: 14,
-                                      color: Color(0xffffffff),
-                                      fontWeight: FontWeight.w500),
-                                  textAlign: TextAlign.center,
+                                setState(() {
+                                  isInAsyncCall = false;
+                                });
+                              }
+                            },
+                            child: isInAsyncCall
+                                ?  loadingBar(context)
+                                : Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 25, ),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * 0.07,
+                                // height: 48,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffC70000),
+                                    //   color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    // border:
+                                    // Border.all(color: Color(0xffC70000), width: 1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: 0,
+                                          blurRadius: 15,
+                                          offset: Offset(1, 10),
+                                          color: Color.fromRGBO(7, 1, 87, 0.1)),
+                                    ]),
+                                child: Center(
+                                  child: Text(
+                                    "Reject",
+                                    style: TextStyle(
+                                        fontFamily: "Outfit",
+                                        fontSize: 14,
+                                        color: Color(0xffffffff),
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                             ),

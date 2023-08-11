@@ -309,8 +309,8 @@ class _EmployeeNewPasswordState extends State<EmployeeNewPassword>
 
                             Future.delayed(const Duration(seconds: 1),
                                     () {
-                                  toastSuccessMessage(
-                                      "success", Colors.green);
+                                      toastSuccessMessage(
+                                          "Password Changed Successfully", Colors.green);
                                   // Get.to(LoginTabClass(login: 1,));
                                   Get.to(() => LoginTabClass(login: 1,));
                                   setState(() {

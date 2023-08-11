@@ -127,8 +127,8 @@ class _EmployeeOTPPageState extends State<EmployeeOTPPage> {
                             });
 
                             if (widget.data.toString() == OTpCode.text) {
-                              Future.delayed(const Duration(seconds: 3), () {
-                                toastSuccessMessage("success", Colors.green);
+                              Future.delayed(const Duration(seconds: 1), () {
+                                // toastSuccessMessage("success", Colors.green);
                                 // Get.to(EmployeeNewPassword(
                                 //   data: widget.data,
                                 //   email: widget.email,
