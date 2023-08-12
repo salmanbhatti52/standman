@@ -109,7 +109,7 @@ class _EmpJobsState extends State<EmpJobs> {
     print("jobid = ${widget.jobIndex}");
 
     http.Response response = await http.post(
-      Uri.parse(getOngoingJobsModelApiUrl),
+      Uri.parse(employeeArrived),
       headers: {"Accept": "application/json"},
       body: {
         "users_customers_id": usersCustomersId,

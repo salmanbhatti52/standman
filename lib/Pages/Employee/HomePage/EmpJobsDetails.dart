@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,12 +48,12 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
 
   JobsActionEmployeesModel jobsActionEmployeesModel = JobsActionEmployeesModel();
 
-  bool loading = false;
+  bool isLoading = false;
 
   JobsActionEmployeesAccept() async {
 
     setState(() {
-      loading = true;
+      isLoading = true;
     });
 
     String apiUrl = jobsActionEmployeesApiUrl;
@@ -76,7 +78,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
       print('jobsActionEmployees message: ${jobsActionEmployeesModel.message}');
     }
     setState(() {
-      loading = false;
+      isLoading = false;
     });
   }
 
@@ -110,6 +112,45 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
     setState(() {
       isInAsyncCall = false;
     });
+  }
+
+  dynamic arriveJob = [];
+
+  arrivedJob() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
+    print("empUsersCustomersId = $usersCustomersId");
+    print("jobid = ${widget.myJobId}");
+
+    http.Response response = await http.post(
+      Uri.parse(employeeArrived),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+        "jobs_id":  widget.myJobId,
+      },
+    );
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          arriveJob = json.decode(response.body);
+          print("arriveJob: $arriveJob");
+          if (jsonResponse['status'] == 'success') {
+            String Message = jsonResponse['message'];
+            print("message: $Message");
+          }
+          isLoading = false;
+        } else {
+          print("Response Body ::${response.body}");
+          isLoading = false;
+        }
+      });
+    }
   }
 
   @override
@@ -334,7 +375,16 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                         Container(
                           child:  (widget.jobStatus == "Accepted")
                               ? GestureDetector(
-                            onTap: (){},
+                            onTap: () async {
+                        await arrivedJob();
+                        if (arriveJob['status'] == 'success') {
+                        toastSuccessMessage(arriveJob['message'], Colors.green);
+                        Get.to(Empbottom_bar(currentIndex: 0));
+                        }
+                        else {
+                        toastFailedMessage(arriveJob['message'], Colors.red);
+                        Get.to(Empbottom_bar(currentIndex: 0));
+                        }},
                                 child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
                             child: Container(
@@ -374,7 +424,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                               await JobsActionEmployeesAccept();
 
                               setState(() {
-                                loading = true;
+                                isLoading = true;
                               });
 
                               if (jobsActionEmployeesModel.message == "Job Accepted successfully.") {
@@ -397,9 +447,9 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                                       )
                                   );
                                   setState(() {
-                                    loading = false;
+                                    isLoading = false;
                                   });
-                                  print("false: $loading");
+                                  print("false: $isLoading");
                                 });
                               }
                               if (jobsActionEmployeesModel.message == "This job is already assigned to you." || jobsActionEmployeesModel.message == "This job is already assigned to someone else. Thank you for your interest." ||  jobsActionEmployeesModel
@@ -409,11 +459,11 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                                         .message,
                                     Colors.red);
                                 setState(() {
-                                  loading = false;
+                                  isLoading = false;
                                 });
                               }
                             },
-                            child: loading
+                            child: isLoading
                                 ?  loadingBar(context)
                                 : Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -478,7 +528,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                                       currentIndex: 0,
                                     ),
                                   );
-                                  print("false: $loading");
+                                  print("false: $isLoading");
                                 });
                               }
                               if (jobsActionEmployeesModel

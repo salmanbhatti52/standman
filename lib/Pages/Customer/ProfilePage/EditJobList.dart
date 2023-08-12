@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/TopBar.dart';
+import 'package:http/http.dart' as http;
+
+import '../HomePage/HomePage.dart';
 
 class EditJobList extends StatefulWidget {
   const EditJobList({Key? key}) : super(key: key);
@@ -18,7 +22,48 @@ class EditJobList extends StatefulWidget {
 class _EditJobListState extends State<EditJobList> {
 
   bool isLoading = false;
-  List ongoingData = [];
+  dynamic EditableJobs = [];
+
+  EditableJobsList() async {
+    setState(() {
+      isLoading = true;
+    });
+    // await Future.delayed(Duration(seconds: 2));
+    http.Response response = await http.post(
+      Uri.parse(customerEditableJobs),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+      },
+    );
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+
+          if (jsonResponse['data'] != null && jsonResponse['data'] is List<dynamic>) {
+            EditableJobs = jsonResponse['data'];
+            print("EditableJobs: $EditableJobs");
+            isLoading = false;
+          } else {
+            // Handle the case when 'data' is null or not of type List<dynamic>
+            print("Invalid 'data' value");
+            isLoading = false;
+          }
+        } else {
+          print("Response Body ::${response.body}");
+          isLoading = false;
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    EditableJobsList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +80,7 @@ class _EditJobListState extends State<EditJobList> {
           height: 50,
         ),
       ) :
-      ongoingData.isEmpty  ?
+      EditableJobs.isEmpty  ?
       Center(child:  Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,7 +104,7 @@ class _EditJobListState extends State<EditJobList> {
         ],
       )) :
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Container(
           // color: Color(0xff9D9FAD),
           // height: MediaQuery.of(context).size.height * 0.16,
@@ -69,7 +114,7 @@ class _EditJobListState extends State<EditJobList> {
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: ongoingData.length,
+              itemCount: EditableJobs.length,
               itemBuilder: (BuildContext context, int i) {
                 return GestureDetector(
                   onTap: () {
@@ -91,192 +136,189 @@ class _EditJobListState extends State<EditJobList> {
                     //   status: ongoingData[i]['status'],
                     // ));
                   },
-                  child: Container(
-                    margin: EdgeInsets.only(top: 5),
-                    // padding: EdgeInsets.all( 10),
-                    // width: MediaQuery.of(context).size.width * 0.51,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 0,
-                              blurRadius: 20,
-                              offset: Offset(0, 2),
-                              color: Color.fromRGBO(167, 169, 183, 0.1)),
-                        ]),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child:
-                            // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
-                            FadeInImage(
-                              placeholder:  AssetImage("assets/images/fade_in_image.jpeg",),
-                              fit: BoxFit.fill,
-                              width: 115,
-                              height: 96,
-                              image: NetworkImage("$baseUrlImage${ongoingData[i]['image']}"),
-                            ),
-                          ),
-                          SizedBox(width: Get.width * 0.02,),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: Get.width * 0.32,
-                                child: AutoSizeText(
-                                  // 'Eleanor Pena',
-                                  "${ongoingData[i]['name']}",
-                                  style: TextStyle(
-                                    color: Color(0xff000000),
-                                    fontFamily: "Outfit",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-// letterSpacing: -0.3,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                  maxLines: 1,
-                                  presetFontSizes: [11],
-                                  maxFontSize: 11,
-                                  minFontSize: 11,
-                                ),
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(top: 5),
+                      // padding: EdgeInsets.all( 10),
+                      // width: MediaQuery.of(context).size.width * 0.51,
+                      decoration: BoxDecoration(
+                          color: Colors.white30,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                spreadRadius: 0,
+                                blurRadius: 20,
+                                offset: Offset(0, 2),
+                                color: Color.fromRGBO(167, 169, 183, 0.1)),
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child:
+                              // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
+                              FadeInImage(
+                                placeholder:  AssetImage("assets/images/fade_in_image.jpeg",),
+                                fit: BoxFit.fill,
+                                width: 115,
+                                height: 96,
+                                image: NetworkImage("$baseUrlImage${EditableJobs[i]['image']}"),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5.0),
-                                child: Text(
-                                  // 'Mar 03, 2023',
-                                  "${ongoingData[i]['date_added']}",
+                            ),
+                            SizedBox(width: Get.width * 0.02,),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: Get.width * 0.32,
+                                  child: AutoSizeText(
+                                    // 'Eleanor Pena',
+                                    "${EditableJobs[i]['name']}",
+                                    style: TextStyle(
+                                      color: Color(0xff000000),
+                                      fontFamily: "Outfit",
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+// letterSpacing: -0.3,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                    maxLines: 1,
+                                    presetFontSizes: [11],
+                                    maxFontSize: 11,
+                                    minFontSize: 11,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5.0),
+                                  child: Text(
+                                    // 'Mar 03, 2023',
+                                    "${EditableJobs[i]['date_added']}",
+                                    style: TextStyle(
+                                      color: Color(0xff9D9FAD),
+                                      fontFamily: "Outfit",
+                                      fontSize: 8,
+                                      fontWeight: FontWeight.w500,
+// letterSpacing: -0.3,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Text(
+                                  'Taken By',
                                   style: TextStyle(
-                                    color: Color(0xff9D9FAD),
+                                    color: Color(0xff2B65EC),
                                     fontFamily: "Outfit",
                                     fontSize: 8,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w400,
 // letterSpacing: -0.3,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
-                              ),
-                              Text(
-                                'Taken By',
-                                style: TextStyle(
-                                  color: Color(0xff2B65EC),
-                                  fontFamily: "Outfit",
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.w400,
-// letterSpacing: -0.3,
+                                SizedBox(
+                                  height: 8,
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // Image.asset("assets/images/g1.png"),
-                                  CircleAvatar(
-                                    // radius: (screenWidth > 600) ? 90 : 70,
-                                    //   radius: 50,
-                                      backgroundColor: Colors.transparent,
-                                      backgroundImage: ongoingData[i]['users_employee_data']['profile_pic'] == null
-                                          ? Image.asset("assets/images/person2.png").image
-                                          : NetworkImage(baseUrlImage+ongoingData[i]['users_employee_data']['profile_pic'].toString())
-                                    // NetworkImage(baseUrlImage+ getUserProfileModelObject.data!.profilePic!)
-
-                                  ),
-                                  // CircleAvatar(
-                                  //     backgroundColor: Colors.transparent,
-                                  //     backgroundImage: profilePic1 == null
-                                  //         ? Image.asset("assets/images/g1.png").image
-                                  //         : NetworkImage(baseUrlImage+getJobsModel.data!.profilePic.toString())
-                                  // ),
-                                  // CircleAvatar(
-                                  //   backgroundColor: Colors.transparent,
-                                  //   backgroundImage: NetworkImage(
-                                  //       "$baseUrlImage${getJobsModel.data?[index].}"),),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    width: 65,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          // 'Wade Warren',
-                                          "${ongoingData[i]['users_employee_data']['first_name']} ${ongoingData[i]['users_employee_data']['last_name']}",
-                                          // "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
-                                          style: TextStyle(
-                                            color: Color(0xff000000),
-                                            fontFamily: "Outfit",
-                                            fontSize: 8,
-                                            fontWeight: FontWeight.w500,
-// letterSpacing: -0.3,
-                                          ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                                "assets/images/star.png"),
-                                            Text(
-                                              '--',
-                                              // getJobsModel.data?[index].rating,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // Image.asset("assets/images/g1.png"),
+                                    CircleAvatar(
+                                      // radius: (screenWidth > 600) ? 90 : 70,
+                                      //   radius: 50,
+                                        backgroundColor: Colors.transparent,
+                                      backgroundImage: (EditableJobs[i]['user_data'] != null  && EditableJobs[i]['user_data']['profile_pic'] != null )
+                                          ? NetworkImage(baseUrlImage + EditableJobs[i]['user_data']['profile_pic'].toString())
+                                          : Image.asset("assets/images/person2.png").image,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      width: 65,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: (EditableJobs[i]['user_data'] != null && EditableJobs[i]['user_data']['first_name'] != null&& EditableJobs[i]['user_data']['last_name'] != null) ? Text(
+                                              // 'Wade Warren',
+                                              "${EditableJobs[i]['user_data']['first_name']} ${EditableJobs[i]['user_data']['last_name']}",
+                                              // "${usersProfileModel.data?.firstName} ${usersProfileModel.data?.lastName}",
                                               style: TextStyle(
                                                 color: Color(0xff000000),
                                                 fontFamily: "Outfit",
                                                 fontSize: 8,
-                                                fontWeight: FontWeight.w400,
+                                                fontWeight: FontWeight.w500,
 // letterSpacing: -0.3,
                                               ),
                                               textAlign: TextAlign.left,
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 40),
-                            width: Get.width * 0.18,
-                            height: 19,
-                            decoration: BoxDecoration(
-                              color: Color(0xffFFDACC),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Center(
-                              child: Text(
-                                // customerongoingjobstList[index].subTitle,
-                                "${ongoingData[i]['status']}",
-                                style: TextStyle(
-                                  color: Color(0xffFF4700),
-                                  fontFamily: "Outfit",
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
+                                            ): Text("data"),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                  "assets/images/star.png"),
+                                              Text(
+                                                '--',
+                                                // getJobsModel.data?[index].rating,
+                                                style: TextStyle(
+                                                  color: Color(0xff000000),
+                                                  fontFamily: "Outfit",
+                                                  fontSize: 8,
+                                                  fontWeight: FontWeight.w400,
 // letterSpacing: -0.3,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 40),
+                              width: Get.width * 0.18,
+                              height: 19,
+                              decoration: BoxDecoration(
+                                color: Color(0xffFFDACC),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  // customerongoingjobstList[index].subTitle,
+                                  "${EditableJobs[i]['status']}",
+                                  style: TextStyle(
+                                    color: Color(0xffFF4700),
+                                    fontFamily: "Outfit",
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+// letterSpacing: -0.3,
+                                  ),
+                                  textAlign: TextAlign.left,
                                 ),
-                                textAlign: TextAlign.left,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),),
+                          ],
+                        ),
+                      ),),
+                  ),
                 );
               }),
         ),

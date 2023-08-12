@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,12 +31,12 @@ class Emp_ceate_Or_findJobs extends StatefulWidget {
 class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
 
   GetJobsEmployeesModel getJobsEmployeesModel = GetJobsEmployeesModel();
-  bool loading = false;
+  bool isLoading = false;
   bool isClicked = false;
 
   GetJobsEmployees() async {
     setState(() {
-      loading = true;
+      isLoading = true;
     });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('empUsersCustomersId');
@@ -68,7 +70,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
       print(
           'getJobsEmployeesModel Length: ${getJobsEmployeesModel.data?.length}');
       setState(() {
-        loading = false;
+        isLoading = false;
       });
       // print('getJobsModelImage: $baseUrlImage${getJobsModel.data![0].image}');
     }
@@ -86,7 +88,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
 
   JobsActionEmployeesAccept() async {
     setState(() {
-      loading = true;
+      isLoading = true;
     });
 
     String apiUrl = jobsActionEmployeesApiUrl;
@@ -112,13 +114,13 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
       print('jobsActionEmployees message: ${jobsActionEmployeesModel.message}');
     }
     setState(() {
-      loading = false;
+      isLoading = false;
     });
   }
 
   JobsActionEmployeesReject() async {
     setState(() {
-      loading = true;
+      isLoading = true;
     });
 
     String apiUrl = jobsActionEmployeesApiUrl;
@@ -144,8 +146,47 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
       print('jobsActionEmployees message: ${jobsActionEmployeesModel.message}');
     }
     setState(() {
-      loading = false;
+      isLoading = false;
     });
+  }
+
+  dynamic arriveJob = [];
+
+  arrivedJob() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('empUsersCustomersId');
+    print("empUsersCustomersId = $usersCustomersId");
+    print("jobid = ${jobIndex}");
+
+    http.Response response = await http.post(
+      Uri.parse(employeeArrived),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": usersCustomersId,
+        "jobs_id":  jobIndex,
+      },
+    );
+    if (mounted) {
+      setState(() {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          arriveJob = json.decode(response.body);
+          print("arriveJob: $arriveJob");
+          if (jsonResponse['status'] == 'success') {
+            String Message = jsonResponse['message'];
+            print("message: $Message");
+          }
+          isLoading = false;
+        } else {
+          print("Response Body ::${response.body}");
+          isLoading = false;
+        }
+      });
+    }
   }
 
   @override
@@ -164,7 +205,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
     return Scaffold(
       backgroundColor: Colors.white,
       body:
-      loading
+      isLoading
           ? Center(
         child: Lottie.asset(
           "assets/images/loading.json",
@@ -475,7 +516,17 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                     children: [
                                       (getJobsEmployeesModel.data?[index].status == "Accepted")
                                           ? Padding(padding: const EdgeInsets.only(left: 28.0),
-                                        child:   smallButton2("Arrived job location", Color(0xff2B65EC), context),)
+                                        child:   GestureDetector(onTap: () async {
+                                          await arrivedJob();
+                                          if (arriveJob['status'] == 'success') {
+                                            toastSuccessMessage(arriveJob['message'], Colors.green);
+                                            Get.to(Empbottom_bar(currentIndex: 0));
+                                          }
+                                          else {
+                                            toastFailedMessage(arriveJob['message'], Colors.red);
+                                            Get.to(Empbottom_bar(currentIndex: 0));
+                                          }
+                                        },child: smallButton2("Arrived job location", Color(0xff2B65EC), context)),)
                                           : GestureDetector(
                                         onTap: () async {
 
@@ -525,7 +576,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                               //         .toString(),
                                               //   ),
                                               // );
-                                              print("false: $loading");
+                                              print("false: $isLoading");
                                             });
                                           }
                                           if (jobsActionEmployeesModel.message == "This job is already assigned to you." ||
@@ -565,7 +616,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                                           currentIndex: 0,
                                                         ),
                                                       );
-                                                      print("false: $loading");
+                                                      print("false: $isLoading");
                                                     });
                                               }
                                               if (jobsActionEmployeesModel.status !=

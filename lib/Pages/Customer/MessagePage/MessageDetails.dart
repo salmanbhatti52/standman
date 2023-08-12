@@ -185,6 +185,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
     print("sendMessageText: ${sendMessageController.text}");
     print('sendMessageApiResponse $jsonData');
     if (jsonData['message'] == 'Message sent successfully.') {
+      sendMessageController.clear();
       // toastSuccessMessage("Message sent.", Colors.green);
       print('Message sent successfully.');
       setState(() {
@@ -681,7 +682,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
                               print("sendMessage Success");
                               setState(() {
                                 loading = false;
-                                sendMessageController.clear();
+                                // sendMessageController.clear();
                               });
                               print("false: $loading");
                             });

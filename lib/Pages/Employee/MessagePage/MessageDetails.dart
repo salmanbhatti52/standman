@@ -186,6 +186,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
     print("sendMessageText: ${sendMessageController.text}");
     print('sendMessageApiResponse $jsonData');
     if (jsonData['message'] == 'Message sent successfully.') {
+      sendMessageController.clear();
       // toastSuccessMessage("Message sent successfully1.", Colors.green);
       print('Message sent successfully.');
       setState(() {
