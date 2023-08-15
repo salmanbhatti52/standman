@@ -1,16 +1,14 @@
 import 'dart:convert';
-
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
 import '../../../Utils/api_urls.dart';
 import '../../../widgets/TopBar.dart';
 import 'package:http/http.dart' as http;
-
 import '../HomePage/HomePage.dart';
+import 'EditJobs.dart';
 
 class EditJobList extends StatefulWidget {
   const EditJobList({Key? key}) : super(key: key);
@@ -118,6 +116,7 @@ class _EditJobListState extends State<EditJobList> {
               itemBuilder: (BuildContext context, int i) {
                 return GestureDetector(
                   onTap: () {
+                    Get.to(EditJob());
                     // Get.to(Customer_JobsDetails_Completed_with_QR(
                     //   oneSignalId: "${ongoingData[i]["users_customers_data"]["one_signal_id"]}",
                     //   customerId: "${ongoingData[i]["users_customers_data"]["users_customers_id"]}",

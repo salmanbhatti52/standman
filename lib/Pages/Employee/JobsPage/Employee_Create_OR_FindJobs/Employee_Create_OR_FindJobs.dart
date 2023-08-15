@@ -1,14 +1,10 @@
 import 'dart:convert';
-
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../Models/get_jobs_employees_Model.dart';
 import '../../../../Models/jobs_action_employees_Model.dart';
 import '../../../../Utils/api_urls.dart';
@@ -17,9 +13,7 @@ import '../../../../widgets/ToastMessage.dart';
 import '../../../Customer/HomePage/HomePage.dart';
 import 'package:http/http.dart' as http;
 import '../../../EmpBottombar.dart';
-import '../../HomePage/EmpJobComplete.dart';
 import '../../HomePage/EmpJobsDetails.dart';
-import 'Emp_findJobs.dart';
 
 class Emp_ceate_Or_findJobs extends StatefulWidget {
   const Emp_ceate_Or_findJobs({Key? key}) : super(key: key);
@@ -176,10 +170,10 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
           var jsonResponse = json.decode(response.body);
           arriveJob = json.decode(response.body);
           print("arriveJob: $arriveJob");
-          if (jsonResponse['status'] == 'success') {
-            String Message = jsonResponse['message'];
-            print("message: $Message");
-          }
+          // if (jsonResponse['status'] == 'success') {
+          //   String Message = jsonResponse['message'];
+          //   print("message: $Message");
+          // }
           isLoading = false;
         } else {
           print("Response Body ::${response.body}");

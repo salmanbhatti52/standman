@@ -122,10 +122,10 @@ class _EmpJobsState extends State<EmpJobs> {
           var jsonResponse = json.decode(response.body);
           arriveJob = json.decode(response.body);
           print("arriveJob: $arriveJob");
-          if (jsonResponse['status'] == 'success') {
-            String Message = jsonResponse['message'];
-            print("message: $Message");
-          }
+          // if (jsonResponse['status'] == 'success') {
+          //   String Message = jsonResponse['message'];
+          //   print("message: $Message");
+          // }
           isLoading = false;
         } else {
           print("Response Body ::${response.body}");

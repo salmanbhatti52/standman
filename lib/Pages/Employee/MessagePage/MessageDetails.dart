@@ -186,6 +186,10 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
     print("sendMessageText: ${sendMessageController.text}");
     print('sendMessageApiResponse $jsonData');
     if (jsonData['message'] == 'Message sent successfully.') {
+      sendNotification([
+        "${oneSignalID}"],
+          "StandMan send a message",
+          "StandMan");
       sendMessageController.clear();
       // toastSuccessMessage("Message sent successfully1.", Colors.green);
       print('Message sent successfully.');
@@ -751,10 +755,6 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
                               loading = true;
                             });
                             await sendMessageApiWidget();
-                            sendNotification([
-                              "${oneSignalID}"],
-                                "Hello world",
-                                "Hello");
                             Future.delayed(Duration(seconds: 2), () {
                               print("sendMessage Success Hello");
                               setState(()  {
