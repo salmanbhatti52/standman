@@ -902,7 +902,8 @@ class _WorkProofState extends State<WorkProof> {
 
                             Future.delayed(const Duration(seconds: 2), () {
                               // Get.to(LoginTabClass(login: 0,));
-                              Get.to(Emp_EmailVerification(otpVerify:  employeeSignupModel.data?.otpdetails?.otp,));
+                              Get.to(Emp_EmailVerification(otpVerify:  employeeSignupModel.data?.otpdetails?.otp,),  transition : Transition.rightToLeftWithFade,
+                                duration: Duration(milliseconds: 250),);
                               toastSuccessMessage("${employeeSignupModel.data?.message}", Colors.green);
                               setState(() {
                                 isInAsyncCall = false;

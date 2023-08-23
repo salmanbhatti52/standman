@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../widgets/MyButton.dart';
@@ -61,6 +63,75 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     userEmail = (prefs!.getString('user_email'));
     print("userId in LoginPrefs is = $usersCustomersId");
     print("userEmail in LoginPrefs is = $userEmail");
+  }
+
+
+  String? _currentAddress;
+  TextEditingController _currentAddress1 = TextEditingController();
+  Position? _currentPosition;
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Location services are disabled. Please enable the services'),
+      ));
+      return false;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Location permissions are denied'),
+        ));
+        return false;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Location permissions are permanently denied, we cannot request permissions.'),
+      ));
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<bool> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return false;
+
+    try {
+      Position position = await Geolocator.getCurrentPosition();
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    List<Placemark> placemarks =
+    await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark place = placemarks[0];
+    setState(() {
+      _currentAddress =
+      '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      _currentAddress1 = TextEditingController(
+          text:
+          " ${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}");
+      print("long : ${_currentPosition!.longitude}");
+      print("lat : ${_currentPosition!.latitude}");
+    });
   }
 
   @override
@@ -268,7 +339,9 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                       padding: const EdgeInsets.only(right: 20.0),
                       child: TextButton(
                         onPressed: () {
-                          Get.to(const CustomerForgotPassword());
+                          Get.to(const CustomerForgotPassword(),
+                            transition : Transition.rightToLeftWithFade,
+                            duration: Duration(milliseconds: 250),);
                         },
                         child: const Text(
                           "Forgot password?",
@@ -300,6 +373,19 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                           setState(() {
                             isInAsyncCall = true;
                           });
+
+                          final locationPermissionGranted = await _getCurrentPosition();
+
+                          if (!locationPermissionGranted) {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text('Failed to retrieve location'),
+                            ));
+                            setState(() {
+                              isInAsyncCall = false;
+                            });
+                            return;
+                          }
+
                           await customersignin();
 
                           if (customerSigninModel.status == "success") {
@@ -316,7 +402,9 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
                             Future.delayed(const Duration(seconds: 3), () {
                               if(customerSigninModel.data!.usersCustomersType == "Customer"){
-                                Get.offAll(bottom_bar(currentIndex: 0,));
+                                Get.offAll(bottom_bar(currentIndex: 0,),
+                                  transition : Transition.downToUp,
+                                  duration: Duration(milliseconds: 350),);
                                 toastSuccessMessage("Login Successfully", Colors.green);
                               } else {
                                 toastFailedMessage("Invalid email", Colors.red);
@@ -357,7 +445,8 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                 SizedBox(height: 15,),
                 GestureDetector(
                   onTap: (){
-                    Get.to( SignUpTabClass(signup: 0,));
+                    Get.to( SignUpTabClass(signup: 0,),  transition : Transition.upToDown,
+                      duration: Duration(milliseconds: 350),);
                   },
                   child: const Text(
                     'Register Your Account',

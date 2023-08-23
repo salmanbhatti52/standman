@@ -116,7 +116,11 @@ class _EditJobListState extends State<EditJobList> {
               itemBuilder: (BuildContext context, int i) {
                 return GestureDetector(
                   onTap: () {
-                    Get.to(EditJob());
+                    Get.to(EditJob(
+                      jobDate: EditableJobs[i]["start_date"],
+                      startTime: EditableJobs[i]["start_time"],
+                      endTime: EditableJobs[i]["end_time"],
+                    ));
                     // Get.to(Customer_JobsDetails_Completed_with_QR(
                     //   oneSignalId: "${ongoingData[i]["users_customers_data"]["one_signal_id"]}",
                     //   customerId: "${ongoingData[i]["users_customers_data"]["users_customers_id"]}",
@@ -202,7 +206,7 @@ class _EditJobListState extends State<EditJobList> {
                                       vertical: 5.0),
                                   child: Text(
                                     // 'Mar 03, 2023',
-                                    "${EditableJobs[i]['date_added']}",
+                                    "${EditableJobs[i]['start_date']}",
                                     style: TextStyle(
                                       color: Color(0xff9D9FAD),
                                       fontFamily: "Outfit",

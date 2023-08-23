@@ -99,3 +99,5 @@ String updateJobRadiusApiUrl = "${baseUrl}update_job_radius";
 String employeeArrived = "${baseUrl}employee_arrived";
 
 String customerEditableJobs = "${baseUrl}customer_editable_jobs";
+
+String checkJobsExtraTime = "${baseUrl}jobs_complete_without_extra_time";

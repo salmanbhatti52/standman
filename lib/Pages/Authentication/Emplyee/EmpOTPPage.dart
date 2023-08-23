@@ -136,7 +136,8 @@ class _EmployeeOTPPageState extends State<EmployeeOTPPage> {
                                 Get.to(() => EmployeeNewPassword(
                                   data: widget.data,
                                   email: widget.email,
-                                ));
+                                ), transition : Transition.rightToLeftWithFade,
+                                  duration: Duration(milliseconds: 250), );
                                 setState(() {
                                   isInAsyncCall = false;
                                 });

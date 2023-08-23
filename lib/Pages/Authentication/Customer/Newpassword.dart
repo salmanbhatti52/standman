@@ -317,7 +317,9 @@ class _NewPasswordState extends State<NewPassword> {
                                     toastSuccessMessage(
                                         "Password Changed Successfully", Colors.green);
                                   // Get.to(LoginTabClass(login: 0,));
-                                    Get.to(() => LoginTabClass(login: 0,));
+                                    Get.to(() => LoginTabClass(login: 0,),
+                                      transition : Transition.downToUp,
+                                      duration: Duration(milliseconds: 350), );
                                     setState(() {
                                       isInAsyncCall = false;
                                     });

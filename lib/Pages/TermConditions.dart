@@ -37,10 +37,8 @@ class _TermsandConditionsState extends State<TermsandConditions> {
     print("in 200 systemSettingApi");
     if (response.statusCode == 200) {
       systemSettingsModel = systemSettingsModelFromJson(responseString);
-      setState(() {});
       print('systemSettingsModel status: ${systemSettingsModel.status}');
-      print(
-          'getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
+      print('getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
       setState(() {
         loading = false;
       });

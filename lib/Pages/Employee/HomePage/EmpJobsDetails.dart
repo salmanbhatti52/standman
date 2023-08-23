@@ -378,7 +378,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                             onTap: () async {
                         await arrivedJob();
                         if (arriveJob['status'] == 'success') {
-                        toastSuccessMessage(arriveJob['message'], Colors.green);
+                        toastSuccessMessage("Now, Your Job has been  Started", Colors.green);
                         Get.to(Empbottom_bar(currentIndex: 0));
                         }
                         else {

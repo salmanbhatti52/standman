@@ -179,7 +179,10 @@ class _CustomerForgotPasswordState extends State<CustomerForgotPassword> {
                                 Future.delayed(const Duration(seconds: 1), () {
                                // Get.to(OTPPage(data: forgotPasswordModel.data!.otp, email:  _emailController.text.toString()
                                //        ,));
-                                  Get.to(() => OTPPage(data: forgotPasswordModel.data!.otp, email:  _emailController.text.toString()));
+                                  Get.to(() => OTPPage(data: forgotPasswordModel.data!.otp, email:  _emailController.text.toString()),
+                                    transition : Transition.rightToLeftWithFade,
+                                    duration: Duration(milliseconds: 250),
+                                  );
                                   toastSuccessMessage(forgotPasswordModel.data?.message, Colors.green);
                                   setState(() {
                                     isInAsyncCall = false;

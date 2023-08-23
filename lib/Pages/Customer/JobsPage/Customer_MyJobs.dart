@@ -197,95 +197,99 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
       // ))
           : Padding(
         padding: const EdgeInsets.symmetric(horizontal:20, vertical: 5),
-        child: Container(
-          // color: Color(0xff9D9FAD),
-          // height: MediaQuery.of(context).size.height * 0.16,
-          width: 350,
-          // height: 150,
-          child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: customerMyJobModel.data?.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    Get.to(CustomerMyJobsDetails(
-                      image: "$baseUrlImage${customerMyJobModel.data?[index].image}",
-                      jobName: customerMyJobModel.data?[index].name,
-                      totalPrice: customerMyJobModel.data?[index].totalPrice,
-                      address: customerMyJobModel.data?[index].location,
-                      completeJobTime: customerMyJobModel.data?[index].dateAdded.toString(),
-                      description: customerMyJobModel.data?[index].description == null ? "" : customerMyJobModel.data?[index].description,
-                      name: "${customerMyJobModel.data?[index].usersCustomersData?.firstName} ${customerMyJobModel.data?[index].usersCustomersData?.lastName}",
-                      profilePic: "$baseUrlImage${customerMyJobModel.data?[index].usersCustomersData?.profilePic}",
-                      status: customerMyJobModel.data![index].status,
-                    ),);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(top: 5),
-                    padding: EdgeInsets.all( 10),
-                    // width: MediaQuery.of(context).size.width * 0.51,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 0,
-                              blurRadius: 20,
-                              offset: Offset(0, 2),
-                              color: Color.fromRGBO(167, 169, 183, 0.1)),
-                        ]),
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child:
-                          // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
-                          FadeInImage(
-                            placeholder:  AssetImage("assets/images/fade_in_image.jpeg",),
-                            fit: BoxFit.fill,
-                            width: 115,
-                            height: 96,
-                            image: NetworkImage("$baseUrlImage${customerMyJobModel.data?[index].image}"),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await myJobs();
+          },
+          child: Container(
+            // color: Color(0xff9D9FAD),
+            // height: MediaQuery.of(context).size.height * 0.16,
+            width: 350,
+            // height: 150,
+            child: ListView.builder(
+                physics: AlwaysScrollableScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount: customerMyJobModel.data?.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(CustomerMyJobsDetails(
+                        image: "$baseUrlImage${customerMyJobModel.data?[index].image}",
+                        jobName: customerMyJobModel.data?[index].name,
+                        totalPrice: customerMyJobModel.data?[index].totalPrice,
+                        address: customerMyJobModel.data?[index].location,
+                        completeJobTime: customerMyJobModel.data?[index].dateAdded.toString(),
+                        description: customerMyJobModel.data?[index].description == null ? "" : customerMyJobModel.data?[index].description,
+                        name: "${customerMyJobModel.data?[index].usersCustomersData?.firstName} ${customerMyJobModel.data?[index].usersCustomersData?.lastName}",
+                        profilePic: "$baseUrlImage${customerMyJobModel.data?[index].usersCustomersData?.profilePic}",
+                        status: customerMyJobModel.data![index].status,
+                      ),);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 5),
+                      padding: EdgeInsets.all( 10),
+                      // width: MediaQuery.of(context).size.width * 0.51,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                spreadRadius: 0,
+                                blurRadius: 20,
+                                offset: Offset(0, 2),
+                                color: Color.fromRGBO(167, 169, 183, 0.1)),
+                          ]),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child:
+                            // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
+                            FadeInImage(
+                              placeholder:  AssetImage("assets/images/fade_in_image.jpeg",),
+                              fit: BoxFit.fill,
+                              width: 115,
+                              height: 96,
+                              image: NetworkImage("$baseUrlImage${customerMyJobModel.data?[index].image}"),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 15.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                // 'Eleanor Pena',
-                                "${customerMyJobModel.data?[index].name.toString()}",
-                                style: TextStyle(
-                                  color: Color(0xff000000),
-                                  fontFamily: "Outfit",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-// letterSpacing: -0.3,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5.0),
-                                child: Text(
-                                  // 'Mar 03, 2023',
-                                  "${customerMyJobModel.data?[index].dateAdded}",
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 15.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  // 'Eleanor Pena',
+                                  "${customerMyJobModel.data?[index].name.toString()}",
                                   style: TextStyle(
-                                    color: Color(0xff9D9FAD),
+                                    color: Color(0xff000000),
                                     fontFamily: "Outfit",
-                                    fontSize: 8,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w500,
 // letterSpacing: -0.3,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
-                              ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5.0),
+                                  child: Text(
+                                    // 'Mar 03, 2023',
+                                    "${customerMyJobModel.data?[index].dateAdded}",
+                                    style: TextStyle(
+                                      color: Color(0xff9D9FAD),
+                                      fontFamily: "Outfit",
+                                      fontSize: 8,
+                                      fontWeight: FontWeight.w500,
+// letterSpacing: -0.3,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
 //                                 Text(
 //                                   'Taken By',
 //                                   style: TextStyle(
@@ -300,32 +304,32 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
 //                                 SizedBox(
 //                                   height: 8,
 //                                 ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Image.asset("assets/images/g1.png"),
-                                  // CircleAvatar(
-                                  //   // radius: (screenWidth > 600) ? 90 : 70,
-                                  //   //   radius: 50,
-                                  //     backgroundColor: Colors.transparent,
-                                  //     backgroundImage: getJobsModel.data![index].usersCustomersData!.profilePic == null
-                                  //         ? Image.asset("assets/images/person2.png").image
-                                  //         : NetworkImage(baseUrlImage+getJobsModel.data![index].usersCustomersData!.profilePic)
-                                  //
-                                  // ),
-                                  SvgPicture.asset("assets/images/locationfill.svg", width: 20,),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    // width: 65,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Image.asset("assets/images/g1.png"),
+                                    // CircleAvatar(
+                                    //   // radius: (screenWidth > 600) ? 90 : 70,
+                                    //   //   radius: 50,
+                                    //     backgroundColor: Colors.transparent,
+                                    //     backgroundImage: getJobsModel.data![index].usersCustomersData!.profilePic == null
+                                    //         ? Image.asset("assets/images/person2.png").image
+                                    //         : NetworkImage(baseUrlImage+getJobsModel.data![index].usersCustomersData!.profilePic)
+                                    //
+                                    // ),
+                                    SvgPicture.asset("assets/images/locationfill.svg", width: 20,),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                      // width: 65,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
 //                                         Text(
 //                                          "${customerMyJobModel.data?[index].location}",
 //                                           style: TextStyle(
@@ -337,44 +341,44 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
 //                                           ),
 //                                           textAlign: TextAlign.left,
 //                                         ),
-                                        Container(
-                                          width: width * 0.37,
-                                          child: AutoSizeText(
-                                            "${customerMyJobModel.data?[index].location}",
-                                      style: TextStyle(
+                                          Container(
+                                            width: width * 0.37,
+                                            child: AutoSizeText(
+                                              "${customerMyJobModel.data?[index].location}",
+                                        style: TextStyle(
+                                                color: Color(0xff000000),
+                                                fontFamily: "Outfit",
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.w500,
+                                        ),
+                                              maxLines: 2,
+                                              minFontSize: 8,
+                                              maxFontSize: 8,
+                                              textAlign: TextAlign.left,
+                                              presetFontSizes: [8],
+
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Text(
+                                           "${customerMyJobModel.data?[index].dateModified}",
+                                            style: TextStyle(
                                               color: Color(0xff000000),
                                               fontFamily: "Outfit",
                                               fontSize: 8,
                                               fontWeight: FontWeight.w500,
-                                      ),
-                                            maxLines: 2,
-                                            minFontSize: 8,
-                                            maxFontSize: 8,
-                                            textAlign: TextAlign.left,
-                                            presetFontSizes: [8],
-
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        Text(
-                                         "${customerMyJobModel.data?[index].dateModified}",
-                                          style: TextStyle(
-                                            color: Color(0xff000000),
-                                            fontFamily: "Outfit",
-                                            fontSize: 8,
-                                            fontWeight: FontWeight.w500,
 // letterSpacing: -0.3,
+                                            ),
+                                            textAlign: TextAlign.left,
                                           ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
 //                           Container(
 //                             margin: EdgeInsets.only(top: 40, left: 2),
 //                             width: 67,
@@ -398,10 +402,11 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
 //                               ),
 //                             ),
 //                           ),
-                      ],
-                    ),),
-                );
-              }),
+                        ],
+                      ),),
+                  );
+                }),
+          ),
         ),
       ),
     );

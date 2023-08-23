@@ -305,7 +305,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                     onTap: () async {
                                       await arrivedJob();
                                       if (arriveJob['status'] == 'success') {
-                                        toastSuccessMessage(arriveJob['message'], Colors.green);
+                                        toastSuccessMessage("Now, Your Job has been  Started", Colors.green);
                                       Get.to(Empbottom_bar(currentIndex: 0));
                                       }
                                       else {
@@ -327,6 +327,7 @@ class _EmpJobsState extends State<EmpJobs> {
                                     });
                                     Future.delayed(
                                         const Duration(seconds: 1), () {
+                                      Get.to(Empbottom_bar(currentIndex: 0));
                                       toastSuccessMessage(
                                           "${jobsActionEmployeesModel.message}",
                                           Colors.green);

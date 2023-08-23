@@ -6,7 +6,10 @@ import '../../../widgets/MyButton.dart';
 import '../../../widgets/TopBar.dart';
 
 class EditJob extends StatefulWidget {
-  const EditJob({Key? key}) : super(key: key);
+  String? jobDate;
+  String? startTime;
+  String? endTime;
+   EditJob({Key? key, this.jobDate, this.startTime, this.endTime}) : super(key: key);
 
   @override
   State<EditJob> createState() => _EditJobState();
@@ -16,6 +19,15 @@ class _EditJobState extends State<EditJob> {
 
   final key = GlobalKey<FormState>();
   bool isInAsyncCall = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("jobDate ${widget.jobDate}");
+    print("TimeStart ${widget.startTime}");
+    print("TimeEnd ${widget.endTime}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +98,7 @@ class _EditJobState extends State<EditJob> {
                                       Text(
                                         selectedDate != null
                                             ? '${selectedDate.toString().split(' ')[0]}'
-                                            : 'Select Date',
+                                            : "${widget.jobDate}",
                                         style: TextStyle(
                                           color: selectedDate != null
                                               ? Colors.black
@@ -147,7 +159,7 @@ class _EditJobState extends State<EditJob> {
                                               size,
                                               startTime != null
                                                   ? '${formatTimeOfDay(startTime!)}'
-                                                  : 'Start Time',
+                                                  : "${widget.startTime}",
                                               // valueTime.toString(),
                                               // _selectedTime.format(context),
                                               Icons.calendar_today,
@@ -178,7 +190,7 @@ class _EditJobState extends State<EditJob> {
                                                 // ' ${_endSelectedTime.format(context)}',
                                                 endTime != null
                                                     ? '${formatTimeOfDay(endTime!)}'
-                                                    : 'End Time',
+                                                    : "${widget.endTime}",
                                                 Icons.calendar_today)),
                                       ],
                                     ),

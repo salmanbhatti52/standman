@@ -1,6 +1,8 @@
 import 'dart:convert';
-
+import 'dart:developer';
+import 'dart:io';
 import 'package:auto_size_text_pk/auto_size_text_pk.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Models/chat_start_user_Model.dart';
 import '../../../../Utils/api_urls.dart';
 import '../../../../widgets/MyButton.dart';
+import '../../../../widgets/ToastMessage.dart';
 import '../../../../widgets/TopBar.dart';
 import '../../../Employee/HomePage/EmpHomePage.dart';
 import '../../HomePage/HomePage.dart';
@@ -18,6 +21,7 @@ import '../../MessagePage/MessageDetails.dart';
 import '../Customer_QR_Scanner/QRCodeScanner.dart';
 import 'package:http/http.dart' as http;
 
+import '../Customer_Rating/Customer_JobDetails_Rating.dart';
 import '../Payment_Sheet/Customer_Payment_Sheet.dart';
 
 class Customer_JobsDetails_Completed_with_QR extends StatefulWidget {
@@ -36,12 +40,24 @@ class Customer_JobsDetails_Completed_with_QR extends StatefulWidget {
   String? employeeId;
   String? jobId;
   String? oneSignalId;
-   Customer_JobsDetails_Completed_with_QR({Key? key, this.image, this.oneSignalId,
-     this.jobName, this.totalPrice, this.address, this.jobId, this.employeeId,
-     this.completeJobTime,  this.employee_name, this.employee_profilePic, this.description, this.customerId,
-     this.profilePic, this.name,
-     this.status
-   }) : super(key: key);
+  Customer_JobsDetails_Completed_with_QR(
+      {Key? key,
+      this.image,
+      this.oneSignalId,
+      this.jobName,
+      this.totalPrice,
+      this.address,
+      this.jobId,
+      this.employeeId,
+      this.completeJobTime,
+      this.employee_name,
+      this.employee_profilePic,
+      this.description,
+      this.customerId,
+      this.profilePic,
+      this.name,
+      this.status})
+      : super(key: key);
 
   @override
   State<Customer_JobsDetails_Completed_with_QR> createState() =>
@@ -50,7 +66,6 @@ class Customer_JobsDetails_Completed_with_QR extends StatefulWidget {
 
 class _Customer_JobsDetails_Completed_with_QRState
     extends State<Customer_JobsDetails_Completed_with_QR> {
-
   ChatStartUserModel chatStartUserModel = ChatStartUserModel();
 
   bool progress = false;
@@ -65,29 +80,31 @@ class _Customer_JobsDetails_Completed_with_QRState
     print("empUsersCustomersId = $empUsersCustomersId");
 
     // try {
-      String apiUrl = userChatApiUrl;
-      print("userChatApiUrl: $apiUrl");
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        body: {
-          "requestType": "startChat",
-          "users_customers_id": usersCustomersId,
-          "other_users_customers_id": widget.customerId,
-        },
-        headers: {'Accept': 'application/json'},
-      );
-      print('${response.statusCode}');
-      print(response);
+    String apiUrl = userChatApiUrl;
+    print("userChatApiUrl: $apiUrl");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      body: {
+        "requestType": "startChat",
+        "users_customers_id": usersCustomersId,
+        "other_users_customers_id": widget.customerId,
+      },
+      headers: {'Accept': 'application/json'},
+    );
+    print('${response.statusCode}');
+    print(response);
     print("responseStartChat: $response");
     print("status Code chat: ${response.statusCode}");
     print("in 200 chat");
-      if (response.statusCode == 200) {
-        final responseString = response.body;
-        print("userChatResponse: ${responseString.toString()}");
-        chatStartUserModel = chatStartUserModelFromJson(responseString);
-        setState(() {});
-      };
+    if (response.statusCode == 200) {
+      final responseString = response.body;
+      print("userChatResponse: ${responseString.toString()}");
+      chatStartUserModel = chatStartUserModelFromJson(responseString);
+      setState(() {});
+    }
+    ;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -131,33 +148,33 @@ class _Customer_JobsDetails_Completed_with_QRState
                         Stack(
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(10),
                                 child: Image.network("${widget.image}")),
                             Positioned(
-                                bottom: 10,
-                                left: 10,
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 40, left: 2),
-                                  width: 73,
-                                  height: 19,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffFFDACC),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "${widget.status}",
-                                      style: TextStyle(
-                                        color: Color(0xffFF4700),
-                                        fontFamily: "Outfit",
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w400,
+                              bottom: 10,
+                              left: 10,
+                              child: Container(
+                                margin: EdgeInsets.only(top: 40, left: 2),
+                                width: 73,
+                                height: 19,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffFFDACC),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "${widget.status}",
+                                    style: TextStyle(
+                                      color: Color(0xffFF4700),
+                                      fontFamily: "Outfit",
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
 // letterSpacing: -0.3,
-                                      ),
-                                      textAlign: TextAlign.left,
                                     ),
+                                    textAlign: TextAlign.left,
                                   ),
                                 ),
+                              ),
                             ),
                           ],
                         ),
@@ -167,7 +184,7 @@ class _Customer_JobsDetails_Completed_with_QRState
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             Text(
+                            Text(
                               "${widget.jobName}",
                               style: TextStyle(
                                 color: Color.fromRGBO(0, 0, 0, 1),
@@ -178,7 +195,7 @@ class _Customer_JobsDetails_Completed_with_QRState
                               ),
                               textAlign: TextAlign.left,
                             ),
-                             Text(
+                            Text(
                               "\$${widget.totalPrice}",
                               style: TextStyle(
                                 color: Color(0xff2B65EC),
@@ -286,7 +303,12 @@ class _Customer_JobsDetails_Completed_with_QRState
                                 Container(
                                   width: 50,
                                   height: 50,
-                                  child: ClipRRect(borderRadius: BorderRadius.circular(25),child: Image.network("${widget.profilePic}", fit: BoxFit.fill,)),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(25),
+                                      child: Image.network(
+                                        "${widget.profilePic}",
+                                        fit: BoxFit.fill,
+                                      )),
                                 ),
                                 SizedBox(
                                   width: 5,
@@ -336,15 +358,18 @@ class _Customer_JobsDetails_Completed_with_QRState
                             ),
                             GestureDetector(
                                 onTap: () async {
-                                    await chatStartUser();
-                                    Get.to(MessagesDetails(
+                                  await chatStartUser();
+                                  Get.to(
+                                    MessagesDetails(
                                       usersCustomersId: usersCustomersId,
                                       oneSignalID: widget.oneSignalId,
-                                      other_users_customers_id: widget.employeeId,
-                                      img: widget.employee_profilePic.toString(),
+                                      other_users_customers_id:
+                                          widget.employeeId,
+                                      img:
+                                          widget.employee_profilePic.toString(),
                                       name: widget.employee_name.toString(),
                                     ),
-                                    );
+                                  );
                                 },
                                 child: smallButton(
                                     "Chat", Color(0xff2B65EC), context)),
@@ -354,41 +379,52 @@ class _Customer_JobsDetails_Completed_with_QRState
                           height: height * 0.02,
                         ),
                         GestureDetector(
-                            onTap: ()  async {
+                            onTap: () async {
+                              // DateTime buttonClickTime = DateTime.now();
+                              Get.to(CustomerWithoutExtraTime(
+                                employeeId: widget.employeeId,
+                                customerId: widget.customerId,
+                                completeJobTime: widget.completeJobTime,
+                                description: widget.description,
+                                jobId: widget.jobId,
+                                address: widget.address,
+                                totalPrice: widget.totalPrice,
+                                jobName: widget.jobName,
+                              ));
 
-                              DateTime buttonClickTime = DateTime.now();
-                              String? formattedTime = DateFormat('HH:mm').format(buttonClickTime); // Format the time
-                              print("buttonClickTime ${formattedTime}");
-                               // scanQRCode();
-                              // await makePayment();
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => QRScannerPage()),
+
+                              // String? formattedTime = DateFormat('HH:mm').format(buttonClickTime); // Format the time
+                              // print("buttonClickTime ${formattedTime}");
+                              //  // scanQRCode();
+                              // // await makePayment();
+                              // // Navigator.push(
+                              // //   context,
+                              // //   MaterialPageRoute(builder: (context) => QRScannerPage()),
+                              // // );
+                              //  Get.to(
+                              //
+                              //      CustomerQRCodeScanner(
+                              //    customerId: widget.customerId,
+                              //    employeeId: widget.employeeId,
+                              //    jobId: "${widget.jobId}",
+                              //    jobName: widget.jobName,
+                              //    buttonClickTime: "${formattedTime}",
+                              //  ),
+                              // Payment(
+                              //   ctx: context
+                              // ),
                               // );
-                               Get.to(
-
-                                   CustomerQRCodeScanner(
-                                 customerId: widget.customerId,
-                                 employeeId: widget.employeeId,
-                                 jobId: "${widget.jobId}",
-                                 jobName: widget.jobName,
-                                 buttonClickTime: "${formattedTime}",
-                               ),
-                                 // Payment(
-                                 //   ctx: context
-                                 // ),
-                               );
-                               // Future.delayed(const Duration(seconds: 3), () {
-                               //   if(getResult == "${widget.employeeId}${widget.jobId}${widget.jobName}"){
-                               //     toastSuccessMessage("Success scan QR Code.", Colors.red);
-                               //     Payment(ctx: context);
-                               //   } else {
-                               //     toastFailedMessage("Failed to scan QR Code.", Colors.red);
-                               //   }
-                               // });
+                              // Future.delayed(const Duration(seconds: 3), () {
+                              //   if(getResult == "${widget.employeeId}${widget.jobId}${widget.jobName}"){
+                              //     toastSuccessMessage("Success scan QR Code.", Colors.red);
+                              //     Payment(ctx: context);
+                              //   } else {
+                              //     toastFailedMessage("Failed to scan QR Code.", Colors.red);
+                              //   }
+                              // });
                             },
-                            child: mainButton("Complete Job using QR",
-                                Color(0xff2B65EC), context)),
+                            child: progress ? loadingBar(context): mainButton(
+                                "Complete Job", Color(0xff2B65EC), context)),
                         SizedBox(
                           height: height * 0.02,
                         ),
@@ -438,92 +474,277 @@ class _Customer_JobsDetails_Completed_with_QRState
   }
 }
 
-class QRScannerPage extends StatefulWidget {
+class CustomerWithoutExtraTime extends StatefulWidget {
+  String? customerId;
+  String? employeeId;
+  String? jobId;
+  String? jobName;
+  String? totalPrice;
+  String? completeJobTime;
+  String? description;
+  String? address;
+   CustomerWithoutExtraTime({Key? key, this.address, this.description, this.completeJobTime, this.totalPrice,  this.customerId ,this.jobName, this.employeeId, this.jobId,}) : super(key: key);
+
   @override
-  _QRScannerPageState createState() => _QRScannerPageState();
+  State<StatefulWidget> createState() => _CustomerWithoutExtraTimeState();
 }
 
-class _QRScannerPageState extends State<QRScannerPage>
-    with SingleTickerProviderStateMixin {
+class _CustomerWithoutExtraTimeState extends State<CustomerWithoutExtraTime> {
+  Barcode? result;
+  QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-
   @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 1),
-    )..repeat(reverse: true);
-
-    _animation = Tween<double>(begin: -1.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
-    );
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller!.pauseCamera();
+    }
+    controller!.resumeCamera();
   }
 
   @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("CustomerId, jobId, jobName ${widget.customerId} ${widget.jobId} ${widget.jobName}");
+    Future.delayed(const Duration(seconds: 4), () {
+      print("resultssss ${result?.code}");
+      if(result?.code == "${widget.customerId} ${widget.jobId} ${widget.jobName}" ){
+
+        controller?.pauseCamera();
+
+        checkJobStatus();
+        // makePayment();
+
+      } else if(result?.code != "${widget.customerId} ${widget.jobId} ${widget.jobName}" ){
+        toastFailedMessage("Invalid Scan", Colors.red);
+      }else {
+        toastFailedMessage("Failed to Scan", Colors.red);
+      }
+    }
+    );
+  }
+
+  bool progress = false;
+  List checkJobsTime = [];
+
+  checkJobStatus() async {
+    setState(() {
+      progress = true;
+    });
+
+    String apiUrl = checkJobsExtraTime;
+    print("Url $apiUrl");
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {"Accept": "application/json"},
+      body: {
+        "users_customers_id": widget.customerId.toString(),
+        "employee_users_customers_id": widget.employeeId.toString(),
+        "jobs_id": widget.jobId,
+      },
+    );
+
+    if (mounted) {
+      setState(
+            () {
+          if (response.statusCode == 200) {
+            var jsonResponse = json.decode(response.body);
+
+            if (jsonResponse['status'] == "success") {
+              // Display the success message
+              // String successMessage = jsonResponse['message'];
+              print("Success Message");
+              // toastSuccessMessage(jsonResponse['message'], Colors.green);
+              Get.to(Customer_Rating(
+                jobName: "${widget.jobName}",
+                totalPrice: "${widget.totalPrice}",
+                address: "${widget.address}",
+                jobId: "${widget.jobId}",
+                completeJobTime: "${widget.completeJobTime}",
+                description: "${widget.description != null ? {widget.description} : ""}",
+                status: "Completed",
+                customerId: "${widget.customerId}",
+                employeeId: "${widget.employeeId}",
+              ));
+
+              // If there's additional data that you need to process, you can do it here
+              if (jsonResponse['data'] != null &&
+                  jsonResponse['data'] is List<dynamic>) {
+                checkJobsExtraTime = jsonResponse['data'];
+                print("checkJobsExtraTime: $checkJobsExtraTime");
+                progress = false;
+              } else {
+                print("Invalid 'data' value");
+                progress = false;
+              }
+            } else if (jsonResponse['status'] == "error") {
+              // Handle error status if needed
+              // String errorMessage = jsonResponse['message'];
+              print("Error Message");
+              progress = false;
+              DateTime buttonClickTime = DateTime.now();
+              String? formattedTime = DateFormat('HH:mm')
+                  .format(buttonClickTime); // Format the time
+              print("buttonClickTime ${formattedTime}");
+              Get.to(
+                CustomerQRCodeScanner(
+                  customerId: widget.customerId,
+                  employeeId: widget.employeeId,
+                  jobId: "${widget.jobId}",
+                  jobName: widget.jobName,
+                  buttonClickTime: "${formattedTime}",
+                ),
+              );
+              // Get.to())}
+            } else {
+              print("Response Body :: ${response.body}");
+              progress = false;
+            }
+          }
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          QRView(
-            key: qrKey,
-            onQRViewCreated: _onQRViewCreated,
-          ),
-          Center(
-            child: Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.white,
-                  width: 2,
-                ),
-              ),
-            ),
-          ),
-          AnimatedBuilder(
-            animation: _animationController,
-            builder: (BuildContext context, Widget? child) { // Update the parameter type to Widget?
-              return Positioned(
-                top: MediaQuery.of(context).size.height * 0.5 +
-                    (_animation.value * (MediaQuery.of(context).size.height * 0.15)),
-                left: MediaQuery.of(context).size.height * 0.09 ,
-                right: MediaQuery.of(context).size.height * 0.09 ,
-                child: Container(
-                  height: 2,
-                  color: Colors.red,
-                ),
-              );
-            },
-          ),
+      body: Column(
+        children: <Widget>[
+          Expanded(flex: 4, child: _buildQrView(context)),
+          // Expanded(
+          //   flex: 1,
+          //   child: FittedBox(
+          //     fit: BoxFit.contain,
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //       children: <Widget>[
+          //         if (result != null)
+          //           Text(
+          //               'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+          //         else
+          //           const Text('Scan a code'),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           crossAxisAlignment: CrossAxisAlignment.center,
+          //           children: <Widget>[
+          //             Container(
+          //               margin: const EdgeInsets.all(8),
+          //               child: ElevatedButton(
+          //                   onPressed: () async {
+          //                     await controller?.toggleFlash();
+          //                     setState(() {});
+          //                   },
+          //                   child: FutureBuilder(
+          //                     future: controller?.getFlashStatus(),
+          //                     builder: (context, snapshot) {
+          //                       return Text('Flash: ${snapshot.data}');
+          //                     },
+          //                   )),
+          //             ),
+          //             Container(
+          //               margin: const EdgeInsets.all(8),
+          //               child: ElevatedButton(
+          //                   onPressed: () async {
+          //                     await controller?.flipCamera();
+          //                     setState(() {});
+          //                   },
+          //                   child: FutureBuilder(
+          //                     future: controller?.getCameraInfo(),
+          //                     builder: (context, snapshot) {
+          //                       if (snapshot.data != null) {
+          //                         return Text(
+          //                             'Camera facing ${describeEnum(snapshot.data!)}');
+          //                       } else {
+          //                         return const Text('loading');
+          //                       }
+          //                     },
+          //                   )),
+          //             )
+          //           ],
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           crossAxisAlignment: CrossAxisAlignment.center,
+          //           children: <Widget>[
+          //             Container(
+          //               margin: const EdgeInsets.all(8),
+          //               child: ElevatedButton(
+          //                 onPressed: () async {
+          //                   await controller?.pauseCamera();
+          //                 },
+          //                 child: const Text('pause',
+          //                     style: TextStyle(fontSize: 20)),
+          //               ),
+          //             ),
+          //             Container(
+          //               margin: const EdgeInsets.all(8),
+          //               child: ElevatedButton(
+          //                 onPressed: () async {
+          //                   await controller?.resumeCamera();
+          //                 },
+          //                 child: const Text('resume',
+          //                     style: TextStyle(fontSize: 20)),
+          //               ),
+          //             )
+          //           ],
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
   }
 
+  Widget _buildQrView(BuildContext context) {
+    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+        MediaQuery.of(context).size.height < 400)
+        ? 250.0
+        : 500.0;
+    // To ensure the Scanner view is properly sizes after rotation
+    // we need to listen for Flutter SizeChanged notification and update controller
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: _onQRViewCreated,
+      overlay: QrScannerOverlayShape(
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: scanArea),
+      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    );
+  }
+
   void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+    });
     controller.scannedDataStream.listen((scanData) {
-      // Handle the scanned QR code data here
-      print(scanData);
+      setState(() {
+        result = scanData;
+      });
     });
   }
+
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+
 }
-
-
-
-
-
-

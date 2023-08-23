@@ -257,7 +257,9 @@ class _EMp_UploadPhotoState extends State<EMp_UploadPhoto> {
                                   selectedCountryCode: widget.selectedCountryCode.toString(),
                                   password: widget.password,
                                   uploadID: base64ID,
-                                ));
+                                ), transition : Transition.rightToLeftWithFade,
+                                  duration: Duration(milliseconds: 250),
+                                );
                             }
                           }
                         }

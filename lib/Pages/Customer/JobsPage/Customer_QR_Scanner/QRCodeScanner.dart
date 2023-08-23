@@ -132,7 +132,7 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
     //   print('Error in jobsExtraAmountWidget: ${e.toString()}');
     // }
 
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       Payment(
         ctx: context,
         Price: jobsExtraAmount.message?.payment,
@@ -507,7 +507,6 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
     // TODO: implement initState
     super.initState();
     print("CustomerId, jobId, jobName ${widget.customerId} ${widget.jobId} ${widget.jobName}");
-      Future.delayed(const Duration(seconds: 5), ()  {
         print("resultssss ${result?.code}");
       if(result?.code == "${widget.customerId} ${widget.jobId} ${widget.jobName}" ){
 
@@ -516,10 +515,11 @@ class _CustomerQRCodeScannerState extends State<CustomerQRCodeScanner> {
         jobsExtraAmountWidget();
         // makePayment();
 
-      } else {
+      } else if(result?.code != "${widget.customerId} ${widget.jobId} ${widget.jobName}" ){
+        toastFailedMessage("Invalid Scan", Colors.red);
+      }else {
         toastFailedMessage("Failed to Scan", Colors.red);
       }
-      });
   }
 
 

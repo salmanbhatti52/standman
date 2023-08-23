@@ -755,7 +755,7 @@ Payment({
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3.0),
                     child: Text(
-                      'Service fee - 10% from the "Customer" and "StandMan"',
+                      'Service fee - 10%',
                       style: TextStyle(
                         color: Color(0xff000000),
                         fontFamily: "Outfit",

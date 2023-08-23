@@ -267,7 +267,7 @@ class _WalletPageState extends State<WalletPage> {
                       ),
                     ),
                     Container(
-                      height: height * 0.531,
+                      height: height * 0.536,
                       child: loading
                           ? Center(
                         child: Lottie.asset(

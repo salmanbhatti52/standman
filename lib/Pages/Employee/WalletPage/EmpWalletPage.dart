@@ -193,7 +193,7 @@ class _EmpWalletPageState extends State<EmpWalletPage> {
             ),
             Container(
               width: width,
-              height: height * 0.401,
+              height: height * 0.4045,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(

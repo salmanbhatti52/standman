@@ -163,176 +163,181 @@ class _EmpPreviousJobListState extends State<EmpPreviousJobList> {
     )):
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-      child: Container(
-        // color: Color(0xff9D9FAD),
-        // height: MediaQuery.of(context).size.height * 0.16,
-        width: 358,
-        // height: 150,
-        child: ListView.builder(
-            physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: previousData.length,
-            itemBuilder: (BuildContext context, int i) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                child: GestureDetector(
-                  onTap: (){
-                    Get.to(EMp_Job_Completed(
-                      one_signal_id: "${previousData[i]['users_customers_data']["one_signal_id"]}",
-                      ratings: "${previousData[i]['jobs_ratings'] != null && previousData[i]['jobs_ratings']['rating'] != null ? previousData[i]['jobs_ratings']['rating'] : '--'}",
-                      myJobId: "${previousData[i]['jobs_id']}",
-                      image:"$baseUrlImage${previousData[i]['image']}",
-                      jobName: "${previousData[i]['name']}",
-                      totalPrice: "${previousData[i]['total_price']}",
-                      address: "${previousData[i]['location']}",
-                      completeJobTime: "${previousData[i]['date_added']}",
-                      description: "${previousData[i]['description'] != null ? {previousData[i]['description']} : ""}",
-                      name: previousData[i]['users_customers_data'] != null && previousData[i]['users_customers_data']['first_name'] != null ? "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}" : "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}",
-                      profilePic: "$baseUrlImage${previousData[i]['users_customers_data'] != null && previousData[i]['users_customers_data']['profile_pic'] != null ? previousData[i]['users_customers_data']['profile_pic'] : previousData[i]['users_customers_data']['profile_pic']}",
-                      customerId: "${previousData[i]['users_customers_data']['users_customers_id']}",
-                      // employeeID: "${previousData[i]['employee_data']['users_customers_id']}",
-                      status: "${previousData[i]['status']}",
-                    ));
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      // color: Colors.green,
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 0,
-                              blurRadius: 20,
-                              offset: Offset(0 , 2),
-                              color: Color.fromRGBO(167, 169, 183, 0.1)
-                          ),
-                        ]
-                    ),
-                    child: Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: FadeInImage(
-                              placeholder: AssetImage(
-                                "assets/images/fade_in_image.jpeg",
-                              ),
-                              fit: BoxFit.fill,
-                              width: 140,
-                              height: 96,
-                              image: NetworkImage(
-                                  "$baseUrlImage${previousData[i]['image']}"),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          await getEmployeePreviousJobs();
+        },
+        child: Container(
+          // color: Color(0xff9D9FAD),
+          // height: MediaQuery.of(context).size.height * 0.16,
+          width: 358,
+          // height: 150,
+          child: ListView.builder(
+              physics: AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: previousData.length,
+              itemBuilder: (BuildContext context, int i) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  child: GestureDetector(
+                    onTap: (){
+                      Get.to(EMp_Job_Completed(
+                        one_signal_id: "${previousData[i]['users_customers_data']["one_signal_id"]}",
+                        ratings: "${previousData[i]['jobs_ratings'] != null && previousData[i]['jobs_ratings']['rating'] != null ? previousData[i]['jobs_ratings']['rating'] : '--'}",
+                        myJobId: "${previousData[i]['jobs_id']}",
+                        image:"$baseUrlImage${previousData[i]['image']}",
+                        jobName: "${previousData[i]['name']}",
+                        totalPrice: "${previousData[i]['total_price']}",
+                        address: "${previousData[i]['location']}",
+                        completeJobTime: "${previousData[i]['date_added']}",
+                        description: "${previousData[i]['description'] != null ? {previousData[i]['description']} : ""}",
+                        name: previousData[i]['users_customers_data'] != null && previousData[i]['users_customers_data']['first_name'] != null ? "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}" : "${previousData[i]['users_customers_data']['first_name']} ${previousData[i]['users_customers_data']['last_name']}",
+                        profilePic: "$baseUrlImage${previousData[i]['users_customers_data'] != null && previousData[i]['users_customers_data']['profile_pic'] != null ? previousData[i]['users_customers_data']['profile_pic'] : previousData[i]['users_customers_data']['profile_pic']}",
+                        customerId: "${previousData[i]['users_customers_data']['users_customers_id']}",
+                        // employeeID: "${previousData[i]['employee_data']['users_customers_id']}",
+                        status: "${previousData[i]['status']}",
+                      ));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // color: Colors.green,
+                          boxShadow: [
+                            BoxShadow(
+                                spreadRadius: 0,
+                                blurRadius: 20,
+                                offset: Offset(0 , 2),
+                                color: Color.fromRGBO(167, 169, 183, 0.1)
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  previousData[i]['name'],
-                                  style: TextStyle(
-                                    color: Color(0xff000000),
-                                    fontFamily: "Outfit",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    // letterSpacing: -0.3,
-                                  ),
-                                  textAlign: TextAlign.left,
+                          ]
+                      ),
+                      child: Card(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: FadeInImage(
+                                placeholder: AssetImage(
+                                  "assets/images/fade_in_image.jpeg",
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 0.0),
-                                  child: Text(
-                                    previousData[i]['date_added'],
+                                fit: BoxFit.fill,
+                                width: 140,
+                                height: 96,
+                                image: NetworkImage(
+                                    "$baseUrlImage${previousData[i]['image']}"),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    previousData[i]['name'],
                                     style: TextStyle(
-                                      color: Color(0xff9D9FAD),
+                                      color: Color(0xff000000),
                                       fontFamily: "Outfit",
-                                      fontSize: 8,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                       // letterSpacing: -0.3,
                                     ),
                                     textAlign: TextAlign.left,
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/images/locationfill.svg',
-                                    ),
-                                    // Text(
-                                    //   "${getPreviousJobsEmployeeModel.data?[index].location} ",
-                                    //   style: const TextStyle(
-                                    //     color: Color(0xff9D9FAD),
-                                    //     fontFamily: "Outfit",
-                                    //     fontWeight: FontWeight.w400,
-                                    //     fontSize: 8,
-                                    //   ),
-                                    // ),
-                                    Container(
-                                      width: Get.width * 0.37,
-                                      child: AutoSizeText(
-                                        previousData[i]['location'],
-                                        style: TextStyle(
-                                          color: Color(0xff9D9FAD),
-                                          fontFamily: "Outfit",
-                                          fontSize: 8,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                        maxLines: 2,
-                                        minFontSize: 8,
-                                        maxFontSize: 8,
-                                        textAlign: TextAlign.left,
-                                        presetFontSizes: [8],
-
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                 Text(
-                                   "\$${previousData[i]['price']}",
-                                  style: TextStyle(
-                                    color: Color(0xff2B65EC),
-                                    fontFamily: "Outfit",
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Container(
-                                  width: 67,
-                                  height: 19,
-                                  decoration: BoxDecoration(
-                                    color:Color(0xffE9FFE7),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Center(
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 0.0),
                                     child: Text(
-                                      previousData[i]['status'],
+                                      previousData[i]['date_added'],
                                       style: TextStyle(
-                                        color:Color(0xff10C900),
+                                        color: Color(0xff9D9FAD),
                                         fontFamily: "Outfit",
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w400,
-// letterSpacing: -0.3,
+                                        fontSize: 8,
+                                        fontWeight: FontWeight.w500,
+                                        // letterSpacing: -0.3,
                                       ),
                                       textAlign: TextAlign.left,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/images/locationfill.svg',
+                                      ),
+                                      // Text(
+                                      //   "${getPreviousJobsEmployeeModel.data?[index].location} ",
+                                      //   style: const TextStyle(
+                                      //     color: Color(0xff9D9FAD),
+                                      //     fontFamily: "Outfit",
+                                      //     fontWeight: FontWeight.w400,
+                                      //     fontSize: 8,
+                                      //   ),
+                                      // ),
+                                      Container(
+                                        width: Get.width * 0.37,
+                                        child: AutoSizeText(
+                                          previousData[i]['location'],
+                                          style: TextStyle(
+                                            color: Color(0xff9D9FAD),
+                                            fontFamily: "Outfit",
+                                            fontSize: 8,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          maxLines: 2,
+                                          minFontSize: 8,
+                                          maxFontSize: 8,
+                                          textAlign: TextAlign.left,
+                                          presetFontSizes: [8],
+
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                   Text(
+                                     "\$${previousData[i]['price']}",
+                                    style: TextStyle(
+                                      color: Color(0xff2B65EC),
+                                      fontFamily: "Outfit",
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  Container(
+                                    width: 67,
+                                    height: 19,
+                                    decoration: BoxDecoration(
+                                      color:Color(0xffE9FFE7),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        previousData[i]['status'],
+                                        style: TextStyle(
+                                          color:Color(0xff10C900),
+                                          fontFamily: "Outfit",
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+// letterSpacing: -0.3,
+                                        ),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            }),
+                );
+              }),
+        ),
       ),
     );
   }

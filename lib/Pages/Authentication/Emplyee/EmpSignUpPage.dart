@@ -721,7 +721,8 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                           padding: EdgeInsets.only(right: width * 0.15, top: 10),
                           child: GestureDetector(
                             onTap: (){
-                              Get.to(TermsandConditions());
+                              Get.to(TermsandConditions(), transition : Transition.upToDown,
+                                duration: Duration(milliseconds: 350),);
                             },
                             child: RichText(
                               text: const TextSpan(
@@ -790,6 +791,8 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                       selectedCountryCode: countryCode.toString(),
                                       password: passwordController.text.toString(),
                                     ),
+                                      transition : Transition.rightToLeftWithFade,
+                                      duration: Duration(milliseconds: 250),
                                     );
                                 }
                               }
@@ -828,7 +831,10 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Get.to(LoginTabClass(login: 1,));
+                                  Get.to(LoginTabClass(login: 1,),
+                                    transition : Transition.upToDown,
+                                    duration: Duration(milliseconds: 350),
+                                  );
                                 },
                                 child: const Text(
                                   'Sign In here',
