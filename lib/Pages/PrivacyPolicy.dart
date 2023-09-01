@@ -4,7 +4,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../Models/system_settings_Model.dart';
 import '../Utils/api_urls.dart';
 import 'package:http/http.dart' as http;
-
 import '../widgets/TopBar.dart';
 
 class PrivacyPolicy extends StatefulWidget {

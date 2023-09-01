@@ -1,18 +1,17 @@
-import 'package:device_preview/device_preview.dart';
+import 'Utils/api_urls.dart';
+import 'package:get/get.dart';
+import 'Pages/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'Pages/Authentication/Customer/google_signin.dart';
-import 'Pages/SplashScreen.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'Utils/api_urls.dart';
 import 'Utils/remove_scroll_glow.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'Pages/Authentication/Customer/google_signin.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// Define the function in the same file
 bool status = false;
 bool status2 = false;
 bool statuss = false;
@@ -35,6 +34,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await initializeStatusValuesCustomer();
   await initializeStatusValuesEmployee();
+  await OneSignal.shared.setAppId(appID);
   Stripe.publishableKey =
       'pk_test_51MV6RqJ1o3iGht9r3wtt4ZaiaiDqA0hcF03p9Kj0FhU3qgPnZI03BKzFxTniYSGjGklLrRqIhEcM5O67OWiJBEyS00xupHP2IW';
   runApp(MyApp());
@@ -51,22 +51,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    super.initState();
-    configOneSignal();
-  }
-
-  void configOneSignal() {
-    OneSignal.shared.setAppId(appID);
-    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  }
-
-  @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark),
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
     );
     return ChangeNotifierProvider(
       create: (_) => GoogleSignInProvider(),
@@ -77,9 +67,9 @@ class _MyAppState extends State<MyApp> {
         builder: (context, child) {
           DevicePreview.appBuilder;
           return MediaQuery(
-              data:
-                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-              child: child!);
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: child!,
+          );
         },
         debugShowCheckedModeBanner: false,
         title: 'StandMan',

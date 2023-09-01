@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../Models/system_settings_Model.dart';
 import '../Utils/api_urls.dart';
 import '../widgets/TopBar.dart';
+import 'package:lottie/lottie.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../Models/system_settings_Model.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class TermsandConditions extends StatefulWidget {
   const TermsandConditions({Key? key}) : super(key: key);
@@ -15,11 +15,9 @@ class TermsandConditions extends StatefulWidget {
 
 class _TermsandConditionsState extends State<TermsandConditions> {
   SystemSettingsModel systemSettingsModel = SystemSettingsModel();
-
   bool loading = false;
 
   systemSettingApi() async {
-    // try {
     setState(() {
       loading = true;
     });
@@ -32,18 +30,18 @@ class _TermsandConditionsState extends State<TermsandConditions> {
       },
     );
     final responseString = response.body;
-    print("responsesystemSettingApi $responseString");
+    print("responseSettingApi $responseString");
     print("status Code systemSettingApi: ${response.statusCode}");
     print("in 200 systemSettingApi");
     if (response.statusCode == 200) {
       systemSettingsModel = systemSettingsModelFromJson(responseString);
       print('systemSettingsModel status: ${systemSettingsModel.status}');
-      print('getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
+      print(
+          'getAllSignaturesModel length: ${systemSettingsModel.data!.length}');
       setState(() {
         loading = false;
       });
     }
-
   }
 
   @override
@@ -56,40 +54,20 @@ class _TermsandConditionsState extends State<TermsandConditions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: StandManAppBar1(title: "Term & Conditions",bgcolor: Colors.white, titlecolor: Colors.black, iconcolor: Colors.black,),
+      appBar: StandManAppBar1(
+        title: "Term & Conditions",
+        bgcolor: Colors.white,
+        titlecolor: Colors.black,
+        iconcolor: Colors.black,
+      ),
       backgroundColor: Colors.white,
-      // drawer: MyDrawer(),
-      // appBar: AppBar(
-      //   toolbarHeight: height * 0.10,
-      //   backgroundColor: Color(0xfffffff),
-      //   elevation: 0,
-      //   centerTitle: true,
-      //   iconTheme: IconThemeData(
-      //     color: Colors.black,
-      //   ),
-      //   title: Padding(
-      //     padding: const EdgeInsets.only(top: 0.0),
-      //     child: Text(
-      //       // "${systemSettingsModel.data?[17].type}",
-      //       "Terms & Conditions",
-      //       style: TextStyle(
-      //         color: Color(0xff000000),
-      //         fontFamily: "Outfit",
-      //         fontSize: 18,
-      //         fontWeight: FontWeight.w500,
-      //         // letterSpacing: -0.3,
-      //       ),
-      //       textAlign: TextAlign.center,
-      //     ),
-      //   ),
-      // ),
       body: loading
           ? Center(
-        child: Lottie.asset(
-          "assets/images/loading.json",
-          height: 50,
-        ),
-      )
+              child: Lottie.asset(
+                "assets/images/loading.json",
+                height: 50,
+              ),
+            )
           : systemSettingsModel.data == null
               ? Center(
                   child: Text("No history"),
@@ -110,15 +88,6 @@ class _TermsandConditionsState extends State<TermsandConditions> {
                           children: [
                             Text(
                               "${systemSettingsModel.data?[17].description}",
-                              // "Pellentesque suscipit fringilla libero eu ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus."
-                              //
-                              //     "Pellentesque suscipit fringilla lib\n\nPellentesque suscipit fringilla libero eu ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus."
-                              //
-                              //     "Pellentesque suscipit fringilla lib\n\nero eu ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus."
-                              //
-                              //     "Pellentesque suscipit fringilla libero eu ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus.Pellentesque suscipit fringilla libero eu ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus."
-                              //
-                              //     "Pellentesque suscipit fringilla libero eu\n\n ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus.Pellentesque suscipit fringilla libero eu ullamcorper. Cras risus eros, faucibus sit amet augue id, tempus pellentesque eros. In imperdiet tristique tincidunt. Integer lobortis lorem lorem, id accumsan arcu tempor id. Suspendisse vitae accumsan massa. Duis porttitor, mauris et faucibus sollicitudin, tellus sem tristique risus, nec gravida velit diam aliquet enim. Curabitur eleifend ligula quis convallis interdum. Sed vitae condimentum urna, nec suscipit purus.",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: "Outfit",

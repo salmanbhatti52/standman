@@ -20,7 +20,8 @@ Widget mainButton(
               offset: Offset(1, 10),
               color: Color.fromRGBO(7, 1, 87, 0.1),
             ),
-          ]),
+          ],
+      ),
       child: Center(
         child: Text(
           text,

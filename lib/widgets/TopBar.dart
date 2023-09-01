@@ -30,9 +30,6 @@ class TopBar extends StatelessWidget {
             imagePath,
           ),
         ),
-        // SizedBox(
-        //   width: width,
-        // ),
         Text(
           text,
           style: TextStyle(
@@ -63,9 +60,6 @@ Widget Bar(String text, String imagePath, Color color, Color color1,
           color: color,
         ),
       ),
-      // SizedBox(
-      //   width: width,
-      // ),
       Text(
         text,
         style: TextStyle(
@@ -214,9 +208,8 @@ class MyPreferredSizeAppBar extends StatelessWidget
   }
 }
 
-
-Widget paymentBar(String imagePath, Color color, String text, Color color1, String imagePath2,
-    Function onTapped , Function onTapped1) {
+Widget paymentBar(String imagePath, Color color, String text, Color color1,
+    String imagePath2, Function onTapped, Function onTapped1) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [

@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../Pages/Drawer.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:flutter/cupertino.dart';
 
 class AppBarr extends StatelessWidget {
   const AppBarr({Key? key, required this.text, required this.imagePath})

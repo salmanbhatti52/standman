@@ -373,7 +373,7 @@ class _JobDetailsState extends State<JobDetails> {
                                   keyboardType: TextInputType.name,
                                   decoration: InputDecoration(
                                     // contentPadding: const EdgeInsets.only(top: 12.0),
-                                    hintText: "Name your job post",
+                                    hintText: "Name your job post (Optional)",
                                     hintStyle: const TextStyle(
                                       color: Color.fromRGBO(167, 169, 183, 1),
                                       fontFamily: "Outfit",
