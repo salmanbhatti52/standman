@@ -171,7 +171,7 @@ class _CustomerOnGoingJobListState extends State<CustomerOnGoingJobList> {
                 itemBuilder: (BuildContext context, int i) {
                   return GestureDetector(
                     onTap: () {
-                      Get.to(Customer_JobsDetails_Completed_with_QR(
+                      Get.to(  () => Customer_JobsDetails_Completed_with_QR(
                         oneSignalId: "${ongoingData[i]["users_customers_data"]["one_signal_id"]}",
                         customerId: "${ongoingData[i]["users_customers_data"]["users_customers_id"]}",
                         employeeId: "${ongoingData[i]["users_employee_data"]["users_customers_id"]}",

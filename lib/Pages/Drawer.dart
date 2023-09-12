@@ -293,7 +293,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(bottom_bar(currentIndex: 0,));
+                Get.to(  () => bottom_bar(currentIndex: 0,));
                 // Get.back();
               },
               child: Padding(
@@ -314,7 +314,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(NotificationPage());
+                Get.to(  () => NotificationPage());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),
@@ -334,7 +334,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(PrivacyPolicy());
+                Get.to(  () => PrivacyPolicy());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),
@@ -354,7 +354,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(TermsandConditions());
+                Get.to(  () => TermsandConditions());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),
@@ -375,7 +375,7 @@ class _MyDrawerState extends State<MyDrawer> {
             GestureDetector(
               onTap: () async {
                 await chatStartUser();
-                Get.to(ChatWithAdmin());
+                Get.to(  () => ChatWithAdmin());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),

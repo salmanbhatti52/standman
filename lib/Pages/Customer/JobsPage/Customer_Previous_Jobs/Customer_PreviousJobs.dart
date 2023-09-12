@@ -95,7 +95,7 @@ class _Customer_PreviousJobsState extends State<Customer_PreviousJobs> {
                   itemBuilder: (BuildContext context, int i) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(
+                        Get.to(  () =>
                             Customer_AddRating(
                               ratings: "${previousData[i]['jobs_ratings'] != null && previousData[i]['jobs_ratings']['rating'] != null ? previousData[i]['jobs_ratings']['rating'] : '--'}",
                               employeeId: "${previousData[i]['users_employee_data'] != null && previousData[i]['users_employee_data']['users_customers_id'] != null ? previousData[i]['users_employee_data']['users_customers_id'] : previousData[i]['users_employee_data']['users_customers_id']}",

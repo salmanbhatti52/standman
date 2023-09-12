@@ -721,7 +721,7 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                           padding: EdgeInsets.only(right: width * 0.15, top: 10),
                           child: GestureDetector(
                             onTap: (){
-                              Get.to(TermsandConditions(), transition : Transition.upToDown,
+                              Get.to( () => TermsandConditions(), transition : Transition.upToDown,
                                 duration: Duration(milliseconds: 350),);
                             },
                             child: RichText(
@@ -782,7 +782,7 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                   toastFailedMessage(
                                       'Please provide a photo of yourself.', Colors.red);
                                 } else {
-                                    Get.to(EMp_UploadPhoto(
+                                    Get.to(  () => EMp_UploadPhoto(
                                       profileimg: base64img,
                                       firstname: firstNameController.text.toString(),
                                       lastname: lastController.text.toString(),
@@ -831,7 +831,7 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Get.to(LoginTabClass(login: 1,),
+                                  Get.to( () => LoginTabClass(login: 1,),
                                     transition : Transition.upToDown,
                                     duration: Duration(milliseconds: 350),
                                   );

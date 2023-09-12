@@ -339,7 +339,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                       padding: const EdgeInsets.only(right: 20.0),
                       child: TextButton(
                         onPressed: () {
-                          Get.to(const CustomerForgotPassword(),
+                          Get.to( () => const CustomerForgotPassword(),
                             transition : Transition.rightToLeftWithFade,
                             duration: Duration(milliseconds: 250),);
                         },
@@ -445,7 +445,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                 SizedBox(height: 15,),
                 GestureDetector(
                   onTap: (){
-                    Get.to( SignUpTabClass(signup: 0,),  transition : Transition.upToDown,
+                    Get.to(  () => SignUpTabClass(signup: 0,),  transition : Transition.upToDown,
                       duration: Duration(milliseconds: 350),);
                   },
                   child: const Text(

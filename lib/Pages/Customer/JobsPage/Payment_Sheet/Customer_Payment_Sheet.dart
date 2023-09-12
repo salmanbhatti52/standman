@@ -359,7 +359,7 @@ Payment({
                       ),
                       GestureDetector(
                           onTap: () {
-                            Get.to(Customer_Rating(
+                            Get.to(  () => Customer_Rating(
                               jobName:
                                   "${jobsCustomersCompleteModel.data?.job?.name}",
                               totalPrice:

@@ -413,7 +413,7 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                                 // ),
                                 // );
                                 await chatStartUserEmp();
-                                Get.to(EmpMessagesDetails(
+                                Get.to(  () => EmpMessagesDetails(
                                   usersCustomersId: empUsersCustomersId,
                                   one_signal_id: widget.one_signal_id,
                                   other_users_customers_id: widget.customerId,
@@ -431,7 +431,7 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                         SizedBox(height: height * 0.04,),
                         GestureDetector(
                             onTap: () {
-                              Get.to(EMpQRScanneer(customerId: widget.customerId, jobName: widget.jobName, myJobId: widget.myJobId,));
+                              Get.to(  () => EMpQRScanneer(customerId: widget.customerId, jobName: widget.jobName, myJobId: widget.myJobId,));
                             },
                             child: mainButton("Job Completed",
                                 Color(0xff2B65EC), context)),
@@ -446,7 +446,7 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                                   const Duration(seconds: 1), () {
                                 toastSuccessMessage(
                                     jobsActionEmployeesModel.message, Colors.green);
-                                Get.to(
+                                Get.to(  () =>
                                   Empbottom_bar(
                                     currentIndex: 0,
                                   ),
@@ -459,7 +459,7 @@ class _EmpCompleteProfileState extends State<EmpCompleteProfile> {
                               toastFailedMessage(
                                   jobsActionEmployeesModel.message,
                                   Colors.red);
-                              Get.to(
+                              Get.to(  () =>
                                 Empbottom_bar(
                                   currentIndex: 0,
                                 ),

@@ -847,7 +847,7 @@ class _EditProfileState extends State<EditProfile> {
                                 Future.delayed(const Duration(seconds: 3), () {
                                   toastSuccessMessage("success", Colors.green);
                                   // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
-                                  Get.to(bottom_bar(currentIndex: 0,));
+                                  Get.to(  () => bottom_bar(currentIndex: 0,));
                                   setState(() {
                                     isInAsyncCall = false;
                                   });

@@ -417,7 +417,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                       padding: const EdgeInsets.only(right: 20.0),
                       child: TextButton(
                         onPressed: () {
-                          Get.to(EmployeeForgotPassword(),
+                          Get.to( () => EmployeeForgotPassword(),
                             transition : Transition.rightToLeftWithFade,
                             duration: Duration(milliseconds: 250),
                           );
@@ -518,7 +518,7 @@ class _EmpLoginPageState extends State<EmpLoginPage> {
                 SizedBox(height: 15,),
                 GestureDetector(
                   onTap: (){
-                    Get.to( SignUpTabClass(signup: 1,),
+                    Get.to(  () => SignUpTabClass(signup: 1,),
                       transition : Transition.upToDown,
                       duration: Duration(milliseconds: 350),);
                   },

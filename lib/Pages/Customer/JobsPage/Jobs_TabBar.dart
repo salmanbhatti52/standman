@@ -53,7 +53,7 @@ class _JobTabClassState extends State<JobTabClass>
         actions: [
           GestureDetector(
             onTap: (){
-              Get.to(SearchScreen());
+              Get.to(  () => SearchScreen());
               // Get.to(CustomerQRCodeScanner());
             },
             child: Padding(

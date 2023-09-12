@@ -148,7 +148,7 @@ Future EMpDeleteAccount(BuildContext context) {
                             Future.delayed(const Duration(seconds: 3), () {
                               toastSuccessMessage(deleteAccountModel.message, Colors.green);
                               // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
-                              Get.to(Empbottom_bar(currentIndex: 0,));
+                              Get.to( () => Empbottom_bar(currentIndex: 0,));
 
                               stateSetterObject(() {
                                 isInAsyncCall = false;

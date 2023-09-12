@@ -19,7 +19,7 @@ class AppBarr extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Get.to(MyDrawer());
+              Get.to(  () => MyDrawer());
             },
             child: SvgPicture.asset("assets/images/menu.svg"),
           ),

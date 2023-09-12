@@ -196,7 +196,7 @@ class _Customer_ProfileState extends State<Customer_Profile> {
                   GestureDetector(
                     onTap: () async {
                       await chatStartUser();
-                      Get.to(MessagesDetails(
+                      Get.to(  () => MessagesDetails(
                         oneSignalID: widget.oneSignalId,
                         usersCustomersId: widget.customerId,
                         other_users_customers_id: widget.employeeId,

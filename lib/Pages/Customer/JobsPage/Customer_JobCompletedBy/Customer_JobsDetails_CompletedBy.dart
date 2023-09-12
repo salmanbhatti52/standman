@@ -230,7 +230,7 @@ class Customer_JobsDetails_CompletedBy extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: (){
-                                Get.to(Customer_JobsDetails_Completed_with_QR());
+                                Get.to(  () => Customer_JobsDetails_Completed_with_QR());
                               },
                               child: smallButton("Chat", Color(0xff2B65EC) , context),
                             ),

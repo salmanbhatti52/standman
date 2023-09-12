@@ -136,7 +136,7 @@ Future DeleteAccount(BuildContext context) {
                             Future.delayed(const Duration(seconds: 3), () {
                               toastSuccessMessage(deleteAccountModel.message, Colors.green);
                               // toastOTPMessage("${signUpModel.data![0].verifyCode}", Colors.green);
-                              Get.to(bottom_bar(currentIndex: 0,));
+                              Get.to(  () => bottom_bar(currentIndex: 0,));
 
                               stateSetterObject(() {
                                 isInAsyncCall = false;

@@ -276,7 +276,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(EmpJobDetaisl(
+                                  Get.to(  () => EmpJobDetaisl(
                                     myJobId: "${getJobsEmployeesModel.data?[index].jobsId}",
                                    jobStatus :  getJobsEmployeesModel.data?[index].status,
                                     image:
@@ -519,11 +519,11 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                             await arrivedJob();
                                             if (arriveJob['status'] == 'success') {
                                               toastSuccessMessage("Now, Your Job has been  Started", Colors.green);
-                                              Get.to(Empbottom_bar(currentIndex: 0));
+                                              Get.to(  () => Empbottom_bar(currentIndex: 0));
                                             }
                                             else {
                                               toastFailedMessage(arriveJob['message'], Colors.red);
-                                              Get.to(Empbottom_bar(currentIndex: 0));
+                                              Get.to(  () => Empbottom_bar(currentIndex: 0));
                                             }
                                           },child: smallButton2("Arrived job location", Color(0xff2B65EC), context)),)
                                             : GestureDetector(
@@ -586,7 +586,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                               toastFailedMessage(
                                                   jobsActionEmployeesModel.message,
                                                   Colors.red);
-                                              Get.to(Empbottom_bar(currentIndex: 0));
+                                              Get.to(  () => Empbottom_bar(currentIndex: 0));
                                             }
                                           },
                                           child: smallButton2(
@@ -610,7 +610,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                                         toastSuccessMessage(
                                                             "${jobsActionEmployeesModel.message}",
                                                             Colors.green);
-                                                        Get.to(
+                                                        Get.to(  () =>
                                                           Empbottom_bar(
                                                             currentIndex: 0,
                                                           ),
@@ -623,7 +623,7 @@ class _Emp_ceate_Or_findJobsState extends State<Emp_ceate_Or_findJobs> {
                                                   toastFailedMessage(
                                                       jobsActionEmployeesModel.message,
                                                       Colors.red);
-                                                  Get.to(
+                                                  Get.to(  () =>
                                                     Empbottom_bar(
                                                       currentIndex: 0,
                                                     ),

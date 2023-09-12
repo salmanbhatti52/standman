@@ -270,7 +270,7 @@ class _Customer_AddRatingState extends State<Customer_AddRating> {
                               ),
                               GestureDetector(
                                 onTap: (){
-                                  Get.to(Customer_Rating(
+                                  Get.to( () => Customer_Rating(
                                     jobName:   "${widget.jobName}",
                                     totalPrice: "${widget.totalPrice}",
                                     customerId: "${widget.customerId}",

@@ -288,7 +288,7 @@ class _MessagesDetailsState extends State<MessagesDetails> {
         leading: GestureDetector(
           onTap: () {
             onPageExit();
-            Get.to(bottom_bar(
+            Get.to(  () => bottom_bar(
               currentIndex: 1,
             ));
           },

@@ -346,7 +346,7 @@ class _EMp_Job_CompletedState extends State<EMp_Job_Completed> {
                             ),
                             GestureDetector(onTap: () async {
                               await chatStartUserEmp();
-                              Get.to(EmpMessagesDetails(
+                              Get.to(  () => EmpMessagesDetails(
                                 one_signal_id: widget.one_signal_id,
                                 usersCustomersId: empUsersCustomersId,
                                 other_users_customers_id: widget.customerId,

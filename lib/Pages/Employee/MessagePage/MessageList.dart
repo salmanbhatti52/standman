@@ -114,7 +114,7 @@ setState(() {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Get.to(EmpMessagesDetails(
+                                    Get.to(  () => EmpMessagesDetails(
                                       other_users_customers_id: "${getAllChatModel.data?[index].userData?.usersCustomersId}",
                                       img: "$baseUrlImage${getAllChatModel.data![index].userData!.profilePic}",
                                       name: "${getAllChatModel.data![index].userData!.firstName} ${getAllChatModel.data![index].userData!.lastName}",

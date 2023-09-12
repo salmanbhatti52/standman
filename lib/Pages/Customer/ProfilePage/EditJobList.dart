@@ -116,7 +116,7 @@ class _EditJobListState extends State<EditJobList> {
               itemBuilder: (BuildContext context, int i) {
                 return GestureDetector(
                   onTap: () {
-                    Get.to(EditJob(
+                    Get.to(  () => EditJob(
                       jobDate: EditableJobs[i]["start_date"],
                       startTime: EditableJobs[i]["start_time"],
                       endTime: EditableJobs[i]["end_time"],

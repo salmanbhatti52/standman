@@ -29,7 +29,7 @@ class _QueueJobsState extends State<QueueJobs> {
                   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   child: GestureDetector(
                     onTap: (){
-                      Get.to(EmpJobComplete());
+                      Get.to(  () => EmpJobComplete());
                     },
                     child: Container(
                       decoration: BoxDecoration(

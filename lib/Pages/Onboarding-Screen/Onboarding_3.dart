@@ -67,7 +67,7 @@ class Onboarding_3 extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.offAll( SignUpTabClass(signup: 0),  transition : Transition.downToUp,
+                      Get.offAll(  () => SignUpTabClass(signup: 0),  transition : Transition.downToUp,
                         duration: Duration(milliseconds: 350),);
                     },
                     child: const Text(
@@ -83,7 +83,7 @@ class Onboarding_3 extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: (){
-                      Get.offAll( SignUpTabClass(signup: 0), transition : Transition.rightToLeftWithFade,
+                      Get.offAll(  () => SignUpTabClass(signup: 0), transition : Transition.rightToLeftWithFade,
                         duration: Duration(milliseconds: 250),);
                     },
                     child: OnboardingButton(

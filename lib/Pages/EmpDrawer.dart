@@ -221,7 +221,7 @@ class _EmpDrawerState extends State<EmpDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(Empbottom_bar(currentIndex: 0,));
+                Get.to(  () => Empbottom_bar(currentIndex: 0,));
                 // Get.back();
               },
               child: Padding(
@@ -242,7 +242,7 @@ class _EmpDrawerState extends State<EmpDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(EmpNotificationPage());
+                Get.to(  () => EmpNotificationPage());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),
@@ -262,7 +262,7 @@ class _EmpDrawerState extends State<EmpDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(PrivacyPolicy());
+                Get.to(  () => PrivacyPolicy());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),
@@ -282,7 +282,7 @@ class _EmpDrawerState extends State<EmpDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(TermsandConditions());
+                Get.to(  () => TermsandConditions());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),
@@ -302,7 +302,7 @@ class _EmpDrawerState extends State<EmpDrawer> {
             ),
             GestureDetector(
               onTap: (){
-                Get.to(ChatWithAdmin_Employee());
+                Get.to(  () => ChatWithAdmin_Employee());
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0),

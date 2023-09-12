@@ -762,7 +762,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                             padding: EdgeInsets.only(right: width * 0.09),
                             child: GestureDetector(
                               onTap: (){
-                                Get.to(TermsandConditions(),
+                                Get.to( () => TermsandConditions(),
                                   transition : Transition.upToDown,
                                   duration: Duration(milliseconds: 350),);
                               },
@@ -836,7 +836,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
 
                                       Future.delayed(const Duration(seconds: 1), () {
                                         // Get.to(LoginTabClass(login: 0,));
-                                        Get.to(EmailVerification(otpVerify:  customerSignupModel.data?.otpdetails?.otp, ),
+                                        Get.to( () => EmailVerification(otpVerify:  customerSignupModel.data?.otpdetails?.otp, ),
                                           transition : Transition.rightToLeftWithFade,
                                           duration: Duration(milliseconds: 250),);
                                         toastSuccessMessage("${customerSignupModel.data?.message}", Colors.green);
@@ -890,7 +890,7 @@ class _CustomerSignUpPageState extends State<CustomerSignUpPage> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Get.to(LoginTabClass(login: 0,), transition : Transition.upToDown,
+                                    Get.to( () => LoginTabClass(login: 0,), transition : Transition.upToDown,
                                       duration: Duration(milliseconds: 350),);
                                   },
                                   child: const Text(

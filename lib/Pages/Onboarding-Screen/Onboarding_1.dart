@@ -58,7 +58,7 @@ class Onboarding_1 extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       // Navigator.of(context).pushReplacementNamed('/home');
-                      Get.offAll( SignUpTabClass(signup: 0),
+                      Get.offAll( () => SignUpTabClass(signup: 0),
                         transition : Transition.downToUp,
                         duration: Duration(milliseconds: 350),
                       );
@@ -76,7 +76,7 @@ class Onboarding_1 extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(
+                      Get.to(  () =>
                         const Onboarding_2(),
                         transition : Transition.rightToLeftWithFade,
                         duration: Duration(milliseconds: 250),

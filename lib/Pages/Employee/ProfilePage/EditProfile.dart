@@ -734,7 +734,7 @@ class _EmpEditProfileState extends State<EmpEditProfile> {
                                   "success") {
                                 Future.delayed(const Duration(seconds: 3), () {
                                   toastSuccessMessage("success", Colors.green);
-                                  Get.to(Empbottom_bar(currentIndex: 0,));
+                                  Get.to(  () => Empbottom_bar(currentIndex: 0,));
                                   setState(() {
                                     isInAsyncCall = false;
                                   });

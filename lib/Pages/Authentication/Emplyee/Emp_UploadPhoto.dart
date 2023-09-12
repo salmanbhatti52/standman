@@ -212,28 +212,31 @@ class _EMp_UploadPhotoState extends State<EMp_UploadPhoto> {
                   //
                   Form(
                     key: key,
-                    child: Container(
-                      width: width * 0.9,
-                      height: height * 0.2,
-                      // width: 330,
-                      // height: 139,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Color(0xffF3F3F3),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        width: width * 0.9,
+                        height: height * 0.2,
+                        // width: 330,
+                        // height: 139,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Color(0xffF3F3F3),
+                        ),
+                        child: uploadID == null
+                            ? GestureDetector(
+                                onTap: () {
+                                  pickUploadId();
+                                },
+                                child: Center(
+                                    child: SvgPicture.asset(
+                                  "assets/images/upload.svg",
+                                  width: 75,
+                                  height: 52,
+                                ),),)
+                            : Image.file(uploadID!,
+                                width: 75, height: 52, fit: BoxFit.fill),
                       ),
-                      child: uploadID == null
-                          ? GestureDetector(
-                              onTap: () {
-                                pickUploadId();
-                              },
-                              child: Center(
-                                  child: SvgPicture.asset(
-                                "assets/images/upload.svg",
-                                width: 75,
-                                height: 52,
-                              ),),)
-                          : Image.file(uploadID!,
-                              width: 75, height: 52, fit: BoxFit.fill),
                     ),
                   ),
                   SizedBox(
@@ -248,7 +251,7 @@ class _EMp_UploadPhotoState extends State<EMp_UploadPhoto> {
                             print("email: ${widget.email}");
 
                             if (uploadID != null) {
-                                Get.to(WorkProof(
+                                Get.to( () => WorkProof(
                                   profileimg: widget.profileimg,
                                   firstname: widget.firstname,
                                   lastname: widget.lastname,

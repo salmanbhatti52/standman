@@ -19,7 +19,7 @@ class CustomerWalletTxnModel {
 
   factory CustomerWalletTxnModel.fromJson(Map<String, dynamic> json) => CustomerWalletTxnModel(
     status: json["status"],
-    data: Data.fromJson(json["data"]),
+    data: json["data"] != null ? Data.fromJson(json["data"]) : null,
   );
 
   Map<String, dynamic> toJson() => {

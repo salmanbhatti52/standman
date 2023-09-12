@@ -90,7 +90,7 @@ class _EmpOnGoingJobListState extends State<EmpOnGoingJobList> {
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
                 child: GestureDetector(
                   onTap: (){
-                    Get.to(EmpCompleteProfile(
+                    Get.to(  () => EmpCompleteProfile(
                       myJobId: "${employeeOngoingJobsModel.data?[index].jobsId}",
                       image:"$baseUrlImage${employeeOngoingJobsModel.data?[index].image}",
                       jobName: employeeOngoingJobsModel.data?[index].name,

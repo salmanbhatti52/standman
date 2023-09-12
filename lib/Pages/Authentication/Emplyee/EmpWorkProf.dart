@@ -811,7 +811,7 @@ class _WorkProofState extends State<WorkProof> {
                   height: height * 0.01,
                 ),
                 Text(
-                  "If you are uploading a work permit extension letter, upload the extension letter and your work permit in the same photo."
+                  "If you are uploading a work permit extension letter, upload the extension letter and your work permit in the same photo. "
                   "If you are waiting for your renewed PR card, upload a photo of your current PR card and PR card extension letter.",
                   // "Please submit a photo or the original document. Scanned copies are not accepted. Make sure to avoid using flash so that your information is clear and readable. If you are uploading a work permit extension letter, upload the extension letter and your work permit in the same photo if you are waiting for your renewed PR card, upload a photo of your current PR card and PR card extension letter",
                   style: TextStyle(
@@ -841,28 +841,31 @@ class _WorkProofState extends State<WorkProof> {
                 ),
                 Form(
                   key: key,
-                  child: Container(
-                    width: width * 0.9,
-                    height: height * 0.2,
-                    // width: 330,
-                    // height: 139,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Color(0xffF3F3F3),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      width: width * 0.9,
+                      height: height * 0.2,
+                      // width: 330,
+                      // height: 139,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Color(0xffF3F3F3),
+                      ),
+                      child: uploadProofID == null
+                          ? GestureDetector(
+                              onTap: () {
+                                pickUploadProofId();
+                              },
+                              child: Center(
+                                  child: SvgPicture.asset(
+                                "assets/images/upload.svg",
+                                width: 75,
+                                height: 52,
+                              )))
+                          : Image.file(uploadProofID!,
+                              width: 75, height: 52, fit: BoxFit.fill),
                     ),
-                    child: uploadProofID == null
-                        ? GestureDetector(
-                            onTap: () {
-                              pickUploadProofId();
-                            },
-                            child: Center(
-                                child: SvgPicture.asset(
-                              "assets/images/upload.svg",
-                              width: 75,
-                              height: 52,
-                            )))
-                        : Image.file(uploadProofID!,
-                            width: 75, height: 52, fit: BoxFit.fill),
                   ),
                 ),
                 SizedBox(
@@ -902,7 +905,7 @@ class _WorkProofState extends State<WorkProof> {
 
                             Future.delayed(const Duration(seconds: 2), () {
                               // Get.to(LoginTabClass(login: 0,));
-                              Get.to(Emp_EmailVerification(otpVerify:  employeeSignupModel.data?.otpdetails?.otp,),  transition : Transition.rightToLeftWithFade,
+                              Get.to( () => Emp_EmailVerification(otpVerify:  employeeSignupModel.data?.otpdetails?.otp,),  transition : Transition.rightToLeftWithFade,
                                 duration: Duration(milliseconds: 250),);
                               toastSuccessMessage("${employeeSignupModel.data?.message}", Colors.green);
                               setState(() {

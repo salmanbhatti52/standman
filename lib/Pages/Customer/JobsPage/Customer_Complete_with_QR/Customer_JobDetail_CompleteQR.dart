@@ -359,7 +359,7 @@ class _Customer_JobsDetails_Completed_with_QRState
                             GestureDetector(
                                 onTap: () async {
                                   await chatStartUser();
-                                  Get.to(
+                                  Get.to(  () =>
                                     MessagesDetails(
                                       usersCustomersId: usersCustomersId,
                                       oneSignalID: widget.oneSignalId,
@@ -381,7 +381,7 @@ class _Customer_JobsDetails_Completed_with_QRState
                         GestureDetector(
                             onTap: () async {
                               // DateTime buttonClickTime = DateTime.now();
-                              Get.to(CustomerWithoutExtraTime(
+                              Get.to(  () => CustomerWithoutExtraTime(
                                 employeeId: widget.employeeId,
                                 customerId: widget.customerId,
                                 completeJobTime: widget.completeJobTime,
@@ -557,7 +557,7 @@ class _CustomerWithoutExtraTimeState extends State<CustomerWithoutExtraTime> {
               // String successMessage = jsonResponse['message'];
               print("Success Message");
               // toastSuccessMessage(jsonResponse['message'], Colors.green);
-              Get.to(Customer_Rating(
+              Get.to(  () => Customer_Rating(
                 jobName: "${widget.jobName}",
                 totalPrice: "${widget.totalPrice}",
                 address: "${widget.address}",
@@ -588,7 +588,7 @@ class _CustomerWithoutExtraTimeState extends State<CustomerWithoutExtraTime> {
               String? formattedTime = DateFormat('HH:mm')
                   .format(buttonClickTime); // Format the time
               print("buttonClickTime ${formattedTime}");
-              Get.to(
+              Get.to(  () =>
                 CustomerQRCodeScanner(
                   customerId: widget.customerId,
                   employeeId: widget.employeeId,

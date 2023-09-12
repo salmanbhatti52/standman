@@ -486,7 +486,7 @@ class _bottom_barState extends State<bottom_bar> {
                   ),
                   GestureDetector(
                       onTap: () {
-                        Get.to(bottom_bar(currentIndex: 0,));
+                        Get.to(  () => bottom_bar(currentIndex: 0,));
                       },
                       child: mainButton("Go Back To Home",
                           Color(0xff2B65EC), context)),

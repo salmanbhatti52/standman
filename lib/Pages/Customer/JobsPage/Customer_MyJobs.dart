@@ -214,7 +214,7 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      Get.to(CustomerMyJobsDetails(
+                      Get.to(  () => CustomerMyJobsDetails(
                         image: "$baseUrlImage${customerMyJobModel.data?[index].image}",
                         jobName: customerMyJobModel.data?[index].name,
                         totalPrice: customerMyJobModel.data?[index].totalPrice,

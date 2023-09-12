@@ -46,7 +46,7 @@ class _MessagePageState extends State<MessagePage> {
         actions: [
           GestureDetector(
             onTap: (){
-              Get.to(NotificationPage());
+              Get.to(  () => NotificationPage());
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0, top: 0.0),

@@ -306,7 +306,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
         actions: [
           GestureDetector(
             onTap: (){
-              Get.to(EmpNotificationPage());
+              Get.to(  () => EmpNotificationPage());
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0, top: 0.0),

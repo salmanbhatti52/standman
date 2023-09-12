@@ -176,7 +176,7 @@ class _ChatWithAdmin_EmployeeState extends State<ChatWithAdmin_Employee> {
         leading: GestureDetector(
           onTap: () {
             onPageExit();
-            Get.to(Empbottom_bar(
+            Get.to(  () => Empbottom_bar(
               currentIndex: 0,
             ));
           },

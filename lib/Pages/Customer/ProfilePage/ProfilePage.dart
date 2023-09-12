@@ -159,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: const EdgeInsets.only(right: 20.0, top: 0.0),
             child: GestureDetector(
               onTap: () {
-                Get.to(EditProfile(
+                Get.to(  () => EditProfile(
                   email: "${usersProfileData['email']}",
                   countryCode: "${usersProfileData['country_code']}",
                   phone: "${usersProfileData['phone']}",
@@ -356,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.to(EditJobList());
+                            Get.to(  () => EditJobList());
                           },
                           child: Container(
                             width: width, //350,

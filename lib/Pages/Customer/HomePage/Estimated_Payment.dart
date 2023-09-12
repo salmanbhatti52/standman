@@ -174,7 +174,7 @@ Estimated_PaymentMethod({
                       SizedBox(height: Get.height * 0.04,),
                       GestureDetector(
                           onTap: () {
-                            Get.to(bottom_bar(currentIndex: 0,));
+                            Get.to(  () => bottom_bar(currentIndex: 0,));
                             // Get.back();
                           },
                           child: mainButton("Go Back To Home",

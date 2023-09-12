@@ -361,7 +361,7 @@ class _Customer_RatingState extends State<Customer_Rating> {
                                        () {
                                      if(addJobRatingModel.status == "success"){
                                        toastSuccessMessage("Add Rating Successfully", Colors.green);
-                                       Get.to(Customer_Profile(
+                                       Get.to(  () => Customer_Profile(
                                          customerId: widget.customerId.toString(),
                                          employeeId: widget.employeeId.toString(),
                                          oneSignalId: addJobRatingModel.data?.userData?.oneSignalId,

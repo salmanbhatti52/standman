@@ -286,7 +286,7 @@ class _EmpMessagesDetailsState extends State<EmpMessagesDetails> {
         leading: GestureDetector(
           onTap: () {
             onPageExit();
-            Get.to(Empbottom_bar(currentIndex: 1));
+            Get.to(  () => Empbottom_bar(currentIndex: 1));
           },
           child: Center(
               child: SvgPicture.asset(

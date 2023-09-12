@@ -379,11 +379,11 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                         await arrivedJob();
                         if (arriveJob['status'] == 'success') {
                         toastSuccessMessage("Now, Your Job has been  Started", Colors.green);
-                        Get.to(Empbottom_bar(currentIndex: 0));
+                        Get.to( () => Empbottom_bar(currentIndex: 0));
                         }
                         else {
                         toastFailedMessage(arriveJob['message'], Colors.red);
-                        Get.to(Empbottom_bar(currentIndex: 0));
+                        Get.to(  () => Empbottom_bar(currentIndex: 0));
                         }},
                                 child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -430,8 +430,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                               if (jobsActionEmployeesModel.message == "Job Accepted successfully.") {
                                 Future.delayed(const Duration(seconds: 1), () {
                                   toastSuccessMessage("${jobsActionEmployeesModel.message }", Colors.green);
-                                  Get.to(
-                                      Get.to(
+                                      Get.to(  () =>
                                         Empbottom_bar(currentIndex: 0),
                                         // EmpJobComplete(
                                         //   myJobId: "${getJobsEmployeesModel.data?[index].jobsId}",
@@ -444,8 +443,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                                         //   name: "${getJobsEmployeesModel.data?[index].usersCustomersData?.firstName} ${getJobsEmployeesModel.data?[index].usersCustomersData?.lastName}",
                                         //   profilePic: "$baseUrlImage${getJobsEmployeesModel.data?[index].usersCustomersData?.profilePic}",
                                         // ),
-                                      )
-                                  );
+                                      );
                                   setState(() {
                                     isLoading = false;
                                   });
@@ -523,7 +521,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                                       "${jobsActionEmployeesModel
                                           .message}",
                                       Colors.green);
-                                  Get.to(
+                                  Get.to(  () =>
                                     Empbottom_bar(
                                       currentIndex: 0,
                                     ),
@@ -538,7 +536,7 @@ class _EmpJobDetaislState extends State<EmpJobDetaisl> {
                                     jobsActionEmployeesModel
                                         .message,
                                     Colors.red);
-                                Get.to(
+                                Get.to(  () =>
                                   Empbottom_bar(
                                     currentIndex: 0,
                                   ),

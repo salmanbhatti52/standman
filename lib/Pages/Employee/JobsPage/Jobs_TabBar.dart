@@ -54,7 +54,7 @@ class _EmpJobTabClassState extends State<EmpJobTabClass>
         actions: [
           GestureDetector(
             onTap: (){
-            Get.to(EmpSearchJobs());
+            Get.to(  () => EmpSearchJobs());
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20.0, top: 0.0),

@@ -145,7 +145,7 @@ class _ProfileTabBarState extends State<ProfileTabBar>
           actions: [
             GestureDetector(
               onTap: () {
-                Get.to(EmpEditProfile(
+                Get.to(  () => EmpEditProfile(
                   email: "${usersProfileData['email']}",
                   countryCode: "${usersProfileData['country_code']}",
                   phone: "${usersProfileData['phone']}",

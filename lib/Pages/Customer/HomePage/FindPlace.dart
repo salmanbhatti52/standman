@@ -229,7 +229,7 @@ class _FindPlaceState extends State<FindPlace> {
                   child: GoogleMap(
                     myLocationEnabled: true,
                     onMapCreated: _onMapCreated,
-                    padding: EdgeInsets.only(top: height * 0.35),
+                    padding: EdgeInsets.only(top: height * 0.4),
                     mapType: MapType.normal,
                       initialCameraPosition: CameraPosition(
                         target: LatLng(widget.location ?? 43.64252511567895, widget.location ?? -79.38652728016845),
@@ -378,7 +378,7 @@ class _FindPlaceState extends State<FindPlace> {
                               toastFailedMessage(
                                   'Enter Your Address', Colors.red);
                             } else {
-                              Get.to(
+                              Get.to(  () =>
                                 JobDetails(
                                   latitude: "${_currentPosition?.latitude == null ? latt : _currentPosition?.latitude}",
                                   longitude: "${_currentPosition?.longitude == null ? long : _currentPosition?.longitude}",
