@@ -128,7 +128,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                             if (widget.otpVerify.toString() == emailVerify.text ) {
 
                               Future.delayed(const Duration(seconds: 2), () {
-                                toastSuccessMessage("Admin will Approve you account soon.", Colors.green);
+                                toastSuccessMessage("Admin will Approve your account soon.", Colors.green);
                                 // Get.to(LoginTabClass(login: 0,));
                                 Get.to(() => LoginTabClass(login: 0,), transition : Transition.upToDown,
                                   duration: Duration(milliseconds: 350),);

@@ -532,6 +532,55 @@ class _EditProfileState extends State<EditProfile> {
                                   TextFormField(
                                     // enableInteractiveSelection: false,
                                     // focusNode: FocusNode(),
+                                    readOnly: true,
+                                    onTap: (){
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) => Dialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(30.0),
+                                          ),
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            alignment: Alignment.topCenter,
+                                            children: [
+                                              Container(
+                                                width: 300,
+                                                height: height * 0.15, // 321,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(30),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                    children: [
+                                                      const Text(
+                                                        "You cannot edit your Email.",
+                                                        style: TextStyle(
+                                                          color: Color.fromRGBO(0, 0, 0, 1),
+                                                          fontFamily: "Outfit",
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight.w500,
+                                                          // letterSpacing: -0.3,
+                                                        ),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                      SizedBox(height: height * 0.02,),
+                                                      GestureDetector(onTap:(){
+                                                        Get.back();
+                                                      } ,child: smallButton("OK", Color(0xff2B65EC), context))
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     controller: emailController,
                                     onChanged: (phone) {
                                       print("phone: ${phone}");
