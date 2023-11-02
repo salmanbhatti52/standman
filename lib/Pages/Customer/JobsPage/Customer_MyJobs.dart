@@ -22,16 +22,11 @@ class CustomerMyJobList extends StatefulWidget {
 }
 
 class _CustomerMyJobListState extends State<CustomerMyJobList> {
-
   CustomerMyJobModel customerMyJobModel = CustomerMyJobModel();
 
   bool loading = false;
 
   myJobs() async {
-
-    setState(() {
-      loading = true;
-    });
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
     print("userId in Prefs is = $usersCustomersId");
@@ -50,12 +45,10 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
     print("in 200 myJObs");
     if (response.statusCode == 200) {
       customerMyJobModel = customerMyJobModelFromJson(responseString);
-      // setState(() {});
-      print('getJobsModelImage: $baseUrlImage${customerMyJobModel.data?[0].image}');
+      setState(() {});
+      print(
+          'getJobsModelImage: $baseUrlImage${customerMyJobModel.data?[0].image}');
       print('getJobsModelLength: ${customerMyJobModel.data?.length}');
-      setState(() {
-        loading = false;
-      });
     }
   }
 
@@ -116,180 +109,205 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: loading ?
-      // ListView.separated(
-      //   itemCount: 5,
-      //   itemBuilder: (context, index) => const NewsCardSkelton(),
-      //   separatorBuilder: (context, index) =>
-      //   const SizedBox(height: defaultPadding),
-      // )
-      Center(
-        child: Lottie.asset(
-          "assets/images/loading.json",
-          height: 50,
-        ),
-      ): customerMyJobModel.data?.length == null ?
-
-      Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: const Text(
-                "You did not created\nany job,",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Outfit",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 32,
-                ),
-                textAlign: TextAlign.left,
+      body: loading
+          ?
+          // ListView.separated(
+          //   itemCount: 5,
+          //   itemBuilder: (context, index) => const NewsCardSkelton(),
+          //   separatorBuilder: (context, index) =>
+          //   const SizedBox(height: defaultPadding),
+          // )
+          Center(
+              child: Lottie.asset(
+                "assets/images/loading.json",
+                height: 50,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: const Text(
-                "Please create your Job now..!",
-                style: TextStyle(
-                  color: Color(0xff2B65EC),
-                  fontFamily: "Outfit",
-                  fontWeight: FontWeight.w500,
-                  fontSize: 24,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-            GestureDetector(
-                onTap: () {
-                  Get.to(() => FindPlace());
-                },
-                child: mainButton(
-                    "Create Job", Color.fromRGBO(43, 101, 236, 1), context)),
-            SizedBox(
-              height: height * 0.02,
-            ),
-            SvgPicture.asset(
-              'assets/images/cartoon.svg',
-            ),
-          ],)
-      // Center(child:  Column(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   children: [
-      //     const Text(
-      //       "Jobs Are Not Accepted\nBy Employee,",
-      //       style: TextStyle(
-      //         color: Color(0xff2B65EC),
-      //         fontFamily: "Outfit",
-      //         fontWeight: FontWeight.w500,
-      //         fontSize: 32,
-      //       ),
-      //       textAlign: TextAlign.center,
-      //     ),
-      //     SizedBox(
-      //               height: height * 0.1,
-      //             ),
-      //           SvgPicture.asset(
-      //             'assets/images/cartoon.svg',
-      //           ),
-      //   ],
-      // ))
-          : Padding(
-        padding: const EdgeInsets.symmetric(horizontal:20, vertical: 5),
-        child: RefreshIndicator(
-          onRefresh: () async {
-            await myJobs();
-          },
-          child: Container(
-            // color: Color(0xff9D9FAD),
-            // height: MediaQuery.of(context).size.height * 0.16,
-            width: 350,
-            // height: 150,
-            child: ListView.builder(
-                physics: AlwaysScrollableScrollPhysics(),
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: customerMyJobModel.data?.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Get.to(  () => CustomerMyJobsDetails(
-                        image: "$baseUrlImage${customerMyJobModel.data?[index].image}",
-                        jobName: customerMyJobModel.data?[index].name,
-                        totalPrice: customerMyJobModel.data?[index].totalPrice,
-                        address: customerMyJobModel.data?[index].location,
-                        completeJobTime: customerMyJobModel.data?[index].dateAdded.toString(),
-                        description: customerMyJobModel.data?[index].description == null ? "" : customerMyJobModel.data?[index].description,
-                        name: "${customerMyJobModel.data?[index].usersCustomersData?.firstName} ${customerMyJobModel.data?[index].usersCustomersData?.lastName}",
-                        profilePic: "$baseUrlImage${customerMyJobModel.data?[index].usersCustomersData?.profilePic}",
-                        status: customerMyJobModel.data![index].status,
-                      ),);
+            )
+          : customerMyJobModel.data?.length == null
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: const Text(
+                        "You did not created\nany job,",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 32,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: const Text(
+                        "Please create your Job now..!",
+                        style: TextStyle(
+                          color: Color(0xff2B65EC),
+                          fontFamily: "Outfit",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 24,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          Get.to(() => FindPlace());
+                        },
+                        child: mainButton("Create Job",
+                            Color.fromRGBO(43, 101, 236, 1), context)),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    SvgPicture.asset(
+                      'assets/images/cartoon.svg',
+                    ),
+                  ],
+                )
+              // Center(child:  Column(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     const Text(
+              //       "Jobs Are Not Accepted\nBy Employee,",
+              //       style: TextStyle(
+              //         color: Color(0xff2B65EC),
+              //         fontFamily: "Outfit",
+              //         fontWeight: FontWeight.w500,
+              //         fontSize: 32,
+              //       ),
+              //       textAlign: TextAlign.center,
+              //     ),
+              //     SizedBox(
+              //               height: height * 0.1,
+              //             ),
+              //           SvgPicture.asset(
+              //             'assets/images/cartoon.svg',
+              //           ),
+              //   ],
+              // ))
+              : Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await myJobs();
                     },
                     child: Container(
-                      margin: EdgeInsets.only(top: 5),
-                      padding: EdgeInsets.all( 10),
-                      // width: MediaQuery.of(context).size.width * 0.51,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: 0,
-                                blurRadius: 20,
-                                offset: Offset(0, 2),
-                                color: Color.fromRGBO(167, 169, 183, 0.1)),
-                          ]),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child:
-                            // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
-                            FadeInImage(
-                              placeholder:  AssetImage("assets/images/fade_in_image.jpeg",),
-                              fit: BoxFit.fill,
-                              width: 115,
-                              height: 96,
-                              image: NetworkImage("$baseUrlImage${customerMyJobModel.data?[index].image}"),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 15.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  // 'Eleanor Pena',
-                                  "${customerMyJobModel.data?[index].name.toString()}",
-                                  style: TextStyle(
-                                    color: Color(0xff000000),
-                                    fontFamily: "Outfit",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-// letterSpacing: -0.3,
+                      // color: Color(0xff9D9FAD),
+                      // height: MediaQuery.of(context).size.height * 0.16,
+                      width: 350,
+                      // height: 150,
+                      child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: customerMyJobModel.data?.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Get.to(
+                                  () => CustomerMyJobsDetails(
+                                    image:
+                                        "$baseUrlImage${customerMyJobModel.data?[index].image}",
+                                    jobName:
+                                        customerMyJobModel.data?[index].name,
+                                    totalPrice: customerMyJobModel
+                                        .data?[index].totalPrice,
+                                    address: customerMyJobModel
+                                        .data?[index].location,
+                                    completeJobTime: customerMyJobModel
+                                        .data?[index].dateAdded
+                                        .toString(),
+                                    description: customerMyJobModel
+                                                .data?[index].description ==
+                                            null
+                                        ? ""
+                                        : customerMyJobModel
+                                            .data?[index].description,
+                                    name:
+                                        "${customerMyJobModel.data?[index].usersCustomersData?.firstName} ${customerMyJobModel.data?[index].usersCustomersData?.lastName}",
+                                    profilePic:
+                                        "$baseUrlImage${customerMyJobModel.data?[index].usersCustomersData?.profilePic}",
+                                    status:
+                                        customerMyJobModel.data![index].status,
                                   ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5.0),
-                                  child: Text(
-                                    // 'Mar 03, 2023',
-                                    "${customerMyJobModel.data?[index].dateAdded}",
-                                    style: TextStyle(
-                                      color: Color(0xff9D9FAD),
-                                      fontFamily: "Outfit",
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.w500,
-// letterSpacing: -0.3,
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 5),
+                                padding: EdgeInsets.all(10),
+                                // width: MediaQuery.of(context).size.width * 0.51,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          spreadRadius: 0,
+                                          blurRadius: 20,
+                                          offset: Offset(0, 2),
+                                          color: Color.fromRGBO(
+                                              167, 169, 183, 0.1)),
+                                    ]),
+                                child: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child:
+                                          // Image.asset("assets/images/jobarea.png", width: 96, height: 96,),
+                                          FadeInImage(
+                                        placeholder: AssetImage(
+                                          "assets/images/fade_in_image.jpeg",
+                                        ),
+                                        fit: BoxFit.fill,
+                                        width: 115,
+                                        height: 96,
+                                        image: NetworkImage(
+                                            "$baseUrlImage${customerMyJobModel.data?[index].image}"),
+                                      ),
                                     ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 15.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            // 'Eleanor Pena',
+                                            "${customerMyJobModel.data?[index].name.toString()}",
+                                            style: TextStyle(
+                                              color: Color(0xff000000),
+                                              fontFamily: "Outfit",
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+// letterSpacing: -0.3,
+                                            ),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 5.0),
+                                            child: Text(
+                                              // 'Mar 03, 2023',
+                                              "${customerMyJobModel.data?[index].dateAdded}",
+                                              style: TextStyle(
+                                                color: Color(0xff9D9FAD),
+                                                fontFamily: "Outfit",
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.w500,
+// letterSpacing: -0.3,
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ),
 //                                 Text(
 //                                   'Taken By',
 //                                   style: TextStyle(
@@ -304,32 +322,37 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
 //                                 SizedBox(
 //                                   height: 8,
 //                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Image.asset("assets/images/g1.png"),
-                                    // CircleAvatar(
-                                    //   // radius: (screenWidth > 600) ? 90 : 70,
-                                    //   //   radius: 50,
-                                    //     backgroundColor: Colors.transparent,
-                                    //     backgroundImage: getJobsModel.data![index].usersCustomersData!.profilePic == null
-                                    //         ? Image.asset("assets/images/person2.png").image
-                                    //         : NetworkImage(baseUrlImage+getJobsModel.data![index].usersCustomersData!.profilePic)
-                                    //
-                                    // ),
-                                    SvgPicture.asset("assets/images/locationfill.svg", width: 20,),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Container(
-                                      // width: 65,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              // Image.asset("assets/images/g1.png"),
+                                              // CircleAvatar(
+                                              //   // radius: (screenWidth > 600) ? 90 : 70,
+                                              //   //   radius: 50,
+                                              //     backgroundColor: Colors.transparent,
+                                              //     backgroundImage: getJobsModel.data![index].usersCustomersData!.profilePic == null
+                                              //         ? Image.asset("assets/images/person2.png").image
+                                              //         : NetworkImage(baseUrlImage+getJobsModel.data![index].usersCustomersData!.profilePic)
+                                              //
+                                              // ),
+                                              SvgPicture.asset(
+                                                "assets/images/locationfill.svg",
+                                                width: 20,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Container(
+                                                // width: 65,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
 //                                         Text(
 //                                          "${customerMyJobModel.data?[index].location}",
 //                                           style: TextStyle(
@@ -341,44 +364,49 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
 //                                           ),
 //                                           textAlign: TextAlign.left,
 //                                         ),
-                                          Container(
-                                            width: width * 0.37,
-                                            child: AutoSizeText(
-                                              "${customerMyJobModel.data?[index].location}",
-                                        style: TextStyle(
-                                                color: Color(0xff000000),
-                                                fontFamily: "Outfit",
-                                                fontSize: 8,
-                                                fontWeight: FontWeight.w500,
-                                        ),
-                                              maxLines: 2,
-                                              minFontSize: 8,
-                                              maxFontSize: 8,
-                                              textAlign: TextAlign.left,
-                                              presetFontSizes: [8],
-
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Text(
-                                           "${customerMyJobModel.data?[index].dateModified}",
-                                            style: TextStyle(
-                                              color: Color(0xff000000),
-                                              fontFamily: "Outfit",
-                                              fontSize: 8,
-                                              fontWeight: FontWeight.w500,
+                                                    Container(
+                                                      width: width * 0.37,
+                                                      child: AutoSizeText(
+                                                        "${customerMyJobModel.data?[index].location}",
+                                                        style: TextStyle(
+                                                          color:
+                                                              Color(0xff000000),
+                                                          fontFamily: "Outfit",
+                                                          fontSize: 8,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                        maxLines: 2,
+                                                        minFontSize: 8,
+                                                        maxFontSize: 8,
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        presetFontSizes: [8],
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "${customerMyJobModel.data?[index].dateModified}",
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xff000000),
+                                                        fontFamily: "Outfit",
+                                                        fontSize: 8,
+                                                        fontWeight:
+                                                            FontWeight.w500,
 // letterSpacing: -0.3,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
+                                                      ),
+                                                      textAlign: TextAlign.left,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          )
                                         ],
                                       ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
+                                    ),
 //                           Container(
 //                             margin: EdgeInsets.only(top: 40, left: 2),
 //                             width: 67,
@@ -402,27 +430,25 @@ class _CustomerMyJobListState extends State<CustomerMyJobList> {
 //                               ),
 //                             ),
 //                           ),
-                        ],
-                      ),),
-                  );
-                }),
-          ),
-        ),
-      ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                ),
     );
   }
 }
 
 List customerongoingjobstList = [
-  _customerongoingjobstList(
-      "assets/images/hosp1.png", "Dr. Prem Tiwari", 'On Going', "djf", "sad",
-      "hjgh"),
-  _customerongoingjobstList(
-      "assets/images/hosp1.png", "Dr. Prem Tiwari", 'On Going', "djf", "sda",
-      "dsc"),
-  _customerongoingjobstList(
-      "assets/images/hosp1.png", "Dr. Prem Tiwari", 'On Going', "djf", "sac",
-      "cddc"),
+  _customerongoingjobstList("assets/images/hosp1.png", "Dr. Prem Tiwari",
+      'On Going', "djf", "sad", "hjgh"),
+  _customerongoingjobstList("assets/images/hosp1.png", "Dr. Prem Tiwari",
+      'On Going', "djf", "sda", "dsc"),
+  _customerongoingjobstList("assets/images/hosp1.png", "Dr. Prem Tiwari",
+      'On Going', "djf", "sac", "cddc"),
 ];
 
 class _customerongoingjobstList {
@@ -580,7 +606,6 @@ class _customerongoingjobstList {
 // ],
 // );
 
-
 class NewsCardSkelton extends StatelessWidget {
   const NewsCardSkelton({
     Key? key,
@@ -603,7 +628,7 @@ class NewsCardSkelton extends StatelessWidget {
               const Skeleton(),
               const SizedBox(height: defaultPadding / 2),
               Row(
-                children:  [
+                children: [
                   Expanded(
                     child: Skeleton(),
                   ),
@@ -631,11 +656,13 @@ class Skeleton extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      padding:  EdgeInsets.all(defaultPadding / 2),
+      padding: EdgeInsets.all(defaultPadding / 2),
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.04),
-          borderRadius:
-           BorderRadius.all(Radius.circular(defaultPadding),),),
+        color: Colors.black.withOpacity(0.04),
+        borderRadius: BorderRadius.all(
+          Radius.circular(defaultPadding),
+        ),
+      ),
     );
   }
 }

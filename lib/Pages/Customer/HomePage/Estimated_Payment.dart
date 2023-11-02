@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:StandMan/Models/createJobWallet.dart';
+import 'package:StandMan/Models/getprofile.dart';
 import 'package:StandMan/Pages/Customer/HomePage/HomePage.dart';
+import 'package:StandMan/Pages/Customer/HomePage/selectPayment.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -14,69 +17,98 @@ import '../../Bottombar.dart';
 import 'package:http/http.dart' as http;
 import 'Paymeny_details.dart';
 
-Estimated_PaymentMethod({
+Estimated_PaymentMethod(
+    {double? wallet,
     String? img,
-  String? randomNumbers,
-  String? jobName,
-  String? date,
-  String? long,
-  String? lat,
-  String? time,
-  String? endtime,
-  String? describe,
-  BuildContext? ctx,
-  String? price,
-  String? amount,
-  String? chargers,
-  String? tax,
-  String? address
-}) {
+    String? randomNumbers,
+    String? jobName,
+    String? date,
+    String? long,
+    String? lat,
+    String? time,
+    String? endtime,
+    String? describe,
+    BuildContext? ctx,
+    String? price,
+    String? amount,
+    String? chargers,
+    String? tax,
+    String? address,
+    String? total}) {
   int _selected = 0;
   bool isInAsyncCall = false;
 
   JobsCreateModel jobsCreateModel = JobsCreateModel();
 
-  jobCreated() async {
-    print("working");
+  CreateJobWallet createJobWallet = CreateJobWallet();
+  createjobbywallet() async {
+    // try {
+
     prefs = await SharedPreferences.getInstance();
     usersCustomersId = prefs!.getString('usersCustomersId');
-    print("userId in Prefs is = $usersCustomersId");
-    String apiUrl = jobsCreateModelApiUrl;
+    print("usersCustomersId = $usersCustomersId");
     final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {"Accept": "application/json"},
-      body: {
-        "users_customers_id": usersCustomersId,
-        "name": jobName != null ? jobName : "",
-        "location": address,
-        "longitude": long,
-        "lattitude": lat,
-        "start_date": date,
-        "start_time": time,
-        "end_time": endtime,
-        "description": describe == "" ? "" : describe,
-        "price": amount,
-        "service_charges": chargers,
-        "tax": tax,
-        "payment_gateways_name": "GPay",
-        "payment_status": "Paid",
-        "image": img != null ? img : "",
-      },
-    );
+        Uri.parse("https://admin.standman.ca/api/jobs_create_wallet"),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "users_customers_id": usersCustomersId,
+          "name": jobName != null ? jobName : "",
+          "location": address,
+          "longitude": long,
+          "lattitude": lat,
+          "start_date": date,
+          "start_time": time,
+          "end_time": endtime,
+          "description": describe == "" ? "" : describe,
+          "price": amount,
+          "service_charges": chargers,
+          "tax": tax,
+          "total_price": total,
+          "image": img != null ? img : "",
+        });
     final responseString = response.body;
-    print("jobsCreateModelApi: ${response.body}");
-    print("status Code jobsCreateModel: ${response.statusCode}");
-    print("in 200 jobsCreate");
+    print("response createjobbywallet: $responseString");
+    print("status Code createjobbywallet: ${response.statusCode}");
+    print("in 200 createjobbywallet");
     if (response.statusCode == 200) {
-      jobsCreateModel = jobsCreateModelFromJson(responseString);
-      // setState(() {});
-      print('jobsCreateModel status: ${jobsCreateModel.status}');
+      print("SuccessFull");
+      createJobWallet = createJobWalletFromJson(responseString);
+
+      print('createjobbywallet status: ${createJobWallet.status}');
+    }
+  }
+
+  GetProfile getProfile = GetProfile();
+  getprofile() async {
+    // try {
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("usersCustomersId = $usersCustomersId");
+
+    String apiUrl = usersProfileApiUrl;
+    print("getUserProfileApi: $apiUrl");
+
+    final response = await http.post(Uri.parse(apiUrl), headers: {
+      'Accept': 'application/json',
+    }, body: {
+      "users_customers_id": usersCustomersId.toString(),
+    });
+    final responseString = response.body;
+    print("response getCountryListModels: $responseString");
+    print("status Code getCountryListModels: ${response.statusCode}");
+    print("in 200 getCountryListModels");
+    if (response.statusCode == 200) {
+      print("SuccessFull");
+      getProfile = getProfileFromJson(responseString);
+
+      print('getCountryListModels status: ${getProfile.status}');
     }
   }
 
   jobCreationPayment() async {
-
-
     String apiUrl = jobCreationPaymentApiUrl;
     print("working");
 
@@ -120,7 +152,7 @@ Estimated_PaymentMethod({
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
           'Authorization':
-          'Bearer sk_test_51MV6RqJ1o3iGht9r8pNwA1f92pJOs9vweMCsMA6HJuTQtCiy0HTlPIAXFiI57ffEiu7EmmmfU0IHbjBGw4k5IliP0017I4MuHw',
+              'Bearer sk_test_51MV6RqJ1o3iGht9r8pNwA1f92pJOs9vweMCsMA6HJuTQtCiy0HTlPIAXFiI57ffEiu7EmmmfU0IHbjBGw4k5IliP0017I4MuHw',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: body,
@@ -156,10 +188,11 @@ Estimated_PaymentMethod({
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Column(
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: Get.height * 0.05,),
+                      SizedBox(
+                        height: Get.height * 0.05,
+                      ),
                       const Text(
                         "Job Posted\nSuccessfully!",
                         style: TextStyle(
@@ -171,14 +204,18 @@ Estimated_PaymentMethod({
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: Get.height * 0.04,),
+                      SizedBox(
+                        height: Get.height * 0.04,
+                      ),
                       GestureDetector(
                           onTap: () {
-                            Get.to(  () => bottom_bar(currentIndex: 0,));
+                            Get.to(() => bottom_bar(
+                                  currentIndex: 0,
+                                ));
                             // Get.back();
                           },
-                          child: mainButton("Go Back To Home",
-                              Color(0xff2B65EC), context)),
+                          child: mainButton(
+                              "Go Back To Home", Color(0xff2B65EC), context)),
                     ],
                   ),
                 ),
@@ -491,8 +528,8 @@ Estimated_PaymentMethod({
       showDialog(
           context: ctx!,
           builder: (_) => const AlertDialog(
-            content: Text("Cancelled "),
-          ));
+                content: Text("Cancelled "),
+              ));
     } catch (e) {
       print('$e');
     }
@@ -504,12 +541,12 @@ Estimated_PaymentMethod({
       //Payment Sheet
       await Stripe.instance
           .initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-              paymentIntentClientSecret: paymentIntent?['client_secret'],
-              // applePay: const PaymentSheetApplePay(merchantCountryCode: '+92',),
-              // googlePay: const PaymentSheetGooglePay(testEnv: true, currencyCode: "US", merchantCountryCode: "+92"),
-              style: ThemeMode.dark,
-              merchantDisplayName: 'Hammad'))
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent?['client_secret'],
+                  // applePay: const PaymentSheetApplePay(merchantCountryCode: '+92',),
+                  // googlePay: const PaymentSheetGooglePay(testEnv: true, currencyCode: "US", merchantCountryCode: "+92"),
+                  style: ThemeMode.dark,
+                  merchantDisplayName: 'Hammad'))
           .then((value) {});
 
       ///now finally display payment sheeet
@@ -518,7 +555,6 @@ Estimated_PaymentMethod({
       print('exception:$e$s');
     }
   }
-
 
   return showFlexibleBottomSheet(
       isExpand: false,
@@ -562,7 +598,9 @@ Estimated_PaymentMethod({
                         Payment_Details(ctx: context);
                       },
                     ),
-                    SizedBox(height: Get.height * 0.02,),
+                    SizedBox(
+                      height: Get.height * 0.02,
+                    ),
                     Text(
                       "\$${price}",
                       // "\$22.00",
@@ -574,7 +612,9 @@ Estimated_PaymentMethod({
                         fontSize: 32,
                       ),
                     ),
-                    SizedBox(height: Get.height * 0.01,),
+                    SizedBox(
+                      height: Get.height * 0.01,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -588,7 +628,9 @@ Estimated_PaymentMethod({
                             fontSize: 14,
                           ),
                         ),
-                        SizedBox(width: Get.width * 0.2,),
+                        SizedBox(
+                          width: Get.width * 0.2,
+                        ),
                         Text(
                           // "\$20",
                           "\$$amount",
@@ -616,7 +658,9 @@ Estimated_PaymentMethod({
                               fontSize: 14,
                             ),
                           ),
-                          SizedBox(width: Get.width * 0.1,),
+                          SizedBox(
+                            width: Get.width * 0.1,
+                          ),
                           Text(
                             // "\$2",
                             "\$$chargers",
@@ -643,7 +687,9 @@ Estimated_PaymentMethod({
                             fontSize: 14,
                           ),
                         ),
-                        SizedBox(width: Get.width * 0.28,),
+                        SizedBox(
+                          width: Get.width * 0.28,
+                        ),
                         Text(
                           // "\$20",
                           "\$$tax",
@@ -657,7 +703,9 @@ Estimated_PaymentMethod({
                         ),
                       ],
                     ),
-                    SizedBox(height: Get.height * 0.012,),
+                    SizedBox(
+                      height: Get.height * 0.012,
+                    ),
                     Text(
                       "Base rate - \$21/hour (0.35¢/minute)",
                       style: TextStyle(
@@ -688,123 +736,157 @@ Estimated_PaymentMethod({
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    SizedBox(height: Get.height * 0.02,),
+                    SizedBox(
+                      height: Get.height * 0.02,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15.0),
                       child: GestureDetector(
-                          onTap: () async {
-                            print("users_customers_id: ${usersCustomersId}");
-                            print("jobName: ${jobName}");
-                            print("location: ${address}");
-                            print("longitude: ${long}");
-                            print("lattitude: ${lat}");
-                            print("start_date: ${date}");
-                            print("start_time: ${time}");
-                            print("end_time: ${endtime}");
-                            print("description: ${describe}");
-                            print("price: ${price}");
-                            print("service_charges: ${chargers}");
-                            print("tax: ${tax}");
-                            print("payment_gateways_name: gPay");
-                            print("payment_status :Paid");
-                            print("image: ${img}");
+                        onTap: () async {
+                          print("users_customers_id: ${usersCustomersId}");
+                          print("jobName: ${jobName}");
+                          print("location: ${address}");
+                          print("longitude: ${long}");
+                          print("lattitude: ${lat}");
+                          print("start_date: ${date}");
+                          print("start_time: ${time}");
+                          print("end_time: ${endtime}");
+                          print("description: ${describe}");
+                          print("price: ${price}");
+                          print("service_charges: ${chargers}");
+                          print("tax: ${tax}");
+                          print("image: ${img}");
+                          print("total: ${jobsCreateModel.data?.totalPrice}");
+                          print("wallet: ${wallet}");
 
-                            stateSetterObject(() {
-                              isInAsyncCall = true;
-                            });
+                          stateSetterObject(() {
+                            isInAsyncCall = true;
+                          });
 
-                            await jobCreated();
+                          if (wallet != null &&
+                              price != null &&
+                              wallet >= double.parse(price)) {
+                            await createjobbywallet();
+                            if (createJobWallet.status == "success") {
+                              toastSuccessMessage(
+                                  "Job Created Successfully", Colors.green);
 
-
-                            if(jobsCreateModel.status == "success"){
-                            Future.delayed(const Duration(seconds: 1), () async {
-                             await jobCreationPayment();
-                               await makePayment();
-                              // toastSuccessMessage("Job Created Successfully", Colors.green);
-
-                              // showDialog(
-                              //   context: context,
-                              //   barrierDismissible: false,
-                              //   builder: (BuildContext context) => Dialog(
-                              //     shape: RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.circular(30.0),
-                              //     ),
-                              //     child: Stack(
-                              //       clipBehavior: Clip.none,
-                              //       alignment: Alignment.topCenter,
-                              //       children: [
-                              //         Container(
-                              //           width: width * 0.9, //350,
-                              //           height: height * 0.3, // 321,
-                              //           decoration: BoxDecoration(
-                              //             color: Colors.white,
-                              //             borderRadius: BorderRadius.circular(30),
-                              //           ),
-                              //           child: Column(
-                              //             mainAxisAlignment:
-                              //                 MainAxisAlignment.center,
-                              //             children: [
-                              //               SizedBox(height: Get.height * 0.05,),
-                              //               const Text(
-                              //                 "Job Posted\nSuccessfully!",
-                              //                 style: TextStyle(
-                              //                   color: Color.fromRGBO(0, 0, 0, 1),
-                              //                   fontFamily: "Outfit",
-                              //                   fontSize: 20,
-                              //                   fontWeight: FontWeight.w500,
-                              //                   // letterSpacing: -0.3,
-                              //                 ),
-                              //                 textAlign: TextAlign.center,
-                              //               ),
-                              //               SizedBox(height: Get.height * 0.04,),
-                              //               GestureDetector(
-                              //                   onTap: () {
-                              //                     Get.to(bottom_bar(currentIndex: 0,));
-                              //                     // Get.back();
-                              //                   },
-                              //                   child: mainButton("Go Back To Home",
-                              //                       Color(0xff2B65EC), context)),
-                              //             ],
-                              //           ),
-                              //         ),
-                              //         Positioned(
-                              //             top: -48,
-                              //             child: Container(
-                              //               width: width,
-                              //               //106,
-                              //               height: height * 0.13,
-                              //               //106,
-                              //               decoration: BoxDecoration(
-                              //                 shape: BoxShape.circle,
-                              //                 color: Color(0xffFF9900),
-                              //               ),
-                              //               child: Icon(
-                              //                 Icons.check,
-                              //                 size: 40,
-                              //                 color: Colors.white,
-                              //               ),
-                              //             ))
-                              //       ],
-                              //     ),
-                              //   ),
-                              // );
-
-                              stateSetterObject(() {
-                                isInAsyncCall = false;
-                              });
-                              print("false: $isInAsyncCall");
-                            });
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) => Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  ),
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Container(
+                                        width: width * 0.9, //350,
+                                        height: height * 0.3, // 321,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: Get.height * 0.05,
+                                            ),
+                                            const Text(
+                                              "Job Posted\nSuccessfully!",
+                                              style: TextStyle(
+                                                color:
+                                                    Color.fromRGBO(0, 0, 0, 1),
+                                                fontFamily: "Outfit",
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                                // letterSpacing: -0.3,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(
+                                              height: Get.height * 0.04,
+                                            ),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  Get.to(bottom_bar(
+                                                    currentIndex: 0,
+                                                  ));
+                                                  // Get.back();
+                                                },
+                                                child: mainButton(
+                                                    "Go Back To Home",
+                                                    Color(0xff2B65EC),
+                                                    context)),
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                          top: -48,
+                                          child: Container(
+                                            width: width,
+                                            //106,
+                                            height: height * 0.13,
+                                            //106,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color(0xffFF9900),
+                                            ),
+                                            child: Icon(
+                                              Icons.check,
+                                              size: 40,
+                                              color: Colors.white,
+                                            ),
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                              );
                             } else {
-                              toastFailedMessage(jobsCreateModel.message, Colors.red);
-                              stateSetterObject(() {
-                                isInAsyncCall = false;
-                              });
+                              toastSuccessMessage(
+                                  "Job Posting Failed", Colors.red);
                             }
-                          },
-                          child: isInAsyncCall
-                              ? loadingBar(context)
-                              : mainButton(
-                                  "Pay", Color(0xff2B65EC), context)),
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SelectPaymentMethod(
+                                  img: img,
+                                  randomNumbers: randomNumbers,
+                                  jobName: jobName,
+                                  date: date,
+                                  long: long,
+                                  lat: lat,
+                                  time: time,
+                                  endtime: endtime,
+                                  describe: describe,
+                                  price: price,
+                                  amount: amount,
+                                  chargers: chargers,
+                                  tax: tax,
+                                  address: address,
+                                  totalPrice: total,
+                                  wallet: wallet,
+                                ),
+                              ),
+                            );
+                          }
+                          // Navigator
+                        },
+                        child: isInAsyncCall
+                            ? loadingBar(context)
+                            : wallet != null &&
+                                    price != null &&
+                                    wallet >= double.parse(price)
+                                ? mainButton("Pay", Color(0xff2B65EC), context)
+                                : mainButton("Select Payment Method",
+                                    Color(0xff2B65EC), context),
+                      ),
                     ),
                   ],
                 ),

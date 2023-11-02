@@ -905,7 +905,12 @@ class _WorkProofState extends State<WorkProof> {
 
                             Future.delayed(const Duration(seconds: 2), () {
                               // Get.to(LoginTabClass(login: 0,));
-                              Get.to( () => Emp_EmailVerification(otpVerify:  employeeSignupModel.data?.otpdetails?.otp,),  transition : Transition.rightToLeftWithFade,
+                              Get.to( () => Emp_EmailVerification(otpVerify:  employeeSignupModel.data?.otpdetails?.otp,
+                              email: widget.email.toString(),
+                           
+                              
+                              
+                              ),  transition : Transition.rightToLeftWithFade,
                                 duration: Duration(milliseconds: 250),);
                               toastSuccessMessage("${employeeSignupModel.data?.message}", Colors.green);
                               setState(() {

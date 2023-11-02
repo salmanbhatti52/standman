@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 toastFailedMessage(toastMessage, bgColor) {
   return Fluttertoast.showToast(
-      msg: toastMessage,
+      msg: toastMessage.toString(),
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,

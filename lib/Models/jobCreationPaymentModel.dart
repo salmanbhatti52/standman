@@ -1,37 +1,37 @@
 // To parse this JSON data, do
 //
-//     final customerMyJobModel = customerMyJobModelFromJson(jsonString);
+//     final jobCreationPaymentModel = jobCreationPaymentModelFromJson(jsonString);
 
 import 'dart:convert';
 
-CustomerMyJobModel customerMyJobModelFromJson(String str) =>
-    CustomerMyJobModel.fromJson(json.decode(str));
+JobCreationPaymentModel jobCreationPaymentModelFromJson(String str) =>
+    JobCreationPaymentModel.fromJson(json.decode(str));
 
-String customerMyJobModelToJson(CustomerMyJobModel data) =>
+String jobCreationPaymentModelToJson(JobCreationPaymentModel data) =>
     json.encode(data.toJson());
 
-class CustomerMyJobModel {
+class JobCreationPaymentModel {
   String? status;
-  List<Datum>? data;
+  Data? data;
 
-  CustomerMyJobModel({
+  JobCreationPaymentModel({
     this.status,
     this.data,
   });
 
-  factory CustomerMyJobModel.fromJson(Map<String, dynamic> json) =>
-      CustomerMyJobModel(
+  factory JobCreationPaymentModel.fromJson(Map<String, dynamic> json) =>
+      JobCreationPaymentModel(
         status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: Data.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": data!.toJson(),
       };
 }
 
-class Datum {
+class Data {
   int? jobsId;
   int? usersCustomersId;
   String? location;
@@ -57,13 +57,14 @@ class Datum {
   dynamic dateStartJob;
   dynamic dateEndJob;
   dynamic rating;
-  String? dateAdded;
-  DateTime? dateModified;
+  DateTime? dateAdded;
+  dynamic dateModified;
   String? status;
-  UsersCustomersData? usersCustomersData;
-  dynamic usersEmployeeData;
+  UsersCustomers? usersCustomers;
+  PaymentGateways? paymentGateways;
+  WalletTxns? walletTxns;
 
-  Datum({
+  Data({
     this.jobsId,
     this.usersCustomersId,
     this.location,
@@ -92,11 +93,12 @@ class Datum {
     this.dateAdded,
     this.dateModified,
     this.status,
-    this.usersCustomersData,
-    this.usersEmployeeData,
+    this.usersCustomers,
+    this.paymentGateways,
+    this.walletTxns,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         jobsId: json["jobs_id"],
         usersCustomersId: json["users_customers_id"],
         location: json["location"],
@@ -122,13 +124,12 @@ class Datum {
         dateStartJob: json["date_start_job"],
         dateEndJob: json["date_end_job"],
         rating: json["rating"],
-        dateAdded: json["date_added"],
-        dateModified: DateTime.parse(
-            json["date_modified"] ?? DateTime.now().toIso8601String()),
+        dateAdded: DateTime.parse(json["date_added"]),
+        dateModified: json["date_modified"],
         status: json["status"],
-        usersCustomersData:
-            UsersCustomersData.fromJson(json["users_customers_data"]),
-        usersEmployeeData: json["users_employee_data"],
+        usersCustomers: UsersCustomers.fromJson(json["users_customers"]),
+        paymentGateways: PaymentGateways.fromJson(json["payment_gateways"]),
+        walletTxns: WalletTxns.fromJson(json["wallet_txns"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -158,15 +159,41 @@ class Datum {
         "date_start_job": dateStartJob,
         "date_end_job": dateEndJob,
         "rating": rating,
-        "date_added": dateAdded,
-        "date_modified": dateModified!.toIso8601String(),
+        "date_added": dateAdded!.toIso8601String(),
+        "date_modified": dateModified,
         "status": status,
-        "users_customers_data": usersCustomersData!.toJson(),
-        "users_employee_data": usersEmployeeData,
+        "users_customers": usersCustomers!.toJson(),
+        "payment_gateways": paymentGateways!.toJson(),
+        "wallet_txns": walletTxns!.toJson(),
       };
 }
 
-class UsersCustomersData {
+class PaymentGateways {
+  int? paymentGatewaysId;
+  String? name;
+  String? status;
+
+  PaymentGateways({
+    this.paymentGatewaysId,
+    this.name,
+    this.status,
+  });
+
+  factory PaymentGateways.fromJson(Map<String, dynamic> json) =>
+      PaymentGateways(
+        paymentGatewaysId: json["payment_gateways_id"],
+        name: json["name"],
+        status: json["status"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "payment_gateways_id": paymentGatewaysId,
+        "name": name,
+        "status": status,
+      };
+}
+
+class UsersCustomers {
   int? usersCustomersId;
   String? oneSignalId;
   String? usersCustomersType;
@@ -194,7 +221,7 @@ class UsersCustomersData {
   DateTime? dateAdded;
   String? status;
 
-  UsersCustomersData({
+  UsersCustomers({
     this.usersCustomersId,
     this.oneSignalId,
     this.usersCustomersType,
@@ -223,8 +250,7 @@ class UsersCustomersData {
     this.status,
   });
 
-  factory UsersCustomersData.fromJson(Map<String, dynamic> json) =>
-      UsersCustomersData(
+  factory UsersCustomers.fromJson(Map<String, dynamic> json) => UsersCustomers(
         usersCustomersId: json["users_customers_id"],
         oneSignalId: json["one_signal_id"],
         usersCustomersType: json["users_customers_type"],
@@ -280,5 +306,77 @@ class UsersCustomersData {
         "rating": rating,
         "date_added": dateAdded!.toIso8601String(),
         "status": status,
+      };
+}
+
+class WalletTxns {
+  int? walletTxnsId;
+  int? usersCustomersId;
+  dynamic employeeUsersCustomersId;
+  int? jobsId;
+  String? transactionId;
+  String? txnType;
+  String? totalAmount;
+  String? tax;
+  String? serviceCharges;
+  String? standmanAmount;
+  dynamic dateTime;
+  DateTime? dateAdded;
+  dynamic dateModified;
+  String? status;
+  String? narration;
+
+  WalletTxns({
+    this.walletTxnsId,
+    this.usersCustomersId,
+    this.employeeUsersCustomersId,
+    this.jobsId,
+    this.transactionId,
+    this.txnType,
+    this.totalAmount,
+    this.tax,
+    this.serviceCharges,
+    this.standmanAmount,
+    this.dateTime,
+    this.dateAdded,
+    this.dateModified,
+    this.status,
+    this.narration,
+  });
+
+  factory WalletTxns.fromJson(Map<String, dynamic> json) => WalletTxns(
+        walletTxnsId: json["wallet_txns_id"],
+        usersCustomersId: json["users_customers_id"],
+        employeeUsersCustomersId: json["employee_users_customers_id"],
+        jobsId: json["jobs_id"],
+        transactionId: json["transaction_id"],
+        txnType: json["txn_type"],
+        totalAmount: json["total_amount"],
+        tax: json["tax"],
+        serviceCharges: json["service_charges"],
+        standmanAmount: json["standman_amount"],
+        dateTime: json["date_time"],
+        dateAdded: DateTime.parse(json["date_added"]),
+        dateModified: json["date_modified"],
+        status: json["status"],
+        narration: json["narration"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "wallet_txns_id": walletTxnsId,
+        "users_customers_id": usersCustomersId,
+        "employee_users_customers_id": employeeUsersCustomersId,
+        "jobs_id": jobsId,
+        "transaction_id": transactionId,
+        "txn_type": txnType,
+        "total_amount": totalAmount,
+        "tax": tax,
+        "service_charges": serviceCharges,
+        "standman_amount": standmanAmount,
+        "date_time": dateTime,
+        "date_added": dateAdded!.toIso8601String(),
+        "date_modified": dateModified,
+        "status": status,
+        "narration": narration,
       };
 }

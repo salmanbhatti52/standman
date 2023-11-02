@@ -1,37 +1,39 @@
 // To parse this JSON data, do
 //
-//     final customerMyJobModel = customerMyJobModelFromJson(jsonString);
+//     final jobEditModels = jobEditModelsFromJson(jsonString);
 
 import 'dart:convert';
 
-CustomerMyJobModel customerMyJobModelFromJson(String str) =>
-    CustomerMyJobModel.fromJson(json.decode(str));
+JobEditModels jobEditModelsFromJson(String str) =>
+    JobEditModels.fromJson(json.decode(str));
 
-String customerMyJobModelToJson(CustomerMyJobModel data) =>
-    json.encode(data.toJson());
+String jobEditModelsToJson(JobEditModels data) => json.encode(data.toJson());
 
-class CustomerMyJobModel {
+class JobEditModels {
   String? status;
-  List<Datum>? data;
+  String? message;
+  Data? data;
 
-  CustomerMyJobModel({
+  JobEditModels({
     this.status,
+    this.message,
     this.data,
   });
 
-  factory CustomerMyJobModel.fromJson(Map<String, dynamic> json) =>
-      CustomerMyJobModel(
+  factory JobEditModels.fromJson(Map<String, dynamic> json) => JobEditModels(
         status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        message: json["message"],
+       data : json["data"] != null ? Data.fromJson(json["data"]) : null,
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+        "message": message,
+        "data": data!.toJson(),
       };
 }
 
-class Datum {
+class Data {
   int? jobsId;
   int? usersCustomersId;
   String? location;
@@ -57,13 +59,12 @@ class Datum {
   dynamic dateStartJob;
   dynamic dateEndJob;
   dynamic rating;
-  String? dateAdded;
+  DateTime? dateAdded;
   DateTime? dateModified;
   String? status;
-  UsersCustomersData? usersCustomersData;
-  dynamic usersEmployeeData;
+  UsersCustomers? usersCustomers;
 
-  Datum({
+  Data({
     this.jobsId,
     this.usersCustomersId,
     this.location,
@@ -92,11 +93,10 @@ class Datum {
     this.dateAdded,
     this.dateModified,
     this.status,
-    this.usersCustomersData,
-    this.usersEmployeeData,
+    this.usersCustomers,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         jobsId: json["jobs_id"],
         usersCustomersId: json["users_customers_id"],
         location: json["location"],
@@ -122,13 +122,10 @@ class Datum {
         dateStartJob: json["date_start_job"],
         dateEndJob: json["date_end_job"],
         rating: json["rating"],
-        dateAdded: json["date_added"],
-        dateModified: DateTime.parse(
-            json["date_modified"] ?? DateTime.now().toIso8601String()),
+        dateAdded: DateTime.parse(json["date_added"]),
+        dateModified: DateTime.parse(json["date_modified"]),
         status: json["status"],
-        usersCustomersData:
-            UsersCustomersData.fromJson(json["users_customers_data"]),
-        usersEmployeeData: json["users_employee_data"],
+        usersCustomers: UsersCustomers.fromJson(json["users_customers"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -140,7 +137,7 @@ class Datum {
         "image": image,
         "name": name,
         "start_date":
-            "${startDate?.year.toString().padLeft(4, '0')}-${startDate?.month.toString().padLeft(2, '0')}-${startDate?.day.toString().padLeft(2, '0')}",
+            "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
         "start_time": startTime,
         "end_time": endTime,
         "description": description,
@@ -158,15 +155,14 @@ class Datum {
         "date_start_job": dateStartJob,
         "date_end_job": dateEndJob,
         "rating": rating,
-        "date_added": dateAdded,
+        "date_added": dateAdded!.toIso8601String(),
         "date_modified": dateModified!.toIso8601String(),
         "status": status,
-        "users_customers_data": usersCustomersData!.toJson(),
-        "users_employee_data": usersEmployeeData,
+        "users_customers": usersCustomers!.toJson(),
       };
 }
 
-class UsersCustomersData {
+class UsersCustomers {
   int? usersCustomersId;
   String? oneSignalId;
   String? usersCustomersType;
@@ -194,7 +190,7 @@ class UsersCustomersData {
   DateTime? dateAdded;
   String? status;
 
-  UsersCustomersData({
+  UsersCustomers({
     this.usersCustomersId,
     this.oneSignalId,
     this.usersCustomersType,
@@ -223,8 +219,7 @@ class UsersCustomersData {
     this.status,
   });
 
-  factory UsersCustomersData.fromJson(Map<String, dynamic> json) =>
-      UsersCustomersData(
+  factory UsersCustomers.fromJson(Map<String, dynamic> json) => UsersCustomers(
         usersCustomersId: json["users_customers_id"],
         oneSignalId: json["one_signal_id"],
         usersCustomersType: json["users_customers_type"],

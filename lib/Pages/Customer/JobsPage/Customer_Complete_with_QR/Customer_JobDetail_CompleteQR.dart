@@ -557,7 +557,7 @@ class _CustomerWithoutExtraTimeState extends State<CustomerWithoutExtraTime> {
               // String successMessage = jsonResponse['message'];
               print("Success Message");
               // toastSuccessMessage(jsonResponse['message'], Colors.green);
-              Get.to(  () => Customer_Rating(
+              Get.toEnd(  () => Customer_Rating(
                 jobName: "${widget.jobName}",
                 totalPrice: "${widget.totalPrice}",
                 address: "${widget.address}",

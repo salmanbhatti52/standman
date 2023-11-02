@@ -1,3 +1,4 @@
+import 'package:StandMan/Models/verifyOtpModels.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,20 +8,55 @@ import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import '../Customer/AuthTextWidget.dart';
 import '../Login_tab_class.dart';
+import 'package:http/http.dart' as http;
 
 class Emp_EmailVerification extends StatefulWidget {
   final int? otpVerify;
-  const Emp_EmailVerification({Key? key, this.otpVerify}) : super(key: key);
+  final String? email;
+  const Emp_EmailVerification({Key? key, this.otpVerify, this.email})
+      : super(key: key);
 
   @override
   State<Emp_EmailVerification> createState() => _Emp_EmailVerificationState();
 }
 
 class _Emp_EmailVerificationState extends State<Emp_EmailVerification> {
-
   final key = GlobalKey<FormState>();
   final emailVerify = TextEditingController();
   bool isInAsyncCall = false;
+  bool isLoading = false;
+
+  VerifyOtpModels verifyOtpModels = VerifyOtpModels();
+  verifyAccount() async {
+    // try {
+
+    String apiUrl = "https://admin.standman.ca/api/verify_account";
+    print("api: $apiUrl");
+    print("email: ${widget.email}");
+    print("otp: ${widget.otpVerify}");
+    setState(() {
+      isLoading = true;
+    });
+    final response = await http.post(Uri.parse(apiUrl), headers: {
+      'Accept': 'application/json',
+    }, body: {
+      "email": "${widget.email}",
+      "verify_code": "${widget.otpVerify.toString()}"
+    });
+    final responseString = response.body;
+    print("responseaccountVerifyModelApi: $responseString");
+    print("status Code accountVerifyModel: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      print("in 200 accountVerifyModel");
+      print("SuucessFull");
+      verifyOtpModels = verifyOtpModelsFromJson(responseString);
+      setState(() {
+        isLoading = false;
+      });
+      print('accountVerifyModel status: ${verifyOtpModels.status}');
+    }
+  }
 
   @override
   void initState() {
@@ -111,7 +147,7 @@ class _Emp_EmailVerificationState extends State<Emp_EmailVerification> {
                   ),
                   SizedBox(height: height * 0.05),
                   GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (key.currentState!.validate()) {
                           if (emailVerify.text.isEmpty) {
                             toastFailedMessage('OTp required', Colors.red);
@@ -119,23 +155,33 @@ class _Emp_EmailVerificationState extends State<Emp_EmailVerification> {
                             // print("otp: ${widget.data}");
                             // print("otp: ${OTpCode}");
                             // print("otp: ${widget.email}");
-
+                            await verifyAccount();
                             setState(() {
                               isInAsyncCall = true;
                             });
-                            if (widget.otpVerify.toString() == emailVerify.text ) {
-
+                            if (widget.otpVerify.toString() ==
+                                    emailVerify.text &&
+                                verifyOtpModels.status == "success") {
                               Future.delayed(const Duration(seconds: 2), () {
-                                toastSuccessMessage("Admin will Approve you account soon.", Colors.green);
-                                Get.to( () => LoginTabClass(login: 1,), transition : Transition.upToDown,
-                                  duration: Duration(milliseconds: 350),);
+                                toastSuccessMessage(
+                                    "Admin will Approve you account soon.",
+                                    Colors.green);
+                                Get.to(
+                                  () => LoginTabClass(
+                                    login: 1,
+                                  ),
+                                  transition: Transition.upToDown,
+                                  duration: Duration(milliseconds: 350),
+                                );
                                 setState(() {
                                   isInAsyncCall = false;
                                 });
                                 print("false: $isInAsyncCall");
                               });
                             }
-                            if (widget.otpVerify.toString() != emailVerify.text) {
+                            if (widget.otpVerify.toString() !=
+                                    emailVerify.text &&
+                                verifyOtpModels.status == "error") {
                               toastFailedMessage(
                                   "Enter Correct OTp", Colors.red);
                               setState(() {
@@ -145,10 +191,10 @@ class _Emp_EmailVerificationState extends State<Emp_EmailVerification> {
                           }
                         }
                       },
-                      child:  isInAsyncCall
-                          ?  loadingBar(context)
-                          :mainButton(
-                          "Confirm", Color.fromRGBO(43, 101, 236, 1), context)),
+                      child: isInAsyncCall
+                          ? loadingBar(context)
+                          : mainButton("Confirm",
+                              Color.fromRGBO(43, 101, 236, 1), context)),
                 ],
               ),
             ),

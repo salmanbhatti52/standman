@@ -1,33 +1,33 @@
 // // To parse this JSON data, do
 // //
 // //     final usersProfileModel = usersProfileModelFromJson(jsonString);
-//
+
 // import 'dart:convert';
-//
+
 // UsersProfileModel usersProfileModelFromJson(String str) => UsersProfileModel.fromJson(json.decode(str));
-//
+
 // String usersProfileModelToJson(UsersProfileModel data) => json.encode(data.toJson());
-//
+
 // class UsersProfileModel {
 //   String? status;
 //   Data? data;
-//
+
 //   UsersProfileModel({
 //     this.status,
 //     this.data,
 //   });
-//
+
 //   factory UsersProfileModel.fromJson(Map<String, dynamic> json) => UsersProfileModel(
 //     status: json["status"],
 //     data: Data.fromJson(json["data"]),
 //   );
-//
+
 //   Map<String, dynamic> toJson() => {
 //     "status": status,
 //     "data": data!.toJson(),
 //   };
 // }
-//
+
 // class Data {
 //   int? usersCustomersId;
 //   String? oneSignalId;
@@ -52,7 +52,7 @@
 //   dynamic dateExpiry;
 //   DateTime? dateAdded;
 //   String? status;
-//
+
 //   Data({
 //     this.usersCustomersId,
 //     this.oneSignalId,
@@ -78,7 +78,7 @@
 //     this.dateAdded,
 //     this.status,
 //   });
-//
+
 //   factory Data.fromJson(Map<String, dynamic> json) => Data(
 //     usersCustomersId: json["users_customers_id"],
 //     oneSignalId: json["one_signal_id"],
@@ -104,7 +104,7 @@
 //     dateAdded: DateTime.parse(json["date_added"]),
 //     status: json["status"],
 //   );
-//
+
 //   Map<String, dynamic> toJson() => {
 //     "users_customers_id": usersCustomersId,
 //     "one_signal_id": oneSignalId,

@@ -37,6 +37,7 @@ Future<void> main() async {
   await OneSignal.shared.setAppId(appID);
   Stripe.publishableKey =
       'pk_test_51MV6RqJ1o3iGht9r3wtt4ZaiaiDqA0hcF03p9Kj0FhU3qgPnZI03BKzFxTniYSGjGklLrRqIhEcM5O67OWiJBEyS00xupHP2IW';
+       await Stripe.instance.applySettings();
   runApp(MyApp());
 }
 

@@ -1,3 +1,5 @@
+import 'package:StandMan/Models/verifyOtpModels.dart';
+import 'package:StandMan/Utils/api_urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,11 +9,12 @@ import '../../../widgets/MyButton.dart';
 import '../../../widgets/ToastMessage.dart';
 import 'AuthTextWidget.dart';
 import 'Newpassword.dart';
+import 'package:http/http.dart' as http;
 
 class OTPPage extends StatefulWidget {
   final int? data;
   final String? email;
-  OTPPage({Key? key,   this.data, this.email}) : super(key: key);
+  OTPPage({Key? key, this.data, this.email}) : super(key: key);
 
   @override
   State<OTPPage> createState() => _OTPPageState();
@@ -21,15 +24,46 @@ class _OTPPageState extends State<OTPPage> {
   final OTpCode = TextEditingController();
   final key = GlobalKey<FormState>();
   bool isInAsyncCall = false;
+  bool isLoading = false;
+  VerifyOtpModels verifyOtpModels = VerifyOtpModels();
+  verifyAccount() async {
+    // try {
+
+    String apiUrl = "$baseUrl/verify_account";
+    print("api: $apiUrl");
+    print("email: ${widget.email}");
+    print("otp: ${widget.data}");
+    setState(() {
+      isLoading = true;
+    });
+    final response = await http.post(Uri.parse(apiUrl), headers: {
+      'Accept': 'application/json',
+    }, body: {
+      "email": "${widget.email}",
+      "verify_code": "${widget.data}"
+    });
+    final responseString = response.body;
+    print("responseaccountVerifyModelApi: $responseString");
+    print("status Code accountVerifyModel: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      print("in 200 accountVerifyModel");
+      print("SuucessFull");
+      verifyOtpModels = verifyOtpModelsFromJson(responseString);
+      setState(() {
+        isLoading = false;
+      });
+      print('accountVerifyModel status: ${verifyOtpModels.status}');
+    }
+  }
 
   @override
   void initState() {
     print("otp: ${widget.data}");
-    print("otp: ${widget.email}");
+    print("email: ${widget.email}");
     // TODO: implement initState
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -113,45 +147,53 @@ class _OTPPageState extends State<OTPPage> {
                   ),
                   SizedBox(height: height * 0.05),
                   GestureDetector(
-                      onTap: () {
-                        if (key.currentState!.validate()) {
-                          if (OTpCode.text.isEmpty) {
-                            toastFailedMessage('OTp required', Colors.red);
-                          } else {
-                            print("otp: ${widget.data}");
-                            print("otp: ${OTpCode}");
-                            print("otp: ${widget.email}");
+                    onTap: () async {
+                      if (key.currentState!.validate()) {
+                        if (OTpCode.text.isEmpty) {
+                          toastFailedMessage('OTp required', Colors.red);
+                        } else {
+                          print("otp: ${widget.data}");
+                          print("otp: ${OTpCode}");
+                          print("otp: ${widget.email}");
 
-                            setState(() {
-                              isInAsyncCall = true;
-                            });
-                            if (widget.data.toString() == OTpCode.text ) {
-
-                              Future.delayed(const Duration(seconds: 3), () {
-                                // toastSuccessMessage("success", Colors.green);
-                                // Get.to(NewPassword(data: widget.data, email: widget.email,));
-                                Get.to(() => NewPassword(data: widget.data, email: widget.email,), transition : Transition.rightToLeftWithFade,
-                                  duration: Duration(milliseconds: 250), );
-                                setState(() {
-                                  isInAsyncCall = false;
-                                });
-                                print("false: $isInAsyncCall");
-                              });
-                            }
-                            if (widget.data.toString() != OTpCode.text) {
-                              toastFailedMessage(
-                                  "Enter Correct OTp", Colors.red);
+                          setState(() {
+                            isInAsyncCall = true;
+                          });
+                          // await verifyAccount();
+                          if (widget.data.toString() == OTpCode.text ) {
+                            Future.delayed(const Duration(seconds: 3), () {
+                              // toastSuccessMessage(
+                              //     "${verifyOtpModels.message}", Colors.green);
+                              // Get.to(NewPassword(data: widget.data, email: widget.email,));
+                              Get.to(
+                                () => NewPassword(
+                                  data: widget.data,
+                                  email: widget.email,
+                                ),
+                                transition: Transition.rightToLeftWithFade,
+                                duration: Duration(milliseconds: 250),
+                              );
                               setState(() {
                                 isInAsyncCall = false;
                               });
-                            }
+                              print("false: $isInAsyncCall");
+                            });
+                          }
+                          if (widget.data.toString() != OTpCode.text ) {
+                            // toastFailedMessage(
+                            //     "${verifyOtpModels.message}", Colors.red);
+                            setState(() {
+                              isInAsyncCall = false;
+                            });
                           }
                         }
-                      },
-                      child:  isInAsyncCall
-                          ?  loadingBar(context)
-                          :mainButton(
-                          "Confirm", Color.fromRGBO(43, 101, 236, 1), context),),
+                      }
+                    },
+                    child: isInAsyncCall
+                        ? loadingBar(context)
+                        : mainButton("Confirm", Color.fromRGBO(43, 101, 236, 1),
+                            context),
+                  ),
                 ],
               ),
             ),

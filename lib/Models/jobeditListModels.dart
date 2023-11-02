@@ -1,26 +1,26 @@
 // To parse this JSON data, do
 //
-//     final customerMyJobModel = customerMyJobModelFromJson(jsonString);
+//     final jobEditListModels = jobEditListModelsFromJson(jsonString);
 
 import 'dart:convert';
 
-CustomerMyJobModel customerMyJobModelFromJson(String str) =>
-    CustomerMyJobModel.fromJson(json.decode(str));
+JobEditListModels jobEditListModelsFromJson(String str) =>
+    JobEditListModels.fromJson(json.decode(str));
 
-String customerMyJobModelToJson(CustomerMyJobModel data) =>
+String jobEditListModelsToJson(JobEditListModels data) =>
     json.encode(data.toJson());
 
-class CustomerMyJobModel {
+class JobEditListModels {
   String? status;
   List<Datum>? data;
 
-  CustomerMyJobModel({
+  JobEditListModels({
     this.status,
     this.data,
   });
 
-  factory CustomerMyJobModel.fromJson(Map<String, dynamic> json) =>
-      CustomerMyJobModel(
+  factory JobEditListModels.fromJson(Map<String, dynamic> json) =>
+      JobEditListModels(
         status: json["status"],
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
@@ -57,11 +57,10 @@ class Datum {
   dynamic dateStartJob;
   dynamic dateEndJob;
   dynamic rating;
-  String? dateAdded;
-  DateTime? dateModified;
+  DateTime? dateAdded;
+  dynamic dateModified;
   String? status;
-  UsersCustomersData? usersCustomersData;
-  dynamic usersEmployeeData;
+  UserData? userData;
 
   Datum({
     this.jobsId,
@@ -92,8 +91,7 @@ class Datum {
     this.dateAdded,
     this.dateModified,
     this.status,
-    this.usersCustomersData,
-    this.usersEmployeeData,
+    this.userData,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -122,13 +120,10 @@ class Datum {
         dateStartJob: json["date_start_job"],
         dateEndJob: json["date_end_job"],
         rating: json["rating"],
-        dateAdded: json["date_added"],
-        dateModified: DateTime.parse(
-            json["date_modified"] ?? DateTime.now().toIso8601String()),
+        dateAdded: DateTime.parse(json["date_added"]),
+        dateModified: json["date_modified"],
         status: json["status"],
-        usersCustomersData:
-            UsersCustomersData.fromJson(json["users_customers_data"]),
-        usersEmployeeData: json["users_employee_data"],
+        userData: UserData.fromJson(json["user_data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -140,7 +135,7 @@ class Datum {
         "image": image,
         "name": name,
         "start_date":
-            "${startDate?.year.toString().padLeft(4, '0')}-${startDate?.month.toString().padLeft(2, '0')}-${startDate?.day.toString().padLeft(2, '0')}",
+            "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
         "start_time": startTime,
         "end_time": endTime,
         "description": description,
@@ -158,15 +153,14 @@ class Datum {
         "date_start_job": dateStartJob,
         "date_end_job": dateEndJob,
         "rating": rating,
-        "date_added": dateAdded,
-        "date_modified": dateModified!.toIso8601String(),
+        "date_added": dateAdded!.toIso8601String(),
+        "date_modified": dateModified,
         "status": status,
-        "users_customers_data": usersCustomersData!.toJson(),
-        "users_employee_data": usersEmployeeData,
+        "user_data": userData!.toJson(),
       };
 }
 
-class UsersCustomersData {
+class UserData {
   int? usersCustomersId;
   String? oneSignalId;
   String? usersCustomersType;
@@ -194,7 +188,7 @@ class UsersCustomersData {
   DateTime? dateAdded;
   String? status;
 
-  UsersCustomersData({
+  UserData({
     this.usersCustomersId,
     this.oneSignalId,
     this.usersCustomersType,
@@ -223,8 +217,7 @@ class UsersCustomersData {
     this.status,
   });
 
-  factory UsersCustomersData.fromJson(Map<String, dynamic> json) =>
-      UsersCustomersData(
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         usersCustomersId: json["users_customers_id"],
         oneSignalId: json["one_signal_id"],
         usersCustomersType: json["users_customers_type"],

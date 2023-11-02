@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:StandMan/Models/getprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -179,11 +180,40 @@ class _JobDetailsState extends State<JobDetails> {
   //       });
   // }
 
+  GetProfile getProfile = GetProfile();
+  getprofile() async {
+    // try {
+
+    prefs = await SharedPreferences.getInstance();
+    usersCustomersId = prefs!.getString('usersCustomersId');
+    print("usersCustomersId = $usersCustomersId");
+
+    String apiUrl = usersProfileApiUrl;
+    print("getUserProfileApi: $apiUrl");
+
+    final response = await http.post(Uri.parse(apiUrl), headers: {
+      'Accept': 'application/json',
+    }, body: {
+      "users_customers_id": usersCustomersId.toString(),
+    });
+    final responseString = response.body;
+    print("response getCountryListModels: $responseString");
+    print("status Code getCountryListModels: ${response.statusCode}");
+    print("in 200 getCountryListModels");
+    if (response.statusCode == 200) {
+      print("SuccessFull");
+      getProfile = getProfileFromJson(responseString);
+
+      print('getCountryListModels status: ${getProfile.status}');
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // sharePref();
+    getprofile();
     print(widget.address);
     print(widget.latitude);
     print(widget.longitude);
@@ -221,13 +251,13 @@ class _JobDetailsState extends State<JobDetails> {
     }
   }
 
-
   String generateRandomNumbers(int count) {
     Random random = Random();
     String numbers = '';
 
     for (int i = 0; i < count; i++) {
-      int randomNumber = random.nextInt(10); // Generate random number between 0 and 9
+      int randomNumber =
+          random.nextInt(10); // Generate random number between 0 and 9
       numbers += randomNumber.toString();
     }
 
@@ -712,8 +742,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     //       'JobName cannot be empty',
                                     //       Colors.red);
                                     // } else
-                                      if (selectedDate?.toString() ==
-                                        null) {
+                                    if (selectedDate?.toString() == null) {
                                       toastFailedMessage(
                                           'Date cannot be empty', Colors.red);
                                     } else if (formatTimeOfDay(startTime!) ==
@@ -736,14 +765,14 @@ class _JobDetailsState extends State<JobDetails> {
                                     //       'Description cannot be empty',
                                     //       Colors.red);
                                     // }
-                                  // else if (base64ID == null) {
-                                  //     toastFailedMessage(
-                                  //         'Image required', Colors.red);
-                                  //   }
-                                  else {
+                                    // else if (base64ID == null) {
+                                    //     toastFailedMessage(
+                                    //         'Image required', Colors.red);
+                                    //   }
+                                    else {
                                       print(
                                           "users_customers_id: ${usersCustomersId}");
-                                      print("jobName: ${jobName}");
+                                      print("jobName: ${jobName.text}");
                                       // print("name123: ${usersProfileModel.data!.fullName}");
                                       print(
                                           "location: ${widget.currentaddress.toString() == "" ? widget.currentaddress1.toString() : widget.currentaddress.toString()}");
@@ -757,8 +786,7 @@ class _JobDetailsState extends State<JobDetails> {
                                           "end_time: ${formatTimeOfDay(endTime!)}");
                                       print(
                                           "description: ${describeJob.text.toString()}");
-                                      print("payment_gateways_name: gPay");
-                                      print("payment_status :Paid");
+                                 
                                       print("image: ${base64ID}");
 
                                       // SharedPreferences sharedPref = await SharedPreferences.getInstance();
@@ -768,40 +796,55 @@ class _JobDetailsState extends State<JobDetails> {
                                       setState(() {
                                         isInAsyncCall = true;
                                       });
-                                     await  JobsPrice();
-                                      String randomNumbers = generateRandomNumbers(5);
+                                      await JobsPrice();
+
+                                      String randomNumbers =
+                                          generateRandomNumbers(5);
                                       print("randomNumbers ${randomNumbers}");
 
-                                      if(jobsPriceModel.status == "success"){
-                                        Future.delayed(const Duration(seconds: 1), () {
+                                      if (jobsPriceModel.status == "success") {
+                                        Future.delayed(
+                                            const Duration(seconds: 1), () {
                                           Estimated_PaymentMethod(
-                                            ctx: context,
-                                            randomNumbers : randomNumbers.toString(),
-                                            price: jobsPriceModel.data?.totalPrice,
-                                            amount: jobsPriceModel.data?.price,
-                                            chargers: jobsPriceModel.data?.serviceCharges,
-                                            tax: jobsPriceModel.data?.tax,
-                                            img: base64ID,
-                                            jobName: jobName.text.toString(),
-                                            date: selectedDate.toString(),
-                                            time: startTime?.format(context),
-                                            endtime: endTime?.format(context),
-                                            describe: describeJob.text.toString(),
-                                            address: widget.currentaddress.toString() == ""
-                                                ? widget.currentaddress1.toString()
-                                                : widget.currentaddress.toString(),
-                                            long: widget.longitude,
-                                            lat: widget.latitude,
-                                          );
+                                              ctx: context,
+                                              randomNumbers:
+                                                  randomNumbers.toString(),
+                                              price: jobsPriceModel
+                                                  .data?.totalPrice,
+                                              amount:
+                                                  jobsPriceModel.data?.price,
+                                              chargers: jobsPriceModel
+                                                  .data?.serviceCharges,
+                                              tax: jobsPriceModel.data?.tax,
+                                              img: base64ID,
+                                              jobName: jobName.text,
+                                              date: selectedDate.toString(),
+                                              time: startTime?.format(context),
+                                              endtime: endTime?.format(context),
+                                              describe:
+                                                  describeJob.text.toString(),
+                                              address: widget.currentaddress
+                                                          .toString() ==
+                                                      ""
+                                                  ? widget.currentaddress1
+                                                      .toString()
+                                                  : widget.currentaddress
+                                                      .toString(),
+                                              long: widget.longitude,
+                                              lat: widget.latitude,
+                                              total:
+                                                  "${jobsPriceModel.data?.totalPrice}",
+                                                  wallet: double.tryParse(getProfile.data!.walletAmount ?? '')
+                                                  
+                                                  );
                                         });
                                         setState(() {
                                           isInAsyncCall = false;
                                         });
-                                      } if (jobsPriceModel.status !=
-                                          "success") {
+                                      }
+                                      if (jobsPriceModel.status != "success") {
                                         toastFailedMessage(
-                                            jobsPriceModel.message,
-                                            Colors.red);
+                                            jobsPriceModel.message, Colors.red);
                                         setState(() {
                                           isInAsyncCall = false;
                                         });
@@ -809,8 +852,13 @@ class _JobDetailsState extends State<JobDetails> {
                                     }
                                   }
                                 },
-                                child: isInAsyncCall ? mainButton("Please wait", Colors.grey, context): mainButton("Next",
-                                    Color.fromRGBO(43, 101, 236, 1), context)),
+                                child: isInAsyncCall
+                                    ? mainButton(
+                                        "Please wait", Colors.grey, context)
+                                    : mainButton(
+                                        "Next",
+                                        Color.fromRGBO(43, 101, 236, 1),
+                                        context)),
                             SizedBox(
                               height: height * 0.03,
                             ),
@@ -875,7 +923,6 @@ class _JobDetailsState extends State<JobDetails> {
 //     }
 //   }
 
-
   DateTime? selectedDate;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
@@ -937,7 +984,6 @@ class _JobDetailsState extends State<JobDetails> {
   //     }
   //   }
   // }
-
 
   Future<TimeOfDay?> showCustomTimePicker({
     required BuildContext context,
@@ -1049,7 +1095,8 @@ class _JobDetailsState extends State<JobDetails> {
 // Function to format the time in 12-hour clock format with AM/PM
   String formatTimeOfDay(TimeOfDay timeOfDay) {
     final now = DateTime.now();
-    final dateTime = DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    final dateTime = DateTime(
+        now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
     final formattedTime = DateFormat.jm().format(dateTime);
     return formattedTime;
   }

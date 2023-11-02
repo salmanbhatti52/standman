@@ -790,6 +790,7 @@ class _EmployeeSignUpPageState extends State<EmployeeSignUpPage> {
                                       phonenumber: phoneController.text.toString(),
                                       selectedCountryCode: countryCode.toString(),
                                       password: passwordController.text.toString(),
+                                      
                                     ),
                                       transition : Transition.rightToLeftWithFade,
                                       duration: Duration(milliseconds: 250),
