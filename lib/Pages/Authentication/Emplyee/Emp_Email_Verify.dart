@@ -163,6 +163,9 @@ class _Emp_EmailVerificationState extends State<Emp_EmailVerification> {
                                     emailVerify.text &&
                                 verifyOtpModels.status == "success") {
                               Future.delayed(const Duration(seconds: 2), () {
+                                toastSuccessMessage("Admin will Approve your account soon.", Colors.green);
+                                Get.to( () => LoginTabClass(login: 1,), transition : Transition.upToDown,
+                                  duration: Duration(milliseconds: 350),);
                                 toastSuccessMessage(
                                     "Admin will Approve you account soon.",
                                     Colors.green);
